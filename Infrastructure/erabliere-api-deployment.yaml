@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: swaggerdoc-deployment
+  labels:
+    app: erabliereapi
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: erabliereapi
+  template:
+    metadata:
+      labels:
+        app: erabliereapi
+    spec:
+      containers:
+      - name: erabliereapi
+        image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{GITHUB_RUN_ID}
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
