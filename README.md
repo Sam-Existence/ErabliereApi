@@ -32,4 +32,6 @@ Ce projet est utilisable de différente manière :
 - Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.).
 - Développer les interfaces graphique pour afficher des graphiques et effectuer l'entré de données manuel.
 - Générer des données de test plus réaliste pour le développement
-- Ajouter la possibilité de Cors avec des variables d'environnements
+- Ajouter des paramètres au contrôleur Données et Dompeux pour filter selon une date de début et une date de fin.
+- Déployer l'api dans le cloud (github action)
+- Générer un artéfact sous forme de fichier zip contenant l'application IU

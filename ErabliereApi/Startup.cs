@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 
 namespace ErabliereApi
 {
@@ -35,6 +36,11 @@ namespace ErabliereApi
 
             services.AjouterSwagger();
 
+            if (string.Equals(Environment.GetEnvironmentVariable("USE_CORS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                services.AddCors();
+            }
+
             services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
         }
 
@@ -54,6 +60,16 @@ namespace ErabliereApi
 
             app.UseRouting();
 
+            if (string.Equals(Environment.GetEnvironmentVariable("USE_CORS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                app.UseCors(option =>
+                {
+                    option.WithHeaders(Environment.GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
+                    option.WithMethods(Environment.GetEnvironmentVariable("CORS_METHODS")?.Split(','));
+                    option.WithOrigins(Environment.GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
+                });
+            }
+            
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

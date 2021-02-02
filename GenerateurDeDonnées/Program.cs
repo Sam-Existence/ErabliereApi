@@ -12,8 +12,8 @@ namespace GenerateurDeDonnées
         static string _url = "http://localhost:5000";
         static int _nombreErabliere = 2;
         static int _nombreBarils = 30;
-        static int _nombreDompeux = 1000;
-        static int _nombreDonnees = 51840;
+        static int _nombreDompeux = 200;
+        static int _nombreDonnees = 500;
         static Random _random = new Random();
 
         static void Main(string[] args)

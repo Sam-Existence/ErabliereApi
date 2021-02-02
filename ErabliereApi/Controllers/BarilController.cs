@@ -1,7 +1,9 @@
 ﻿using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ErabliereApi.Controllers
 {
@@ -26,9 +28,10 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Liste les barils
         /// </summary>
+        /// <param name="id">Identifiant de l'érablière</param>
         /// <returns>Liste des barils</returns>
         [HttpGet]
-        public IEnumerable<Baril> Lister(int id)
+        public IEnumerable<Baril> Lister([DefaultValue(0)] int id)
         {
             return dépôt.Lister(b => b.IdÉrablière == id);
         }
@@ -36,9 +39,10 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Ajouter un baril
         /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee"></param>
         [HttpPost]
-        public IActionResult Ajouter(int id, Baril donnee)
+        public IActionResult Ajouter([DefaultValue(0)] int id, Baril donnee)
         {
             if (id != donnee.IdÉrablière)
             {
@@ -53,21 +57,37 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Modifier un baril
         /// </summary>
-        /// <param name="donnee"></param>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="donnee">Le baril a modifier</param>
         [HttpPut]
-        public void Modifier(int id, Baril donnee)
+        public IActionResult Modifier([DefaultValue(0)] int id, Baril donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+            }
+
             dépôt.Modifier(donnee);
+
+            return Ok();
         }
 
         /// <summary>
         /// Supprimer un baril
         /// </summary>
-        /// <param name="donnee"></param>
+        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="donnee">Le baril a supprimer</param>
         [HttpDelete]
-        public void Supprimer(int id, Baril donnee)
+        public IActionResult Supprimer([DefaultValue(0)] int id, Baril donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+            }
+
             dépôt.Supprimer(donnee);
+
+            return NoContent();
         }
     }
 }

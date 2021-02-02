@@ -2,6 +2,7 @@
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ErabliereApi.Controllers
 {
@@ -26,9 +27,10 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Lister les dompeux
         /// </summary>
+        /// <param name="id">Identifiant de l'érablière</param>
         /// <returns>Liste des dompeux</returns>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister(int id)
+        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id)
         {
             return dépôt.Lister(d => d.IdÉrablière == id);
         }
@@ -36,9 +38,10 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Ajouter un dompeux
         /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee"></param>
         [HttpPost]
-        public IActionResult Ajouter(int id, Dompeux donnee)
+        public IActionResult Ajouter([DefaultValue(0)] int id, Dompeux donnee)
         {
             if (id != donnee.IdÉrablière)
             {
@@ -53,21 +56,37 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Modifier un dompeux
         /// </summary>
-        /// <param name="donnee"></param>
+        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut]
-        public void Modifier(int id, Dompeux donnee)
+        public IActionResult Modifier([DefaultValue(0)] int id, Dompeux donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+            }
+
             dépôt.Modifier(donnee);
+
+            return Ok();
         }
 
         /// <summary>
         /// Supprimer un dompeux
         /// </summary>
-        /// <param name="donnee"></param>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete]
-        public void Supprimer(int id, Dompeux donnee)
+        public IActionResult Supprimer([DefaultValue(0)] int id, Dompeux donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+            }
+
             dépôt.Supprimer(donnee);
+
+            return NoContent();
         }
     }
 }

@@ -11,7 +11,7 @@ namespace ErabliereApi.Depot
     /// <typeparam name="T"></typeparam>
     public class DepotMemoire<T> : Depot<T> where T : IIdentifiable<int?>
     {
-        private readonly Dictionary<int?, T> _liste;
+        private readonly Dictionary<int, T> _liste;
         private readonly Random _random;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ErabliereApi.Depot
         /// </summary>
         public DepotMemoire()
         {
-            _liste = new Dictionary<int?, T>();
+            _liste = new Dictionary<int, T>();
             _random = new Random();
         }
 
@@ -30,17 +30,29 @@ namespace ErabliereApi.Depot
             {
                 donnee.Id = _liste.Count;
 
-                while (_liste.ContainsKey(donnee.Id))
+                while (_liste.ContainsKey(donnee.Id.Value))
                 {
                     donnee.Id = _random.Next();
                 }
             }
-            else if (_liste.ContainsKey(donnee.Id))
+            else if (_liste.ContainsKey(donnee.Id.Value))
             {
                 throw new InvalidOperationException($"L'id {donnee.Id} dans le dépôt {nameof(T)} existe déjà.");
             }
 
-            _liste.Add(donnee.Id, donnee);
+            _liste.Add(donnee.Id.Value, donnee);
+        }
+
+        /// <inheritdoc />  
+        public bool Contient(object id)
+        {
+            return _liste.ContainsKey((int)id);
+        }
+
+        /// <inheritdoc />  
+        public bool Contient(Func<T, bool> predicat)
+        {
+            return _liste.Values.Any(predicat);
         }
 
         /// <inheritdoc />  
@@ -49,6 +61,7 @@ namespace ErabliereApi.Depot
             return _liste.Values;
         }
 
+        /// <inheritdoc />
         public IEnumerable<T> Lister(Func<T, bool> predicate)
         {
             return _liste.Values.Where(predicate);
@@ -57,13 +70,31 @@ namespace ErabliereApi.Depot
         /// <inheritdoc />
         public void Modifier(T donnee)
         {
-            _liste[donnee.Id] = donnee;
+            if (donnee == null)
+            {
+                throw new ArgumentNullException(nameof(donnee));
+            }
+            if (donnee.Id == null)
+            {
+                throw new ArgumentNullException($"{nameof(donnee)}.{nameof(donnee.Id)}");
+            }
+
+            _liste[donnee.Id.Value] = donnee;
         }
 
         /// <inheritdoc />
         public void Supprimer(T donnee)
         {
-           _liste.Remove(donnee.Id);
+            if (donnee == null)
+            {
+                throw new ArgumentNullException(nameof(donnee));
+            }
+            if (donnee.Id == null)
+            {
+                throw new ArgumentNullException($"{nameof(donnee)}.{nameof(donnee.Id)}");
+            }
+
+            _liste.Remove(donnee.Id.Value);
         }
     }
 }

@@ -2,6 +2,7 @@
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace ErabliereApi.Controllers
 {
@@ -28,7 +29,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Liste des données</returns>
         [HttpGet]
-        public IEnumerable<Donnee> Lister(int id)
+        public IEnumerable<Donnee> Lister([DefaultValue(0)] int id)
         {
             return dépôt.Lister(d => d.IdÉrablière == id);
         }
@@ -36,9 +37,10 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Ajouter un donnée
         /// </summary>
-        /// <param name="donnee"></param>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="donnee">La donnée à ajouter</param>
         [HttpPost]
-        public IActionResult Ajouter(int id, Donnee donnee)
+        public IActionResult Ajouter([DefaultValue(0)] int id, Donnee donnee)
         {
             if (id != donnee.IdÉrablière)
             {
