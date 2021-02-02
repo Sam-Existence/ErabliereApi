@@ -9,16 +9,16 @@ namespace ErabliereApi.Controllers
     /// Contrôler représentant les données reçu par l'automate principale
     /// </summary>
     [ApiController]
-    [Route("[controller]/[action]")]
+    [Route("erablieres/{id}/[controller]")]
     public class DonneesController : ControllerBase
     {
-        private readonly Dépôt<Donnee> dépôt;
+        private readonly Depot<Donnee> dépôt;
 
         /// <summary>
         /// Constructeur par initlisation
         /// </summary>
         /// <param name="dépôt"></param>
-        public DonneesController(Dépôt<Donnee> dépôt)
+        public DonneesController(Depot<Donnee> dépôt)
         {
             this.dépôt = dépôt;
         }
@@ -28,9 +28,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Liste des données</returns>
         [HttpGet]
-        public IEnumerable<Donnee> Lister()
+        public IEnumerable<Donnee> Lister(int id)
         {
-            return dépôt.Lister();
+            return dépôt.Lister(d => d.IdÉrablière == id);
         }
 
         /// <summary>
@@ -38,9 +38,16 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpPost]
-        public void Ajouter(Donnee donnee)
+        public IActionResult Ajouter(int id, Donnee donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donnee.IdÉrablière}'.");
+            }
+
             dépôt.Ajouter(donnee);
+
+            return Ok();
         }
     }
 }

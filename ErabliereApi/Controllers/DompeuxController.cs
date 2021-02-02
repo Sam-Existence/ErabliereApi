@@ -9,16 +9,16 @@ namespace ErabliereApi.Controllers
     /// Contrôler représentant les données des dompeux
     /// </summary>
     [ApiController]
-    [Route("[controller]/[action]")]
-    public class DompeuxController
+    [Route("erablieres/{id}/[controller]")]
+    public class DompeuxController : ControllerBase
     {
-        private readonly Dépôt<Dompeux> dépôt;
+        private readonly Depot<Dompeux> dépôt;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="dépôt"></param>
-        public DompeuxController(Dépôt<Dompeux> dépôt)
+        public DompeuxController(Depot<Dompeux> dépôt)
         {
             this.dépôt = dépôt;
         }
@@ -28,9 +28,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Liste des dompeux</returns>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister()
+        public IEnumerable<Dompeux> Lister(int id)
         {
-            return dépôt.Lister();
+            return dépôt.Lister(d => d.IdÉrablière == id);
         }
 
         /// <summary>
@@ -38,9 +38,16 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpPost]
-        public void Ajouter(Dompeux donnee)
+        public IActionResult Ajouter(int id, Dompeux donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+            }
+
             dépôt.Ajouter(donnee);
+
+            return Ok();
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpPut]
-        public void Modifier(Dompeux donnee)
+        public void Modifier(int id, Dompeux donnee)
         {
             dépôt.Modifier(donnee);
         }
@@ -58,7 +65,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpDelete]
-        public void Supprimer(Dompeux donnee)
+        public void Supprimer(int id, Dompeux donnee)
         {
             dépôt.Supprimer(donnee);
         }

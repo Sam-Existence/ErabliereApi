@@ -9,16 +9,16 @@ namespace ErabliereApi.Controllers
     /// Contrôler représentant les données des dompeux
     /// </summary>
     [ApiController]
-    [Route("[controller]/[action]")]
-    public class BarilController
+    [Route("erablieres/{id}/[controller]")]
+    public class BarilController : ControllerBase
     {
-        private readonly Dépôt<Baril> dépôt;
+        private readonly Depot<Baril> dépôt;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="dépôt"></param>
-        public BarilController(Dépôt<Baril> dépôt)
+        public BarilController(Depot<Baril> dépôt)
         {
             this.dépôt = dépôt;
         }
@@ -28,9 +28,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Liste des barils</returns>
         [HttpGet]
-        public IEnumerable<Baril> Lister()
+        public IEnumerable<Baril> Lister(int id)
         {
-            return dépôt.Lister();
+            return dépôt.Lister(b => b.IdÉrablière == id);
         }
 
         /// <summary>
@@ -38,9 +38,16 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpPost]
-        public void Ajouter(Baril donnee)
+        public IActionResult Ajouter(int id, Baril donnee)
         {
+            if (id != donnee.IdÉrablière)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+            }
+
             dépôt.Ajouter(donnee);
+
+            return Ok();
         }
 
         /// <summary>
@@ -48,7 +55,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpPut]
-        public void Modifier(Baril donnee)
+        public void Modifier(int id, Baril donnee)
         {
             dépôt.Modifier(donnee);
         }
@@ -58,7 +65,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="donnee"></param>
         [HttpDelete]
-        public void Supprimer(Baril donnee)
+        public void Supprimer(int id, Baril donnee)
         {
             dépôt.Supprimer(donnee);
         }

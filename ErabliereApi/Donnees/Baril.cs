@@ -13,5 +13,17 @@ namespace ErabliereApi.Donnees
         /// Date ou le baril a été fermé
         /// </summary>
         public DateTime? DF { get; set; }
+
+        public int? IdÉrablière { get; set; }
+
+        /// <summary>
+        /// Estimation de la qualité du sirop
+        /// </summary>
+        public string? QE { get; set; }
+
+        /// <summary>
+        /// Qualité du sirop après classement
+        /// </summary>
+        public string? Q { get; set; }
     }
 }

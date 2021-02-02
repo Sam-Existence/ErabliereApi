@@ -35,7 +35,7 @@ namespace ErabliereApi
 
             services.AjouterSwagger();
 
-            services.AddSingleton(typeof(Dépôt<>), typeof(DépôtMemoire<>));
+            services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
         }
 
         /// <summary>

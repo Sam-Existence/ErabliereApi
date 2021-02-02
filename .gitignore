@@ -338,3 +338,50 @@ ASALocalRun/
 
 # BeatPulse healthcheck temp database
 healthchecksdb
+
+# IU
+
+# compiled output
+Interface/ErabliereIU/dist
+Interface/ErabliereIU/tmp
+Interface/ErabliereIU/out-tsc
+# Only exists if Bazel was run
+Interface/ErabliereIU/bazel-out
+
+# dependencies
+Interface/ErabliereIU/node_modules
+
+# profiling files
+Interface/ErabliereIU/chrome-profiler-events*.json
+Interface/ErabliereIU/speed-measure-plugin*.json
+
+# IDEs and editors
+Interface/ErabliereIU/.idea
+Interface/ErabliereIU/.project
+Interface/ErabliereIU/.classpath
+Interface/ErabliereIU/.c9/
+Interface/ErabliereIU/*.launch
+Interface/ErabliereIU/.settings/
+Interface/ErabliereIU/*.sublime-workspace
+
+# IDE - VSCode
+Interface/ErabliereIU/.vscode/*
+!Interface/ErabliereIU/.vscode/settings.json
+!Interface/ErabliereIU/.vscode/tasks.json
+!Interface/ErabliereIU/.vscode/launch.json
+!Interface/ErabliereIU/.vscode/extensions.json
+Interface/ErabliereIU/.history/*
+
+# misc
+Interface/ErabliereIU/.sass-cache
+Interface/ErabliereIU/connect.lock
+Interface/ErabliereIU/coverage
+Interface/ErabliereIU/libpeerconnection.log
+Interface/ErabliereIU/npm-debug.log
+Interface/ErabliereIU/yarn-error.log
+Interface/ErabliereIU/testem.log
+Interface/ErabliereIU/typings
+
+# System Files
+Interface/ErabliereIU/.DS_Store
+Interface/ErabliereIU/Thumbs.db

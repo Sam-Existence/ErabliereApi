@@ -28,5 +28,7 @@ namespace ErabliereApi.Donnees
         /// Vaccium
         /// </summary>
         public short? V { get; set; }
+
+        public int? IdÉrablière { get; set; }
     }
 }

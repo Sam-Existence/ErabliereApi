@@ -26,5 +26,7 @@ namespace ErabliereApi.Donnees
         /// La date de début
         /// </summary>
         public DateTime? DF { get; set; }
+
+        public int? IdÉrablière { get; set; }
     }
 }

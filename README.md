@@ -6,8 +6,9 @@ Le but de ce projet est de centraliser l'informations des érablières dans le b
 
 # Structure
 - ErabliereAPI : Projet de l'api dotnet core
+- GenerateurDeDonnées : Application console pour générer des données de test
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- Interfaces : Fichier HTML pour interagir avec l'api
+- Interfaces : Application angular pour l'affichage des données
 
 # Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
@@ -28,6 +29,7 @@ Ce projet est utilisable de différente manière :
 
 # TODO
 
-- Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.)
-- Ajout d'un identifiant dans la route pour interagir avec plusieurs érablière.
+- Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.).
 - Développer les interfaces graphique pour afficher des graphiques et effectuer l'entré de données manuel.
+- Générer des données de test plus réaliste pour le développement
+- Ajouter la possibilité de Cors avec des variables d'environnements
