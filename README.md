@@ -4,6 +4,8 @@ API Pour receuillir et centraliser les informations des appeils dans des érabli
 ## But
 Le but de ce projet est de centraliser l'informations des érablières dans le but d'analyser les données dans un deuxième temps.
 
+L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine. Intégrer des visualisations de caméra est aussi planifié.
+
 ## Structure
 - ErabliereAPI : Projet de l'api dotnet core
 - GenerateurDeDonnées : Application console pour générer des données de test
@@ -16,6 +18,7 @@ Dans un premier temps, les informations enregistrés seront les suivantes :
 - Temperature, Vaccium, Niveau du bassin (Données envoyé automatiquement par l'automate)
 - Les dompeux (Entré manuellement depuis un ordinateur client)
 - Informations sur les barils (Entré manuellement depuis un ordinateur client)
+- Érablière. Noeud racine de la structure de donnée
 
 ## Utilisation
 
