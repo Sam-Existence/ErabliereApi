@@ -36,4 +36,4 @@ Ce projet est utilisable de différente manière :
 - Développer les interfaces graphique pour afficher des graphiques et effectuer l'entré de données manuel.
 - Générer des données de test plus réaliste pour le développement
 - Déployer l'api dans le cloud (github action)
-- Générer un artéfact sous forme de fichier zip contenant l'application IU
+- Générer un artéfact sous forme de fichier zip contenant l'application IU. (Le client ne voudra pas nécessairement installer node.js et executer des ligne de commande.)
