@@ -3,10 +3,10 @@ import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
 @Component({
-    selector: 'donnees-panel',
+    selector: 'dompeux-panel',
     template: `
         <div class="border-top">
-            <h3>Donnees</h3>
+            <h3>Dompeux</h3>
             <div class="chart-wrapper">
                 <canvas baseChart 
                     [datasets]="lineChartData" 
@@ -21,30 +21,30 @@ import { Color, Label } from 'ng2-charts';
         </div>
     `
 })
-export class DonneesComponent {
+export class DompeuxComponent {
     lineChartData: ChartDataSets[] = [
         { data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices' },
-      ];
-    
-      lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
-    
-      lineChartOptions = {
-        responsive: true,
-      };
-    
-      lineChartColors: Color[] = [
-        {
-          borderColor: 'black',
-          backgroundColor: 'rgba(255,255,0,0.28)',
-        },
-      ];
-    
-      lineChartLegend = true;
-      lineChartPlugins = [];
-      lineChartType = 'line';
+    ];
 
-    constructor(){
-        fetch("http://localhost:5000/erablieres/0/Donnees?dd=2021-03-15&df=2021-03-15T00:05:00")
+    lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
+
+    lineChartOptions = {
+        responsive: true,
+    };
+
+    lineChartColors: Color[] = [
+        {
+            borderColor: 'black',
+            backgroundColor: 'rgba(255,255,0,0.28)',
+        },
+    ];
+
+    lineChartLegend = true;
+    lineChartPlugins = [];
+    lineChartType = 'line';
+
+    constructor() {
+        fetch("http://localhost:5000/erablieres/0/dompeux?dd=2021-03-15&df=2021-03-15T00:05:00")
             .then(e => e.json());
     }
 }

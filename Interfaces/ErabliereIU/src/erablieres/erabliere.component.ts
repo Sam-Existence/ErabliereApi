@@ -3,11 +3,18 @@ import { Component } from '@angular/core';
 @Component({
     selector: 'menu-erabliere',
     template: `
-        <div>
-            <ul>
-                <li *ngFor="let erabliere of erablieres">{{erabliere.nom}}</li>
+    <div class="row">
+        <div class="col-2 border-right">
+            <ul class="list-group">
+                <li class="list-group-item" *ngFor="let erabliere of erablieres">{{erabliere.nom}}</li>
             </ul>
         </div>
+        <div class="col-10">
+            <donnees-panel></donnees-panel>
+            <dompeux-panel></dompeux-panel>
+            <barils-panel></barils-panel>
+        </div>
+    </div>
     `
 })
 export class ErabliereComponent {
