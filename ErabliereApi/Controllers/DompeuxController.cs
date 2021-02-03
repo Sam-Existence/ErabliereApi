@@ -1,6 +1,7 @@
 ﻿using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -30,9 +31,11 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant de l'érablière</param>
         /// <returns>Liste des dompeux</returns>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id)
+        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(d => d.IdÉrablière == id);
+            return dépôt.Lister(d => d.IdÉrablière == id &&
+                               ((dd != null) ? d.T >= dd : true) &&
+                               ((df != null) ? d.T <= df : true));
         }
 
         /// <summary>

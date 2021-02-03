@@ -31,9 +31,11 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant de l'érablière</param>
         /// <returns>Liste des barils</returns>
         [HttpGet]
-        public IEnumerable<Baril> Lister([DefaultValue(0)] int id)
+        public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(b => b.IdÉrablière == id);
+            return dépôt.Lister(b => b.IdÉrablière == id &&
+                               ((dd != null) ? b.DF >= dd : true) &&
+                               ((df != null) ? b.DF <= df : true));
         }
 
         /// <summary>

@@ -60,7 +60,7 @@ namespace ErabliereApi
             {
                 c.SwaggerEndpoint("v1/swagger.json", "ÉrablièreAPI V1");
                 c.RoutePrefix = "api";
-                c.DocumentTitle = "ÉrablièreAPI UI - Swagger";
+                c.DocumentTitle = "ÉrablièreAPI - Swagger";
             });
 
             return app;

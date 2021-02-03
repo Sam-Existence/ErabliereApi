@@ -1,8 +1,6 @@
 ﻿using ErabliereApi.Donnees;
-using Newtonsoft.Json;
 using System;
 using System.Net.Http;
-using System.Text;
 
 namespace GenerateurDeDonnées
 {
@@ -14,7 +12,10 @@ namespace GenerateurDeDonnées
         static int _nombreBarils = 30;
         static int _nombreDompeux = 200;
         static int _nombreDonnees = 500;
+        static DateTime _debutCollecte = new DateTime(2021, 03, 15);
+        static DateTime _finCollecte = new DateTime(2021, 04, 29);
         static Random _random = new Random();
+        static Modelisateur _modelisateur = new Modelisateur();
 
         static void Main(string[] args)
         {
@@ -37,28 +38,22 @@ namespace GenerateurDeDonnées
             {
                 for (int j = 0; j < _nombreDonnees; j++)
                 {
-                    var url = $"{_url}/erablieres/{i}/donnees";
-                    var data = NouvelleDonnees(i, j);
-
-                    Console.WriteLine(url);
-
-                    var response = _client.PostAsync(url, data).Result;
-
-                    Console.WriteLine(response.StatusCode);
-                    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                    CreerDonnees($"/erablieres/{i}/donnees", NouvelleDonnee(i, j));
                 }
             }
         }
 
-        private static HttpContent NouvelleDonnees(int i, int j)
+        private static HttpContent NouvelleDonnee(int i, int j)
         {
+            var d = _debutCollecte + TimeSpan.FromSeconds(30 * j);
+
             var donnee = new Donnee
             {
                 IdÉrablière = i,
-                D = new DateTime(2021, 03, 15),
+                D = d,
                 NB = (short)(Math.Sin(j) * 100),
-                T = (short)(Math.Sin(j / 2) * 100),
-                V =(short)(24 + (Math.Sin(j / 4) * 100))
+                T = _modelisateur.Temperature(d),
+                V = (short)(24 + (Math.Sin(j / 4) * 100))
             };
 
             return donnee.ToStringContent();
@@ -72,15 +67,7 @@ namespace GenerateurDeDonnées
             {
                 for (int j = 0; j < _nombreDompeux; j++)
                 {
-                    var url = $"{_url}/erablieres/{i}/dompeux";
-                    var data = NouveauDompeux(i, j);
-
-                    Console.WriteLine(url);
-
-                    var response = _client.PostAsync(url, data).Result;
-
-                    Console.WriteLine(response.StatusCode);
-                    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                    CreerDonnees($"/erablieres/{i}/dompeux", NouveauDompeux(i, j));
                 }
             }
         }
@@ -90,7 +77,7 @@ namespace GenerateurDeDonnées
             var dompeux = new Dompeux
             {
                 IdÉrablière = i,
-                T = new DateTime(2021, 03, 21) + TimeSpan.FromMinutes(j * 12)
+                T = _debutCollecte + TimeSpan.FromMinutes(j * 12)
             };
 
             return dompeux.ToStringContent();
@@ -104,25 +91,17 @@ namespace GenerateurDeDonnées
             {
                 for (int j = 0; j < _nombreBarils * (1 + i); j++)
                 {
-                    var url = $"{_url}/erablieres/{i}/Baril";
-                    var data = GenererBarils(i, j);
-
-                    Console.WriteLine(url);
-
-                    var response = _client.PostAsync(url, data).Result;
-
-                    Console.WriteLine(response.StatusCode);
-                    Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                    CreerDonnees($"/erablieres/{i}/Baril", NouveauBaril(i, j));
                 }
             }
         }
 
-        private static HttpContent GenererBarils(int idErabliere, int idbarils)
+        private static HttpContent NouveauBaril(int idErabliere, int x)
         {
             var barils = new Baril
             {
                 IdÉrablière = idErabliere,
-                DF = new DateTime(),
+                DF = _debutCollecte + TimeSpan.FromDays(x * 2),
                 Id = _random.Next(10000),
                 QE = "A"
             };
@@ -136,15 +115,7 @@ namespace GenerateurDeDonnées
 
             for (int i = 0; i < _nombreErabliere; i++)
             {
-                var url = $"{_url}/erablieres";
-                var data = NouvelleErabliere(i);
-
-                Console.WriteLine(url);
-
-                var response = _client.PostAsync(url, data).Result;
-
-                Console.WriteLine(response.StatusCode);
-                Console.WriteLine(response.Content.ReadAsStringAsync().Result);
+                CreerDonnees("/erablieres", NouvelleErabliere(i));
             }
         }
 
@@ -152,20 +123,22 @@ namespace GenerateurDeDonnées
         {
             var erabliere = new Erablieres()
             {
-                Nom = "Érablière {i}"
+                Nom = $"Érablière {i}"
             };
 
             return erabliere.ToStringContent();
         }
-    }
 
-    public static class StringContextExtension
-    {
-        public static StringContent ToStringContent(this object obj)
+        private static void CreerDonnees(string action, HttpContent data)
         {
-            var json = JsonConvert.SerializeObject(obj);
+            var url = $"{_url}{action}";
 
-            return new StringContent(json, Encoding.UTF8, "application/json");
+            Console.WriteLine(url);
+
+            var response = _client.PostAsync(url, data).Result;
+
+            Console.WriteLine(response.StatusCode);
+            Console.WriteLine(response.Content.ReadAsStringAsync().Result);
         }
     }
 }
