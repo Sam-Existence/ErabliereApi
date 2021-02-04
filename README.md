@@ -6,9 +6,10 @@ Le but de ce projet est de centraliser l'informations des érablières dans le b
 
 ## Structure
 - ErabliereAPI : Projet de l'api dotnet core
-- GenerateurDeDonnées : Application console pour générer des données de test
+- ErabliereIU : Application angular pour l'affichage des données
+- ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- Interfaces : Application angular pour l'affichage des données
+- GenerateurDeDonnées : Application console pour générer des données de test
 
 ## Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
