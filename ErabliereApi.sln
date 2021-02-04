@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErabliereApi", "ErabliereApi\ErabliereApi.csproj", "{1B190AD3-99F9-4144-BB0A-5E8A2F379C9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateurDeDonnées", "GenerateurDeDonnées\GenerateurDeDonnées.csproj", "{0BE4D215-6B74-4F9B-9773-60BFB89D5301}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GenerateurDeDonnées", "GenerateurDeDonnées\GenerateurDeDonnées.csproj", "{0BE4D215-6B74-4F9B-9773-60BFB89D5301}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErabliereApi.Donnees", "ErabliereModel\ErabliereApi.Donnees.csproj", "{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{0BE4D215-6B74-4F9B-9773-60BFB89D5301}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BE4D215-6B74-4F9B-9773-60BFB89D5301}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BE4D215-6B74-4F9B-9773-60BFB89D5301}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

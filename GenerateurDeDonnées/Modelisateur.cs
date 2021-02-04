@@ -11,8 +11,13 @@ namespace GenerateurDeDonnées
         /// <returns></returns>
         public short Temperature(DateTime dateTime)
         {
-            return (short)(63 * Math.Sin((dateTime.DayOfYear / 100.0) + 100) + 
-                          (14 * Math.Sin(dateTime.Hour + (dateTime.Minute / 60))));
+            var x = dateTime.Month;
+
+            static double f(double x) => 4.2 * Math.Sin((x + 1) * Math.PI / 6) + 13.7;
+
+            var y = f(x);
+
+            return (short)y;
         }
     }
 }

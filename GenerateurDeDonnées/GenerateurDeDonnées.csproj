@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ErabliereApi\ErabliereApi.csproj" />
+    <ProjectReference Include="..\ErabliereModel\ErabliereApi.Donnees.csproj" />
   </ItemGroup>
 
 </Project>

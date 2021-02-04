@@ -22,11 +22,9 @@ import { Color, Label } from 'ng2-charts';
     `
 })
 export class DompeuxComponent {
-    lineChartData: ChartDataSets[] = [
-        { data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices' },
-    ];
+    lineChartData: ChartDataSets[] = [];
 
-    lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
+    lineChartLabels: Label[] = [];
 
     lineChartOptions = {
         responsive: true,
@@ -44,7 +42,14 @@ export class DompeuxComponent {
     lineChartType = 'line';
 
     constructor() {
-        fetch("http://localhost:5000/erablieres/0/dompeux?dd=2021-03-15&df=2021-03-15T00:05:00")
-            .then(e => e.json());
+        fetch("http://localhost:5000/erablieres/0/dompeux?dd=2021-03-15&df=2021-03-15T03:05:00")
+            .then(e => e.json())
+            .then(e => {
+                this.lineChartData = [
+                    { data: e.map((ee: { id: number; }) => ee.id), label: 'Dompeux' }
+                ];
+
+                this.lineChartLabels = e.map((ee: { t: string;}) => ee.t);
+            });
     }
 }

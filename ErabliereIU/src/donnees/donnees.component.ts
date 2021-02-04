@@ -22,11 +22,9 @@ import { Color, Label } from 'ng2-charts';
     `
 })
 export class DonneesComponent {
-    lineChartData: ChartDataSets[] = [
-        { data: [85, 72, 78, 75, 77, 75], label: 'Crude oil prices' },
-      ];
+      lineChartData: ChartDataSets[] = [];
     
-      lineChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June'];
+      lineChartLabels: Label[] = [];
     
       lineChartOptions = {
         responsive: true,
@@ -45,6 +43,15 @@ export class DonneesComponent {
 
     constructor(){
         fetch("http://localhost:5000/erablieres/0/Donnees?dd=2021-03-15&df=2021-03-15T00:05:00")
-            .then(e => e.json());
+            .then(e => e.json())
+            .then(e => {
+              this.lineChartData = [
+                { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' },
+                { data: e.map((ee: { t: number; }) => ee.t), label: 'Temperature' },
+                { data: e.map((ee: { v: number; }) => ee.v), label: 'Vaccium' }
+              ];
+
+              this.lineChartLabels = e.map((ee: { d: string;}) => ee.d);
+            });
     }
 }
