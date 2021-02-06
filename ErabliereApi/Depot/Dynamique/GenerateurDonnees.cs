@@ -1,4 +1,5 @@
 ﻿using ErabliereApi.Donnees;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 
@@ -6,6 +7,13 @@ namespace ErabliereApi.Depot.Dynamique
 {
     public class GenerateurDonnees : Depot<Donnee>
     {
+        private readonly IHttpContextAccessor _context;
+
+        public GenerateurDonnees(IHttpContextAccessor context)
+        {
+            _context = context;
+        }
+
         public void Ajouter(Donnee donnee)
         {
             throw new NotImplementedException();
@@ -23,6 +31,8 @@ namespace ErabliereApi.Depot.Dynamique
 
         public IEnumerable<Donnee> Lister()
         {
+            var queryParameter = _context.HttpContext.Request;
+
             throw new NotImplementedException();
         }
 

@@ -49,7 +49,7 @@ namespace GenerateurDeDonnées
 
             var donnee = new Donnee
             {
-                IdÉrablière = i,
+                IdErabliere = i,
                 D = d,
                 NB = (short)(Math.Sin(j) * 100),
                 T = _modelisateur.Temperature(d),
@@ -76,7 +76,7 @@ namespace GenerateurDeDonnées
         {
             var dompeux = new Dompeux
             {
-                IdÉrablière = i,
+                IdErabliere = i,
                 T = _debutCollecte + TimeSpan.FromMinutes(j * 12)
             };
 
@@ -100,7 +100,7 @@ namespace GenerateurDeDonnées
         {
             var barils = new Baril
             {
-                IdÉrablière = idErabliere,
+                IdErabliere = idErabliere,
                 DF = _debutCollecte + TimeSpan.FromDays(x * 2),
                 Id = _random.Next(10000),
                 QE = "A"

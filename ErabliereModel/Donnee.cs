@@ -29,6 +29,9 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public short? V { get; set; }
 
-        public int? IdÉrablière { get; set; }
+        /// <summary>
+        /// Id de dl'érablière relier a cette donnée
+        /// </summary>
+        public int? IdErabliere { get; set; }
     }
 }

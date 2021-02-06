@@ -32,7 +32,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Donnee> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(d => d.IdÉrablière == id &&
+            return dépôt.Lister(d => d.IdErabliere == id &&
                                ((dd != null) ? d.D >= dd : true) &&
                                ((df != null) ? d.D <= df : true));
         }
@@ -45,9 +45,14 @@ namespace ErabliereApi.Controllers
         [HttpPost]
         public IActionResult Ajouter([DefaultValue(0)] int id, Donnee donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
-                return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donnee.IdÉrablière}'.");
+                return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donnee.IdErabliere}'.");
+            }
+
+            if (donnee.D == default || donnee.D.Equals(DateTime.MinValue))
+            {
+                donnee.D = DateTime.Now;
             }
 
             dépôt.Ajouter(donnee);

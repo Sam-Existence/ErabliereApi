@@ -14,7 +14,7 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public DateTime? DF { get; set; }
 
-        public int? IdÉrablière { get; set; }
+        public int? IdErabliere { get; set; }
 
         /// <summary>
         /// Estimation de la qualité du sirop

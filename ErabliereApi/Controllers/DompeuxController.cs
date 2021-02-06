@@ -33,7 +33,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(d => d.IdÉrablière == id &&
+            return dépôt.Lister(d => d.IdErabliere == id &&
                                ((dd != null) ? d.T >= dd : true) &&
                                ((df != null) ? d.T <= df : true));
         }
@@ -46,7 +46,7 @@ namespace ErabliereApi.Controllers
         [HttpPost]
         public IActionResult Ajouter([DefaultValue(0)] int id, Dompeux donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
@@ -64,7 +64,7 @@ namespace ErabliereApi.Controllers
         [HttpPut]
         public IActionResult Modifier([DefaultValue(0)] int id, Dompeux donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
@@ -82,7 +82,7 @@ namespace ErabliereApi.Controllers
         [HttpDelete]
         public IActionResult Supprimer([DefaultValue(0)] int id, Dompeux donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }

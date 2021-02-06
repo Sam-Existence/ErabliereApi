@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
@@ -7,6 +7,7 @@ import { Color, Label } from 'ng2-charts';
     template: `
         <div class="border-top">
             <h3>Dompeux</h3>
+            <h6>Id érablière {{ erabliere.id }}</h6>
             <div class="chart-wrapper">
                 <canvas baseChart 
                     [datasets]="lineChartData" 
@@ -21,7 +22,7 @@ import { Color, Label } from 'ng2-charts';
         </div>
     `
 })
-export class DompeuxComponent {
+export class DompeuxComponent implements OnInit {
     lineChartData: ChartDataSets[] = [];
 
     lineChartLabels: Label[] = [];
@@ -41,8 +42,12 @@ export class DompeuxComponent {
     lineChartPlugins = [];
     lineChartType = 'line';
 
-    constructor() {
-        fetch("http://localhost:5000/erablieres/0/dompeux?dd=2021-03-15&df=2021-03-15T03:05:00")
+    @Input() erabliere:any
+
+    constructor() { }
+
+    ngOnInit() {
+        fetch("http://localhost:5000/erablieres/" + this.erabliere.id + "/dompeux")
             .then(e => e.json())
             .then(e => {
                 this.lineChartData = [

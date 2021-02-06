@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'barils-panel',
     template: `
         <div class="border-top">
             <h3>Barils</h3>
+            <h6>Id érablière {{ erabliere.id }}</h6>
             <table class="table">
                 <thead>
                     <tr>
@@ -24,10 +25,14 @@ import { Component } from '@angular/core';
         </div>
     `
 })
-export class BarilsComponent {
+export class BarilsComponent implements OnInit {
     barils:any;
-    constructor(){
-        fetch("http://localhost:5000/erablieres/0/baril?dd=2021-03-15&df=2021-04-15T00:05:00")
+    @Input() erabliere:any
+
+    constructor() { }
+
+    ngOnInit() {
+        fetch("http://localhost:5000/erablieres/" + this.erabliere.id + "/baril")
             .then(e => e.json())
             .then(d => this.barils = d);
     }

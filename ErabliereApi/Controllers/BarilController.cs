@@ -33,7 +33,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(b => b.IdÉrablière == id &&
+            return dépôt.Lister(b => b.IdErabliere == id &&
                                ((dd != null) ? b.DF >= dd : true) &&
                                ((df != null) ? b.DF <= df : true));
         }
@@ -46,7 +46,7 @@ namespace ErabliereApi.Controllers
         [HttpPost]
         public IActionResult Ajouter([DefaultValue(0)] int id, Baril donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
@@ -64,7 +64,7 @@ namespace ErabliereApi.Controllers
         [HttpPut]
         public IActionResult Modifier([DefaultValue(0)] int id, Baril donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
@@ -82,7 +82,7 @@ namespace ErabliereApi.Controllers
         [HttpDelete]
         public IActionResult Supprimer([DefaultValue(0)] int id, Baril donnee)
         {
-            if (id != donnee.IdÉrablière)
+            if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
