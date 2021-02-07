@@ -23,15 +23,15 @@ jobs:
 
       # Build the image
       - name: Docker build
-        run: docker build -t $IMAGE_NAME:$IMAGE_TAG
+        run: docker build -t $IMAGE_NAME:$GITHUB_RUN_ID
         
       # Tag the images
       - name: Docker tag
-        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_RUN_ID
+        run: docker tag $IMAGE_NAME:$GITHUB_RUN_ID $REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_RUN_ID
 
       # Push the image
       - name: Docker push
-        run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
+        run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_RUN_ID
 
       # Connect to Azure Kubernetes
       - name: Azure Kubernetes set context
