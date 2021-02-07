@@ -2,7 +2,7 @@
 API Pour receuillir et centraliser les informations des appeils dans des érablières.
 
 ## But
-Le but de ce projet est de centraliser l'informations des érablières dans le but d'analyser les données dans un deuxième temps.
+Le but de ce projet est de centraliser l'informations des érablières dans le but d'analyser, lever des alertes et automatiser certaine mecanisme.
 
 L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine. Intégrer des visualisations de caméra est aussi planifié.
 
@@ -12,6 +12,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
 - GenerateurDeDonnées : Application console pour générer des données de test
+- GenerateurDonneePython : Script python executer sur un raspberry pi pour simulé l'environnement
 
 ## Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
@@ -38,3 +39,14 @@ Ce projet est utilisable de différente manière :
 - Générer des données de test plus réaliste pour le développement
 - Déployer l'api dans le cloud (github action)
 - Générer un artéfact sous forme de fichier zip contenant l'application IU. (Le client ne voudra pas nécessairement installer node.js et executer des ligne de commande.)
+
+## Documentation additionnelle
+
+### Programmer des tâches avec cron
+
+Lancer un script python à toutes les minutes
+
+```bash
+crontab -e
+*/1 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/donnees.py
+```
