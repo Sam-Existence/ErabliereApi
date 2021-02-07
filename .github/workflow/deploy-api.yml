@@ -1,4 +1,4 @@
-name: First Pod
+name: ErabliereAPI
 
 on: 
   workflow_dispatch:
