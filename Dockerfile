@@ -3,10 +3,12 @@ WORKDIR /app
 
 # Copy csproj and restore as distinct layers
 COPY ErabliereApi/ErabliereApi.csproj ./
+COPY ErabliereModel/ErabliereApi.Donnees.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build
 COPY ErabliereApi/* ./
+COPY ErabliereModel/* ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
