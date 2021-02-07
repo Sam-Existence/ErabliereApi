@@ -23,7 +23,7 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
         - name: USE_CORS
-          value: "True",
+          value: "True"
         - name: CORS_ORIGINS
           value: "*"
         - name: CORS_HEADERS
