@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ChartDataSets, ChartOptions } from 'chart.js';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
 @Component({
@@ -29,6 +29,15 @@ export class DonneesComponent implements OnInit {
     
       lineChartOptions = {
         responsive: true,
+        scales: {
+          xAxes: [{
+            type: 'time',
+            ticks: {
+                autoSkip: true,
+                maxTicksLimit: 7
+            }
+          }]
+        }
       };
     
       lineChartColors: Color[] = [
@@ -40,7 +49,7 @@ export class DonneesComponent implements OnInit {
     
       lineChartLegend = true;
       lineChartPlugins = [];
-      lineChartType = 'line';
+      lineChartType = 'line' as ChartType;
 
       @Input() erabliere:any
 

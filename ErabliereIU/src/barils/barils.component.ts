@@ -12,12 +12,30 @@ import { Component, Input, OnInit } from '@angular/core';
                         <th>
                             Numéro
                         </th>
+                        <th>
+                            Date fermeture
+                        </th>
+                        <th>
+                            Estimation
+                        </th>
+                        <th>
+                            Résultat après classement
+                        </th>
                     <tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let baril of barils">
                         <td>
                             {{baril.id}}
+                        </td>
+                        <td>
+                            {{baril.df}}
+                        </td>
+                        <td>
+                            {{baril.qe}}
+                        </td>
+                        <td>
+                            {{baril.q}}
                         </td>
                     <tr>
                 </tbody>
