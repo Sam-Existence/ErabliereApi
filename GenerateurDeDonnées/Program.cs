@@ -121,7 +121,7 @@ namespace GenerateurDeDonnées
 
         private static HttpContent NouvelleErabliere(int i)
         {
-            var erabliere = new Erablieres()
+            var erabliere = new Erabliere()
             {
                 Nom = $"Érablière {i}"
             };

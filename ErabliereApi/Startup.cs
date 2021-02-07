@@ -5,6 +5,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using AutoMapper;
+using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees;
 
 namespace ErabliereApi
 {
@@ -40,6 +43,11 @@ namespace ErabliereApi
             {
                 services.AddCors();
             }
+
+            services.AddAutoMapper(config =>
+            {
+                config.CreateMap<PostErabliere, Erabliere>();
+            });
 
             services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
         }

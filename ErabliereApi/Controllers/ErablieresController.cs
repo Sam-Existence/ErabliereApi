@@ -1,5 +1,7 @@
-﻿using ErabliereApi.Depot;
+﻿using AutoMapper;
+using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
@@ -12,13 +14,14 @@ namespace ErabliereApi.Controllers
     [Route("[controller]")]
     public class ErablieresController : ControllerBase
     {
-        private readonly Depot<Erablieres> _dépôt;
+        private readonly Depot<Erabliere> _dépôt;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="dépôt">Dépôt de donnée des érablières</param>
-        public ErablieresController(Depot<Erablieres> dépôt)
+        /// <param name="mapper">mapper de donnée</param>
+        public ErablieresController(Depot<Erabliere> dépôt, IMapper mapper)
         {
             _dépôt = dépôt;
         }
@@ -28,7 +31,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Une liste d'érablière</returns>
         [HttpGet]
-        public IEnumerable<Erablieres> Lister()
+        public IEnumerable<Erabliere> Lister()
         {
             return _dépôt.Lister();
         }
@@ -38,13 +41,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="érablières">L'érablière à créer</param>
         [HttpPost]
-        public IActionResult Ajouter(Erablieres érablières)
+        public IActionResult Ajouter(PostErabliere érablières)
         {
-            if (érablières.Id != null && _dépôt.Contient(érablières.Id))
-            {
-                return BadRequest($"L'érablière avec l'ID {érablières.Id} existe déjà");
-            }
-            if (érablières.Id == null && string.IsNullOrWhiteSpace(érablières.Nom))
+            if (string.IsNullOrWhiteSpace(érablières.Nom))
             {
                 return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
             }
@@ -53,7 +52,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'érablière nommé {érablières} existe déjà");
             }
 
-            _dépôt.Ajouter(érablières);
+            _dépôt.Ajouter(_mapper.Map<Erabliere>(érablières));
 
             return Ok();
         }

@@ -2,7 +2,7 @@
 
 namespace ErabliereApi.Donnees
 {
-    public class Erablieres : IIdentifiable<int?, Erablieres>
+    public class Erabliere : IIdentifiable<int?, Erabliere>
     {
         /// <summary>
         /// L'id de l'érablière
@@ -15,7 +15,7 @@ namespace ErabliereApi.Donnees
         public string? Nom { get; set; }
 
         /// <inheritdoc />
-        public int CompareTo([AllowNull] Erablieres other)
+        public int CompareTo([AllowNull] Erabliere other)
         {
             return string.Compare(Nom, other?.Nom);
         }
