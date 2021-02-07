@@ -9,7 +9,6 @@ on:
 env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
-  IMAGE_TAG: $GITHUB_RUN_ID
 
 jobs:
   build:
@@ -28,7 +27,7 @@ jobs:
         
       # Tag the images
       - name: Docker tag
-        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
+        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$GITHUB_RUN_ID
 
       # Push the image
       - name: Docker push
