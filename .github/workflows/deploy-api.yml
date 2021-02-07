@@ -23,7 +23,7 @@ jobs:
 
       # Build the image
       - name: Docker build
-        run: docker build -t $IMAGE_NAME:$GITHUB_RUN_ID
+        run: docker build -t $IMAGE_NAME:$GITHUB_RUN_ID .
         
       # Tag the images
       - name: Docker tag
