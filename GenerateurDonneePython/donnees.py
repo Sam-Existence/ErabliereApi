@@ -6,11 +6,13 @@ import random
 def temperature(t):
   mois = t.strftime('%m')
   m = int(mois)
-  return int((4.2 * math.sin((m + 1) * math.pi / 6) + 13.7) + random.triangular(-30, 30, 1))
+  doy = t.timetuple().tm_yday
+  hod = t.timetuple()[3]
+  return int((12 * math.sin((doy-105)*math.pi/182.5)) + (5*math.sin(doy*4)) + (5 * math.sin((hod - 7) * 3.14159 / 12)))
 
 url = "http://192.168.0.103:5000/erablieres/0/Donnees"
 t = temperature(datetime.datetime.now())
-donnees = {'t': t, 'nb': 50, 'v': 25, 'idErabliere': 0}
+donnees = {'t': t, 'nb': 0, 'v': 0, 'idErabliere': 0}
 h = {"Content-Type":"Application/json"}
 r = requests.post(url, json = donnees, headers = h, timeout=5)
 
