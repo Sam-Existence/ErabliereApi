@@ -2,9 +2,9 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 COPY *.sln  .
-COPY ErabliereModel/*.csproj ./ErabliereModel
-COPY GenerateurDeDonnées/*.csproj ./GenerateurDeDonnées
-COPY ErabliereApi/*.csproj ./ErabliereApi
+COPY ErabliereModel/ErabliereApi.Donnees.csproj ./ErabliereModel
+COPY GenerateurDeDonnées/GenerateurDeDonnées.csproj ./GenerateurDeDonnées
+COPY ErabliereApi/ErabliereApi.csproj ./ErabliereApi
 
 RUN dotnet restore
 

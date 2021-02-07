@@ -30,7 +30,7 @@ Ce projet est utilisable de différente manière :
 2. Utilisation avec Docker
 3. Utilisation avec Kubernetes
 
-> Présentement, l'utilisation d'un dépôt de données en mémoire et de swagger est la seule option possible.
+> Présentement, l'utilisation d'un dépôt de données en mémoire avec swagger est la seule option possible. Une certaine visualisation est en place avec le projet angular dans le dossier ErabliereIU.
 
 ## TODO
 
