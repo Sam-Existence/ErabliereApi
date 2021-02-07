@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ErabliereApi.Controllers
 {
@@ -28,13 +29,30 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Lister les données
         /// </summary>
+        /// <param name="dd">Date de début</param>
+        /// <param name="df">Date de début</param>
+        /// <param name="q">Quantité de donnée demander</param>
+        /// <param name="t">Trie</param>
+        /// <param name="ordre">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
         /// <returns>Liste des données</returns>
         [HttpGet]
-        public IEnumerable<Donnee> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
+        public IEnumerable<Donnee> Lister([DefaultValue("0")] int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
         {
-            return dépôt.Lister(d => d.IdErabliere == id &&
-                               ((dd != null) ? d.D >= dd : true) &&
-                               ((df != null) ? d.D <= df : true));
+            IEnumerable<Donnee> query = dépôt.Lister(d => d.IdErabliere == id &&
+                                                    (dd == null || d.D >= dd) &&
+                                                    (df == null || d.D <= df));
+
+            if (o == "d")
+            {
+                query = query.OrderByDescending(d => d);
+            }
+
+            if (q.HasValue)
+            {
+                query = query.Take(q.Value);
+            }
+
+            return query;
         }
 
         /// <summary>

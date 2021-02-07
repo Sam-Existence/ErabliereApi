@@ -1,8 +1,9 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Donnee : IIdentifiable<int?>
+    public class Donnee : IIdentifiable<int?, Donnee>
     {
         /// <summary>
         /// L'id de l'occurence
@@ -33,5 +34,21 @@ namespace ErabliereApi.Donnees
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
         public int? IdErabliere { get; set; }
+
+        /// <inheritdoc />
+        public int CompareTo([AllowNull] Donnee other)
+        {
+            if (other == default)
+            {
+                return 1;
+            }
+
+            if (D.HasValue == false)
+            {
+                return other.D.HasValue ? -1 : 0;
+            }
+
+            return D.Value.CompareTo(other.D);
+        }
     }
 }

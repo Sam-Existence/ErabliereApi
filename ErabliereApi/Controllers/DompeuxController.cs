@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ErabliereApi.Controllers
 {
@@ -31,11 +32,23 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant de l'érablière</param>
         /// <returns>Liste des dompeux</returns>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
+        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
         {
-            return dépôt.Lister(d => d.IdErabliere == id &&
-                               ((dd != null) ? d.T >= dd : true) &&
-                               ((df != null) ? d.T <= df : true));
+            var query = dépôt.Lister(d => d.IdErabliere == id &&
+                                    (dd == null || d.T >= dd) &&
+                                    (df == null || d.T <= df));
+
+            if (o == "d")
+            {
+                query = query.OrderByDescending(d => d);
+            }
+
+            if (q.HasValue)
+            {
+                query = query.Take(q.Value);
+            }
+
+            return query;
         }
 
         /// <summary>

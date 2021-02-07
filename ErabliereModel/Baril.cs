@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Baril : IIdentifiable<int?>
+    public class Baril : IIdentifiable<int?, Baril>
     {
         /// <summary>
         /// Id du baril
@@ -25,5 +26,21 @@ namespace ErabliereApi.Donnees
         /// Qualité du sirop après classement
         /// </summary>
         public string? Q { get; set; }
+
+        /// <inheritdoc />
+        public int CompareTo([AllowNull] Baril other)
+        {
+            if (other == default)
+            {
+                return 1;
+            }
+
+            if (DF.HasValue == false)
+            {
+                return other.DF.HasValue ? -1 : 0;
+            }
+
+            return DF.Value.CompareTo(other.DF);
+        }
     }
 }

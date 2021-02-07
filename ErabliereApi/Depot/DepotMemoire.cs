@@ -9,9 +9,9 @@ namespace ErabliereApi.Depot
     /// Implémentation en mémoire du dépôt de données
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DepotMemoire<T> : Depot<T> where T : IIdentifiable<int?>
+    public class DepotMemoire<T> : Depot<T> where T : IIdentifiable<int?, T>
     {
-        private readonly Dictionary<int, T> _liste;
+        private readonly SortedDictionary<int, T> _liste;
         private readonly Random _random;
 
         /// <summary>
@@ -19,7 +19,7 @@ namespace ErabliereApi.Depot
         /// </summary>
         public DepotMemoire()
         {
-            _liste = new Dictionary<int, T>();
+            _liste = new SortedDictionary<int, T>();
             _random = new Random();
         }
 

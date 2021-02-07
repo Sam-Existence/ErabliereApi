@@ -63,7 +63,7 @@ export class DonneesComponent implements OnInit {
       }
 
       doHttpCall() {
-        fetch("http://localhost:5000/erablieres/" + this.erabliere.id + "/Donnees")
+        fetch("http://192.168.0.150:5000/erablieres/" + this.erabliere.id + "/Donnees")
           .then(e => e.json())
           .then(e => {
             this.lineChartData = [
