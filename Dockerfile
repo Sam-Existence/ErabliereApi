@@ -2,15 +2,15 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
 # Copy csproj and restore as distinct layers
-COPY ErabliereAPI/ErabliereAPI.csproj ./
+COPY ErabliereApi/ErabliereApi.csproj ./
 RUN dotnet restore
 
 # Copy everything else and build
-COPY ErabliereAPI/* ./
+COPY ErabliereApi/* ./
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/out .
-ENTRYPOINT ["dotnet", "ErabliereAPI.dll"]
+ENTRYPOINT ["dotnet", "ErabliereApi.dll"]
