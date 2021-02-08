@@ -29,7 +29,7 @@ if len(sys.argv) > 1:
 
 for id in range(0, nbErabliere):
   print("Érablière :", id)
-  url = "http://192.168.0.150:5000/erablieres/" + str(id) + "/Donnees"
+  url = "https://erabliereapi.freddycoder.com/erablieres/" + str(id) + "/Donnees"
   t = temperature(datetime.datetime.now()) + id
   vaccium = 0
   print("La temperature est", t)

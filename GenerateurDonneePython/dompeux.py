@@ -3,10 +3,10 @@ import datetime
 import math
 import random
 
-url = "http://192.168.0.150:5000/erablieres/0/Donnees"
+url = "https://erabliereapi.freddycoder.com/erablieres/0/Donnees"
 
 def obtenirDompeuxPlusRecent(id):
-  reponse = requests.get("http://192.168.0.150:5000/erablieres/" + str(id) + "/Dompeux?q=1&o=c")
+  reponse = requests.get("https://erabliereapi.freddycoder.com/erablieres/" + str(id) + "/Dompeux?q=1&o=c")
   print("Dernier dompeux erabliere", id, reponse.text)
 
 obtenirDompeuxPlusRecent(0)
