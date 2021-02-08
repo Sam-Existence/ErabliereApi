@@ -1,6 +1,8 @@
 # ErabliereApi
 API Pour receuillir et centraliser les informations des appeils dans des érablières.
 
+Documentation swagger : https://erabliereapi.freddycoder.com/api/index.html
+
 ## But
 Le but de ce projet est de centraliser l'informations des érablières dans le but d'analyser, lever des alertes et automatiser certaine mecanisme.
 
@@ -37,7 +39,6 @@ Ce projet est utilisable de différente manière :
 - Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.).
 - Développer les interfaces graphique pour afficher des graphiques et effectuer l'entré de données manuel.
 - Générer des données de test plus réaliste pour le développement
-- Déployer l'api dans le cloud (github action)
 - Générer un artéfact sous forme de fichier zip contenant l'application IU. (Le client ne voudra pas nécessairement installer node.js et executer des ligne de commande.)
 
 ## Documentation additionnelle

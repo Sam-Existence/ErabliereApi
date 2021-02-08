@@ -50,7 +50,7 @@ export class BarilsComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        fetch("http://192.168.0.150:5000/erablieres/" + this.erabliere.id + "/baril")
+        fetch("https://erabliereapi.freddycoder.com/erablieres/" + this.erabliere.id + "/baril")
             .then(e => e.json())
             .then(d => this.barils = d);
     }

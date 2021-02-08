@@ -30,7 +30,7 @@ export class ErabliereComponent implements OnInit {
     }
 
     ngOnInit() {
-        fetch("http://192.168.0.150:5000/erablieres")
+        fetch("https://erabliereapi.freddycoder.com/erablieres")
             .then(e => e.json())
             .then(e => {
                 this.erablieres = e
