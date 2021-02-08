@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'barils-panel',
@@ -50,7 +51,7 @@ export class BarilsComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        fetch("https://erabliereapi.freddycoder.com/erablieres/" + this.erabliere.id + "/baril")
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/baril")
             .then(e => e.json())
             .then(d => this.barils = d);
     }

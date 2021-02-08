@@ -47,6 +47,7 @@ namespace ErabliereApi
             services.AddAutoMapper(config =>
             {
                 config.CreateMap<PostErabliere, Erabliere>();
+                config.CreateMap<PostDonnee, Donnee>();
             });
 
             services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));

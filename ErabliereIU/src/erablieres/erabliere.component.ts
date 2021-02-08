@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'menu-erabliere',
@@ -30,7 +31,7 @@ export class ErabliereComponent implements OnInit {
     }
 
     ngOnInit() {
-        fetch("https://erabliereapi.freddycoder.com/erablieres")
+        fetch(environment.apiUrl + "/erablieres")
             .then(e => e.json())
             .then(e => {
                 this.erablieres = e

@@ -35,6 +35,20 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public int? IdErabliere { get; set; }
 
+        /// <summary>
+        /// Interval de date des données alimenté. Utiliser pour optimiser le nombre de données enregistrer
+        /// 
+        /// Plus grand interval d'alimentation de cette donnée
+        /// </summary>
+        public TimeSpan? PI { get; set; }
+
+        /// <summary>
+        /// Nombre d'occurence enrgistrer de cette donnée
+        /// </summary>
+        public int Nboc { get; set; }
+
+        public int? IdDonneePrecedente { get; set; }
+
         /// <inheritdoc />
         public int CompareTo([AllowNull] Donnee other)
         {

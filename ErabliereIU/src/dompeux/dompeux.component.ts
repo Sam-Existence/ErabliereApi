@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
+import { environment } from 'src/environments/environment';
 
 @Component({
     selector: 'dompeux-panel',
@@ -47,7 +48,7 @@ export class DompeuxComponent implements OnInit {
     constructor() { }
 
     ngOnInit() {
-        fetch("https://erabliereapi.freddycoder.com/erablieres/" + this.erabliere.id + "/dompeux")
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux")
             .then(e => e.json())
             .then(e => {
                 this.lineChartData = [
