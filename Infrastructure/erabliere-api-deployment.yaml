@@ -29,5 +29,5 @@ spec:
           value: "*"
         - name: CORS_HEADERS
           value: "*"
-        - name: CORS_ORIGINS
+        - name: CORS_METHODS
           value: "*"
