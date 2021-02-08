@@ -15,6 +15,7 @@ namespace ErabliereApi.Controllers
     public class ErablieresController : ControllerBase
     {
         private readonly Depot<Erabliere> _dépôt;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initialisation
@@ -24,6 +25,7 @@ namespace ErabliereApi.Controllers
         public ErablieresController(Depot<Erabliere> dépôt, IMapper mapper)
         {
             _dépôt = dépôt;
+            _mapper = mapper;
         }
 
         /// <summary>

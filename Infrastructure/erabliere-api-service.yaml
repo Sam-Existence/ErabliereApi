@@ -4,6 +4,7 @@ metadata:
   name: erabliere-api-service
   labels:
     run: erabliereapi
+  namespace: erabliere-api
 spec:
   type: NodePort
   ports:

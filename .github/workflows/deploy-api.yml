@@ -53,5 +53,6 @@ jobs:
       - name: Kubectl apply
         run: |
           kubectl config current-context
+          kubectl apply -f ./Infrastructure/erabliere-api-namespace.yaml
           kubectl apply -f ./Infrastructure/erabliere-api-service.yaml
           kubectl apply -f ./Infrastructure/erabliere-api-deployment.yaml

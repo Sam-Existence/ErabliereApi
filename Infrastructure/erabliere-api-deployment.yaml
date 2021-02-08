@@ -1,9 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: swaggerdoc-deployment
+  name: erabliereapi-deployment
   labels:
     app: erabliereapi
+  namespace: erabliere-api
 spec:
   replicas: 1
   selector:
