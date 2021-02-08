@@ -27,9 +27,13 @@ nbErabliere = 1
 if len(sys.argv) > 1:
   nbErabliere = int(sys.argv[1])
 
+urlBase = "https://erabliereapi.freddycoder.com"
+if len(sys.argv) > 2:
+  urlBase = sys.argv[2]
+
 for id in range(0, nbErabliere):
   print("Érablière :", id)
-  url = "https://erabliereapi.freddycoder.com/erablieres/" + str(id) + "/Donnees"
+  url = urlBase + "/erablieres/" + str(id) + "/Donnees"
   t = temperature(datetime.datetime.now()) + id
   vaccium = 0
   print("La temperature est", t)
