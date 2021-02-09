@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm install
 COPY ErabliereIU/ .
-RUN npm run build --prod
+RUN ng build --prod
 
 # Build the api
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
