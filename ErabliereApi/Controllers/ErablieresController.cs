@@ -14,7 +14,7 @@ namespace ErabliereApi.Controllers
     [Route("[controller]")]
     public class ErablieresController : ControllerBase
     {
-        private readonly Depot<Erabliere> _dépôt;
+        private readonly Depot<Erabliere> _depot;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace ErabliereApi.Controllers
         /// <param name="mapper">mapper de donnée</param>
         public ErablieresController(Depot<Erabliere> dépôt, IMapper mapper)
         {
-            _dépôt = dépôt;
+            _depot = dépôt;
             _mapper = mapper;
         }
 
@@ -35,26 +35,26 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Erabliere> Lister()
         {
-            return _dépôt.Lister();
+            return _depot.Lister();
         }
 
         /// <summary>
         /// Créer une érablière
         /// </summary>
-        /// <param name="érablières">L'érablière à créer</param>
+        /// <param name="erablieres">L'érablière à créer</param>
         [HttpPost]
-        public IActionResult Ajouter(PostErabliere érablières)
+        public IActionResult Ajouter(PostErabliere erablieres)
         {
-            if (string.IsNullOrWhiteSpace(érablières.Nom))
+            if (string.IsNullOrWhiteSpace(erablieres.Nom))
             {
                 return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
             }
-            if (_dépôt.Contient(e => e.Nom == érablières.Nom))
+            if (_depot.Contient(e => e.Nom == erablieres.Nom))
             {
-                return BadRequest($"L'érablière nommé {érablières} existe déjà");
+                return BadRequest($"L'érablière nommé {erablieres.Nom} existe déjà");
             }
 
-            _dépôt.Ajouter(_mapper.Map<Erabliere>(érablières));
+            _depot.Ajouter(_mapper.Map<Erabliere>(erablieres));
 
             return Ok();
         }

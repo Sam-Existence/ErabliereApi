@@ -1,3 +1,4 @@
+using ErabliereApi.Donnees.Action.Post;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -47,7 +48,10 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public int Nboc { get; set; }
 
-        public int? IdDonneePrecedente { get; set; }
+        /// <summary>
+        /// Id donnée précédente
+        /// </summary>
+        public int? Iddp { get; set; }
 
         /// <inheritdoc />
         public int CompareTo([AllowNull] Donnee other)
@@ -63,6 +67,15 @@ namespace ErabliereApi.Donnees
             }
 
             return D.Value.CompareTo(other.D);
+        }
+
+        public bool IdentiqueMemeLigneDeTemps(PostDonnee donnee)
+        {
+            return donnee.NB == NB &&
+                   donnee.T == T &&
+                   donnee.V == V &&
+                   D.HasValue && donnee.D.HasValue &&
+                   D.Value > donnee.D.Value;
         }
     }
 }

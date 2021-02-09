@@ -63,6 +63,7 @@ namespace ErabliereApi
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseDefaultFiles();
             app.UseStaticFiles();
 
             app.UtiliserSwagger();

@@ -5,7 +5,6 @@ using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 
 namespace ErabliereApi.Controllers
@@ -17,16 +16,17 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class DonneesController : ControllerBase
     {
-        private readonly Depot<Donnee> dépôt;
+        private readonly Depot<Donnee> _depot;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initlisation
         /// </summary>
-        /// <param name="dépôt"></param>
-        public DonneesController(Depot<Donnee> dépôt, IMapper mapper)
+        /// <param name="depot"></param>
+        /// <param name="mapper">Mapper entre les modèles</param>
+        public DonneesController(Depot<Donnee> depot, IMapper mapper)
         {
-            this.dépôt = dépôt;
+            _depot = depot;
             _mapper = mapper;
         }
 
@@ -41,11 +41,11 @@ namespace ErabliereApi.Controllers
         /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
         /// <returns>Liste des données</returns>
         [HttpGet]
-        public IEnumerable<Donnee> Lister([DefaultValue("0")] int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
+        public IEnumerable<Donnee> Lister(int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
         {
-            IEnumerable<Donnee> query = dépôt.Lister(d => d.IdErabliere == id &&
-                                                    (dd == null || d.D >= dd) &&
-                                                    (df == null || d.D <= df));
+            IEnumerable<Donnee> query = _depot.Lister(d => d.IdErabliere == id &&
+                                                     (dd == null || d.D >= dd) &&
+                                                     (df == null || d.D <= df));
 
             if (o == "d")
             {
@@ -66,7 +66,7 @@ namespace ErabliereApi.Controllers
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donneeRecu">La donnée à ajouter</param>
         [HttpPost]
-        public IActionResult Ajouter([DefaultValue(0)] int id, PostDonnee donneeRecu)
+        public IActionResult Ajouter(int id, PostDonnee donneeRecu)
         {
             if (id != donneeRecu.IdErabliere)
             {
@@ -78,16 +78,12 @@ namespace ErabliereApi.Controllers
                 donneeRecu.D = DateTime.Now;
             }
 
-            var donnePlusRecente = dépôt.Lister(d => d.IdErabliere == id).LastOrDefault();
+            var donnePlusRecente = _depot.Lister(d => d.IdErabliere == id).LastOrDefault();
 
             if (donnePlusRecente != null &&
-                donnePlusRecente.NB == donneeRecu.NB &&
-                donnePlusRecente.T == donneeRecu.T &&
-                donnePlusRecente.V == donneeRecu.V &&
-                donneeRecu.D.HasValue && donnePlusRecente.D.HasValue &&
-                donneeRecu.D.Value > donnePlusRecente.D.Value)
+                donnePlusRecente.IdentiqueMemeLigneDeTemps(donneeRecu))
             {
-                if (donnePlusRecente.IdDonneePrecedente != null)
+                if (donnePlusRecente.Iddp != null)
                 {
                     var interval = donneeRecu.D.Value - donnePlusRecente.D.Value;
 
@@ -107,20 +103,20 @@ namespace ErabliereApi.Controllers
 
                     donnePlusRecente.Nboc++;
 
-                    dépôt.Modifier(donnePlusRecente);
+                    _depot.Modifier(donnePlusRecente);
                 }
                 else
                 {
                     var donnee = _mapper.Map<Donnee>(donneeRecu);
 
-                    donnee.IdDonneePrecedente = donnePlusRecente.Id;
+                    donnee.Iddp = donnePlusRecente.Id;
 
-                    dépôt.Ajouter(donnee);
+                    _depot.Ajouter(donnee);
                 }
             }
             else
             {
-                dépôt.Ajouter(_mapper.Map<Donnee>(donneeRecu));
+                _depot.Ajouter(_mapper.Map<Donnee>(donneeRecu));
             }
 
             return Ok();

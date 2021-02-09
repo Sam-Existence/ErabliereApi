@@ -1,3 +1,12 @@
+# Build the angular app
+FROM node:12.16.1-alpine As andular-builder
+WORKDIR /usr/src/app
+COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build --prod
+
+# Build the api
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
 WORKDIR /app
 
@@ -19,4 +28,5 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build-env /app/ErabliereApi/out ./
+COPY --from=andular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
 ENTRYPOINT ["dotnet", "ErabliereApi.dll"]
