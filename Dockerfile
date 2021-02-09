@@ -3,7 +3,7 @@ FROM node:12.16.1-alpine As andular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm install
-COPY . .
+COPY ErabliereIU/ .
 RUN npm run build --prod
 
 # Build the api
