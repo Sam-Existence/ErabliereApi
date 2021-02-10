@@ -15,28 +15,32 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class DompeuxController : ControllerBase
     {
-        private readonly Depot<Dompeux> dépôt;
+        private readonly Depot<Dompeux> _depot;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="dépôt"></param>
+        /// <param name="dépôt">Le dépôt des dompeux</param>
         public DompeuxController(Depot<Dompeux> dépôt)
         {
-            this.dépôt = dépôt;
+            _depot = dépôt;
         }
 
         /// <summary>
         /// Lister les dompeux
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
-        /// <returns>Liste des dompeux</returns>
+        /// <param name="dd">La date de début</param>
+        /// <param name="df">La date de fin</param>
+        /// <param name="q">La quantité de donnée retourné</param>
+        /// <param name="o">L'ordre des dompeux par date d'occurence. "c" = croissant, "d" = décoissant. </param>
+        /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
         public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
         {
-            var query = dépôt.Lister(d => d.IdErabliere == id &&
-                                    (dd == null || d.T >= dd) &&
-                                    (df == null || d.T <= df));
+            var query = _depot.Lister(d => d.IdErabliere == id &&
+                                     (dd == null || d.T >= dd) &&
+                                     (df == null || d.T <= df));
 
             if (o == "d")
             {
@@ -64,7 +68,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
 
-            dépôt.Ajouter(donnee);
+            _depot.Ajouter(donnee);
 
             return Ok();
         }
@@ -82,7 +86,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
 
-            dépôt.Modifier(donnee);
+            _depot.Modifier(donnee);
 
             return Ok();
         }
@@ -100,7 +104,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
 
-            dépôt.Supprimer(donnee);
+            _depot.Supprimer(donnee);
 
             return NoContent();
         }

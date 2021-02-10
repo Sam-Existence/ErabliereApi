@@ -69,13 +69,15 @@ namespace ErabliereApi.Donnees
             return D.Value.CompareTo(other.D);
         }
 
-        public bool IdentiqueMemeLigneDeTemps(PostDonnee donnee)
-        {
-            return donnee.NB == NB &&
-                   donnee.T == T &&
-                   donnee.V == V &&
-                   D.HasValue && donnee.D.HasValue &&
-                   D.Value < donnee.D.Value;
-        }
+        /// <summary>
+        /// Indique si la donnée en paramètre est dans le future et possède les même valeur pour
+        /// le niveau bassin, la température et le vaccium
+        /// </summary>
+        /// <param name="donnee">Une donnée</param>
+        public bool IdentiqueMemeLigneDeTemps(PostDonnee donnee) => donnee.NB == NB &&
+                                                                    donnee.T == T &&
+                                                                    donnee.V == V &&
+                                                                    D.HasValue && donnee.D.HasValue &&
+                                                                    D.Value < donnee.D.Value;
     }
 }

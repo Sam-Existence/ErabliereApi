@@ -39,7 +39,7 @@ namespace ErabliereApi.Controllers
         /// <param name="q">Quantité de donnée demander</param>
         /// <param name="t">Trie</param>
         /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
-        /// <returns>Liste des données</returns>
+        /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
         [HttpGet]
         public IEnumerable<Donnee> Lister(int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
         {
@@ -61,7 +61,7 @@ namespace ErabliereApi.Controllers
         }
 
         /// <summary>
-        /// Ajouter un donnée
+        /// Ajouter un donnée.
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donneeRecu">La donnée à ajouter</param>

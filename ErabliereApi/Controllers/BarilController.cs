@@ -14,26 +14,26 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class BarilController : ControllerBase
     {
-        private readonly Depot<Baril> dépôt;
+        private readonly Depot<Baril> depot;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="dépôt"></param>
+        /// <param name="dépôt">Le dépôt des barils</param>
         public BarilController(Depot<Baril> dépôt)
         {
-            this.dépôt = dépôt;
+            this.depot = dépôt;
         }
 
         /// <summary>
         /// Liste les barils
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
-        /// <returns>Liste des barils</returns>
+        /// <response code="200">Une liste de baril potentiellement vide.</response>
         [HttpGet]
         public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
         {
-            return dépôt.Lister(b => b.IdErabliere == id &&
+            return depot.Lister(b => b.IdErabliere == id &&
                                ((dd != null) ? b.DF >= dd : true) &&
                                ((df != null) ? b.DF <= df : true));
         }
@@ -43,6 +43,8 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee"></param>
+        /// <response code="200">Le baril a été correctement ajouter.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à ajouter.</response>
         [HttpPost]
         public IActionResult Ajouter([DefaultValue(0)] int id, Baril donnee)
         {
@@ -51,7 +53,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
 
-            dépôt.Ajouter(donnee);
+            depot.Ajouter(donnee);
 
             return Ok();
         }
@@ -61,15 +63,17 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee">Le baril a modifier</param>
+        /// <response code="200">Le baril a été correctement supprimé.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
         [HttpPut]
         public IActionResult Modifier([DefaultValue(0)] int id, Baril donnee)
         {
             if (id != donnee.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
             }
 
-            dépôt.Modifier(donnee);
+            depot.Modifier(donnee);
 
             return Ok();
         }
@@ -79,15 +83,17 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="donnee">Le baril a supprimer</param>
+        /// <response code="202">Le baril a été correctement supprimé.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à supprimer.</response>
         [HttpDelete]
         public IActionResult Supprimer([DefaultValue(0)] int id, Baril donnee)
         {
             if (id != donnee.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
             }
 
-            dépôt.Supprimer(donnee);
+            depot.Supprimer(donnee);
 
             return NoContent();
         }
