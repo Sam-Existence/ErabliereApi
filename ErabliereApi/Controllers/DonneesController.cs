@@ -83,22 +83,22 @@ namespace ErabliereApi.Controllers
             if (donnePlusRecente != null &&
                 donnePlusRecente.IdentiqueMemeLigneDeTemps(donneeRecu))
             {
+                var interval = donneeRecu.D.Value - donnePlusRecente.D.Value;
+
                 if (donnePlusRecente.Iddp != null)
                 {
-                    var interval = donneeRecu.D.Value - donnePlusRecente.D.Value;
-
                     donnePlusRecente.D = donneeRecu.D;
 
                     if (donnePlusRecente.PI.HasValue == false)
                     {
-                        if (interval > donnePlusRecente.PI)
+                        if (interval.Milliseconds > donnePlusRecente.PI)
                         {
-                            donnePlusRecente.PI = interval;
+                            donnePlusRecente.PI = (int)interval.TotalSeconds;
                         }
                     }
                     else
                     {
-                        donnePlusRecente.PI = interval;
+                        donnePlusRecente.PI = (int)interval.TotalSeconds;
                     }
 
                     donnePlusRecente.Nboc++;
@@ -110,6 +110,8 @@ namespace ErabliereApi.Controllers
                     var donnee = _mapper.Map<Donnee>(donneeRecu);
 
                     donnee.Iddp = donnePlusRecente.Id;
+
+                    donnee.PI = (int)interval.TotalSeconds;
 
                     _depot.Ajouter(donnee);
                 }

@@ -7,52 +7,30 @@ import { environment } from 'src/environments/environment';
     selector: 'donnees-panel',
     template: `
         <div class="border-top">
-            <h3>Donnees</h3>
-            <h6>Id érablière {{ erabliere.id }}</h6>
-            <div class="chart-wrapper">
-                <canvas baseChart 
-                    [datasets]="lineChartData" 
-                    [labels]="lineChartLabels" 
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors" 
-                    [legend]="lineChartLegend" 
-                    [chartType]="lineChartType" 
-                    [plugins]="lineChartPlugins">
-                </canvas>
+          <h3>Données</h3>
+          <h6>Id érablière {{ erabliere.id }}</h6>
+          <div class="row">
+            <div class="col-4">
+              <temperature-panel [timeaxes]="timeaxes" [temperature]="temperature"></temperature-panel>
             </div>
+            <div class="col-4">
+              <vaccium-panel [timeaxes]="timeaxes" [vaccium]="vaccium"></vaccium-panel>
+            </div>
+            <div class="col-4">
+              <niveaubassin-panel [timeaxes]="timeaxes" [niveaubassin]="niveaubassin"></niveaubassin-panel>
+            </div>
+          </div>
         </div>
     `
 })
 export class DonneesComponent implements OnInit {
-      lineChartData: ChartDataSets[] = [];
-    
-      lineChartLabels: Label[] = [];
-    
-      lineChartOptions = {
-        responsive: true,
-        scales: {
-          xAxes: [{
-            type: 'time',
-            ticks: {
-                autoSkip: true,
-                maxTicksLimit: 7
-            }
-          }]
-        }
-      };
-    
-      lineChartColors: Color[] = [
-        {
-          borderColor: 'black',
-          backgroundColor: 'rgba(255,255,0,0.28)',
-        },
-      ];
-    
-      lineChartLegend = true;
-      lineChartPlugins = [];
-      lineChartType = 'line' as ChartType;
-
       @Input() erabliere:any
+
+      timeaxes: Label[] = [];
+
+      temperature: ChartDataSets[] = [];
+      vaccium: ChartDataSets[] = [];
+      niveaubassin: ChartDataSets[] = [];
 
       constructor(){ }
 
@@ -67,13 +45,16 @@ export class DonneesComponent implements OnInit {
         fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees")
           .then(e => e.json())
           .then(e => {
-            this.lineChartData = [
-              { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' },
-              { data: e.map((ee: { t: number; }) => ee.t), label: 'Temperature' },
+            this.temperature = [
+              { data: e.map((ee: { t: number; }) => ee.t), label: 'Temperature' }
+            ];
+            this.vaccium = [
               { data: e.map((ee: { v: number; }) => ee.v), label: 'Vaccium' }
             ];
-
-            this.lineChartLabels = e.map((ee: { d: string;}) => ee.d);
+            this.niveaubassin = [
+              { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' }
+            ];
+            this.timeaxes = e.map((ee: { d: string;}) => ee.d);
           });
       }
 }

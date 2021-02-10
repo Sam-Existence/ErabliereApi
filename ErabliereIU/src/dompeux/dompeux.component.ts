@@ -36,7 +36,7 @@ export class DompeuxComponent implements OnInit {
         {
             borderColor: 'black',
             backgroundColor: 'rgba(255,255,0,0.28)',
-        },
+        }
     ];
 
     lineChartLegend = true;

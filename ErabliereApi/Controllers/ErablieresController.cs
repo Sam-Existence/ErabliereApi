@@ -42,6 +42,8 @@ namespace ErabliereApi.Controllers
         /// Créer une érablière
         /// </summary>
         /// <param name="erablieres">L'érablière à créer</param>
+        /// <response code="200">L'érablière a été correctement ajouté</response>
+        /// <response code="400">Le nom de l'érablière est null ou vide ou un érablière avec le nom reçu existe déjà.</response>
         [HttpPost]
         public IActionResult Ajouter(PostErabliere erablieres)
         {
@@ -51,7 +53,7 @@ namespace ErabliereApi.Controllers
             }
             if (_depot.Contient(e => e.Nom == erablieres.Nom))
             {
-                return BadRequest($"L'érablière nommé {erablieres.Nom} existe déjà");
+                return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
             }
 
             _depot.Ajouter(_mapper.Map<Erabliere>(erablieres));

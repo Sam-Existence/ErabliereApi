@@ -7,6 +7,9 @@ import { DonneesComponent } from 'src/donnees/donnees.component';
 import { DompeuxComponent } from 'src/dompeux/dompeux.component';
 import { BarilsComponent } from 'src/barils/barils.component';
 import { ChartsModule } from 'ng2-charts';
+import { TemperatureComponent } from 'src/donnees/sub-panel/temperature.component';
+import { VacciumComponent } from 'src/donnees/sub-panel/vaccium.component';
+import { NiveauBassinCompoenent } from 'src/donnees/sub-panel/niveaubassin.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { ChartsModule } from 'ng2-charts';
     ErabliereComponent,
     DonneesComponent,
     DompeuxComponent,
-    BarilsComponent
+    BarilsComponent,
+    TemperatureComponent,
+    VacciumComponent,
+    NiveauBassinCompoenent
   ],
   imports: [
     BrowserModule,

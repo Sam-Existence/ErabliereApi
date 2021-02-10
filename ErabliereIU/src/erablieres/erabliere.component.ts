@@ -39,6 +39,9 @@ export class ErabliereComponent implements OnInit {
                 if (this.erablieres.length > 0) {
                     this.erabliereSelectionnee = this.erablieres[0].id;
                 }
+                else {
+                    // TODO : Aucun érablière trouvé
+                }
             });
     }
 

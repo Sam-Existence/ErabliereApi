@@ -39,9 +39,9 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Interval de date des données alimenté. Utiliser pour optimiser le nombre de données enregistrer
         /// 
-        /// Plus grand interval d'alimentation de cette donnée
+        /// Plus grand interval d'alimentation de cette donnée, en seconde
         /// </summary>
-        public TimeSpan? PI { get; set; }
+        public int? PI { get; set; }
 
         /// <summary>
         /// Nombre d'occurence enrgistrer de cette donnée
@@ -75,7 +75,7 @@ namespace ErabliereApi.Donnees
                    donnee.T == T &&
                    donnee.V == V &&
                    D.HasValue && donnee.D.HasValue &&
-                   D.Value > donnee.D.Value;
+                   D.Value < donnee.D.Value;
         }
     }
 }
