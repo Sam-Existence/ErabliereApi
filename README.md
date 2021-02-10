@@ -1,6 +1,8 @@
 # ErabliereApi
 API Pour receuillir et centraliser les informations des appeils dans des érablières.
 
+Démo : https://erabliereapi.freddycoder.com
+
 Documentation swagger : https://erabliereapi.freddycoder.com/api/index.html
 
 ## But
