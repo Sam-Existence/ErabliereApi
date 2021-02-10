@@ -15,7 +15,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- GenerateurDeDonnées : Application console pour générer des données de test
+- GenerateurDeDonnées : Application console pour générer des données de test (bientot délester, génération des données par script python)
 - GenerateurDonneePython : Script python executer sur un raspberry pi pour simulé l'environnement
 
 ## Modèles de données
@@ -45,11 +45,27 @@ Ce projet est utilisable de différente manière :
 
 ## Documentation additionnelle
 
-### Programmer des tâches avec cron
+### Lancer les scripts de génération de donnée python pour le développement avec cron
 
-Lancer un script python à toutes les minutes
+La cronjob suivante va lancer le script de génération de donnée pour 2 érablière en utilisant l'api de l'adresse spécifié
+
+```
+crontab -e
+*/1 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/donnees.py 2 http://192.168.0.103:5000
+```
+
+### Extraire les logs sauf pour certain paramètre
 
 ```bash
-crontab -e
-*/1 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/donnees.py
+kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabliere | grep -i -v 'param1|param2'
+```
+
+### Déployer l'interface sur une installation apache2 d'un raspnerry pi
+
+> Image utilisé Ubuntu server 20.04 32 bits
+
+```bash
+ng build --prod
+sudo rm /var/www/html/*
+sudo cp dist/ErabliereIU/* /var/www/html/
 ```
