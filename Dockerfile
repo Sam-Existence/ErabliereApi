@@ -13,13 +13,11 @@ WORKDIR /app
 
 COPY *.sln  .
 COPY ErabliereModel/*.csproj ./ErabliereModel/
-COPY GenerateurDeDonnées/*.csproj ./GenerateurDeDonnées/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
 
 RUN dotnet restore
 
 COPY ErabliereModel/. ./ErabliereModel/
-COPY GenerateurDeDonnées/ ./GenerateurDeDonnées/
 COPY ErabliereApi/. ./ErabliereApi/
 
 WORKDIR /app/ErabliereApi

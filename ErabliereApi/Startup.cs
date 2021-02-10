@@ -5,7 +5,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using AutoMapper;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees;
 

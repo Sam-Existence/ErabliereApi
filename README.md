@@ -15,7 +15,6 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- GenerateurDeDonnées : Application console pour générer des données de test (bientot délester, génération des données par script python)
 - GenerateurDonneePython : Script python executer sur un raspberry pi pour simulé l'environnement
 
 ## Modèles de données
