@@ -7,18 +7,19 @@ import { environment } from 'src/environments/environment';
     selector: 'donnees-panel',
     template: `
         <div class="border-top">
-          <h3>Données</h3>
-          <h6>Id érablière {{ erabliere.id }}</h6>
           <div class="row">
-            <div class="col-4">
-              <temperature-panel [timeaxes]="timeaxes" [temperature]="temperature"></temperature-panel>
+            <div class="col-md-6">
+              <graph-panel [titre]="titre_temperature" [timeaxes]="timeaxes" [datasets]="temperature"></graph-panel>
             </div>
-            <div class="col-4">
-              <vaccium-panel [timeaxes]="timeaxes" [vaccium]="vaccium"></vaccium-panel>
+            <div class="col-md-6">
+              <graph-panel [titre]="titre_vaccium" [timeaxes]="timeaxes" [datasets]="vaccium"></graph-panel>
             </div>
-            <div class="col-4">
-              <niveaubassin-panel [timeaxes]="timeaxes" [niveaubassin]="niveaubassin"></niveaubassin-panel>
+            <div class="col-md-6">
+              <graph-panel [titre]="titre_niveaubassin"  [timeaxes]="timeaxes" [datasets]="niveaubassin"></graph-panel>
             </div>
+            <div class="col-md-6">
+              <graph-panel [titre]="titre_dompeux" [timeaxes]="timeaxes_dompeux" [datasets]="dompeux"></graph-panel>
+            <div>
           </div>
         </div>
     `
@@ -27,18 +28,38 @@ export class DonneesComponent implements OnInit {
       @Input() erabliere:any
 
       timeaxes: Label[] = [];
+      timeaxes_dompeux: Label[] = [];
 
+      titre_temperature = "Temperature"
       temperature: ChartDataSets[] = [];
+      titre_vaccium = "Vaccium"
       vaccium: ChartDataSets[] = [];
+      titre_niveaubassin = "Niveau Bassin"
       niveaubassin: ChartDataSets[] = [];
+      titre_dompeux = "Dompeux"
+      dompeux: ChartDataSets[] = [];
 
       constructor(){ }
 
       ngOnInit() {
         this.doHttpCall();
+        this.doHttpCallDompeux();
         setInterval(() => {
           this.doHttpCall();
+          this.doHttpCallDompeux();
         }, 1000 * 60);
+      }
+
+      doHttpCallDompeux() {
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux")
+                .then(e => e.json())
+                .then(e => {
+                    this.dompeux = [
+                        { data: e.map((ee: { id: number; }) => ee.id), label: 'Dompeux' }
+                    ];
+
+                    this.timeaxes_dompeux = e.map((ee: { t: string;}) => ee.t);
+                });
       }
 
       doHttpCall() {

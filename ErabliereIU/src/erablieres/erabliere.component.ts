@@ -2,10 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
 @Component({
-    selector: 'menu-erabliere',
+    selector: 'erablieres',
     template: `
     <div class="row">
-        <div class="col-2 border-right">
+        <div class="col-lg border-right">
             <div class="list-group">
                 <a *ngFor="let erabliere of erablieres"
                    href="#"
@@ -15,7 +15,6 @@ import { environment } from 'src/environments/environment';
         </div>
         <div class="col-10" *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
             <donnees-panel [erabliere]="erabliere"></donnees-panel>
-            <dompeux-panel [erabliere]="erabliere"></dompeux-panel>
             <barils-panel  [erabliere]="erabliere"></barils-panel>
         </div>
     </div>

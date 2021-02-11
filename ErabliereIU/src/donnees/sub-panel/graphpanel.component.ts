@@ -4,15 +4,14 @@ import { Color, Label } from 'ng2-charts';
 import { environment } from 'src/environments/environment';
 
 @Component({
-    selector: 'dompeux-panel',
+    selector: 'graph-panel',
     template: `
         <div class="border-top">
-            <h3>Dompeux</h3>
-            <h6>Id érablière {{ erabliere.id }}</h6>
+            <h3>{{ titre }}</h3>
             <div class="chart-wrapper">
                 <canvas baseChart 
-                    [datasets]="lineChartData" 
-                    [labels]="lineChartLabels" 
+                    [datasets]="datasets" 
+                    [labels]="timeaxes" 
                     [options]="lineChartOptions"
                     [colors]="lineChartColors" 
                     [legend]="lineChartLegend" 
@@ -23,13 +22,22 @@ import { environment } from 'src/environments/environment';
         </div>
     `
 })
-export class DompeuxComponent implements OnInit {
-    lineChartData: ChartDataSets[] = [];
+export class GraphPannelComponent {
+    @Input() datasets: ChartDataSets[] = [];
 
-    lineChartLabels: Label[] = [];
+    @Input() timeaxes: Label[] = [];
 
     lineChartOptions = {
         responsive: true,
+        scales: {
+            xAxes: [{
+            type: 'time',
+            ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 7
+                }
+            }]
+        }
     };
 
     lineChartColors: Color[] = [
@@ -43,19 +51,7 @@ export class DompeuxComponent implements OnInit {
     lineChartPlugins = [];
     lineChartType = 'line' as ChartType;
 
-    @Input() erabliere:any
+    @Input() titre:string = "";
 
     constructor() { }
-
-    ngOnInit() {
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux")
-            .then(e => e.json())
-            .then(e => {
-                this.lineChartData = [
-                    { data: e.map((ee: { id: number; }) => ee.id), label: 'Dompeux' }
-                ];
-
-                this.lineChartLabels = e.map((ee: { t: string;}) => ee.t);
-            });
-    }
 }
