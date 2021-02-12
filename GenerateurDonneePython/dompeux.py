@@ -2,16 +2,22 @@ import requests
 import datetime
 import math
 import random
+import system
 
-url = "https://erabliereapi.freddycoder.com/erablieres/0/Donnees"
+nbErabliere = 1
+if len(sys.argv) > 1:
+  nbErabliere = int(sys.argv[1])
+
+urlBase = "https://erabliereapi.freddycoder.com"
+if len(sys.argv) > 2:
+  urlBase = sys.argv[2]
+
+url = urlBase + "/erablieres/0/Donnees"
 
 def obtenirDompeuxPlusRecent(id):
-  reponse = requests.get("https://erabliereapi.freddycoder.com/erablieres/" + str(id) + "/Dompeux?q=1&o=c")
+  reponse = requests.get(url + "/erablieres/" + str(id) + "/Dompeux?q=1&o=c")
   print("Dernier dompeux erabliere", id, reponse.text)
 
-obtenirDompeuxPlusRecent(0)
-
-#h = {"Content-Type":"Application/json"}
-#dompeux = {'t': datetime.datetime.now(), 'idErabliere': 0}
-#r = requests.post(url, json = dompeux, headers = h, timeout=5)
-#print(r.text)
+for i in range(nbErabliere):
+  obtenirDompeuxPlusRecent(i)
+  
