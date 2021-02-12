@@ -57,6 +57,19 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
+            var premiereDonnee = query.FirstOrDefault();
+
+            if (premiereDonnee != null && dd != null)
+            {
+                if (premiereDonnee.D > dd.Value &&
+                    premiereDonnee.Iddp != null &&
+                    premiereDonnee.PI != null &&
+                    premiereDonnee.D - TimeSpan.FromSeconds(premiereDonnee.Nboc * premiereDonnee.PI.Value) < dd.Value)
+                {
+                    premiereDonnee.D = dd;
+                }
+            }
+
             return query;
         }
 

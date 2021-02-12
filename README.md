@@ -38,9 +38,11 @@ Ce projet est utilisable de différente manière :
 ## TODO
 
 - Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.).
-- Développer les interfaces graphique pour afficher des graphiques et effectuer l'entré de données manuel.
+- Ajouter passer des filtres de date lors des requêtes de données pour les graphiques.
+- Ajouter liste déroulante choix date de filtre pour les requête de données des graphiques.
 - Générer des données de test plus réaliste pour le développement
-- Générer un artéfact sous forme de fichier zip contenant l'application IU. (Le client ne voudra pas nécessairement installer node.js et executer des ligne de commande.)
+- Créer le section des alertes
+- Créer la section des caméra
 
 ## Documentation additionnelle
 

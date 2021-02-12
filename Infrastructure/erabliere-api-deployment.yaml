@@ -31,3 +31,5 @@ spec:
           value: "*"
         - name: CORS_METHODS
           value: "*"
+        - name: SWAGGER_SERVER_URL
+          value: "https://erabliereapi.freddycoder.com"

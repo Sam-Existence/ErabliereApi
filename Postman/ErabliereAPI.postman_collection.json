@@ -1,0 +1,68 @@
+{
+	"info": {
+		"_postman_id": "30bf5459-1a5f-445f-8e7c-c16c1a405b63",
+		"name": "ErablièreAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Erabliere A",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\": \"Érablière A\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://erabliereapi.freddycoder.com/erablieres",
+					"protocol": "https",
+					"host": [
+						"erabliereapi",
+						"freddycoder",
+						"com"
+					],
+					"path": [
+						"erablieres"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Erabliere B",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"nom\": \"Érablière B\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://erabliereapi.freddycoder.com/erablieres",
+					"protocol": "https",
+					"host": [
+						"erabliereapi",
+						"freddycoder",
+						"com"
+					],
+					"path": [
+						"erablieres"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

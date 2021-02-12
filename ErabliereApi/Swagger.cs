@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -53,9 +54,23 @@ namespace ErabliereApi
         /// Utiliser le middleware swagger
         /// </summary>
         /// <param name="app"></param>
-        /// <returns></returns>
         public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app)
         {
+            app.UseSwagger(c =>
+            {
+                c.PreSerializeFilters.Add((swagger, httpReq) =>
+                {
+                    var serverUrl = Environment.GetEnvironmentVariable("SWAGGER_SERVER_URL");
+
+                    if (string.IsNullOrWhiteSpace(serverUrl)) 
+                    {
+                        serverUrl = $"{httpReq.Scheme}://{httpReq.Host.Value}";
+                    }
+
+                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
+                });
+            });
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "ÉrablièreAPI V1");

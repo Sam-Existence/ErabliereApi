@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: "https://erabliereapi.freddycoder.com"
+  apiUrl: "http://localhost:5000"
 };
 
 /*

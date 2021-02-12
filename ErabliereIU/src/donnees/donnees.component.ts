@@ -9,16 +9,30 @@ import { environment } from 'src/environments/environment';
         <div class="border-top">
           <div class="row">
             <div class="col-md-6">
-              <graph-panel [titre]="titre_temperature" [timeaxes]="timeaxes" [datasets]="temperature"></graph-panel>
+              <graph-panel [titre]="titre_temperature" 
+                           [valeurActuel]="temperatureValueActuel"
+                           [symbole]="temperatureSymbole"
+                           [timeaxes]="timeaxes" 
+                           [datasets]="temperature"></graph-panel>
             </div>
             <div class="col-md-6">
-              <graph-panel [titre]="titre_vaccium" [timeaxes]="timeaxes" [datasets]="vaccium"></graph-panel>
+              <graph-panel [titre]="titre_vaccium" 
+                           [valeurActuel]="vacciumValueActuel"
+                           [symbole]="vacciumSymbole"
+                           [timeaxes]="timeaxes" 
+                           [datasets]="vaccium"></graph-panel>
             </div>
             <div class="col-md-6">
-              <graph-panel [titre]="titre_niveaubassin"  [timeaxes]="timeaxes" [datasets]="niveaubassin"></graph-panel>
+              <graph-panel [titre]="titre_niveaubassin" 
+                           [valeurActuel]="niveauBassinValueActuel"
+                           [symbole]="niveauBassinSymbole"
+                           [timeaxes]="timeaxes" 
+                           [datasets]="niveaubassin"></graph-panel>
             </div>
             <div class="col-md-6">
-              <graph-panel [titre]="titre_dompeux" [timeaxes]="timeaxes_dompeux" [datasets]="dompeux"></graph-panel>
+              <graph-panel [titre]="titre_dompeux" 
+                           [timeaxes]="timeaxes_dompeux" 
+                           [datasets]="dompeux"></graph-panel>
             <div>
           </div>
         </div>
@@ -26,16 +40,23 @@ import { environment } from 'src/environments/environment';
 })
 export class DonneesComponent implements OnInit {
       @Input() erabliere:any
+      @Input() dureeDonneesRequete:any
 
       timeaxes: Label[] = [];
       timeaxes_dompeux: Label[] = [];
 
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = [];
+      temperatureValueActuel:string = "";
+      temperatureSymbole:string = "°c";
       titre_vaccium = "Vaccium"
       vaccium: ChartDataSets[] = [];
-      titre_niveaubassin = "Niveau Bassin"
+      vacciumValueActuel:string = "";
+      vacciumSymbole:string = "psi";
+      titre_niveaubassin = "Niveau Bassin";
       niveaubassin: ChartDataSets[] = [];
+      niveauBassinValueActuel:string = "";
+      niveauBassinSymbole:string = "%";
       titre_dompeux = "Dompeux"
       dompeux: ChartDataSets[] = [];
 
@@ -63,7 +84,10 @@ export class DonneesComponent implements OnInit {
       }
 
       doHttpCall() {
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees")
+        let debutFiltre = this.obtenirDebutFiltre().toUTCString();
+        let finFiltre = new Date().toUTCString()
+
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre)
           .then(e => e.json())
           .then(e => {
             this.temperature = [
@@ -76,6 +100,18 @@ export class DonneesComponent implements OnInit {
               { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' }
             ];
             this.timeaxes = e.map((ee: { d: string;}) => ee.d);
+
+            if (e.length > 0) {
+              this.temperatureValueActuel = e[e.length - 1].t;
+              this.vacciumValueActuel = e[e.length - 1].v;
+              this.niveauBassinValueActuel = e[e.length - 1].nb;
+            }
           });
+      }
+
+      obtenirDebutFiltre() : Date {
+        var twelve_hour = 1000 * 60 * 60 * 12
+
+        return new Date(Date.now() - twelve_hour);
       }
 }
