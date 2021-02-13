@@ -31,7 +31,7 @@ urlBase = "https://erabliereapi.freddycoder.com"
 if len(sys.argv) > 2:
   urlBase = sys.argv[2]
 
-for id in range(0, nbErabliere):
+for id in range(1, nbErabliere + 1):
   print("Érablière :", id)
   url = urlBase + "/erablieres/" + str(id) + "/Donnees"
   t = temperature(datetime.datetime.now()) + id
