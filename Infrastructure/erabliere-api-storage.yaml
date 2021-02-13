@@ -1,0 +1,23 @@
+kind: StorageClass
+apiVersion: storage.k8s.io/vbeta1
+metadata:
+  name: erabliere-api-storage
+  namespace: erabliere-api
+provisionner: kubernetes.io/azure-disk
+parameters:
+  storageaccounttype: Standard_LRS
+  king: Managed
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: erabliere-api-data
+  annotations:
+    volume.beta.kubernetes.io/storage-class: erabliere-api-storage
+  namespace: erabliere-api
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
