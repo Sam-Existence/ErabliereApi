@@ -32,7 +32,7 @@ spec:
               key: SA_PASSWORD
         volumeMounts:
         - name: mssqldb
-          mounthPath: /var/opt/mssql
+          mountPath: /var/opt/mssql
       volumes:
       - name: mssqldb
         persistentVolumeClaim:
