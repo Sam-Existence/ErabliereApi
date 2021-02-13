@@ -70,6 +70,8 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 > Image utilisé Ubuntu server 20.04 32 bits
 
 ```bash
+cd ErabliereIU
+npm install
 ng build --prod
 sudo rm /var/www/html/*
 sudo cp dist/ErabliereIU/* /var/www/html/
