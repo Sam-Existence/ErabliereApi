@@ -34,8 +34,8 @@ spec:
         - name: SWAGGER_SERVER_URL
           value: "https://erabliereapi.freddycoder.com"
         - name: USE_SQL
-          value: "false"
+          value: "true"
         - name: SQL_CONNEXION_STRING
           value: "Data Source=erablieredb;Initial Catalog=ErabliereAPI;User ID=SA;Password=#{DATABASE_PASSWORD}"
         - name: SQL_USE_STARTUP_MIGRATION
-          value: "false"
+          value: "true"
