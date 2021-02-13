@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
         </div>
         <alerte-page class="col-10" [hidden]="pageSelectionnee !== 1"></alerte-page>
         <camera-page class="col-10" [hidden]="pageSelectionnee !== 2"></camera-page>
+        <documentation class="col-10" [hidden]="pageSelectionnee !== 4"></documentation>
         <apropos class="col-10" [hidden]="pageSelectionnee !== 3"></apropos>
     </div>
     `

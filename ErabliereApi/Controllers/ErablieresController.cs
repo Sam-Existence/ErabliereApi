@@ -4,6 +4,7 @@ using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
 {
@@ -45,13 +46,13 @@ namespace ErabliereApi.Controllers
         /// <response code="200">L'érablière a été correctement ajouté</response>
         /// <response code="400">Le nom de l'érablière est null ou vide ou un érablière avec le nom reçu existe déjà.</response>
         [HttpPost]
-        public IActionResult Ajouter(PostErabliere erablieres)
+        public async Task<IActionResult> Ajouter(PostErabliere erablieres)
         {
             if (string.IsNullOrWhiteSpace(erablieres.Nom))
             {
                 return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
             }
-            if (_depot.Contient(e => e.Nom == erablieres.Nom))
+            if (await _depot.Contient(e => e.Nom == erablieres.Nom))
             {
                 return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
             }

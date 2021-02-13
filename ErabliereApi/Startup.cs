@@ -7,6 +7,8 @@ using Microsoft.Extensions.Hosting;
 using System;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees;
+using ErabliereApi.Depot.Sql;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi
 {
@@ -49,14 +51,34 @@ namespace ErabliereApi
                 config.CreateMap<PostDonnee, Donnee>();
             });
 
-            services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
+            if (string.Equals(Environment.GetEnvironmentVariable("USE_SQL"), bool.FalseString, StringComparison.OrdinalIgnoreCase))
+            {
+                services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
+            }
+            else
+            {
+                services.AddTransient(typeof(Depot<>), typeof(DepotDbContext<>));
+
+                services.AddDbContext<ErabliereDbContext>(options =>
+                {
+                    options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+                });
+            }
         }
 
         /// <summary>
         /// Configure
         /// </summary>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            if (string.Equals(Environment.GetEnvironmentVariable("USE_SQL"), bool.TrueString, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(Environment.GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                var database = serviceProvider.GetRequiredService<ErabliereDbContext>();
+
+                database.Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -78,7 +100,7 @@ namespace ErabliereApi
                     option.WithOrigins(Environment.GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
                 });
             }
-            
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

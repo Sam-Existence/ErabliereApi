@@ -10,6 +10,7 @@ import { ChartsModule } from 'ng2-charts';
 import { AlerteComponent } from 'src/alerte/alerte.component';
 import { CameraComponent } from 'src/camera/camera.component';
 import { AProposComponent } from 'src/apropos/apropos.component';
+import { DocumentationComponent } from 'src/documentation/documentation.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { AProposComponent } from 'src/apropos/apropos.component';
     BarilsComponent,
     AlerteComponent,
     CameraComponent,
-    AProposComponent
+    AProposComponent,
+    DocumentationComponent
   ],
   imports: [
     BrowserModule,

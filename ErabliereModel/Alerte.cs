@@ -7,7 +7,11 @@ namespace ErabliereApi.Donnees
     {
         public int? Id { get; set; }
         public int? IdErabliere { get; set; }
-        public List<string> EnvoyerA { get; set; } = new List<string>();
+
+        /// <summary>
+        /// Une liste d'adresse email séparer par des ';'
+        /// </summary>
+        public string? EnvoyerA { get; set; }
         public string? TemperatureThresholdLow { get; set; }
         public string? TemperatureThresholdHight { get; set; }
         public string? VacciumThresholdLow { get; set; }

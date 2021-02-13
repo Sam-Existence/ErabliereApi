@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Depot
 {
@@ -9,7 +11,7 @@ namespace ErabliereApi.Depot
     /// Implémentation en mémoire du dépôt de données
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class DepotMemoire<T> : Depot<T> where T : IIdentifiable<int?, T>
+    public class DepotMemoire<T> : Depot<T> where T : class, IIdentifiable<int?, T>
     {
         private readonly SortedDictionary<int, T> _liste;
         private readonly Random _random;
@@ -28,7 +30,7 @@ namespace ErabliereApi.Depot
         {
             if (donnee.Id == null)
             {
-                donnee.Id = _liste.Count;
+                donnee.Id = 1 + _liste.Count;
 
                 while (_liste.ContainsKey(donnee.Id.Value))
                 {
@@ -44,15 +46,15 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />  
-        public bool Contient(object id)
+        public Task<bool> Contient(object id)
         {
-            return _liste.ContainsKey((int)id);
+            return Task.FromResult(_liste.ContainsKey((int)id));
         }
 
         /// <inheritdoc />  
-        public bool Contient(Func<T, bool> predicat)
+        public Task<bool> Contient(Expression<Func<T, bool>> predicat)
         {
-            return _liste.Values.Any(predicat);
+            return Task.FromResult(_liste.Values.Any(predicat.Compile()));
         }
 
         /// <inheritdoc />  

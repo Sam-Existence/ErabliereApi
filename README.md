@@ -33,7 +33,12 @@ Ce projet est utilisable de différente manière :
 2. Utilisation avec Docker
 3. Utilisation avec Kubernetes
 
-> Présentement, l'utilisation d'un dépôt de données en mémoire avec swagger est la seule option possible. Une certaine visualisation est en place avec le projet angular dans le dossier ErabliereIU.
+## Persistance des données
+
+Deux mode sont possible. 
+
+1. Mode en mémoire (aucune persistance, avec swagger il est possible de télécharger les données sous format json et de les stocker manuellement)
+2. Sql avec EntityFramework (Voir le readme dans '.ErabliereApi/Depot/Sql/Readme.md')
 
 ## TODO
 

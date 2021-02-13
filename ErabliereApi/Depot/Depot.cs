@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Depot
 {
@@ -14,14 +16,14 @@ namespace ErabliereApi.Depot
         /// </summary>
         /// <param name="id">L'id a vérifier</param>
         /// <returns></returns>
-        bool Contient(object id);
+        Task<bool> Contient(object id);
 
         /// <summary>
         /// Indique s'il existe une donnée selon le predicat
         /// </summary>
         /// <param name="predicat"></param>
         /// <returns></returns>
-        bool Contient(Func<T, bool> predicat);
+        Task<bool> Contient(Expression<Func<T, bool>> predicat);
 
         /// <summary>
         /// Lister les données

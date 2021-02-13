@@ -11,7 +11,10 @@
         "USE_CORS": "True",
         "CORS_HEADERS": "*",
         "CORS_METHODS": "*",
-        "CORS_ORIGINS": "*"
+        "CORS_ORIGINS": "*",
+        "USE_SQL": "true",
+        "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
+        "SQL_USE_STARTUP_MIGRATION": "true"
       }
     }
   }

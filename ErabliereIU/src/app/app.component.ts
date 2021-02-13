@@ -17,6 +17,9 @@ import { Component } from '@angular/core';
             <a class="nav-link" [class.active]="pageSelectionnee === 2" (click)="selectionnerPage(2)" role="button">Camera</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
           </li>
         </ul>
