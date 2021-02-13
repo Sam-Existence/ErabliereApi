@@ -36,6 +36,6 @@ spec:
         - name: USE_SQL
           value: "false"
         - name: SQL_CONNEXION_STRING
-          value: ""
+          value: "Data Source=erablieredb;Initial Catalog=ErabliereAPI;User ID=SA;Password=#{DATABASE_PASSWORD}"
         - name: SQL_USE_STARTUP_MIGRATION
           value: "false"

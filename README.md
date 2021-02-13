@@ -38,16 +38,15 @@ Ce projet est utilisable de différente manière :
 Deux mode sont possible. 
 
 1. Mode en mémoire (aucune persistance, avec swagger il est possible de télécharger les données sous format json et de les stocker manuellement)
-2. Sql avec EntityFramework (Voir le readme dans '.ErabliereApi/Depot/Sql/Readme.md')
+2. Sql avec EntityFramework ( Voir le readme dans ./ErabliereApi/Depot/Sql/Readme.md )
 
 ## TODO
 
-- Ajout d'un dépôt de données persistant. (Fichier, MongoBd, MsSql, etc.).
-- Ajouter passer des filtres de date lors des requêtes de données pour les graphiques.
-- Ajouter liste déroulante choix date de filtre pour les requête de données des graphiques.
 - Générer des données de test plus réaliste pour le développement
 - Créer le section des alertes
 - Créer la section des caméra
+
+> Voir la section projet dans github.
 
 ## Documentation additionnelle
 

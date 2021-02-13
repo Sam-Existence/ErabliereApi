@@ -9,6 +9,7 @@ on:
 env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
+  DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
 
 jobs:
   build:
