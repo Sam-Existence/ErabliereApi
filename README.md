@@ -38,7 +38,7 @@ Ce projet est utilisable de différente manière :
 Deux mode sont possible. 
 
 1. Mode en mémoire (aucune persistance, avec swagger il est possible de télécharger les données sous format json et de les stocker manuellement)
-2. Sql avec EntityFramework ( Voir le readme dans ./ErabliereApi/Depot/Sql/Readme.md )
+2. Sql avec EntityFramework ( Voir le readme dans https://github.com/freddycoder/ErabliereApi/tree/master/ErabliereApi/Depot/Sql )
 
 ## TODO
 
