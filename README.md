@@ -65,7 +65,7 @@ crontab -e
 kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabliere | grep -i -v 'param1|param2'
 ```
 
-### Déployer l'interface sur une installation apache2 d'un raspnerry pi
+### Déployer l'interface sur une installation apache2 d'un raspberry pi
 
 > Image utilisé Ubuntu server 20.04 32 bits
 
