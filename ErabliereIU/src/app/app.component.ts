@@ -8,23 +8,28 @@ import { Component } from '@angular/core';
       <div class="navbar-nav-scroll">
         <ul class="navbar-nav bd-navbar-nav flex-row">
           <li class="nav-item">
-            <a class="nav-link active">Graphique</a>
+            <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link">Alerte</a>
+            <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link">Camera</a>
+            <a class="nav-link" [class.active]="pageSelectionnee === 2" (click)="selectionnerPage(2)" role="button">Camera</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link">À propos</a>
+            <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
           </li>
         </ul>
       </div>
     </header>
-    <erablieres></erablieres>
+    <erablieres [pageSelectionnee]="pageSelectionnee"></erablieres>
   `
 })
 export class AppComponent {
   title = 'Erabliere IU';
+  pageSelectionnee = 0;
+
+  selectionnerPage(i:number) {
+    this.pageSelectionnee = i;
+  }
 }

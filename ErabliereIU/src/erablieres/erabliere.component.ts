@@ -13,17 +13,24 @@ import { environment } from 'src/environments/environment';
                    (click)="handleErabliereLiClick(erabliere.id)">{{erabliere.nom}}</a>
             </div>
         </div>
-        <div class="col-10" *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
+        <div class="col-10" [hidden]="pageSelectionnee !== 0">
+            <div *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
             <donnees-panel [erabliere]="erabliere"></donnees-panel>
             <barils-panel  [erabliere]="erabliere"></barils-panel>
         </div>
+        </div>
+        <alerte-page class="col-10" [hidden]="pageSelectionnee !== 1"></alerte-page>
+        <camera-page class="col-10" [hidden]="pageSelectionnee !== 2"></camera-page>
+        <apropos class="col-10" [hidden]="pageSelectionnee !== 3"></apropos>
     </div>
     `
 })
 export class ErabliereComponent implements OnInit {
     erablieres:any;
 
-    erabliereSelectionnee?:number
+    erabliereSelectionnee?:number;
+
+    @Input() pageSelectionnee?:number = 0;
 
     constructor(){
         this.erabliereSelectionnee = undefined;

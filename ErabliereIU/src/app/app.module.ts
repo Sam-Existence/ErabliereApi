@@ -7,6 +7,9 @@ import { DonneesComponent } from 'src/donnees/donnees.component';
 import { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';
 import { BarilsComponent } from 'src/barils/barils.component';
 import { ChartsModule } from 'ng2-charts';
+import { AlerteComponent } from 'src/alerte/alerte.component';
+import { CameraComponent } from 'src/camera/camera.component';
+import { AProposComponent } from 'src/apropos/apropos.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +17,10 @@ import { ChartsModule } from 'ng2-charts';
     ErabliereComponent,
     DonneesComponent,
     GraphPannelComponent,
-    BarilsComponent
+    BarilsComponent,
+    AlerteComponent,
+    CameraComponent,
+    AProposComponent
   ],
   imports: [
     BrowserModule,
