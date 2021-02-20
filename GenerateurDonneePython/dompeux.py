@@ -1,23 +1,50 @@
-import requests
 import datetime
 import math
-import random
-import system
+import sys
+import json
+from os import path
 
-nbErabliere = 1
-if len(sys.argv) > 1:
-  nbErabliere = int(sys.argv[1])
+# x = nb heure depuis dernière gelé
+def ndg(x):
+  return - 0.002 * (x - 22)**2 + 1
 
-urlBase = "https://erabliereapi.freddycoder.com"
-if len(sys.argv) > 2:
-  urlBase = sys.argv[2]
+# x = nb heure depuis dernière gelé
+# t = temperature
+# v = vaccium
+def fdompeux(x, t, v):
+  return - (ndg(x) * t * v)**2 + 5
 
-url = urlBase + "/erablieres/0/Donnees"
+def relu(x):
+  if x > 0:
+    return x
+  else:
+    return 0
 
-def obtenirDompeuxPlusRecent(id):
-  reponse = requests.get(url + "/erablieres/" + str(id) + "/Dompeux?q=1&o=c")
-  print("Dernier dompeux erabliere", id, reponse.text)
+# id = id de l'érablière
+def obtenirTempsDepuisDerniereGeler(id):
+  chemin = "/tmp/erabliere/donneeerabliere_" + str(id) + ".json"
+  if path.exists(chemin):
+    with open(chemin, 'r') as f:
+      data = json.load(f)
+      return data.date
+  else:
+    return 0
 
-for i in range(nbErabliere):
-  obtenirDompeuxPlusRecent(i)
-  
+# id = id de l'érablière
+# data = un objet avec comme propriété date
+def sauvegarderTempsDepuisDerniereGeler(id, data):
+  chemin = "/tmp/erabliere/donneeerabliere_" + str(id) + ".json"
+  if path.exists(chemin):
+    with open(chemin, 'w') as f:
+      json.dump(data, f, sort_keys=True)
+
+# id = id de l'érablière
+# d  = data
+# t  = temperature
+# v  = vaccium
+def calculerProgressionDompeux(id, d, t, v)
+  x = obtenirTempsDepuisDerniereGeler(id)
+  y = relu(fdompeux(x, t, v))
+  data = {}
+  data['accumulation'] += y
+  sauvegarderTempsDepuisDerniereGeler(id, data)
