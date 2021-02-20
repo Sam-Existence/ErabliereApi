@@ -35,7 +35,7 @@ if len(sys.argv) > 2:
 for id in range(1, nbErabliere + 1):
   print("Érablière :", id)
   url = urlBase + "/erablieres/" + str(id) + "/Donnees"
-  t = temperature(datetime.datetime.now()) + id
+  t = temperature(datetime.datetime.utcnow()) + (id*10)
   vaccium = 0
   print("La temperature est", t/10)
   if t >= -2 + id:
