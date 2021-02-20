@@ -3,21 +3,22 @@ import datetime
 import math
 import random
 import sys
+import json
 
 def temperature(t):
   mois = t.strftime('%m')
   m = int(mois)
   doy = t.timetuple().tm_yday
   hod = t.timetuple()[3]
-  return int((12 * math.sin((doy-105)*math.pi/182.5)) + (5*math.sin(doy*4)) + (5 * math.sin((hod - 7) * 3.14159 / 12)))
+  return int((12 * math.sin((doy-105)*math.pi/182.5)) + (5*math.sin(doy*4)) + (5 * math.sin((hod - 7) * 3.14159 / 12)) * 10)
 
 def getVaccium(id, t):
   vaccium = 0
   if t >= -1 - id:
-    vaccium = 24
+    vaccium = 24.1
   if t > 3:
-    vaccium = + 1
-  return vaccium
+    vaccium += 1
+  return int(vaccium * 10)
 
 def getNiveauBassin():
   niveauBassin = 0
@@ -36,7 +37,7 @@ for id in range(1, nbErabliere + 1):
   url = urlBase + "/erablieres/" + str(id) + "/Donnees"
   t = temperature(datetime.datetime.now()) + id
   vaccium = 0
-  print("La temperature est", t)
+  print("La temperature est", t/10)
   if t >= -2 + id:
     vaccium = getVaccium(id, t)
   print("Le vaccium est", vaccium)
