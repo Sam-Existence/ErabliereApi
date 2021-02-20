@@ -52,7 +52,7 @@ export class DonneesComponent implements OnInit {
       titre_vaccium = "Vaccium"
       vaccium: ChartDataSets[] = [];
       vacciumValueActuel:string = "";
-      vacciumSymbole:string = "psi";
+      vacciumSymbole:string = "HG";
       titre_niveaubassin = "Niveau Bassin";
       niveaubassin: ChartDataSets[] = [];
       niveauBassinValueActuel:string = "";
@@ -91,19 +91,20 @@ export class DonneesComponent implements OnInit {
           .then(e => e.json())
           .then(e => {
             this.temperature = [
-              { data: e.map((ee: { t: number; }) => ee.t), label: 'Temperature' }
+              { data: e.map((ee: { t: number; }) => ee.t / 10), label: 'Temperature' }
             ];
             this.vaccium = [
-              { data: e.map((ee: { v: number; }) => ee.v), label: 'Vaccium' }
+              { data: e.map((ee: { v: number; }) => ee.v / 10), label: 'Vaccium' }
             ];
             this.niveaubassin = [
               { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' }
             ];
+
             this.timeaxes = e.map((ee: { d: string;}) => ee.d);
 
             if (e.length > 0) {
-              this.temperatureValueActuel = e[e.length - 1].t;
-              this.vacciumValueActuel = e[e.length - 1].v;
+              this.temperatureValueActuel = (e[e.length - 1].t / 10).toFixed(1);
+              this.vacciumValueActuel = (e[e.length - 1].v / 10).toFixed(1);
               this.niveauBassinValueActuel = e[e.length - 1].nb;
             }
           });

@@ -5,7 +5,7 @@ import { environment } from 'src/environments/environment';
     selector: 'erablieres',
     template: `
     <div class="row">
-        <div class="col-lg border-right">
+        <div class="col-lg border-right" [hidden]="cacheMenuErabliere">
             <div class="list-group">
                 <a *ngFor="let erabliere of erablieres"
                    href="#"
@@ -21,8 +21,12 @@ import { environment } from 'src/environments/environment';
         </div>
         <alerte-page class="col-10" [hidden]="pageSelectionnee !== 1"></alerte-page>
         <camera-page class="col-10" [hidden]="pageSelectionnee !== 2"></camera-page>
-        <documentation class="col-10" [hidden]="pageSelectionnee !== 4"></documentation>
-        <apropos class="col-10" [hidden]="pageSelectionnee !== 3"></apropos>
+        <div class="container">
+            <documentation class="col-12" [hidden]="pageSelectionnee !== 4"></documentation>
+        <div>
+        <div class="container">
+            <apropos class="col-12" [hidden]="pageSelectionnee !== 3"></apropos>
+        </div>
     </div>
     `
 })
@@ -30,6 +34,8 @@ export class ErabliereComponent implements OnInit {
     erablieres:any;
 
     erabliereSelectionnee?:number;
+
+    @Input() cacheMenuErabliere?:boolean;
 
     @Input() pageSelectionnee?:number = 0;
 

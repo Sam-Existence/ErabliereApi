@@ -17,17 +17,17 @@ namespace ErabliereApi.Donnees
         public DateTime? D { get; set; }
 
         /// <summary>
-        /// Temperature
+        /// Temperature en dixième de celcius
         /// </summary>
         public short? T { get; set; }
 
         /// <summary>
-        /// Niveau bassin
+        /// Niveau bassin en pourcentage
         /// </summary>
         public short? NB { get; set; }
 
         /// <summary>
-        /// Vaccium
+        /// Vaccium en dixième de HG
         /// </summary>
         public short? V { get; set; }
 

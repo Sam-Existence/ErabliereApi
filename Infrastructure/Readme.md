@@ -15,3 +15,7 @@ Pour un mode avec de la persistance des données :
 1. Storage.
 2. Database.
 3. Api.
+
+### Les configurations de la BD sont basé sur ce cours
+
+https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers
