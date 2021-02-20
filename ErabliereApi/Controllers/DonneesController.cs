@@ -37,11 +37,10 @@ namespace ErabliereApi.Controllers
         /// <param name="dd">Date de début</param>
         /// <param name="df">Date de début</param>
         /// <param name="q">Quantité de donnée demander</param>
-        /// <param name="t">Trie</param>
         /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
         /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<Donnee> Lister(int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
+        public IEnumerable<Donnee> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
             IEnumerable<Donnee> query = _depot.Lister(d => d.IdErabliere == id &&
                                                      (dd == null || d.D >= dd) &&
@@ -86,9 +85,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donneeRecu.IdErabliere}'.");
             }
 
-            if (donneeRecu.D == default || donneeRecu.D.Equals(DateTime.MinValue))
+            if (donneeRecu.D == default || donneeRecu.D.Equals(DateTimeOffset.MinValue))
             {
-                donneeRecu.D = DateTime.Now;
+                donneeRecu.D = DateTimeOffset.Now;
             }
 
             var donnePlusRecente = _depot.Lister(d => d.IdErabliere == id).LastOrDefault();

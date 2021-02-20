@@ -84,8 +84,8 @@ export class DonneesComponent implements OnInit {
       }
 
       doHttpCall() {
-        let debutFiltre = this.obtenirDebutFiltre().toUTCString();
-        let finFiltre = new Date().toUTCString()
+        let debutFiltre = this.obtenirDebutFiltre().toISOString();
+        let finFiltre = new Date().toISOString()
 
         fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre)
           .then(e => e.json())
@@ -100,7 +100,7 @@ export class DonneesComponent implements OnInit {
               { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' }
             ];
 
-            this.timeaxes = e.map((ee: { d: string;}) => ee.d);
+            this.timeaxes = e.map((ee: { d: string;}) => new Date(ee.d));
 
             if (e.length > 0) {
               this.temperatureValueActuel = (e[e.length - 1].t / 10).toFixed(1);
@@ -108,10 +108,10 @@ export class DonneesComponent implements OnInit {
               this.niveauBassinValueActuel = e[e.length - 1].nb;
             }
           });
-      }
+        }
 
       obtenirDebutFiltre() : Date {
-        var twelve_hour = 1000 * 60 * 60 * 12
+        var twelve_hour = 1000 * 60 * 60 * 12;
 
         return new Date(Date.now() - twelve_hour);
       }

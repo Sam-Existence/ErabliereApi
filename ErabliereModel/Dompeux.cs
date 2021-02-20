@@ -13,17 +13,17 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Date de l'occurence
         /// </summary>
-        public DateTime? T { get; set; }
+        public DateTimeOffset? T { get; set; }
 
         /// <summary>
         /// La date de début
         /// </summary>
-        public DateTime? DD { get; set; }
+        public DateTimeOffset? DD { get; set; }
 
         /// <summary>
         /// La date de début
         /// </summary>
-        public DateTime? DF { get; set; }
+        public DateTimeOffset? DF { get; set; }
 
         public int? IdErabliere { get; set; }
 
@@ -39,7 +39,7 @@ namespace ErabliereApi.Donnees
                 return other.T.HasValue ? -1 : 0;
             }
 
-            return T.Value.CompareTo(other.T);
+            return T.Value.CompareTo(other.T.Value);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Date de la transaction
         /// </summary>
-        public DateTime? D { get; set; }
+        public DateTimeOffset? D { get; set; }
 
         /// <summary>
         /// Temperature en dixième de celcius
@@ -66,7 +66,7 @@ namespace ErabliereApi.Donnees
                 return other.D.HasValue ? -1 : 0;
             }
 
-            return D.Value.CompareTo(other.D);
+            return D.Value.CompareTo(other.D.Value);
         }
 
         /// <summary>

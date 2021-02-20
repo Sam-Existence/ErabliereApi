@@ -7,7 +7,7 @@ namespace ErabliereApi.Donnees.Action.Post
         /// <summary>
         /// Date de la transaction
         /// </summary>
-        public DateTime? D { get; set; }
+        public DateTimeOffset? D { get; set; }
 
         /// <summary>
         /// Temperature

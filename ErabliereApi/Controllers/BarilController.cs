@@ -29,9 +29,11 @@ namespace ErabliereApi.Controllers
         /// Liste les barils
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="dd">Utiliser ce paramètre pour obtenir les barils avec ne date plus grande ou égal au paramètre passé.</param>
+        /// <param name="df">Utiliser ce paramètre pour obtenir les barils avec une date plus petite ou égal au paramètre passé.</param>
         /// <response code="200">Une liste de baril potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df)
+        public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df)
         {
             return depot.Lister(b => b.IdErabliere == id &&
                                ((dd != null) ? b.DF >= dd : true) &&

@@ -36,7 +36,7 @@ namespace ErabliereApi.Controllers
         /// <param name="o">L'ordre des dompeux par date d'occurence. "c" = croissant, "d" = décoissant. </param>
         /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTime? dd, DateTime? df, int? q, string? o = "c")
+        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
             var query = _depot.Lister(d => d.IdErabliere == id &&
                                      (dd == null || d.T >= dd) &&
@@ -46,7 +46,7 @@ namespace ErabliereApi.Controllers
             {
                 query = query.OrderByDescending(d => d);
             }
-
+            
             if (q.HasValue)
             {
                 query = query.Take(q.Value);

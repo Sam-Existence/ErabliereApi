@@ -13,7 +13,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Date ou le baril a été fermé
         /// </summary>
-        public DateTime? DF { get; set; }
+        public DateTimeOffset? DF { get; set; }
 
         public int? IdErabliere { get; set; }
 
@@ -40,7 +40,7 @@ namespace ErabliereApi.Donnees
                 return other.DF.HasValue ? -1 : 0;
             }
 
-            return DF.Value.CompareTo(other.DF);
+            return DF.Value.CompareTo(other.DF.Value);
         }
     }
 }

@@ -26,6 +26,7 @@ namespace ErabliereApi.Depot
             _context = context;
         }
 
+        /// <inheritdoc />
         public void Ajouter(T donnee)
         {
             _context.Set<T>().Add(donnee);
@@ -33,26 +34,31 @@ namespace ErabliereApi.Depot
             _context.SaveChanges();
         }
 
+        /// <inheritdoc />
         public Task<bool> Contient(object id)
         {
             return _context.Set<T>().AnyAsync(t => Equals(t.Id, id));
         }
 
+        /// <inheritdoc />
         public Task<bool> Contient(Expression<Func<T, bool>> predicat)
         {
             return _context.Set<T>().AnyAsync(predicat);
         }
 
+        /// <inheritdoc />
         public IEnumerable<T> Lister()
         {
             return _context.Set<T>();
         }
 
+        /// <inheritdoc />
         public IEnumerable<T> Lister(Func<T, bool> predicate)
         {
             return _context.Set<T>().Where(predicate);
         }
 
+        /// <inheritdoc />
         public void Modifier(T donnee)
         {
             _context.Set<T>().Update(donnee);
@@ -60,6 +66,7 @@ namespace ErabliereApi.Depot
             _context.SaveChanges();
         }
 
+        /// <inheritdoc />
         public void Supprimer(T donnee)
         {
             _context.Set<T>().Remove(donnee);

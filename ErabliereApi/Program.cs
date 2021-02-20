@@ -6,8 +6,15 @@ using System;
 
 namespace ErabliereApi
 {
+    /// <summary>
+    /// Classe Program, contient le point d'entré du programme.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Fonction main. le point d'entré du programme.
+        /// </summary>
+        /// <param name="args"></param>
         public static void Main(string[] args)
         {
             Log.Logger = new LoggerConfiguration()
