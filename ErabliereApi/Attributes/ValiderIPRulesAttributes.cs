@@ -13,6 +13,15 @@ namespace ErabliereApi.Attributes
     /// </summary>
     public class ValiderIPRulesAttribute : ActionFilterAttribute
     {
+        /// <summary>
+        /// Contructeur par initialisation.
+        /// </summary>
+        /// <param name="order">Ordre d'exectuion des action filter</param>
+        public ValiderIPRulesAttribute(int order = int.MinValue)
+        {
+            Order = order;
+        }
+
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -26,7 +35,7 @@ namespace ErabliereApi.Attributes
             {
                 if (string.Equals(erabliere.IpRule, context.HttpContext.Connection.RemoteIpAddress.ToString(), StringComparison.OrdinalIgnoreCase) == false)
                 {
-                    context.ModelState.AddModelError("IP", "L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière");
+                    context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {context.HttpContext.Connection.RemoteIpAddress}.");
                 }
             }
         }
