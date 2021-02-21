@@ -8,6 +8,7 @@ import threading
 import sys
 from datetime import datetime as dt
 from datetime import timedelta as td
+from datetime import timezone
 from time import sleep, time
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -46,7 +47,7 @@ def send_data():
     print('done.')
 
 def on_motion():
-    de = dt.utcnow()
+    de = dt.now(timezone.utc).astimezone()
     print(de.strftime("%H:%M:%S"), 'Motion detected!')
     if len(collect) > 0 and de - collect[len(collect)-1] > td(seconds=threshold_seconds):
         print("clear", len(collect), "data.")
