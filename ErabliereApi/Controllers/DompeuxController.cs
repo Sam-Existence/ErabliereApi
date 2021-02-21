@@ -1,6 +1,8 @@
-﻿using ErabliereApi.Attributes;
+﻿using AutoMapper;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -17,14 +19,17 @@ namespace ErabliereApi.Controllers
     public class DompeuxController : ControllerBase
     {
         private readonly Depot<Dompeux> _depot;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="dépôt">Le dépôt des dompeux</param>
-        public DompeuxController(Depot<Dompeux> dépôt)
+        /// <param name="depot">Le dépôt des dompeux</param>
+        /// <param name="mapper">Interface de mappagin entre les modèles</param>
+        public DompeuxController(Depot<Dompeux> depot, IMapper mapper)
         {
-            _depot = dépôt;
+            _depot = depot;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -37,7 +42,7 @@ namespace ErabliereApi.Controllers
         /// <param name="o">L'ordre des dompeux par date d'occurence. "c" = croissant, "d" = décoissant. </param>
         /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<Dompeux> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
+        public IEnumerable<GetDompeux> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
             var query = _depot.Lister(d => d.IdErabliere == id &&
                                      (dd == null || d.T >= dd) &&
@@ -53,29 +58,29 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            return query;
+            return query.Select(d => _mapper.Map<GetDompeux>(d));
         }
 
         /// <summary>
         /// Ajouter un dompeux
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="donnee"></param>
+        /// <param name="dompeux"></param>
         [HttpPost]
         [ValiderIPRules]
-        public IActionResult Ajouter([DefaultValue(0)] int id, Dompeux donnee)
+        public IActionResult Ajouter(int id, Dompeux dompeux)
         {
-            if (id != donnee.IdErabliere)
+            if (id != dompeux.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
 
-            if (donnee.T == default || donnee.T.Equals(DateTimeOffset.MinValue))
+            if (dompeux.T == default || dompeux.T.Equals(DateTimeOffset.MinValue))
             {
-                donnee.T = DateTimeOffset.Now;
+                dompeux.T = DateTimeOffset.Now;
             }
 
-            _depot.Ajouter(donnee);
+            _depot.Ajouter(dompeux);
 
             return Ok();
         }
@@ -87,7 +92,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut]
         [ValiderIPRules]
-        public IActionResult Modifier([DefaultValue(0)] int id, Dompeux donnee)
+        public IActionResult Modifier(int id, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {

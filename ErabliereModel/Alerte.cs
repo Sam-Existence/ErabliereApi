@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
@@ -11,12 +12,25 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Une liste d'adresse email séparer par des ';'
         /// </summary>
+        [MaxLength(50)]
         public string? EnvoyerA { get; set; }
+
+        [MaxLength(50)]
         public string? TemperatureThresholdLow { get; set; }
+
+        [MaxLength(50)]
         public string? TemperatureThresholdHight { get; set; }
+
+        [MaxLength(50)]
         public string? VacciumThresholdLow { get; set; }
+
+        [MaxLength(50)]
         public string? VacciumThresholdHight { get; set; }
+
+        [MaxLength(50)]
         public string? NiveauBassinThresholdLow { get; set; }
+
+        [MaxLength(50)]
         public string? NiveauBassinThresholdHight { get; set; }
 
         /// <inheritdoc />

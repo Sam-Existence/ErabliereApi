@@ -11,6 +11,7 @@ import { AlerteComponent } from 'src/alerte/alerte.component';
 import { CameraComponent } from 'src/camera/camera.component';
 import { AProposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
+import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { DocumentationComponent } from 'src/documentation/documentation.componen
     ErabliereComponent,
     DonneesComponent,
     GraphPannelComponent,
+    BarPannelComponent,
     BarilsComponent,
     AlerteComponent,
     CameraComponent,

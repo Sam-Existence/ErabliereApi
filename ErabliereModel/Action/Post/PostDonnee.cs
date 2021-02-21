@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Post
 {
@@ -27,6 +28,7 @@ namespace ErabliereApi.Donnees.Action.Post
         /// <summary>
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
+        [Required]
         public int? IdErabliere { get; set; }
     }
 }

@@ -24,7 +24,7 @@ namespace ErabliereApi.Attributes
             
             if (string.IsNullOrWhiteSpace(erabliere?.IpRule) == false && erabliere.IpRule != "-")
             {
-                if (string.Equals(erabliere.IpRule, context.HttpContext.Request.Headers[""], StringComparison.OrdinalIgnoreCase) == false)
+                if (string.Equals(erabliere.IpRule, context.HttpContext.Connection.RemoteIpAddress.ToString(), StringComparison.OrdinalIgnoreCase) == false)
                 {
                     context.ModelState.AddModelError("IP", "L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière");
                 }

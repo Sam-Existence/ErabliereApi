@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
@@ -20,11 +21,13 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Estimation de la qualité du sirop
         /// </summary>
+        [MaxLength(15)]
         public string? QE { get; set; }
 
         /// <summary>
         /// Qualité du sirop après classement
         /// </summary>
+        [MaxLength(15)]
         public string? Q { get; set; }
 
         /// <inheritdoc />

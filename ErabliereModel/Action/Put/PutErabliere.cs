@@ -16,11 +16,13 @@ namespace ErabliereApi.Donnees.Action.Put
         /// <summary>
         /// Le nouveau nom de l'érablière, si le nom est modifié
         /// </summary>
+        [MaxLength(50)]
         public string? Nom { get; set; }
 
         /// <summary>
         /// Spécifie les ip qui peuvent créer des opérations d'alimentation pour cette érablière.
         /// </summary>
+        [MaxLength(50)]
         public string? IpRules { get; set; }
     }
 }

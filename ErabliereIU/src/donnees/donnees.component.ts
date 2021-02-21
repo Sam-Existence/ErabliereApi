@@ -30,9 +30,10 @@ import { environment } from 'src/environments/environment';
                            [datasets]="niveaubassin"></graph-panel>
             </div>
             <div class="col-md-6">
-              <graph-panel [titre]="titre_dompeux" 
-                           [timeaxes]="timeaxes_dompeux" 
-                           [datasets]="dompeux"></graph-panel>
+              <bar-panel [titre]="titre_dompeux" 
+                         [timeaxes]="timeaxes_dompeux" 
+                         [datasets]="dompeux"
+                         [barChartType]="dompeux_line_type"></bar-panel>
             <div>
           </div>
         </div>
@@ -43,22 +44,27 @@ export class DonneesComponent implements OnInit {
       @Input() dureeDonneesRequete:any
 
       timeaxes: Label[] = [];
-      timeaxes_dompeux: Label[] = [];
+      timeaxes_dompeux: Label[] = []
 
       titre_temperature = "Temperature"
-      temperature: ChartDataSets[] = [];
-      temperatureValueActuel:string = "";
-      temperatureSymbole:string = "°c";
+      temperature: ChartDataSets[] = []
+      temperatureValueActuel:string = ""
+      temperatureSymbole:string = "°c"
+
       titre_vaccium = "Vaccium"
-      vaccium: ChartDataSets[] = [];
-      vacciumValueActuel:string = "";
-      vacciumSymbole:string = "HG";
-      titre_niveaubassin = "Niveau Bassin";
-      niveaubassin: ChartDataSets[] = [];
-      niveauBassinValueActuel:string = "";
-      niveauBassinSymbole:string = "%";
+      vaccium: ChartDataSets[] = []
+      vacciumValueActuel:string = ""
+      vacciumSymbole:string = "HG"
+
+      titre_niveaubassin = "Niveau Bassin"
+      niveaubassin: ChartDataSets[] = []
+      niveauBassinValueActuel:string = ""
+      niveauBassinSymbole:string = "%"
+
       titre_dompeux = "Dompeux"
-      dompeux: ChartDataSets[] = [];
+      dompeux: ChartDataSets[] = []
+      dompeux_line_type: ChartType = "bar"
+      dompeux_chart_type:string = "bar"
 
       constructor(){ }
 
@@ -72,20 +78,23 @@ export class DonneesComponent implements OnInit {
       }
 
       doHttpCallDompeux() {
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux")
-                .then(e => e.json())
-                .then(e => {
-                    this.dompeux = [
-                        { data: e.map((ee: { id: number; }) => ee.id), label: 'Dompeux' }
-                    ];
+        let debutFiltre = this.obtenirDebutFiltre().toISOString();
+        let finFiltre = new Date().toISOString();
 
-                    this.timeaxes_dompeux = e.map((ee: { t: string;}) => ee.t);
-                });
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre)
+          .then(e => e.json())
+          .then(e => {
+              this.dompeux = [
+                  { data: e.map((ee: { id: number, t: string, dd:string, df:string }) => (new Date(ee.df).getTime() - new Date(ee.dd).getTime()) / 1000), label: 'Durée en seconde' }
+              ];
+
+              this.timeaxes_dompeux = e.map((ee: { t: string;}) => new Date(ee.t).toLocaleTimeString());
+          });
       }
 
       doHttpCall() {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
-        let finFiltre = new Date().toISOString()
+        let finFiltre = new Date().toISOString();
 
         fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre)
           .then(e => e.json())

@@ -9,6 +9,7 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
+using ErabliereApi.Donnees.Action.Get;
 
 namespace ErabliereApi
 {
@@ -47,6 +48,8 @@ namespace ErabliereApi
 
             services.AddAutoMapper(config =>
             {
+                config.CreateMap<Dompeux, GetDompeux>();
+
                 config.CreateMap<PostErabliere, Erabliere>();
                 config.CreateMap<PostDonnee, Donnee>();
             });

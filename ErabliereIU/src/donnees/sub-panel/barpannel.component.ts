@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label } from 'ng2-charts';
 
 @Component({
-    selector: 'graph-panel',
+    selector: 'bar-panel',
     template: `
         <div class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
@@ -27,30 +27,26 @@ import { Color, Label } from 'ng2-charts';
                     [options]="lineChartOptions"
                     [colors]="lineChartColors" 
                     [legend]="lineChartLegend" 
-                    [chartType]="lineChartType" 
+                    [chartType]="barChartType" 
                     [plugins]="lineChartPlugins">
                 </canvas>
             </div>
         </div>
     `
 })
-export class GraphPannelComponent {
+export class BarPannelComponent {
     @Input() datasets: ChartDataSets[] = [];
 
     @Input() timeaxes: Label[] = [];
 
-    @Input() lineChartType = 'line' as ChartType;
+    @Input() barChartType = 'bar' as ChartType;
 
-    @Input() lineScaleType = 'time'
-
-    lineChartOptions = {
+    lineChartOptions: ChartOptions = {
         responsive: true,
         scales: {
             xAxes: [{
-            type: this.lineScaleType,
-            ticks: {
-                    autoSkip: true,
-                    maxTicksLimit: 7
+                gridLines: {
+                    offsetGridLines: true
                 }
             }]
         }
@@ -59,7 +55,7 @@ export class GraphPannelComponent {
     lineChartColors: Color[] = [
         {
             borderColor: 'black',
-            backgroundColor: 'rgba(255,255,0,0.28)',
+            backgroundColor: 'rgba(33,42,234,0.78)',
         }
     ];
 
