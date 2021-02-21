@@ -20,3 +20,5 @@ script de génération de données utiliser pour facilité le développement
 ## detectionMouvement.py
 
 script pour interagir avec un capteur détecteur de mouvement pour capturer les dompeux lors de la saison des sucres.
+
+documentation apscheduler : https://apscheduler.readthedocs.io/en/stable/modules/schedulers/base.html#apscheduler.schedulers.base.BaseScheduler.add_job
