@@ -17,11 +17,6 @@ namespace ErabliereApi
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            Log.Logger = new LoggerConfiguration()
-                                .Enrich.FromLogContext()
-                                .WriteTo.Console()
-                                .CreateLogger();
-
             try
             {
                 Log.Information("Starting up");
@@ -37,6 +32,11 @@ namespace ErabliereApi
             }
         }
 
+        /// <summary>
+        /// Création de l'application
+        /// </summary>
+        /// <param name="args">Les arguments reçu de la ligne de commande</param>
+        /// <returns>Une nouvelle instance de <see cref="IHostBuilder"/></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureLogging((hostBuildContext, builder) =>

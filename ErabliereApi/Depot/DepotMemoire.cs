@@ -85,6 +85,14 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />
+        public T? Obtenir(object id)
+        {
+            var key = (int)id;
+
+            return _liste.Values.FirstOrDefault(obj => obj.Id == key);
+        }
+
+        /// <inheritdoc />
         public void Supprimer(T donnee)
         {
             if (donnee == null)

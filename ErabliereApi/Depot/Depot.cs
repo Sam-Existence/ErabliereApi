@@ -9,7 +9,7 @@ namespace ErabliereApi.Depot
     /// Interface pour abstraire le dépôt de données réel derière l'api
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public interface Depot<T>
+    public interface Depot<T> where T : class
     {
         /// <summary>
         /// Permet de vérifier si le dépôt contient une donnée avec l'id
@@ -54,5 +54,12 @@ namespace ErabliereApi.Depot
         /// </summary>
         /// <param name="donnee"></param>
         void Supprimer(T donnee);
+
+        /// <summary>
+        /// Obtenir une donnée par sa clé primère
+        /// </summary>
+        /// <param name="id">L'id de la donnée</param>
+        /// <returns></returns>
+        T? Obtenir(object id);
     }
 }

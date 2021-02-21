@@ -1,4 +1,5 @@
-﻿using ErabliereApi.Depot;
+﻿using ErabliereApi.Attributes;
+using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -61,11 +62,17 @@ namespace ErabliereApi.Controllers
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee"></param>
         [HttpPost]
+        [ValiderIPRules]
         public IActionResult Ajouter([DefaultValue(0)] int id, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+            }
+
+            if (donnee.T == default || donnee.T.Equals(DateTimeOffset.MinValue))
+            {
+                donnee.T = DateTimeOffset.Now;
             }
 
             _depot.Ajouter(donnee);
@@ -79,6 +86,7 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut]
+        [ValiderIPRules]
         public IActionResult Modifier([DefaultValue(0)] int id, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
@@ -97,6 +105,7 @@ namespace ErabliereApi.Controllers
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete]
+        [ValiderIPRules]
         public IActionResult Supprimer([DefaultValue(0)] int id, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)

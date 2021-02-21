@@ -14,6 +14,11 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public string? Nom { get; set; }
 
+        /// <summary>
+        /// Addresse IP alloué à faire des opération d'écriture
+        /// </summary>
+        public string? IpRule { get; set; }
+
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)
         {

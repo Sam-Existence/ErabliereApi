@@ -67,6 +67,12 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />
+        public T? Obtenir(object id)
+        {
+            return _context.Find<T>(id);
+        }
+
+        /// <inheritdoc />
         public void Supprimer(T donnee)
         {
             _context.Set<T>().Remove(donnee);
