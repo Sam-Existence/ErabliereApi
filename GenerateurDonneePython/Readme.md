@@ -39,7 +39,7 @@ sudo halt --reboot
 
 ## extraireInfoImage.py
 
-Script pour extraire des informations d'une image. Le but est d'extraire les information d'un paneau d'un interface HMI avec la fonctionnalité server web activé. Il est possible de faire une requête au panneau pour obtnir l'écran demander sous image jpg.
+Script pour extraire des informations d'une image. Le but est d'extraire les information d'un paneau d'un interface HMI avec la fonctionnalité server web activé. Il est possible de faire une requête au panneau pour obtenir l'écran demander sous image jpg.
 
 ```
 python3 extraireInfoImage.py https://www.acscm.com/wp-content/uploads/images/news/2015/5-tips-for-better-hmi-page.png
