@@ -13,12 +13,35 @@ pip3 install apscheduler
 
 script de génération de données utiliser pour facilité le développement
 
-## dompeux.py
-
-ébauche d'un script pour générer des faux dompeux, n'est pas utilisé.
-
 ## detectionMouvement.py
 
 script pour interagir avec un capteur détecteur de mouvement pour capturer les dompeux lors de la saison des sucres.
 
 documentation apscheduler : https://apscheduler.readthedocs.io/en/stable/modules/schedulers/base.html#apscheduler.schedulers.base.BaseScheduler.add_job
+
+### Lancer le script au démarrage du raspberry
+
+Copier le script dans le repertoire /bin
+```
+sudo cp -i detectionMouvement.py /bin
+sudo crontab -e
+@reboot python3 /bin/detectionMouvement.py
+```
+
+Capturer les logs de cron
+```
+sudo nano /etc/rsyslog.d/50-default.conf
+# Enlever le # devant cron.*
+sudo service rsyslog restart
+service cron restart
+cat /var/log/cron.log
+sudo halt --reboot
+```
+
+## extraireInfoImage.py
+
+Script pour extraire des informations d'une image. Le but est d'extraire les information d'un paneau d'un interface HMI avec la fonctionnalité server web activé. Il est possible de faire une requête au panneau pour obtnir l'écran demander sous image jpg.
+
+```
+python3 extraireInfoImage.py https://www.acscm.com/wp-content/uploads/images/news/2015/5-tips-for-better-hmi-page.png
+```
