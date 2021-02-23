@@ -16,7 +16,7 @@ import sys
 print("requests", sys.argv[1])
 response = requests.get(sys.argv[1])
 print(response.status_code)
-temp_file = "/tmp/panel_erabliere_saint_alfred.jpg"
+temp_file = "/tmp/tmp_image.jpg"
 file = open(temp_file, "wb")
 print("write file", temp_file)
 file.write(response.content)
@@ -30,22 +30,22 @@ from pytesseract import image_to_string
 
 print("open image", temp_file)
 
-img = Image.open("/tmp/panel_erabliere_saint_alfred.jpg")
+img = Image.open(temp_file)
 
 print("image to text...")
 text = image_to_string(img)
 
 print(text)
 
-r_temperature = re.compile("-*\d+\.\d\s*[°C]")
+r_temperature = re.compile(r"-*\d+\.\d\s*[°C]")
 
 print("temperature", r_temperature.match(text))
 
-r_vaccium = re.compile("-*\d+\.\d\s*[HG]")
+r_vaccium = re.compile(r"-*\d+\.\d\s*[HG]")
 
 print("vaccium", r_vaccium.match(text))
 
-r_niveaubassin = re.compile("-*\d+\.\d\s*[%]")
+r_niveaubassin = re.compile(r"-*\d+\.\d\s*[%]")
 
 print("niveau bassin", r_niveaubassin.match(text))
 

@@ -77,4 +77,5 @@ print('* Device ready! ', end='', flush=True)
 sensor.when_motion = on_motion
 sensor.when_no_motion = no_motion
 scheduler.start()
-input('Press Enter or Ctrl+C to exit\n\n')
+print('Press Ctrl+C to exit\n\n')
+sleep(60*24*200)
