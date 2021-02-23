@@ -25,7 +25,7 @@ Copier le script dans le repertoire /bin
 ```
 sudo cp -i detectionMouvement.py /bin
 sudo crontab -e
-@reboot python3 /bin/detectionMouvement.py
+@reboot python3 /bin/detectionMouvement.py >/var/log/detectionMouvement.log 2>&1
 ```
 
 Capturer les logs de cron
