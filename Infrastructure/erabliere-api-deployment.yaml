@@ -23,6 +23,8 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
+        - name: ADMIN_PASSWORD
+          value: "#{ADMIN_PASSWORD}"
         - name: USE_CORS
           value: "True"
         - name: CORS_ORIGINS

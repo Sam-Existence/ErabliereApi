@@ -10,6 +10,7 @@ using ErabliereApi.Donnees;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using ErabliereApi.Donnees.Action.Get;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace ErabliereApi
 {
@@ -38,6 +39,11 @@ namespace ErabliereApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+            });
 
             services.AjouterSwagger();
 
@@ -85,6 +91,10 @@ namespace ErabliereApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseForwardedHeaders();
             }
 
             app.UseDefaultFiles();
