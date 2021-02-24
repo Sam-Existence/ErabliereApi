@@ -8,6 +8,7 @@ import threading
 import sys
 from datetime import datetime as dt
 from datetime import timedelta as td
+from datetime import timezone
 from time import sleep, time
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -15,8 +16,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 sensor = MotionSensor(14)
 
 # Detection dompeux settings
-threshold_seconds = 45
-min_element = 4
+threshold_seconds = 12
+min_element = 6
 collect = []
 scheduler = BackgroundScheduler()
 
@@ -46,15 +47,15 @@ def send_data():
     print('done.')
 
 def on_motion():
-    de = dt.utcnow()
-    print(de.strftime("%H:%M:%S"), 'Motion detected!')
+    de = dt.now(timezone.utc).astimezone()
+    print((de - td(hours=5)).strftime("%H:%M:%S"), 'Motion detected!')
     if len(collect) > 0 and de - collect[len(collect)-1] > td(seconds=threshold_seconds):
         print("clear", len(collect), "data.")
         collect.clear()
     collect.append(de)
 
 def no_motion():
-    print(dt.utcnow().strftime("%H:%M:%S"), 'nm')
+    print((dt.utcnow() - td(hours=5)).strftime("%H:%M:%S"), 'nm')
     if len(collect) >= min_element:
         print("sending data in", threshold_seconds, "if no more movement")
         if len(collect) > min_element:
@@ -76,4 +77,5 @@ print('* Device ready! ', end='', flush=True)
 sensor.when_motion = on_motion
 sensor.when_no_motion = no_motion
 scheduler.start()
-input('Press Enter or Ctrl+C to exit\n\n')
+print('Press Ctrl+C to exit\n\n')
+sleep(60*24*200)
