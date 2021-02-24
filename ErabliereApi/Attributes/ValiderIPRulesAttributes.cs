@@ -2,9 +2,6 @@
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Attributes
 {
@@ -33,11 +30,33 @@ namespace ErabliereApi.Attributes
             
             if (string.IsNullOrWhiteSpace(erabliere?.IpRule) == false && erabliere.IpRule != "-")
             {
-                if (string.Equals(erabliere.IpRule, context.HttpContext.Connection.RemoteIpAddress.ToString(), StringComparison.OrdinalIgnoreCase) == false)
+                var ip = GetClientIp(context);
+
+                if (string.Equals(erabliere.IpRule, ip, StringComparison.OrdinalIgnoreCase) == false)
                 {
                     context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {context.HttpContext.Connection.RemoteIpAddress}.");
                 }
             }
+        }
+
+        private string GetClientIp(ActionExecutingContext context)
+        {
+            if (context.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
+            {
+                var ips = context.HttpContext.Request.Headers["X-Real-IP"];
+
+                if (ips.Count == 1)
+                {
+                    return ips;
+                }
+
+                else
+                {
+                    context.ModelState.AddModelError("X-Real-IP", "Une seule entête 'X-Real-IP' doit être trouvé dans la requête.");
+                }
+            }
+
+            return context.HttpContext.Connection.RemoteIpAddress.ToString();
         }
     }
 }
