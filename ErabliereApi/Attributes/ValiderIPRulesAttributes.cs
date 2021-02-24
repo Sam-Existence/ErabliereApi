@@ -39,7 +39,7 @@ namespace ErabliereApi.Attributes
 
                 if (string.Equals(erabliere.IpRule, ip, StringComparison.OrdinalIgnoreCase) == false)
                 {
-                    context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {context.HttpContext.Connection.RemoteIpAddress}.");
+                    context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {ip}.");
                 }
             }
         }
