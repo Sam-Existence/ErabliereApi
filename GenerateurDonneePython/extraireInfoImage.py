@@ -10,6 +10,11 @@
 # sudo pip3 install pytesseract
 # sudo pip3 install pillow
 
+from datetime import datetime as dt
+from datetime import timedelta as td
+
+print("Debut execution", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
+
 import requests
 import sys
 
@@ -37,16 +42,36 @@ text = image_to_string(img)
 
 print(text)
 
-r_temperature = re.compile(r"-*\d+\.\d\s*[°C]")
+r_temperature = re.findall(r"-*\d+\.\d\s*[°]C", text)
 
-print("temperature", r_temperature.match(text))
+print("temperature", r_temperature)
 
-r_vaccium = re.compile(r"-*\d+\.\d\s*[HG]")
+r_vaccium = re.findall(r"-*\d+\.\d\s*HG", text)
 
-print("vaccium", r_vaccium.match(text))
+print("vaccium", r_vaccium)
 
-r_niveaubassin = re.compile(r"-*\d+\.\d\s*[%]")
+r_niveaubassin = re.findall("HG \d+", text)
 
-print("niveau bassin", r_niveaubassin.match(text))
+print("niveau bassin", r_niveaubassin)
 
+# Envoie des données à l'api
 
+import json
+
+print("Envoie des données à l'api", sys.argv[1])
+
+url = sys.argv[2]
+idErabliere = sys.argv[3]
+h = {"Content-Type":"Application/json"}
+donnees = {'t': int(float(r_temperature[0].replace("°C", "")) * 10),
+           'nb': int(float(r_niveaubassin[0].replace("HG ", ""))),
+           'v': int(float(r_vaccium[0].replace("HG", "")) * 10),
+           'idErabliere': int(idErabliere)}
+
+print(json.dumps(donnees))
+
+reponse = requests.post(url, json=donnees, headers=h, timeout = 2)
+
+print("réponse", reponse.status_code)
+
+print("terminé.", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
