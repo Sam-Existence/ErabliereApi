@@ -22,6 +22,11 @@ namespace ErabliereApi.Attributes
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
+            if (string.Equals(Environment.GetEnvironmentVariable("DEBUG_HEADERS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            {
+                DebugHeaders(context);
+            }
+
             var id = context.ActionArguments["id"];
 
             var depot = context.HttpContext.RequestServices.GetService(typeof(Depot<Erabliere>)) as Depot<Erabliere> ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(Depot<Erabliere>)}.");
@@ -57,6 +62,21 @@ namespace ErabliereApi.Attributes
             }
 
             return context.HttpContext.Connection.RemoteIpAddress.ToString();
+        }
+
+        private void DebugHeaders(ActionExecutingContext context)
+        {
+            Console.WriteLine($"Debug headers connection id : {context.HttpContext.Connection.Id}");
+
+            foreach (var header in context.HttpContext.Request.Headers)
+            {
+                foreach (var value in header.Value)
+                {
+                    Console.WriteLine($"{header.Key}\t\t\t: {value}");
+                }
+            }
+
+            Console.WriteLine("---");
         }
     }
 }
