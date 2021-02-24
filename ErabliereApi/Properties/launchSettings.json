@@ -15,7 +15,8 @@
         "USE_SQL": "true",
         "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
         "SQL_USE_STARTUP_MIGRATION": "true",
-        "DEBUG_HEADERS": "true"
+        "DEBUG_HEADERS": "false",
+        "LOG_SQL": "Console"
       }
     }
   }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
 {
@@ -80,7 +81,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donneeRecu">La donnée à ajouter</param>
         [HttpPost]
         [ValiderIPRules]
-        public IActionResult Ajouter(int id, PostDonnee donneeRecu)
+        public async Task<IActionResult> Ajouter(int id, PostDonnee donneeRecu)
         {
             if (id != donneeRecu.IdErabliere)
             {
@@ -117,7 +118,7 @@ namespace ErabliereApi.Controllers
 
                     donnePlusRecente.Nboc++;
 
-                    _depot.Modifier(donnePlusRecente);
+                    await _depot.ModifierAsync(donnePlusRecente);
                 }
                 else
                 {
@@ -127,12 +128,12 @@ namespace ErabliereApi.Controllers
 
                     donnee.PI = (int)interval.TotalSeconds;
 
-                    _depot.Ajouter(donnee);
+                    await _depot.AjouterAsync(donnee);
                 }
             }
             else
             {
-                _depot.Ajouter(_mapper.Map<Donnee>(donneeRecu));
+                await _depot.AjouterAsync(_mapper.Map<Donnee>(donneeRecu));
             }
 
             return Ok();

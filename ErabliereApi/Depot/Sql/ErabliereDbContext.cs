@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Donnees;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Depot.Sql
@@ -15,6 +16,7 @@ namespace ErabliereApi.Depot.Sql
         /// <param name="options"></param>
         public ErabliereDbContext([NotNull] DbContextOptions options) : base(options)
         {
+            
         }
 
         /// <summary>

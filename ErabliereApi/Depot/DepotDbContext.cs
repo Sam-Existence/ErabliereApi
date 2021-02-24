@@ -35,6 +35,14 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />
+        public async Task AjouterAsync(T donnee)
+        {
+            _context.Set<T>().Add(donnee);
+
+            await _context.SaveChangesAsync();
+        }
+
+        /// <inheritdoc />
         public Task<bool> Contient(object id)
         {
             return _context.Set<T>().AnyAsync(t => Equals(t.Id, id));
@@ -64,6 +72,14 @@ namespace ErabliereApi.Depot
             _context.Set<T>().Update(donnee);
 
             _context.SaveChanges();
+        }
+
+        /// <inheritdoc />
+        public async Task ModifierAsync(T donnee)
+        {
+            _context.Set<T>().Update(donnee);
+
+            await _context.SaveChangesAsync();
         }
 
         /// <inheritdoc />

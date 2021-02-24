@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
 {
@@ -68,7 +69,7 @@ namespace ErabliereApi.Controllers
         /// <param name="dompeux"></param>
         [HttpPost]
         [ValiderIPRules]
-        public IActionResult Ajouter(int id, Dompeux dompeux)
+        public async Task<IActionResult> Ajouter(int id, Dompeux dompeux)
         {
             if (id != dompeux.IdErabliere)
             {
@@ -80,7 +81,7 @@ namespace ErabliereApi.Controllers
                 dompeux.T = DateTimeOffset.Now;
             }
 
-            _depot.Ajouter(dompeux);
+            await _depot.AjouterAsync(dompeux);
 
             return Ok();
         }
@@ -92,14 +93,14 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut]
         [ValiderIPRules]
-        public IActionResult Modifier(int id, Dompeux donnee)
+        public async Task<IActionResult> Modifier(int id, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
             }
 
-            _depot.Modifier(donnee);
+            await _depot.ModifierAsync(donnee);
 
             return Ok();
         }

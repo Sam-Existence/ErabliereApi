@@ -45,6 +45,12 @@ namespace ErabliereApi.Depot
             _liste.Add(donnee.Id.Value, donnee);
         }
 
+        /// <inheritdoc />
+        public Task AjouterAsync(T donnee)
+        {
+            return Task.Run(() => Ajouter(donnee));
+        }
+
         /// <inheritdoc />  
         public Task<bool> Contient(object id)
         {
@@ -82,6 +88,12 @@ namespace ErabliereApi.Depot
             }
 
             _liste[donnee.Id.Value] = donnee;
+        }
+
+        /// <inheritdoc />
+        public Task ModifierAsync(T donnee)
+        {
+            return Task.Run(() => Modifier(donnee));
         }
 
         /// <inheritdoc />

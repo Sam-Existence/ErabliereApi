@@ -11,6 +11,7 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.Extensions.Logging;
 
 namespace ErabliereApi
 {
@@ -71,6 +72,11 @@ namespace ErabliereApi
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
                     options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+                    
+                    if (string.Equals(Environment.GetEnvironmentVariable("LOG_SQL"), "Console", StringComparison.OrdinalIgnoreCase))
+                    {
+                        options.LogTo(Console.WriteLine, LogLevel.Information);
+                    }
                 });
             }
         }

@@ -40,4 +40,6 @@ spec:
         - name: SQL_USE_STARTUP_MIGRATION
           value: "true"
         - name: DEBUG_HEADERS
-          value: "true"
+          value: "false"
+        - name: LOG_SQL
+          value: "Console"

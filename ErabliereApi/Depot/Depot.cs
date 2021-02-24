@@ -44,10 +44,22 @@ namespace ErabliereApi.Depot
         void Ajouter(T donnee);
 
         /// <summary>
+        /// Ajouter une donnée de manière asynchrone
+        /// </summary>
+        /// <param name="donnee"></param>
+        Task AjouterAsync(T donnee);
+
+        /// <summary>
         /// Modifier une donnée
         /// </summary>
         /// <param name="donnee"></param>
         void Modifier(T donnee);
+
+        /// <summary>
+        /// Modifier une donnée
+        /// </summary>
+        /// <param name="donnee"></param>
+        Task ModifierAsync(T donnee);
 
         /// <summary>
         /// Supprimer une donnée

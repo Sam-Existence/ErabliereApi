@@ -59,7 +59,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
             }
 
-            _depot.Ajouter(_mapper.Map<Erabliere>(erablieres));
+            await _depot.AjouterAsync(_mapper.Map<Erabliere>(erablieres));
 
             return Ok();
         }
@@ -109,7 +109,7 @@ namespace ErabliereApi.Controllers
                 entity.IpRule = erabliere.IpRules;
             }
 
-            _depot.Modifier(entity);
+            await _depot.ModifierAsync(entity);
 
             return Ok();
         }
