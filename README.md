@@ -20,8 +20,8 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 ## Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
 
-- Temperature, Vaccium, Niveau du bassin (Données envoyé automatiquement par l'automate)
-- Les dompeux (Entré manuellement depuis un ordinateur client)
+- Temperature, Vaccium, Niveau du bassin (Données extraire par un script depuis un image d'un HMI)
+- Les dompeux (Capturer à l'aide d'un capteur de mouvenement)
 - Informations sur les barils (Entré manuellement depuis un ordinateur client)
 - Érablière. Noeud racine de la structure de donnée
 
@@ -41,10 +41,6 @@ Deux mode sont possible.
 2. Sql avec EntityFramework ( Voir le readme dans https://github.com/freddycoder/ErabliereApi/tree/master/ErabliereApi/Depot/Sql )
 
 ## TODO
-
-- Générer des données de test plus réaliste pour le développement
-- Créer le section des alertes
-- Créer la section des caméra
 
 > Voir la section projet dans github.
 
