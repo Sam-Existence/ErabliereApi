@@ -39,3 +39,16 @@ Si la variable d'environnement 'SQL_USE_STARTUP_MIGRATION' est à "true", les mi
 
 Pour effectuer les migrations manuellement, mettre la variable d'environnement 'SQL_USE_STARTUP_MIGRATION' à "false".
 
+## Faire des requêtes sur les logs
+
+Avec la variable d'environnement ```LOG_SQL``` initialisé avec la valeur ```"Console"```, les logs de entity framework seront afficher dans la console. 
+
+Voici quelque grep qui permettent de faire des requête sur les logs.
+
+```
+# Afficher les temps en milisecondes
+kubectl logs erabliereapi-deployment-54d89d4698-85hhh --namespace=erabliere-api | grep -oE [0-9]+ms | sort | uniq
+
+# Vérifier ce qu'il y a autour de la transaction de 13ms
+kubectl logs erabliereapi-deployment-54d89d4698-85hhh --namespace=erabliere-api | grep 13ms --before-context=20 --after-context=4
+```
