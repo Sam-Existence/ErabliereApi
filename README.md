@@ -15,7 +15,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- GenerateurDonneePython : Script python executer sur un raspberry pi pour simulé l'environnement
+- GenerateurDonneePython : Script python pour alimenter l'API
 
 ## Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
@@ -39,10 +39,6 @@ Deux mode sont possible.
 
 1. Mode en mémoire (aucune persistance, avec swagger il est possible de télécharger les données sous format json et de les stocker manuellement)
 2. Sql avec EntityFramework ( Voir le readme dans https://github.com/freddycoder/ErabliereApi/tree/master/ErabliereApi/Depot/Sql )
-
-## TODO
-
-> Voir la section projet dans github.
 
 ## Documentation additionnelle
 
