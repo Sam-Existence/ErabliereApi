@@ -16,8 +16,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 sensor = MotionSensor(14)
 
 # Detection dompeux settings
-threshold_seconds = 12
-min_element = 6
+threshold_seconds = 11
+min_element = 5
 collect = []
 scheduler = BackgroundScheduler()
 
