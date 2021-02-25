@@ -44,3 +44,10 @@ Script pour extraire des informations d'une image. Le but est d'extraire les inf
 ```
 python3 extraireInfoImage.py https://www.acscm.com/wp-content/uploads/images/news/2015/5-tips-for-better-hmi-page.png
 ```
+
+### Cronjob
+
+```
+# Au 5 minute                                                                             adresse panneau hmi   adresse api action post données                           id erabliere
+*/5 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/extraireInfoImage.py http://<ip-hmi>/1.jpg https://erabliereapi.freddycoder.com/erablieres/3/donnees 3
+```
