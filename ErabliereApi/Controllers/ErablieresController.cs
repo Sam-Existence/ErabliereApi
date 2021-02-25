@@ -65,7 +65,7 @@ namespace ErabliereApi.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Modifier une érablière
         /// </summary>
         /// <param name="id">L'id de l'érablière à modifier</param>
         /// <param name="erabliere">Le donnée de l'érablière à modifier.
