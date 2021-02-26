@@ -42,7 +42,7 @@ text = image_to_string(img)
 
 print(text)
 
-r_temperature = re.findall(r"-*\d+\.\d\s*[°]C", text)
+r_temperature = re.findall(r"\-?\d+\.\d*", text)
 
 print("temperature", r_temperature)
 
