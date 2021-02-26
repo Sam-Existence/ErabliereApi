@@ -55,6 +55,15 @@ export class DonneesComponent implements OnInit {
       vaccium: ChartDataSets[] = []
       vacciumValueActuel:string = ""
       vacciumSymbole:string = "HG"
+      vacciumYOption:any = [
+          {
+            display: true,
+            ticks: { 
+                beginAtZero: true, 
+                max: 30
+            }
+        }
+      ]
 
       titre_niveaubassin = "Niveau Bassin"
       niveaubassin: ChartDataSets[] = []

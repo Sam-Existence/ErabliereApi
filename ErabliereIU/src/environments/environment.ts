@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: "http://192.168.0.103:5000"
+  //apiUrl: "http://192.168.0.103:5000"
+  apiUrl: "https://erabliereapi.freddycoder.com"
 };
 
 /*

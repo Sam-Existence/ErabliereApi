@@ -43,12 +43,14 @@ export class GraphPannelComponent {
 
     @Input() lineScaleType = 'time'
 
-    lineChartOptions = {
+    @Input() yScaleOption:any = undefined
+
+    lineChartOptions:ChartOptions = {
         responsive: true,
         scales: {
             xAxes: [{
-            type: this.lineScaleType,
-            ticks: {
+                type: this.lineScaleType,
+                ticks: {
                     autoSkip: true,
                     maxTicksLimit: 7
                 }
