@@ -105,6 +105,12 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />
+        public IQueryable<T> Select()
+        {
+            return _liste.Values.AsQueryable();
+        }
+
+        /// <inheritdoc />
         public void Supprimer(T donnee)
         {
             if (donnee == null)

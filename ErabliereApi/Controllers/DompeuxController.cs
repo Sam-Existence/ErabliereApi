@@ -46,8 +46,8 @@ namespace ErabliereApi.Controllers
         public IEnumerable<GetDompeux> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
             var query = _depot.Lister(d => d.IdErabliere == id &&
-                                     (dd == null || d.T >= dd) &&
-                                     (df == null || d.T <= df));
+                                      (dd == null || d.T >= dd) &&
+                                      (df == null || d.T <= df));
 
             if (o == "d")
             {

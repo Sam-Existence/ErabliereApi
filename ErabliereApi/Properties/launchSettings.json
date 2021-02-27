@@ -16,7 +16,9 @@
         "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
         "SQL_USE_STARTUP_MIGRATION": "true",
         "DEBUG_HEADERS": "false",
-        "LOG_SQL": "Console"
+        "LOG_SQL": "Console",
+        "USE_SWAGGER_SERVER_SECTION": "false",
+        "SWAGGER_SERVER_URL": "http://192.168.0.150:5000"
       }
     }
   }

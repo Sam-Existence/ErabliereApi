@@ -89,6 +89,12 @@ namespace ErabliereApi.Depot
         }
 
         /// <inheritdoc />
+        public IQueryable<T> Select()
+        {
+            return _context.Set<T>();
+        }
+
+        /// <inheritdoc />
         public void Supprimer(T donnee)
         {
             _context.Set<T>().Remove(donnee);

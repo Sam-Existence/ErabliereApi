@@ -2,6 +2,7 @@
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -41,12 +42,14 @@ namespace ErabliereApi.Controllers
         /// <param name="q">Quantité de donnée demander</param>
         /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
         /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
+        [ProducesResponseType(200, Type = typeof(GetDonnee))]
         [HttpGet]
-        public IEnumerable<Donnee> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
+        public IActionResult Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
-            IEnumerable<Donnee> query = _depot.Lister(d => d.IdErabliere == id &&
-                                                     (dd == null || d.D >= dd) &&
-                                                     (df == null || d.D <= df));
+            var query = _depot.Lister(d => d.IdErabliere == id &&
+                                      (dd == null || d.D >= dd) &&
+                                      (df == null || d.D <= df))
+                              .Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI });
 
             if (o == "d")
             {
@@ -58,20 +61,7 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            var premiereDonnee = query.FirstOrDefault();
-
-            if (premiereDonnee != null && dd != null)
-            {
-                if (premiereDonnee.D > dd.Value &&
-                    premiereDonnee.Iddp != null &&
-                    premiereDonnee.PI != null &&
-                    premiereDonnee.D - TimeSpan.FromSeconds(premiereDonnee.Nboc * premiereDonnee.PI.Value) < dd.Value)
-                {
-                    premiereDonnee.D = dd;
-                }
-            }
-
-            return query;
+            return Ok(query);
         }
 
         /// <summary>

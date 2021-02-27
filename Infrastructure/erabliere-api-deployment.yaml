@@ -31,8 +31,10 @@ spec:
           value: "*"
         - name: CORS_METHODS
           value: "*"
+        - name: USE_SWAGGER_SERVER_SECTION
+          value: "false"
         - name: SWAGGER_SERVER_URL
-          value: "https://erabliereapi.freddycoder.com"
+          value: "-"
         - name: USE_SQL
           value: "true"
         - name: SQL_CONNEXION_STRING

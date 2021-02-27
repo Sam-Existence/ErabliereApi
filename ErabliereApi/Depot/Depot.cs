@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
@@ -73,5 +74,11 @@ namespace ErabliereApi.Depot
         /// <param name="id">L'id de la donnée</param>
         /// <returns></returns>
         T? Obtenir(object id);
+
+        /// <summary>
+        /// Effectuer un select en bénéficiant de l'interface IQueryable
+        /// </summary>
+        /// <returns></returns>
+        IQueryable<T> Select();
     }
 }
