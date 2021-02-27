@@ -45,3 +45,21 @@ spec:
           value: "false"
         - name: LOG_SQL
           value: "Console"
+        - name: USE_AUTHENTICATION
+          value: "true"
+        - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
+          value: "true"
+        - name: USE_SWAGGER_PKCE
+          value: "true"
+        - name: SWAGGER_AUTHORIZATION_URL
+          value: "https://security-dev.freddycoder.com/oauth2/auth"
+        - name: SWAGGER_TOKEN_URL
+          value: "https://security-dev.freddycoder.com/oauth2/token"
+        - name: OIDC_CLIENT_ID
+          value: "swagger-dev"
+        - name: OAUTH2_REDIRECT_URL
+          value: "https://erabliereapi.freddycoder.com/login"
+        - name: OIDC_AUDIENCE
+          value: "http://erabliere-api"
+        - name: OIDC_AUTHORITY
+          value: "https://security-dev.freddycoder.com/.well-known/openid-configuration"

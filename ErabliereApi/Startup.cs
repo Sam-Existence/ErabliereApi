@@ -12,6 +12,9 @@ using Microsoft.EntityFrameworkCore;
 using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Logging;
+using static System.Boolean;
+using static System.Environment;
+using static System.StringComparison;
 
 namespace ErabliereApi
 {
@@ -39,20 +42,39 @@ namespace ErabliereApi
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
+            // contrôleur
             services.AddControllers();
 
+            // Forwarded headers
             services.Configure<ForwardedHeadersOptions>(options =>
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
             });
 
+            // Authentication
+            if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+            {
+                services.AddAuthentication("Bearer")
+                        .AddIdentityServerAuthentication("Bearer", options =>
+                        {
+                            // required audience of access tokens
+                            options.ApiName = GetEnvironmentVariable("OIDC_AUDIENCE");
+
+                            // auth server base endpoint (this will be used to search for disco doc)
+                            options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+                        });
+            }
+
+            // Swagger
             services.AjouterSwagger();
 
-            if (string.Equals(Environment.GetEnvironmentVariable("USE_CORS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            // Cors
+            if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
             {
                 services.AddCors();
             }
 
+            // Automapper
             services.AddAutoMapper(config =>
             {
                 config.CreateMap<Dompeux, GetDompeux>();
@@ -61,7 +83,8 @@ namespace ErabliereApi
                 config.CreateMap<PostDonnee, Donnee>();
             });
 
-            if (string.Equals(Environment.GetEnvironmentVariable("USE_SQL"), bool.FalseString, StringComparison.OrdinalIgnoreCase))
+            // Database
+            if (string.Equals(GetEnvironmentVariable("USE_SQL"), FalseString, OrdinalIgnoreCase))
             {
                 services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
             }
@@ -71,9 +94,9 @@ namespace ErabliereApi
 
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseSqlServer(Environment.GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
                     
-                    if (string.Equals(Environment.GetEnvironmentVariable("LOG_SQL"), "Console", StringComparison.OrdinalIgnoreCase))
+                    if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
                     {
                         options.LogTo(Console.WriteLine, LogLevel.Information);
                     }
@@ -86,8 +109,8 @@ namespace ErabliereApi
         /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
-            if (string.Equals(Environment.GetEnvironmentVariable("USE_SQL"), bool.TrueString, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(Environment.GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase) &&
+                string.Equals(GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), TrueString, OrdinalIgnoreCase))
             {
                 var database = serviceProvider.GetRequiredService<ErabliereDbContext>();
 
@@ -110,16 +133,20 @@ namespace ErabliereApi
 
             app.UseRouting();
 
-            if (string.Equals(Environment.GetEnvironmentVariable("USE_CORS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
             {
                 app.UseCors(option =>
                 {
-                    option.WithHeaders(Environment.GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
-                    option.WithMethods(Environment.GetEnvironmentVariable("CORS_METHODS")?.Split(','));
-                    option.WithOrigins(Environment.GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
+                    option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
+                    option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(','));
+                    option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
                 });
             }
 
+            if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+            {
+                app.UseAuthentication();
+            }
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

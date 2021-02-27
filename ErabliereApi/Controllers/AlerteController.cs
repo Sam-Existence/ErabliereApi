@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,6 +12,7 @@ namespace ErabliereApi.Controllers
     /// </summary>
     [ApiController]
     [Route("erablieres/{id}/[controller]")]
+    [Authorize]
     public class AlerteController : ControllerBase
     {
         private readonly Depot<Alerte> _depot;

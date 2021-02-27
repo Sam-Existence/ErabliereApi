@@ -1,0 +1,33 @@
+name: ErabliereAPI-Loginpage
+
+on: 
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'Deploy the login page for the authorization code workflow'  
+
+env:
+  REGISTRY_HOSTNAME: freddycontainers.azurecr.io
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Connect to Azure Kubernetes
+      - name: Azure Kubernetes set context
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          resource-group: 'webapidesign'
+          cluster-name: 'kubem'
+
+      # Deploy to kubernetes
+      - name: Kubectl apply
+        run: |
+          kubectl config current-context
+          kubectl apply -f ./Infrastructure/erabliere-api-namespace.yaml
+          kubectl apply -f ./Infrastructure/loginpage-service.yaml
+          kubectl apply -f ./Infrastructure/loginpage-deployment.yaml

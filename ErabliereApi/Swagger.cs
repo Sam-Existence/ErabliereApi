@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using ErabliereApi.OperationFilter;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
@@ -6,6 +7,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using static System.Boolean;
+using static System.Environment;
+using static System.StringComparison;
 
 namespace ErabliereApi
 {
@@ -40,13 +44,32 @@ namespace ErabliereApi
                     }
                 });
 
-                //c.AddSecurityDefinition("oauth", new OpenApiSecurityScheme
-                //{
-                //    Flows = new OpenApiOAuthFlows
-                //    {
+                if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+                {
+                    if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW"), TrueString, OrdinalIgnoreCase))
+                    {
+                        c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.OAuth2,
+                            Flows = new OpenApiOAuthFlows
+                            {
+                                AuthorizationCode = new OpenApiOAuthFlow
+                                {
+                                    AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
+                                    TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
+                                    Scopes = new Dictionary<string, string>
+                                {
+                                    { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
+                                    { "offline_access", "A scope required when requesting refresh tokens" },
+                                    { "openid", "Request an OpenID Connect ID Token" }
+                                }
+                                }
+                            }
+                        });
+                    }
+                }
 
-                //    }
-                //});
+                c.OperationFilter<AuthorizeCheckOperationFilter>();
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -65,14 +88,24 @@ namespace ErabliereApi
         /// <param name="app"></param>
         public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app)
         {
-            app.UseSwagger();
-
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "ÉrablièreAPI V1");
                 c.RoutePrefix = "api";
                 c.DocumentTitle = "ÉrablièreAPI - Swagger";
                 c.ConfigObject.DisplayRequestDuration = true;
+
+                if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+                {
+                    c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
+                    c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
+                    c.OAuthAppName("ÉrablièreAPI - Swagger");
+
+                    if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
+                    {
+                        c.OAuthUsePkce();
+                    }
+                }
             });
 
             return app;
@@ -83,11 +116,11 @@ namespace ErabliereApi
         /// </summary>
         public static void ConfigureSwaggerEndpointsOption(SwaggerEndpointOptions options)
         {
-            if (string.Equals(Environment.GetEnvironmentVariable("USE_SWAGGER_SERVER_SECTION"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_SERVER_SECTION"), TrueString, OrdinalIgnoreCase))
             {
                 options.PreSerializeFilters.Add((swagger, httpReq) =>
                 {
-                    var serverUrl = Environment.GetEnvironmentVariable("SWAGGER_SERVER_URL");
+                    var serverUrl = GetEnvironmentVariable("SWAGGER_SERVER_URL");
 
                     if (string.IsNullOrWhiteSpace(serverUrl))
                     {
@@ -95,7 +128,6 @@ namespace ErabliereApi
                     }
 
                     swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
-
                 });
             }
             else
