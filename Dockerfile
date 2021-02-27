@@ -21,7 +21,7 @@ COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
 
 WORKDIR /app/ErabliereApi
-RUN dotnet publish -c Release -o out
+RUN dotnet publish -c Release -f netcoreapp3.1 -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
