@@ -5,6 +5,7 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -38,7 +39,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Erabliere> Lister()
         {
-            return _depot.Lister();
+            return _depot.Lister().OrderBy(e => e);
         }
 
         /// <summary>
@@ -107,6 +108,11 @@ namespace ErabliereApi.Controllers
             if (string.IsNullOrWhiteSpace(erabliere.IpRules) == false)
             {
                 entity.IpRule = erabliere.IpRules;
+            }
+
+            if (erabliere.IndiceOrdre.HasValue)
+            {
+                entity.IndiceOrdre = erabliere.IndiceOrdre;
             }
 
             await _depot.ModifierAsync(entity);

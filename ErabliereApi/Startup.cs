@@ -54,6 +54,11 @@ namespace ErabliereApi
             // Authentication
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
+                services.Configure<CookiePolicyOptions>(options =>
+                {
+                    options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
+                });
+
                 services.AddAuthentication("Bearer")
                         .AddIdentityServerAuthentication("Bearer", options =>
                         {
@@ -145,9 +150,10 @@ namespace ErabliereApi
 
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
+                app.UseCookiePolicy();
                 app.UseAuthentication();
+                app.UseAuthorization();
             }
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

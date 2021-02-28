@@ -4,6 +4,7 @@ using ErabliereApi.Depot;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -125,6 +126,40 @@ namespace ErabliereApi.Controllers
             {
                 await _depot.AjouterAsync(_mapper.Map<Donnee>(donneeRecu));
             }
+
+            return Ok();
+        }
+
+        /// <summary>
+        /// Modifier un dompeux
+        /// </summary>
+        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="donnee">Le dompeux à ajouter</param>
+        [HttpPut]
+        [ValiderIPRules]
+        public async Task<IActionResult> Modifier(int id, PutDonnee donnee)
+        {
+            if (id != donnee.IdErabliere)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+            }
+
+            var entity = _depot.Obtenir(id);
+
+            if (entity == null)
+            {
+                return BadRequest($"La donnée que vous tentez de modifier n'existe pas.");
+            }
+
+            // fin des validations
+
+            if (donnee.V.HasValue)
+            {
+                entity.V = donnee.V;
+            }
+
+            _depot.Modifier(entity);
+            
 
             return Ok();
         }

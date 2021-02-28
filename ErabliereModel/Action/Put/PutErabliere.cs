@@ -24,5 +24,10 @@ namespace ErabliereApi.Donnees.Action.Put
         /// </summary>
         [MaxLength(50)]
         public string? IpRules { get; set; }
+
+        /// <summary>
+        /// Un indice permettant l'affichage des érablières dans l'ordre précisé.
+        /// </summary>
+        public int? IndiceOrdre { get; set; }
     }
 }

@@ -23,9 +23,23 @@ namespace ErabliereApi.Donnees
         [MaxLength(50)]
         public string? IpRule { get; set; }
 
+        /// <summary>
+        /// Un indice permettant l'affichage des érablières dans l'ordre précisé.
+        /// </summary>
+        public int? IndiceOrdre { get; set; }
+
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)
         {
+            if (IndiceOrdre != null && other?.IndiceOrdre == null)
+            {
+                return 1;
+            }
+            else if (IndiceOrdre.HasValue && other?.IndiceOrdre.HasValue == true)
+            {
+                return IndiceOrdre.Value.CompareTo(IndiceOrdre);
+            }
+
             return string.Compare(Nom, other?.Nom);
         }
     }
