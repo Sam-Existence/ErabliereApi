@@ -67,6 +67,17 @@ namespace ErabliereApi
                             }
                         });
                     }
+
+                    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                    {
+                        {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                            },
+                            new[] { "offline", "offline_access", "openid" }
+                        }
+                    });
                 }
 
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
@@ -106,6 +117,8 @@ namespace ErabliereApi
                         c.OAuthUsePkce();
                     }
                 }
+
+                c.UseRequestInterceptor("(req) => { req.headers['X-XSRF-Token'] = localStorage.getItem('xsrf-token'); return req; }");
             });
 
             return app;
