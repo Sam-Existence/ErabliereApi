@@ -25,7 +25,7 @@
         "SWAGGER_AUTHORIZATION_URL": "https://security-dev.freddycoder.com/oauth2/auth",
         "SWAGGER_TOKEN_URL": "https://security-dev.freddycoder.com/oauth2/token",
         "OIDC_CLIENT_ID": "swagger-dev",
-        "OAUTH2_REDIRECT_URL": "https://erabliereapi.freddycoder.com",
+        "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
         "OIDC_AUDIENCE": "http://erabliere-api",
         "OIDC_AUTHORITY": "https://security-dev.freddycoder.com/.well-known/openid-configuration"
       }

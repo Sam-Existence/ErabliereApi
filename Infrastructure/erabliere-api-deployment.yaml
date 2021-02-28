@@ -58,7 +58,7 @@ spec:
         - name: OIDC_CLIENT_ID
           value: "swagger-dev"
         - name: OAUTH2_REDIRECT_URL
-          value: "https://erabliereapi.freddycoder.com/login"
+          value: "https://erabliereapi.freddycoder.com/api/oauth2-redirect.html"
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY

@@ -58,11 +58,11 @@ namespace ErabliereApi
                                     AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
                                     TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                     Scopes = new Dictionary<string, string>
-                                {
-                                    { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
-                                    { "offline_access", "A scope required when requesting refresh tokens" },
-                                    { "openid", "Request an OpenID Connect ID Token" }
-                                }
+                                    {
+                                        { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
+                                        { "offline_access", "A scope required when requesting refresh tokens" },
+                                        { "openid", "Request an OpenID Connect ID Token" }
+                                    }
                                 }
                             }
                         });
