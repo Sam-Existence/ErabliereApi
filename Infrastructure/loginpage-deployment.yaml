@@ -22,4 +22,4 @@ spec:
         - containerPort: 3000
         env:
         - name: HYDRA_ADMIN_URL
-          value: "http://hydra-1614441345-admin.security-dev:4445"
+          value: "https://security-dev.freddycoder.com"
