@@ -52,9 +52,9 @@ spec:
         - name: USE_SWAGGER_PKCE
           value: "true"
         - name: SWAGGER_AUTHORIZATION_URL
-          value: "https://security-dev.freddycoder.com/oauth2/auth"
+          value: "https://erabliereapi.freddycoder.com/oauth2/auth"
         - name: SWAGGER_TOKEN_URL
-          value: "https://security-dev.freddycoder.com/oauth2/token"
+          value: "https://erabliereapi.freddycoder.com/oauth2/token"
         - name: OIDC_CLIENT_ID
           value: "swagger-dev"
         - name: OAUTH2_REDIRECT_URL
@@ -62,4 +62,4 @@ spec:
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
-          value: "https://security-dev.freddycoder.com/.well-known/openid-configuration"
+          value: "https://erabliereapi.freddycoder.com/.well-known/openid-configuration"
