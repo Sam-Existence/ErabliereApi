@@ -20,3 +20,6 @@ spec:
         image: oryd/hydra-login-consent-node:v1.9.2
         ports:
         - containerPort: 3000
+        env:
+        - name: HYDRA_ADMIN_URL
+          value: "https://security-dev.freddycoder.com"
