@@ -51,7 +51,7 @@ namespace ErabliereApi.Controllers
 
             if (o == "d")
             {
-                query = query.OrderByDescending(d => d);
+                query = query.Reverse();
             }
             
             if (q.HasValue)

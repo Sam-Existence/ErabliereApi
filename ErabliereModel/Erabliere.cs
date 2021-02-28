@@ -31,7 +31,11 @@ namespace ErabliereApi.Donnees
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)
         {
-            if (IndiceOrdre != null && other?.IndiceOrdre == null)
+            if (IndiceOrdre.HasValue && other?.IndiceOrdre == null)
+            {
+                return -1;
+            }
+            else if (other?.IndiceOrdre.HasValue == true && IndiceOrdre.HasValue == false)
             {
                 return 1;
             }

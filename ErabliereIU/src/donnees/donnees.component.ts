@@ -46,6 +46,8 @@ export class DonneesComponent implements OnInit {
       timeaxes: Label[] = [];
       timeaxes_dompeux: Label[] = []
 
+      derniereDonneeRecu?:string = undefined;
+
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = []
       temperatureValueActuel:string = ""
@@ -81,7 +83,7 @@ export class DonneesComponent implements OnInit {
         this.doHttpCall();
         this.doHttpCallDompeux();
         setInterval(() => {
-          this.doHttpCall();
+          this.doHttpCall(this.derniereDonneeRecu);
           this.doHttpCallDompeux();
         }, 1000 * 60);
       }
@@ -101,12 +103,30 @@ export class DonneesComponent implements OnInit {
           });
       }
 
-      doHttpCall() {
+      doHttpCall(derniereDonneeRecu:any = undefined) {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
         let finFiltre = new Date().toISOString();
 
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre)
-          .then(e => e.json())
+        var h = new Headers();
+        if (this.derniereDonneeRecu != undefined) {
+          //h.append("x-ddr", this.derniereDonneeRecu.toString());
+        }
+
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre, { headers: h })
+          .then(e => {
+            //console.log(e);
+
+            this.derniereDonneeRecu = e.headers.get("x-dde")?.valueOf();
+
+            //console.log(e.headers);
+            e.headers.forEach((v, k) => {
+              console.log(v);
+              console.log(k);
+            })
+            console.log("derniereDonneeRecu:" + this.derniereDonneeRecu);
+
+            return e.json();
+          })
           .then(e => {
             this.temperature = [
               { data: e.map((ee: { t: number; }) => ee.t / 10), label: 'Temperature' }
@@ -125,6 +145,10 @@ export class DonneesComponent implements OnInit {
               this.vacciumValueActuel = (e[e.length - 1].v / 10).toFixed(1);
               this.niveauBassinValueActuel = e[e.length - 1].nb;
             }
+          })
+          .catch(reason => {
+            console.log(reason);
+            this.derniereDonneeRecu = undefined;
           });
         }
 

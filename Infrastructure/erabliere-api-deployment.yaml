@@ -35,6 +35,8 @@ spec:
           value: "false"
         - name: SWAGGER_SERVER_URL
           value: "-"
+        - name: SWAGGER_XSRF_TOKEN_INTERCEPTOR
+          value: "false"
         - name: USE_SQL
           value: "true"
         - name: SQL_CONNEXION_STRING
@@ -44,7 +46,7 @@ spec:
         - name: DEBUG_HEADERS
           value: "false"
         - name: LOG_SQL
-          value: "Console"
+          value: "-"
         - name: USE_AUTHENTICATION
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW

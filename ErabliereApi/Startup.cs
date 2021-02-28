@@ -15,6 +15,8 @@ using Microsoft.Extensions.Logging;
 using static System.Boolean;
 using static System.Environment;
 using static System.StringComparison;
+using ErabliereApi.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ErabliereApi
 {
@@ -68,6 +70,10 @@ namespace ErabliereApi
                             // auth server base endpoint (this will be used to search for disco doc)
                             options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
                         });
+            }
+            else
+            {
+                services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
             }
 
             // Swagger
@@ -152,6 +158,10 @@ namespace ErabliereApi
             {
                 app.UseCookiePolicy();
                 app.UseAuthentication();
+                app.UseAuthorization();
+            }
+            else
+            {
                 app.UseAuthorization();
             }
 

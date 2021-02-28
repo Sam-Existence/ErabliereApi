@@ -119,5 +119,23 @@ namespace ErabliereApi.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Supprimer une érablière
+        /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="erabliere">L'érablière a supprimer</param>
+        [HttpDelete("{id}")]
+        public IActionResult Supprimer(int id, Erabliere erabliere)
+        {
+            if (id != erabliere.Id)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
+            }
+
+            _depot.Supprimer(erabliere);
+
+            return NoContent();
+        }
     }
 }

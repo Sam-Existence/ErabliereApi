@@ -42,15 +42,21 @@ namespace ErabliereApi.Controllers
         /// <param name="df">Date de début</param>
         /// <param name="q">Quantité de donnée demander</param>
         /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
+        /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
         /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
         [ProducesResponseType(200, Type = typeof(GetDonnee))]
         [HttpGet]
-        public IActionResult Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
+        public IActionResult Lister(int id,
+                                    [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
+                                    DateTimeOffset? dd, 
+                                    DateTimeOffset? df, 
+                                    int? q, 
+                                    string? o = "c")
         {
             var query = _depot.Lister(d => d.IdErabliere == id &&
+                                      (ddr == null || d.D > ddr) &&
                                       (dd == null || d.D >= dd) &&
-                                      (df == null || d.D <= df))
-                              .Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI });
+                                      (df == null || d.D <= df));
 
             if (o == "d")
             {
@@ -62,7 +68,12 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            return Ok(query);
+            if (o == "c" && query.Any())
+            {
+                HttpContext.Response.Headers.Add("x-dde", query.Last().D.ToString());
+            }
+
+            return Ok(query.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));
         }
 
         /// <summary>
@@ -134,21 +145,32 @@ namespace ErabliereApi.Controllers
         /// Modifier un dompeux
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="idDonnee">L'id de la donnée à modifier</param>
         /// <param name="donnee">Le dompeux à ajouter</param>
-        [HttpPut]
+        [HttpPut("{idDonnee}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Modifier(int id, PutDonnee donnee)
+        public IActionResult Modifier(int id, int idDonnee, PutDonnee donnee)
         {
             if (id != donnee.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux.");
             }
 
-            var entity = _depot.Obtenir(id);
+            if (idDonnee != donnee.Id)
+            {
+                return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
+            }
+
+            var entity = _depot.Obtenir(donnee.Id);
 
             if (entity == null)
             {
                 return BadRequest($"La donnée que vous tentez de modifier n'existe pas.");
+            }
+
+            if (entity.IdErabliere != donnee.IdErabliere)
+            {
+                return BadRequest($"L'id de l'érablière de la donnée trouvé ne concorde pas avec l'id de l'érablière de la route.");
             }
 
             // fin des validations

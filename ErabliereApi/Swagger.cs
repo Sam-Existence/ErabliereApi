@@ -78,9 +78,9 @@ namespace ErabliereApi
                             new[] { "offline", "offline_access", "openid" }
                         }
                     });
-                }
 
-                c.OperationFilter<AuthorizeCheckOperationFilter>();
+                    c.OperationFilter<AuthorizeCheckOperationFilter>();
+                }
 
                 // Set the comments path for the Swagger JSON and UI.
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -118,7 +118,10 @@ namespace ErabliereApi
                     }
                 }
 
-                c.UseRequestInterceptor("(req) => { req.headers['X-XSRF-Token'] = localStorage.getItem('xsrf-token'); return req; }");
+                if (string.Equals(GetEnvironmentVariable("SWAGGER_XSRF_TOKEN_INTERCEPTOR"), TrueString, OrdinalIgnoreCase))
+                {
+                    c.UseRequestInterceptor("(req) => { req.headers['X-XSRF-Token'] = localStorage.getItem('xsrf-token'); return req; }");
+                }
             });
 
             return app;
