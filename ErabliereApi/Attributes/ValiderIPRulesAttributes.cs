@@ -44,7 +44,7 @@ namespace ErabliereApi.Attributes
             }
         }
 
-        private string GetClientIp(ActionExecutingContext context)
+        private static string GetClientIp(ActionExecutingContext context)
         {
             if (context.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
             {
@@ -61,10 +61,10 @@ namespace ErabliereApi.Attributes
                 }
             }
 
-            return context.HttpContext.Connection.RemoteIpAddress.ToString();
+            return context.HttpContext.Connection.RemoteIpAddress?.ToString() ?? throw new InvalidOperationException("Aucune adresse ip distante trouvé.");
         }
 
-        private void DebugHeaders(ActionExecutingContext context)
+        private static void DebugHeaders(ActionExecutingContext context)
         {
             Console.WriteLine($"Debug headers connection id : {context.HttpContext.Connection.Id}");
 

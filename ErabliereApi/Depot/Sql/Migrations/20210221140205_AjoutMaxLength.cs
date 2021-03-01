@@ -2,8 +2,12 @@
 
 namespace ErabliereApi.Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Ajout des tailles maximales pour les champs de type string 
+    /// </summary>
     public partial class AjoutMaxLength : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(
@@ -118,6 +122,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 oldNullable: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<string>(

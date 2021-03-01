@@ -67,6 +67,27 @@ namespace ErabliereApi
                             }
                         });
                     }
+                    if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW"), TrueString, OrdinalIgnoreCase))
+                    {
+                        c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.OAuth2,
+                            Flows = new OpenApiOAuthFlows
+                            {
+                                ClientCredentials = new OpenApiOAuthFlow
+                                {
+                                    AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
+                                    TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
+                                    Scopes = new Dictionary<string, string>
+                                    {
+                                        { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
+                                        { "offline_access", "A scope required when requesting refresh tokens" },
+                                        { "openid", "Request an OpenID Connect ID Token" }
+                                    }
+                                }
+                            }
+                        });
+                    }
 
                     c.AddSecurityRequirement(new OpenApiSecurityRequirement
                     {
@@ -111,6 +132,7 @@ namespace ErabliereApi
                     c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
                     c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
                     c.OAuthAppName("ÉrablièreAPI - Swagger");
+                    c.OAuthScopes("offline", "offline_access", "openid");
 
                     if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
                     {

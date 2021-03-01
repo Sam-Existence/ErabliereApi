@@ -50,15 +50,17 @@ spec:
         - name: USE_AUTHENTICATION
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
+          value: "false"
+        - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
           value: "true"
         - name: USE_SWAGGER_PKCE
-          value: "true"
+          value: "false"
         - name: SWAGGER_AUTHORIZATION_URL
           value: "https://erabliereapi.freddycoder.com/oauth2/auth"
         - name: SWAGGER_TOKEN_URL
           value: "https://erabliereapi.freddycoder.com/oauth2/token"
         - name: OIDC_CLIENT_ID
-          value: "swagger-dev"
+          value: ""
         - name: OAUTH2_REDIRECT_URL
           value: "https://erabliereapi.freddycoder.com/api/oauth2-redirect.html"
         - name: OIDC_AUDIENCE

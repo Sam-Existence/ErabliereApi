@@ -47,6 +47,7 @@ export class DonneesComponent implements OnInit {
       timeaxes_dompeux: Label[] = []
 
       derniereDonneeRecu?:string = undefined;
+      ddr?:string = undefined;
 
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = []
@@ -114,41 +115,48 @@ export class DonneesComponent implements OnInit {
 
         fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre, { headers: h })
           .then(e => {
-            //console.log(e);
-
             this.derniereDonneeRecu = e.headers.get("x-dde")?.valueOf();
-
-            //console.log(e.headers);
-            e.headers.forEach((v, k) => {
-              console.log(v);
-              console.log(k);
-            })
-            console.log("derniereDonneeRecu:" + this.derniereDonneeRecu);
+            this.ddr = e.headers.get("x-ddr")?.valueOf();
 
             return e.json();
           })
           .then(e => {
-            this.temperature = [
+            let temperature = [
               { data: e.map((ee: { t: number; }) => ee.t / 10), label: 'Temperature' }
             ];
-            this.vaccium = [
+            let vaccium = [
               { data: e.map((ee: { v: number; }) => ee.v / 10), label: 'Vaccium' }
             ];
-            this.niveaubassin = [
+            let niveaubassin = [
               { data: e.map((ee: { nb: number; }) => ee.nb), label: 'Niveau bassin' }
             ];
 
-            this.timeaxes = e.map((ee: { d: string;}) => new Date(ee.d));
+            let timeaxes = e.map((ee: { d: string;}) => new Date(ee.d));
 
             if (e.length > 0) {
               this.temperatureValueActuel = (e[e.length - 1].t / 10).toFixed(1);
               this.vacciumValueActuel = (e[e.length - 1].v / 10).toFixed(1);
               this.niveauBassinValueActuel = e[e.length - 1].nb;
             }
+
+            if (h.has("x-ddr") && this.ddr != undefined && 
+                h.get("x-ddr")?.valueOf() == this.ddr) {
+              temperature.forEach(t => this.temperature.push(t));
+              vaccium.forEach(v => this.vaccium.push(v));
+              niveaubassin.forEach(nb => this.niveaubassin.push(nb));
+              timeaxes.forEach((t: Label) => this.timeaxes.push(t));
+            }
+            else {
+              this.temperature = temperature;
+              this.vaccium = vaccium;
+              this.niveaubassin = niveaubassin;
+              this.timeaxes = timeaxes;
+            }
           })
           .catch(reason => {
             console.log(reason);
             this.derniereDonneeRecu = undefined;
+            this.ddr = undefined;
           });
         }
 

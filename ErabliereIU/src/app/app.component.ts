@@ -35,7 +35,7 @@ import { Component } from '@angular/core';
   `
 })
 export class AppComponent {
-  title = 'Erabliere IU';
+  title = 'Érablière IU';
   pageSelectionnee = 0;
   cacheMenuErabliere = false;
 

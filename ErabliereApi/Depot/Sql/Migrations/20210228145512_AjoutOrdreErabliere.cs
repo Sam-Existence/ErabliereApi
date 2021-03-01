@@ -2,8 +2,12 @@
 
 namespace ErabliereApi.Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Ajout d'un champs pour stocker l'ordre d'affichage des érablières
+    /// </summary>
     public partial class AjoutOrdreErabliere : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<int>(
@@ -13,6 +17,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 nullable: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(

@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ErabliereApi.Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Schéma de la base de données
+    /// </summary>
     public partial class InitialSchema : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -93,6 +97,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 });
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(

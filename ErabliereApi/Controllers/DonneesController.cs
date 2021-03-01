@@ -68,12 +68,18 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            if (o == "c" && query.Any())
+            var list = query.ToList();
+
+            if (o == "c" && list.Count > 0)
             {
+                if (ddr.HasValue)
+                {
+                    HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
+                }
                 HttpContext.Response.Headers.Add("x-dde", query.Last().D.ToString());
             }
 
-            return Ok(query.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));
+            return Ok(list.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));
         }
 
         /// <summary>
@@ -100,6 +106,11 @@ namespace ErabliereApi.Controllers
             if (donnePlusRecente != null &&
                 donnePlusRecente.IdentiqueMemeLigneDeTemps(donneeRecu))
             {
+                if (donnePlusRecente.D.HasValue == false || donneeRecu.D.HasValue == false)
+                {
+                    throw new InvalidProgramException("Les dates des données ne devrait pas être null rendu à cette étape.");
+                }
+
                 var interval = donneeRecu.D.Value - donnePlusRecente.D.Value;
 
                 if (donnePlusRecente.Iddp != null)

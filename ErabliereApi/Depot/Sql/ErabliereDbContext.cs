@@ -14,9 +14,11 @@ namespace ErabliereApi.Depot.Sql
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="options"></param>
+#pragma warning disable CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Le constructeur de base s'occupe d'initialiser les propriétés.
         public ErabliereDbContext([NotNull] DbContextOptions options) : base(options)
+#pragma warning restore CS8618 // Un champ non-nullable doit contenir une valeur non-null lors de la fermeture du constructeur. Le constructeur de base s'occupe d'initialiser les propriétés.
         {
-            
+
         }
 
         /// <summary>

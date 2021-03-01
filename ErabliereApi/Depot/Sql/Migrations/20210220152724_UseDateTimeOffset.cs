@@ -3,8 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ErabliereApi.Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Changement des types DateTime en type DateTimeOffset
+    /// </summary>
     public partial class UseDateTimeOffset : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTimeOffset>(
@@ -53,6 +57,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 oldNullable: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AlterColumn<DateTime>(
