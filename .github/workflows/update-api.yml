@@ -3,12 +3,12 @@ name: ErabliereAPI-Update
 on: 
   workflow_dispatch:
     inputs:
-      imageversion:
-        description: 'Le tag de l\'image docker à utiliser.'
-        required: true
       tags:
         description: 'Update erabliereapi'
         required: false
+      version:
+        description: 'La version de de l`image à utiliser'
+        required: true
       
 
 env:
