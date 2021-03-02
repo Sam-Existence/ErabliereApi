@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: erabliereapi
-        image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{GITHUB_RUN_ID}
+        image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{IMAGE_TAG}
         ports:
         - containerPort: 80
         env:
@@ -66,4 +66,4 @@ spec:
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
-          value: "https://erabliereapi.freddycoder.com/.well-known/openid-configuration"
+          value: "https://security-dev.freddycoder.com/.well-known/openid-configuration"

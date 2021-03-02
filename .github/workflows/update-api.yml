@@ -1,16 +1,21 @@
-name: ErabliereAPI
+name: ErabliereAPI-Update
 
 on: 
   workflow_dispatch:
     inputs:
+      image_version:
+        description: 'Le tag de l\'image docker à utiliser.'
+        required: true
       tags:
-        description: 'Deploy erabliereapi'  
+        description: 'Update erabliereapi'
+        required: false
+      
 
 env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-  IMAGE_TAG: $GITHUB_RUN_ID
+  IMAGE_TAG: ${{ github.event.inputs.image_version }}
 
 jobs:
   build:
@@ -18,22 +23,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
-      # Login into acr
-      - name: Login into ACR
-        run: echo ${{ secrets.registryPassword }} | docker login $REGISTRY_HOSTNAME -u ${{ secrets.registryUsername }} --password-stdin
-
-      # Build the image
-      - name: Docker build
-        run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
-        
-      # Tag the images
-      - name: Docker tag
-        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
-
-      # Push the image
-      - name: Docker push
-        run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
 
       # Connect to Azure Kubernetes
       - name: Azure Kubernetes set context
