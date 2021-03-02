@@ -3,7 +3,7 @@ name: ErabliereAPI-Update
 on: 
   workflow_dispatch:
     inputs:
-      image_version:
+      imageversion:
         description: 'Le tag de l\'image docker à utiliser.'
         required: true
       tags:
@@ -15,7 +15,7 @@ env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-  IMAGE_TAG: ${{ github.event.inputs.image_version }}
+  IMAGE_TAG: ${{ github.event.inputs.imageversion }}
 
 jobs:
   build:
