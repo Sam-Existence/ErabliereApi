@@ -3,8 +3,8 @@ name: ErabliereAPI
 on: 
   workflow_dispatch:
     inputs:
-      tags:
-        description: 'Deploy erabliereapi'  
+      note:
+        description: 'Note sur le déploiement'  
 
 env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io

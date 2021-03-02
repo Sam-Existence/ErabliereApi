@@ -4,9 +4,6 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: 'Update erabliereapi'
-        required: false
-      version:
         description: 'La version de de l`image à utiliser'
         required: true
       
@@ -15,7 +12,7 @@ env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-  IMAGE_TAG: ${{ github.event.inputs.imageversion }}
+  IMAGE_TAG: ${{ github.event.inputs.tags }}
 
 jobs:
   build:
