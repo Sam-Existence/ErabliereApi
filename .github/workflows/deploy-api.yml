@@ -10,7 +10,7 @@ env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
   IMAGE_NAME: erabliereapi
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-  IMAGE_TAG: $env.GITHUB_RUN_ID
+  IMAGE_TAG: ${{ github.run_id }}
 
 jobs:
   build:
