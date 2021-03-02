@@ -65,10 +65,13 @@ namespace ErabliereApi
                         .AddIdentityServerAuthentication("Bearer", options =>
                         {
                             // required audience of access tokens
-                            options.ApiName = GetEnvironmentVariable("OIDC_AUDIENCE");
+                            options.Audience = GetEnvironmentVariable("OIDC_AUDIENCE");
 
                             // auth server base endpoint (this will be used to search for disco doc)
                             options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+                        }, introspectionOptions =>
+                        {
+                            introspectionOptions.SkipTokensWithDots = false;
                         });
             }
             else

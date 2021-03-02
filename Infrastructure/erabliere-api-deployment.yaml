@@ -66,4 +66,4 @@ spec:
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
-          value: "https://security-dev.freddycoder.com/.well-known/openid-configuration"
+          value: "https://erabliereapi.freddycoder.com/.well-known/openid-configuration"

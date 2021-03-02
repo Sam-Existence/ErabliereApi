@@ -51,6 +51,7 @@ namespace ErabliereApi
                         c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                         {
                             Type = SecuritySchemeType.OAuth2,
+                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_AUTHORITY'.")),
                             Flows = new OpenApiOAuthFlows
                             {
                                 AuthorizationCode = new OpenApiOAuthFlow
@@ -72,6 +73,7 @@ namespace ErabliereApi
                         c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                         {
                             Type = SecuritySchemeType.OAuth2,
+                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY")),
                             Flows = new OpenApiOAuthFlows
                             {
                                 ClientCredentials = new OpenApiOAuthFlow
