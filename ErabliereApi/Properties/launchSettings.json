@@ -20,7 +20,7 @@
         "SQL_USE_STARTUP_MIGRATION": "true",
         "DEBUG_HEADERS": "false",
         "LOG_SQL": "Console",
-        "USE_AUTHENTICATION": "true",
+        "USE_AUTHENTICATION": "false",
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "false",
         "USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW": "true",
         "USE_SWAGGER_PKCE": "false",
