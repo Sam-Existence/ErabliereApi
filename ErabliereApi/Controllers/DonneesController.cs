@@ -196,5 +196,41 @@ namespace ErabliereApi.Controllers
 
             return Ok();
         }
+
+        /// <summary>
+        /// Supprimer un dompeux
+        /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="donnee">Le dompeux a supprimer</param>
+        [HttpDelete("{idDonnee}")]
+        [ValiderIPRules]
+        public IActionResult Supprimer(int id, int idDonnee, Donnee donnee)
+        {
+            if (id != donnee.IdErabliere)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée.");
+            }
+
+            if (idDonnee != donnee.Id)
+            {
+                return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
+            }
+
+            var entity = _depot.Obtenir(donnee.Id);
+
+            if (entity == null)
+            {
+                return BadRequest($"La donnée que vous tentez de supprimer n'existe pas.");
+            }
+
+            if (entity.IdErabliere != donnee.IdErabliere)
+            {
+                return BadRequest($"L'id de l'érablière de la donnée trouvé ne concorde pas avec l'id de l'érablière de la route.");
+            }
+
+            _depot.Supprimer(entity);
+
+            return NoContent();
+        }
     }
 }

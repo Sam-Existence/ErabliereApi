@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'graph-panel',
@@ -21,7 +21,7 @@ import { Color, Label } from 'ng2-charts';
 
             </div>
             <div class="chart-wrapper">
-                <canvas baseChart 
+                <canvas baseChart class="chart"
                     [datasets]="datasets" 
                     [labels]="timeaxes" 
                     [options]="lineChartOptions"
@@ -35,6 +35,8 @@ import { Color, Label } from 'ng2-charts';
     `
 })
 export class GraphPannelComponent {
+    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
     @Input() datasets: ChartDataSets[] = [];
 
     @Input() timeaxes: Label[] = [];
@@ -73,5 +75,5 @@ export class GraphPannelComponent {
     @Input() valeurActuel:string = "";
     @Input() symbole:string = "";
 
-    constructor() { }
+    constructor() { this.chart = undefined; }
 }

@@ -91,9 +91,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="donnee">Le dompeux à ajouter</param>
-        [HttpPut]
+        [HttpPut("{idDompeux}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Modifier(int id, Dompeux donnee)
+        public async Task<IActionResult> Modifier(int id, int idDompeux, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {
@@ -109,10 +109,11 @@ namespace ErabliereApi.Controllers
         /// Supprimer un dompeux
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="idDompeux">L'id du dompeux à supprimer</param>
         /// <param name="donnee">Le dompeux a supprimer</param>
-        [HttpDelete]
+        [HttpDelete("{idDompeux}")]
         [ValiderIPRules]
-        public IActionResult Supprimer([DefaultValue(0)] int id, Dompeux donnee)
+        public IActionResult Supprimer(int id, int idDompeux, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {

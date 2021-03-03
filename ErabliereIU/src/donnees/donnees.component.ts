@@ -49,6 +49,8 @@ export class DonneesComponent implements OnInit {
       derniereDonneeRecu?:string = undefined;
       ddr?:string = undefined;
 
+      ids:[] = []
+
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = []
       temperatureValueActuel:string = ""
@@ -110,7 +112,7 @@ export class DonneesComponent implements OnInit {
 
         var h = new Headers();
         if (this.derniereDonneeRecu != undefined) {
-          //h.append("x-ddr", this.derniereDonneeRecu.toString());
+          h.append("x-ddr", this.derniereDonneeRecu.toString());
         }
 
         fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/Donnees?dd=" + debutFiltre + "&df=" + finFiltre, { headers: h })
@@ -121,6 +123,8 @@ export class DonneesComponent implements OnInit {
             return e.json();
           })
           .then(e => {
+            let ids = e.map((ee: { id: number; }) => ee.id);
+
             let temperature = [
               { data: e.map((ee: { t: number; }) => ee.t / 10), label: 'Temperature' }
             ];
@@ -139,12 +143,30 @@ export class DonneesComponent implements OnInit {
               this.niveauBassinValueActuel = e[e.length - 1].nb;
             }
 
-            if (h.has("x-ddr") && this.ddr != undefined && 
-                h.get("x-ddr")?.valueOf() == this.ddr) {
-              temperature.forEach(t => this.temperature.push(t));
-              vaccium.forEach(v => this.vaccium.push(v));
-              niveaubassin.forEach(nb => this.niveaubassin.push(nb));
+            if (h.has("x-ddr") && this.ddr != undefined && h.get("x-ddr")?.valueOf() == this.ddr) {
+              
+              if (ids.length > 0 && this.ids[this.ids.length - 1] == ids[0]) {
+                this.temperature[0].data?.pop();
+                this.vaccium[0].data?.pop();
+                this.niveaubassin[0].data?.pop();
+                this.timeaxes.pop();
+
+                this.temperature.push(temperature[0].data.shift());
+                this.vaccium.push(vaccium[0].data.shift());
+                this.niveaubassin.push(niveaubassin[0].data.shift());
+                this.timeaxes.push(timeaxes.shift());
+              }
+              
+              temperature[0].data.forEach((t:number) => this.temperature[0].data?.push(t));
+              vaccium[0].data.forEach((v:number) => this.vaccium[0].data?.push(v));
+              niveaubassin[0].data.forEach((nb:number) => this.niveaubassin[0].data?.push(nb));
               timeaxes.forEach((t: Label) => this.timeaxes.push(t));
+
+              // Enlever les en mémoire plus petite que le début du filtre.
+              while (timeaxes.length > 0 &&
+                     timeaxes[0] < new Date(debutFiltre)) {
+                timeaxes.slice();
+              }
             }
             else {
               this.temperature = temperature;
