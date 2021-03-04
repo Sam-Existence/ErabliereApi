@@ -193,7 +193,6 @@ namespace ErabliereApi.Controllers
 
             _depot.Modifier(entity);
             
-
             return Ok();
         }
 
@@ -201,6 +200,7 @@ namespace ErabliereApi.Controllers
         /// Supprimer un dompeux
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="idDonnee">L'id de la donnée à supprimer</param>
         /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete("{idDonnee}")]
         [ValiderIPRules]

@@ -145,15 +145,15 @@ export class DonneesComponent implements OnInit {
 
             if (h.has("x-ddr") && this.ddr != undefined && h.get("x-ddr")?.valueOf() == this.ddr) {
               
-              if (ids.length > 0 && this.ids[this.ids.length - 1] == ids[0]) {
+              if (ids.length > 0 && this.ids[this.ids.length - 1] === ids[0]) {
                 this.temperature[0].data?.pop();
                 this.vaccium[0].data?.pop();
                 this.niveaubassin[0].data?.pop();
                 this.timeaxes.pop();
 
-                this.temperature.push(temperature[0].data.shift());
-                this.vaccium.push(vaccium[0].data.shift());
-                this.niveaubassin.push(niveaubassin[0].data.shift());
+                this.temperature[0].data?.push(temperature[0].data.shift());
+                this.vaccium[0].data?.push(vaccium[0].data.shift());
+                this.niveaubassin[0].data?.push(niveaubassin[0].data.shift());
                 this.timeaxes.push(timeaxes.shift());
               }
               
@@ -162,10 +162,13 @@ export class DonneesComponent implements OnInit {
               niveaubassin[0].data.forEach((nb:number) => this.niveaubassin[0].data?.push(nb));
               timeaxes.forEach((t: Label) => this.timeaxes.push(t));
 
-              // Enlever les en mémoire plus petite que le début du filtre.
-              while (timeaxes.length > 0 &&
-                     timeaxes[0] < new Date(debutFiltre)) {
-                timeaxes.slice();
+              while (this.timeaxes.length > 0 &&
+                     new Date(this.timeaxes[0].toString()) < new Date(debutFiltre)) {
+                this.timeaxes.shift();
+                this.temperature[0].data?.shift();
+                this.vaccium[0].data?.shift();
+                this.niveaubassin[0].data?.shift();
+                this.ids.shift();
               }
             }
             else {
@@ -173,6 +176,7 @@ export class DonneesComponent implements OnInit {
               this.vaccium = vaccium;
               this.niveaubassin = niveaubassin;
               this.timeaxes = timeaxes;
+              this.ids = ids;
             }
           })
           .catch(reason => {
