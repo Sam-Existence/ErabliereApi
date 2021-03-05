@@ -51,7 +51,7 @@ namespace ErabliereApi
                         c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                         {
                             Type = SecuritySchemeType.OAuth2,
-                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_AUTHORITY'.")),
+                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY") + "/.well-known/openid-configuration"),
                             Flows = new OpenApiOAuthFlows
                             {
                                 AuthorizationCode = new OpenApiOAuthFlow
@@ -60,9 +60,30 @@ namespace ErabliereApi
                                     TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                     Scopes = new Dictionary<string, string>
                                     {
+                                        { "openid", "Request an OpenID Connect ID Token" },
                                         { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
-                                        { "offline_access", "A scope required when requesting refresh tokens" },
-                                        { "openid", "Request an OpenID Connect ID Token" }
+                                        { "offline_access", "A scope required when requesting refresh tokens" }
+                                    }
+                                }
+                            }
+                        });
+                    }
+                    if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_IMPLICIT_WORKFLOW"), TrueString, OrdinalIgnoreCase))
+                    {
+                        c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                        {
+                            Type = SecuritySchemeType.OAuth2,
+                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY") + "/.well-known/openid-configuration"),
+                            Flows = new OpenApiOAuthFlows
+                            {
+                                Implicit = new OpenApiOAuthFlow
+                                {
+                                    AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_IMPLICIT_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
+                                    Scopes = new Dictionary<string, string>
+                                    {
+                                        { "openid", "Request an OpenID Connect ID Token" },
+                                        { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
+                                        { "offline_access", "A scope required when requesting refresh tokens" }
                                     }
                                 }
                             }
@@ -73,7 +94,7 @@ namespace ErabliereApi
                         c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                         {
                             Type = SecuritySchemeType.OAuth2,
-                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY")),
+                            OpenIdConnectUrl = new Uri(GetEnvironmentVariable("OIDC_AUTHORITY") + "/.well-known/openid-configuration"),
                             Flows = new OpenApiOAuthFlows
                             {
                                 ClientCredentials = new OpenApiOAuthFlow
@@ -82,9 +103,9 @@ namespace ErabliereApi
                                     TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                     Scopes = new Dictionary<string, string>
                                     {
+                                        { "openid", "Request an OpenID Connect ID Token" },
                                         { "offline", "A scope required when requesting refresh tokens (alias for ```offline_access```)" },
-                                        { "offline_access", "A scope required when requesting refresh tokens" },
-                                        { "openid", "Request an OpenID Connect ID Token" }
+                                        { "offline_access", "A scope required when requesting refresh tokens" }
                                     }
                                 }
                             }
@@ -98,7 +119,7 @@ namespace ErabliereApi
                             {
                                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                             },
-                            new[] { "offline", "offline_access", "openid" }
+                            new[] { "openid", "offline", "offline_access" }
                         }
                     });
 
@@ -132,6 +153,7 @@ namespace ErabliereApi
                 if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
                 {
                     c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
+                    c.OAuthClientSecret(GetEnvironmentVariable("OIDC_CLIENT_PASSWORD"));
                     c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
                     c.OAuthAppName("ÉrablièreAPI - Swagger");
                     c.OAuthScopes("offline", "offline_access", "openid");

@@ -49,7 +49,7 @@ export class DonneesComponent implements OnInit {
       derniereDonneeRecu?:string = undefined;
       ddr?:string = undefined;
 
-      ids:[] = []
+      ids:Array<number> = []
 
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = []
@@ -161,6 +161,7 @@ export class DonneesComponent implements OnInit {
               vaccium[0].data.forEach((v:number) => this.vaccium[0].data?.push(v));
               niveaubassin[0].data.forEach((nb:number) => this.niveaubassin[0].data?.push(nb));
               timeaxes.forEach((t: Label) => this.timeaxes.push(t));
+              ids.forEach((n: number) => this.ids.push(n));
 
               while (this.timeaxes.length > 0 &&
                      new Date(this.timeaxes[0].toString()) < new Date(debutFiltre)) {

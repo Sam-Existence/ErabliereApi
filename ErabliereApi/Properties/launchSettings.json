@@ -20,16 +20,18 @@
         "SQL_USE_STARTUP_MIGRATION": "true",
         "DEBUG_HEADERS": "false",
         "LOG_SQL": "Console",
-        "USE_AUTHENTICATION": "false",
+        "USE_AUTHENTICATION": "true",
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "false",
-        "USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW": "true",
+        "USE_SWAGGER_IMPLICIT_WORKFLOW": "true",
+        "USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW": "false",
         "USE_SWAGGER_PKCE": "false",
         "SWAGGER_AUTHORIZATION_URL": "https://security-dev.freddycoder.com/oauth2/auth",
         "SWAGGER_TOKEN_URL": "https://security-dev.freddycoder.com/oauth2/token",
         "OIDC_CLIENT_ID": "swagger-dev",
+        "OIDC_CLIENT_PASSWORD": "D6VDPBGKjmoyKkP~yFnxvMlLqS",
         "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
         "OIDC_AUDIENCE": "http://erabliere-api",
-        "OIDC_AUTHORITY": "https://security-dev.freddycoder.com/.well-known/openid-configuration"
+        "OIDC_AUTHORITY": "https://security-dev.freddycoder.com"
       }
     }
   }

@@ -51,8 +51,10 @@ spec:
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
           value: "false"
-        - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
+        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
           value: "true"
+        - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
+          value: "false"
         - name: USE_SWAGGER_PKCE
           value: "false"
         - name: SWAGGER_AUTHORIZATION_URL
@@ -60,10 +62,12 @@ spec:
         - name: SWAGGER_TOKEN_URL
           value: "https://erabliereapi.freddycoder.com/oauth2/token"
         - name: OIDC_CLIENT_ID
-          value: ""
+          value: "swagger-prod"
+        - name: OIDC_CLIENT_PASSWORD
+          value: "#{OIDC_CLIENT_PASSWORD}"
         - name: OAUTH2_REDIRECT_URL
           value: "https://erabliereapi.freddycoder.com/api/oauth2-redirect.html"
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
-          value: "https://erabliereapi.freddycoder.com/.well-known/openid-configuration"
+          value: "https://erabliereapi.freddycoder.com"

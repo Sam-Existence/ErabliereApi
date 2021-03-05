@@ -17,6 +17,9 @@ using static System.Environment;
 using static System.StringComparison;
 using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Logging;
 
 namespace ErabliereApi
 {
@@ -61,17 +64,18 @@ namespace ErabliereApi
                     options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
                 });
 
-                services.AddAuthentication("Bearer")
-                        .AddIdentityServerAuthentication("Bearer", options =>
+                services.AddAuthentication(o => o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
+                        .AddJwtBearer(o =>
                         {
-                            // required audience of access tokens
-                            options.Audience = GetEnvironmentVariable("OIDC_AUDIENCE");
-
-                            // auth server base endpoint (this will be used to search for disco doc)
-                            options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-                        }, introspectionOptions =>
-                        {
-                            introspectionOptions.SkipTokensWithDots = false;
+                            o.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+                            o.Audience = GetEnvironmentVariable("OIDC_AUDIENCE");
+                            o.RequireHttpsMetadata = true;
+                            o.ClaimsIssuer = GetEnvironmentVariable("OIDC_AUTHORITY");
+                            o.TokenValidationParameters = new TokenValidationParameters
+                            {
+                                ValidateAudience = true,
+                                ValidAudience = GetEnvironmentVariable("OIDC_AUDIENCE")
+                            };
                         });
             }
             else
@@ -133,6 +137,7 @@ namespace ErabliereApi
 
             if (env.IsDevelopment())
             {
+                IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
             }
             else
