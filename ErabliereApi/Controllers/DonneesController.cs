@@ -69,15 +69,15 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            var list = query.ToList();
+            var list = query.ToArray();
 
-            if (o == "c" && list.Count > 0)
+            if (o == "c" && list.Length > 0)
             {
                 if (ddr.HasValue)
                 {
                     HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
                 }
-                HttpContext.Response.Headers.Add("x-dde", list[list.Count - 1].D.ToString());
+                HttpContext.Response.Headers.Add("x-dde", list[list.Length - 1].D.ToString());
             }
 
             return Ok(list.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));

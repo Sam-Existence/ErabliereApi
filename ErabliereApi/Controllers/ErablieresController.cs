@@ -39,7 +39,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Erabliere> Lister()
         {
-            return _context.Erabliere.AsNoTracking().OrderBy(e => e);
+            return _context.Erabliere.AsNoTracking().ToArray().OrderBy(e => e);
         }
 
         /// <summary>
