@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ErabliereApi.Attributes;
-using ErabliereApi.Depot;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
@@ -78,7 +77,7 @@ namespace ErabliereApi.Controllers
                 {
                     HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
                 }
-                HttpContext.Response.Headers.Add("x-dde", query.Last().D.ToString());
+                HttpContext.Response.Headers.Add("x-dde", list[list.Count - 1].D.ToString());
             }
 
             return Ok(list.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));
@@ -103,7 +102,7 @@ namespace ErabliereApi.Controllers
                 donneeRecu.D = DateTimeOffset.Now;
             }
 
-            var donnePlusRecente = _context.Donnees.LastOrDefault(d => d.IdErabliere == id);
+            var donnePlusRecente = _context.Donnees.OrderBy(d => d.D).LastOrDefault(d => d.IdErabliere == id);
 
             if (donnePlusRecente != null &&
                 donnePlusRecente.IdentiqueMemeLigneDeTemps(donneeRecu))

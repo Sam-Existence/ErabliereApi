@@ -1,5 +1,4 @@
-﻿using ErabliereApi.Depot;
-using ErabliereApi.Depot.Sql;
+﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
