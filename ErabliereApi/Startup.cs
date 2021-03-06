@@ -17,9 +17,10 @@ using static System.Environment;
 using static System.StringComparison;
 using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.IdentityModel.Logging;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 
 namespace ErabliereApi
 {
@@ -61,22 +62,27 @@ namespace ErabliereApi
             {
                 services.Configure<CookiePolicyOptions>(options =>
                 {
+                    options.CheckConsentNeeded = context => true;
                     options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
                 });
 
-                services.AddAuthentication(o => o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme)
-                        .AddJwtBearer(o =>
-                        {
-                            o.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-                            o.Audience = GetEnvironmentVariable("OIDC_AUDIENCE");
-                            o.RequireHttpsMetadata = true;
-                            o.ClaimsIssuer = GetEnvironmentVariable("OIDC_AUTHORITY");
-                            o.TokenValidationParameters = new TokenValidationParameters
-                            {
-                                ValidateAudience = true,
-                                ValidAudience = GetEnvironmentVariable("OIDC_AUDIENCE")
-                            };
-                        });
+                services.AddAuthentication(options =>
+                {
+                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                })
+                .AddCookie()
+                .AddOpenIdConnect(o =>
+                {
+                    o.ClientId = GetEnvironmentVariable("OIDC_CLIENT_ID");
+                    o.ClientSecret = GetEnvironmentVariable("OIDC_CLIENT_PASSWORD");
+                    o.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+                    o.RequireHttpsMetadata = true;
+
+                    o.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
+                    o.ResponseMode = OpenIdConnectResponseMode.Fragment;
+                    o.ResponseType = OpenIdConnectResponseType.Code;
+                });
             }
             else
             {
