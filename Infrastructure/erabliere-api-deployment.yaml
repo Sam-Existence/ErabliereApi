@@ -46,7 +46,7 @@ spec:
         - name: DEBUG_HEADERS
           value: "false"
         - name: LOG_SQL
-          value: "Console"
+          value: "-"
         - name: USE_AUTHENTICATION
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
