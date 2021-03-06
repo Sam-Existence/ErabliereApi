@@ -1,9 +1,12 @@
 ﻿using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ErabliereApi.Controllers
 {
@@ -15,13 +18,13 @@ namespace ErabliereApi.Controllers
     [Authorize]
     public class AlerteController : ControllerBase
     {
-        private readonly Depot<Alerte> _depot;
+        private readonly ErabliereDbContext _depot;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="depot"></param>
-        public AlerteController(Depot<Alerte> depot)
+        public AlerteController(ErabliereDbContext depot)
         {
             _depot = depot;
         }
@@ -34,7 +37,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Alerte> Lister([DefaultValue(0)] int id)
         {
-            return _depot.Lister(b => b.IdErabliere == id);
+            return _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id);
         }
 
         /// <summary>
@@ -52,7 +55,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
 
-            _depot.Ajouter(alerte);
+            _depot.Alertes.Add(alerte);
+
+            _depot.SaveChanges();
 
             return Ok();
         }
@@ -72,7 +77,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
             }
 
-            _depot.Modifier(alerte);
+            _depot.Update(alerte);
+
+            _depot.SaveChanges();
 
             return Ok();
         }
@@ -92,7 +99,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
             }
 
-            _depot.Supprimer(alerte);
+            _depot.Remove(alerte);
+
+            _depot.SaveChanges();
 
             return NoContent();
         }

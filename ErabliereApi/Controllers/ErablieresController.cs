@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -18,17 +20,17 @@ namespace ErabliereApi.Controllers
     [Route("[controller]")]
     public class ErablieresController : ControllerBase
     {
-        private readonly Depot<Erabliere> _depot;
+        private readonly ErabliereDbContext _context;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="dépôt">Dépôt de donnée des érablières</param>
+        /// <param name="context">Classe de contexte pour accéder à la BD</param>
         /// <param name="mapper">mapper de donnée</param>
-        public ErablieresController(Depot<Erabliere> dépôt, IMapper mapper)
+        public ErablieresController(ErabliereDbContext context, IMapper mapper)
         {
-            _depot = dépôt;
+            _context = context;
             _mapper = mapper;
         }
 
@@ -39,7 +41,7 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Erabliere> Lister()
         {
-            return _depot.Lister().OrderBy(e => e);
+            return _context.Erabliere.AsNoTracking().OrderBy(e => e);
         }
 
         /// <summary>
@@ -55,12 +57,14 @@ namespace ErabliereApi.Controllers
             {
                 return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
             }
-            if (await _depot.Contient(e => e.Nom == erablieres.Nom))
+            if (await _context.Erabliere.AnyAsync(e => e.Nom == erablieres.Nom))
             {
                 return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
             }
 
-            await _depot.AjouterAsync(_mapper.Map<Erabliere>(erablieres));
+            await _context.Erabliere.AddAsync(_mapper.Map<Erabliere>(erablieres));
+
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
@@ -86,14 +90,14 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'id de la route ne concorde pas avec l'id de l'érablière à modifier.");
             }
 
-            var entity = _depot.Obtenir(id);
+            var entity = _context.Erabliere.Find(id);
 
             if (entity == null)
             {
                 return BadRequest($"L'érablière que vous tentez de modifier n'existe pas.");
             }
 
-            if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _depot.Contient(e => e.Id != id && e.Nom == erabliere.Nom))
+            if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom))
             {
                 return BadRequest($"L'érablière avec le nom {erabliere.Nom}");
             }
@@ -115,7 +119,9 @@ namespace ErabliereApi.Controllers
                 entity.IndiceOrdre = erabliere.IndiceOrdre;
             }
 
-            await _depot.ModifierAsync(entity);
+            _context.Erabliere.Update(entity);
+
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
@@ -133,7 +139,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
             }
 
-            _depot.Supprimer(erabliere);
+            _context.Remove(erabliere);
+
+            _context.SaveChanges();
 
             return NoContent();
         }

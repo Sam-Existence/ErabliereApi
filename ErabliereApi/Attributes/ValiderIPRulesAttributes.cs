@@ -1,4 +1,5 @@
 ﻿using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -29,9 +30,9 @@ namespace ErabliereApi.Attributes
 
             var id = context.ActionArguments["id"];
 
-            var depot = context.HttpContext.RequestServices.GetService(typeof(Depot<Erabliere>)) as Depot<Erabliere> ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(Depot<Erabliere>)}.");
+            var depot = context.HttpContext.RequestServices.GetService(typeof(ErabliereDbContext)) as ErabliereDbContext ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(ErabliereDbContext)}.");
 
-            var erabliere = depot.Obtenir(id);
+            var erabliere = depot.Erabliere.Find(id);
             
             if (string.IsNullOrWhiteSpace(erabliere?.IpRule) == false && erabliere.IpRule != "-")
             {

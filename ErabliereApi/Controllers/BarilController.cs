@@ -1,9 +1,12 @@
 ﻿using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace ErabliereApi.Controllers
 {
@@ -14,15 +17,15 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class BarilController : ControllerBase
     {
-        private readonly Depot<Baril> depot;
+        private readonly ErabliereDbContext _depot;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="dépôt">Le dépôt des barils</param>
-        public BarilController(Depot<Baril> dépôt)
+        /// <param name="depot">Le dépôt des barils</param>
+        public BarilController(ErabliereDbContext depot)
         {
-            this.depot = dépôt;
+            _depot = depot;
         }
 
         /// <summary>
@@ -35,9 +38,10 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df)
         {
-            return depot.Lister(b => b.IdErabliere == id &&
-                               ((dd != null) ? b.DF >= dd : true) &&
-                               ((df != null) ? b.DF <= df : true));
+            return _depot.Barils.AsNoTracking()
+                                .Where(b => b.IdErabliere == id &&
+                                       (dd == null || b.DF >= dd) &&
+                                       (df == null || b.DF <= df));
         }
 
         /// <summary>
@@ -55,7 +59,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
 
-            depot.Ajouter(donnee);
+            _depot.Barils.Add(donnee);
+
+            _depot.SaveChanges();
 
             return Ok();
         }
@@ -75,7 +81,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
             }
 
-            depot.Modifier(donnee);
+            _depot.Update(donnee);
+
+            _depot.SaveChanges();
 
             return Ok();
         }
@@ -95,7 +103,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
             }
 
-            depot.Supprimer(donnee);
+            _depot.Remove(donnee);
+
+            _depot.SaveChanges();
 
             return NoContent();
         }

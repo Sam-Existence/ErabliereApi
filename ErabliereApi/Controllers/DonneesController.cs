@@ -1,13 +1,14 @@
 ﻿using AutoMapper;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,17 +21,17 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class DonneesController : ControllerBase
     {
-        private readonly Depot<Donnee> _depot;
+        private readonly ErabliereDbContext _context;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initlisation
         /// </summary>
-        /// <param name="depot"></param>
+        /// <param name="context">Classe de contexte pour accéder aux données</param>
         /// <param name="mapper">Mapper entre les modèles</param>
-        public DonneesController(Depot<Donnee> depot, IMapper mapper)
+        public DonneesController(ErabliereDbContext context, IMapper mapper)
         {
-            _depot = depot;
+            _context = context;
             _mapper = mapper;
         }
 
@@ -53,10 +54,11 @@ namespace ErabliereApi.Controllers
                                     int? q, 
                                     string? o = "c")
         {
-            var query = _depot.Lister(d => d.IdErabliere == id &&
-                                      (ddr == null || d.D > ddr) &&
-                                      (dd == null || d.D >= dd) &&
-                                      (df == null || d.D <= df));
+            var query = _context.Donnees.AsNoTracking()
+                                        .Where(d => d.IdErabliere == id &&
+                                               (ddr == null || d.D > ddr) &&
+                                               (dd == null || d.D >= dd) &&
+                                               (df == null || d.D <= df));
 
             if (o == "d")
             {
@@ -101,7 +103,7 @@ namespace ErabliereApi.Controllers
                 donneeRecu.D = DateTimeOffset.Now;
             }
 
-            var donnePlusRecente = _depot.Lister(d => d.IdErabliere == id).LastOrDefault();
+            var donnePlusRecente = _context.Donnees.LastOrDefault(d => d.IdErabliere == id);
 
             if (donnePlusRecente != null &&
                 donnePlusRecente.IdentiqueMemeLigneDeTemps(donneeRecu))
@@ -131,7 +133,9 @@ namespace ErabliereApi.Controllers
 
                     donnePlusRecente.Nboc++;
 
-                    await _depot.ModifierAsync(donnePlusRecente);
+                    _context.Donnees.Update(donnePlusRecente);
+
+                    await _context.SaveChangesAsync();
                 }
                 else
                 {
@@ -141,12 +145,16 @@ namespace ErabliereApi.Controllers
 
                     donnee.PI = (int)interval.TotalSeconds;
 
-                    await _depot.AjouterAsync(donnee);
+                    _context.Donnees.Add(donnee);
+
+                    await _context.SaveChangesAsync();
                 }
             }
             else
             {
-                await _depot.AjouterAsync(_mapper.Map<Donnee>(donneeRecu));
+                _context.Donnees.Add(_mapper.Map<Donnee>(donneeRecu));
+
+                await _context.SaveChangesAsync();
             }
 
             return Ok();
@@ -172,7 +180,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
             }
 
-            var entity = _depot.Obtenir(donnee.Id);
+            var entity = _context.Donnees.Find(donnee.Id);
 
             if (entity == null)
             {
@@ -191,7 +199,9 @@ namespace ErabliereApi.Controllers
                 entity.V = donnee.V;
             }
 
-            _depot.Modifier(entity);
+            _context.Donnees.Update(entity);
+
+            _context.SaveChanges();
             
             return Ok();
         }
@@ -216,7 +226,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
             }
 
-            var entity = _depot.Obtenir(donnee.Id);
+            var entity = _context.Donnees.Find(donnee.Id);
 
             if (entity == null)
             {
@@ -228,7 +238,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'id de l'érablière de la donnée trouvé ne concorde pas avec l'id de l'érablière de la route.");
             }
 
-            _depot.Supprimer(entity);
+            _context.Donnees.Remove(entity);
+
+            _context.SaveChanges();
 
             return NoContent();
         }

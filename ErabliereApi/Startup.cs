@@ -108,22 +108,23 @@ namespace ErabliereApi
             });
 
             // Database
-            if (string.Equals(GetEnvironmentVariable("USE_SQL"), FalseString, OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
             {
-                services.AddSingleton(typeof(Depot<>), typeof(DepotMemoire<>));
-            }
-            else
-            {
-                services.AddTransient(typeof(Depot<>), typeof(DepotDbContext<>));
-
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
                     options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
-                    
+
                     if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
                     {
                         options.LogTo(Console.WriteLine, LogLevel.Information);
                     }
+                });
+            }
+            else
+            {
+                services.AddDbContext<ErabliereDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                 });
             }
         }

@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,17 +20,17 @@ namespace ErabliereApi.Controllers
     [Route("erablieres/{id}/[controller]")]
     public class DompeuxController : ControllerBase
     {
-        private readonly Depot<Dompeux> _depot;
+        private readonly ErabliereDbContext _context;
         private readonly IMapper _mapper;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
-        /// <param name="depot">Le dépôt des dompeux</param>
+        /// <param name="context">Classe de context pour accéder à la base de donnée</param>
         /// <param name="mapper">Interface de mappagin entre les modèles</param>
-        public DompeuxController(Depot<Dompeux> depot, IMapper mapper)
+        public DompeuxController(ErabliereDbContext context, IMapper mapper)
         {
-            _depot = depot;
+            _context = context;
             _mapper = mapper;
         }
 
@@ -45,9 +46,10 @@ namespace ErabliereApi.Controllers
         [HttpGet]
         public IEnumerable<GetDompeux> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
         {
-            var query = _depot.Lister(d => d.IdErabliere == id &&
-                                      (dd == null || d.T >= dd) &&
-                                      (df == null || d.T <= df));
+            var query = _context.Dompeux.AsNoTracking()
+                                        .Where(d => d.IdErabliere == id &&
+                                               (dd == null || d.T >= dd) &&
+                                               (df == null || d.T <= df));
 
             if (o == "d")
             {
@@ -81,7 +83,9 @@ namespace ErabliereApi.Controllers
                 dompeux.T = DateTimeOffset.Now;
             }
 
-            await _depot.AjouterAsync(dompeux);
+            await _context.Dompeux.AddAsync(dompeux);
+
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
@@ -90,17 +94,24 @@ namespace ErabliereApi.Controllers
         /// Modifier un dompeux
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
-        /// <param name="donnee">Le dompeux à ajouter</param>
+        /// <param name="idDompeux">L'id du dompeux à modifier</param>
+        /// <param name="donnee">Le dompeux à modifier</param>
         [HttpPut("{idDompeux}")]
         [ValiderIPRules]
         public async Task<IActionResult> Modifier(int id, int idDompeux, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+                return BadRequest("L'id de l'érablière dans la route ne concorde pas l'id de l'érablière dans le dompeux.");
+            }
+            if (idDompeux != donnee.Id)
+            {
+                return BadRequest("L'id du dompeux de la route ne concorde pas avec l'id du dompeux");
             }
 
-            await _depot.ModifierAsync(donnee);
+            _context.Dompeux.Update(donnee);
+
+            await _context.SaveChangesAsync();
 
             return Ok();
         }
@@ -117,10 +128,16 @@ namespace ErabliereApi.Controllers
         {
             if (id != donnee.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux");
+                return BadRequest("L'id de l'érablière dans la route ne concorde pas l'id de l'érablière dans le dompeux.");
+            }
+            if (idDompeux != donnee.Id)
+            {
+                return BadRequest("L'id du dompeux de la route ne concorde pas avec l'id du dompeux");
             }
 
-            _depot.Supprimer(donnee);
+            _context.Dompeux.Remove(donnee);
+
+            _context.SaveChanges();
 
             return NoContent();
         }
