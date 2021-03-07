@@ -48,18 +48,21 @@ def send_data():
 
 def on_motion():
     de = dt.now(timezone.utc).astimezone()
-    print((de - td(hours=5)).strftime("%H:%M:%S"), 'Motion detected!')
+    print((de - td(hours=5)).strftime("%Y-%m-%d %H:%M:%S"), 'Motion detected!')
     if len(collect) > 0 and de - collect[len(collect)-1] > td(seconds=threshold_seconds):
         print("clear", len(collect), "data.")
         collect.clear()
     collect.append(de)
 
 def no_motion():
-    print((dt.utcnow() - td(hours=5)).strftime("%H:%M:%S"), 'nm')
+    print((dt.utcnow() - td(hours=5)).strftime("%Y-%m-%d %H:%M:%S"), 'nm')
     if len(collect) >= min_element:
         print("sending data in", threshold_seconds, "if no more movement")
         if len(collect) > min_element:
-            scheduler.remove_job('send_dompeux')
+            try:
+                scheduler.remove_job('send_dompeux')
+            except:
+                print("Something went wrong when removing job 'send_dompeux'")
         scheduler.add_job(send_data,
                           'date',
                           id='send_dompeux',
