@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
@@ -81,6 +82,7 @@ namespace ErabliereApi.Controllers
         /// <response code="400">Une des validations des paramètres à échoué.</response>
         /// <returns></returns>
         [HttpPut("{id}")]
+        [ValiderIPRules]
         public async Task<IActionResult> Modifier(int id, PutErabliere erabliere)
         {
             if (id != erabliere.Id)
@@ -130,6 +132,7 @@ namespace ErabliereApi.Controllers
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="erabliere">L'érablière a supprimer</param>
         [HttpDelete("{id}")]
+        [ValiderIPRules]
         public IActionResult Supprimer(int id, Erabliere erabliere)
         {
             if (id != erabliere.Id)
