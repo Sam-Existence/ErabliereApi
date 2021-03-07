@@ -61,6 +61,8 @@ def no_motion():
         if len(collect) > min_element:
             try:
                 scheduler.remove_job('send_dompeux')
+            except:
+                print("Something went wrong when removing job 'send_dompeux'")
         scheduler.add_job(send_data,
                           'date',
                           id='send_dompeux',
