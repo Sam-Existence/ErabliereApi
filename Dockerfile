@@ -8,7 +8,7 @@ COPY ErabliereIU/ .
 RUN ng build --prod
 
 # Build the api
-FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 COPY *.sln  .
@@ -23,10 +23,10 @@ COPY ErabliereApi/. ./ErabliereApi/
 COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 
 WORKDIR /app/ErabliereApi
-RUN dotnet publish -c Release -f netcoreapp3.1 -o out
+RUN dotnet publish -c Release -f net5.0 -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/ErabliereApi/out ./
 COPY --from=andular-builder /usr/src/app/dist/ErabliereIU ./wwwroot

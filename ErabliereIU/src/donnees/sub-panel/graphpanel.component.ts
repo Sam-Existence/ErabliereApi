@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild  } from '@angular/core';
+import { Component, Input, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
