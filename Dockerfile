@@ -14,11 +14,13 @@ WORKDIR /app
 COPY *.sln  .
 COPY ErabliereModel/*.csproj ./ErabliereModel/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
+COPY ErabliereApi.Test/*.csproj ./ErabliereApi.Test/
 
 RUN dotnet restore
 
 COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
+COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 
 WORKDIR /app/ErabliereApi
 RUN dotnet publish -c Release -f netcoreapp3.1 -o out
