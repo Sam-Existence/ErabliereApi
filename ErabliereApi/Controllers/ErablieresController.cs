@@ -107,9 +107,9 @@ namespace ErabliereApi.Controllers
                 entity.Nom = erabliere.Nom;
             }
 
-            if (string.IsNullOrWhiteSpace(erabliere.IpRules) == false)
+            if (string.IsNullOrWhiteSpace(erabliere.IpRule) == false)
             {
-                entity.IpRule = erabliere.IpRules;
+                entity.IpRule = erabliere.IpRule;
             }
 
             if (erabliere.IndiceOrdre.HasValue)

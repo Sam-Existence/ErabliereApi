@@ -3,6 +3,7 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
+using System.Linq;
 
 namespace ErabliereApi.Attributes
 {
@@ -38,7 +39,7 @@ namespace ErabliereApi.Attributes
             {
                 var ip = GetClientIp(context);
 
-                if (string.Equals(erabliere.IpRule, ip, StringComparison.OrdinalIgnoreCase) == false)
+                if (erabliere.IpRule.Split(';').All(eIp =>string.Equals(eIp, ip, StringComparison.OrdinalIgnoreCase) == false))
                 {
                     context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {ip}.");
                 }

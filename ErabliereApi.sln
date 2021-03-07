@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErabliereApi", "ErabliereAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErabliereApi.Donnees", "ErabliereModel\ErabliereApi.Donnees.csproj", "{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErabliereApi.Test", "ErabliereApi.Test\ErabliereApi.Test.csproj", "{042EDFDD-20BA-4C85-A0FA-48099E890D2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E76CB4E1-847C-48A8-995E-DDD3B20E67D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042EDFDD-20BA-4C85-A0FA-48099E890D2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042EDFDD-20BA-4C85-A0FA-48099E890D2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042EDFDD-20BA-4C85-A0FA-48099E890D2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042EDFDD-20BA-4C85-A0FA-48099E890D2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

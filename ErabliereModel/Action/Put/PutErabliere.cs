@@ -20,10 +20,10 @@ namespace ErabliereApi.Donnees.Action.Put
         public string? Nom { get; set; }
 
         /// <summary>
-        /// Spécifie les ip qui peuvent créer des opérations d'alimentation pour cette érablière.
+        /// Spécifie les ip qui peuvent créer des opérations d'alimentation pour cette érablière. Doivent être séparé par des ';'
         /// </summary>
         [MaxLength(50)]
-        public string? IpRules { get; set; }
+        public string? IpRule { get; set; }
 
         /// <summary>
         /// Un indice permettant l'affichage des érablières dans l'ordre précisé.
