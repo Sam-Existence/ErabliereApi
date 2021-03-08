@@ -23,7 +23,7 @@ COPY ErabliereApi/. ./ErabliereApi/
 COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 
 WORKDIR /app/ErabliereApi
-RUN dotnet publish -c Release -f net5.0 -o out
+RUN dotnet publish -c Release -o out
 
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0

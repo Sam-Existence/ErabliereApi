@@ -183,7 +183,7 @@ namespace ErabliereApi
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapSwagger("api/{documentName}/swagger.json", Swagger.ConfigureSwaggerEndpointsOption);
+                endpoints.MapSwagger("api/{documentName}/swagger.json");
             });
         }
     }

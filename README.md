@@ -68,3 +68,7 @@ ng build --prod
 sudo rm /var/www/html/*
 sudo cp dist/ErabliereIU/* /var/www/html/
 ```
+
+### Documentation sur les configuration réseau ubuntu server
+
+https://netplan.io/examples/

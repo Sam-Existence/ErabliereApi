@@ -31,10 +31,6 @@ spec:
           value: "*"
         - name: CORS_METHODS
           value: "*"
-        - name: USE_SWAGGER_SERVER_SECTION
-          value: "false"
-        - name: SWAGGER_SERVER_URL
-          value: "-"
         - name: SWAGGER_XSRF_TOKEN_INTERCEPTOR
           value: "false"
         - name: USE_SQL
@@ -50,9 +46,9 @@ spec:
         - name: USE_AUTHENTICATION
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
-          value: "false"
-        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
           value: "true"
+        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
+          value: "false"
         - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
           value: "false"
         - name: USE_SWAGGER_PKCE

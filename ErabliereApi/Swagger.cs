@@ -119,7 +119,7 @@ namespace ErabliereApi
                             {
                                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                             },
-                            new[] { "openid", "offline", "offline_access" }
+                            new[] { "openid", "offline", "offline_access", "profile" }
                         }
                     });
 
@@ -156,7 +156,7 @@ namespace ErabliereApi
                     c.OAuthClientSecret(GetEnvironmentVariable("OIDC_CLIENT_PASSWORD"));
                     c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
                     c.OAuthAppName("ÉrablièreAPI - Swagger");
-                    c.OAuthScopes("offline", "offline_access", "openid");
+                    c.OAuthScopes("offline", "offline_access", "openid", "profile");
 
                     if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
                     {
@@ -171,34 +171,6 @@ namespace ErabliereApi
             });
 
             return app;
-        }
-
-        /// <summary>
-        /// Configurer les options des points de terminaisons swagger.
-        /// </summary>
-        public static void ConfigureSwaggerEndpointsOption(SwaggerEndpointOptions options)
-        {
-            if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_SERVER_SECTION"), TrueString, OrdinalIgnoreCase))
-            {
-                options.PreSerializeFilters.Add((swagger, httpReq) =>
-                {
-                    var serverUrl = GetEnvironmentVariable("SWAGGER_SERVER_URL");
-
-                    if (string.IsNullOrWhiteSpace(serverUrl))
-                    {
-                        serverUrl = $"{httpReq.Scheme}://{httpReq.Host.Value}";
-                    }
-
-                    swagger.Servers = new List<OpenApiServer> { new OpenApiServer { Url = serverUrl } };
-                });
-            }
-            else
-            {
-                options.PreSerializeFilters.Add((swagger, httpReq) =>
-                {
-                    swagger.Servers.Clear();
-                });
-            }
         }
     }
 }
