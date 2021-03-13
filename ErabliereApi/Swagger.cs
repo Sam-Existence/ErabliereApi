@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -119,11 +118,12 @@ namespace ErabliereApi
                             {
                                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                             },
-                            new[] { "openid", "offline", "offline_access", "profile" }
+                            new[] { "openid", "offline", "offline_access" }
                         }
                     });
 
                     c.OperationFilter<AuthorizeCheckOperationFilter>();
+                    c.OperationFilter<ValiderIPRulesOperationFilter>();
                 }
 
                 // Set the comments path for the Swagger JSON and UI.
@@ -143,6 +143,11 @@ namespace ErabliereApi
         /// <param name="app"></param>
         public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app)
         {
+            app.UseSwagger(c =>
+            {
+                c.RouteTemplate = "api/{documentName}/swagger.json";
+            });
+
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("v1/swagger.json", "ÉrablièreAPI V1");
@@ -152,11 +157,11 @@ namespace ErabliereApi
 
                 if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
                 {
+                    c.OAuthAppName("ÉrablièreAPI - Swagger");
                     c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
                     c.OAuthClientSecret(GetEnvironmentVariable("OIDC_CLIENT_PASSWORD"));
                     c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
-                    c.OAuthAppName("ÉrablièreAPI - Swagger");
-                    c.OAuthScopes("offline", "offline_access", "openid", "profile");
+                    c.OAuthScopes("offline", "offline_access", "openid");
 
                     if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
                     {

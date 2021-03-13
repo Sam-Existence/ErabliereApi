@@ -15,11 +15,18 @@ spec:
       labels:
         app: erabliereapi
     spec:
+      volumes:
+      - name: email-config-secret
+        secret:
+          secretName: erabliereapi-email-config
       containers:
       - name: erabliereapi
         image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{IMAGE_TAG}
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: email-config-secret
+          mountPath: /app/secret
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
@@ -46,9 +53,9 @@ spec:
         - name: USE_AUTHENTICATION
           value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
-          value: "true"
-        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
           value: "false"
+        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
+          value: "true"
         - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
           value: "false"
         - name: USE_SWAGGER_PKCE
@@ -67,3 +74,6 @@ spec:
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
           value: "https://erabliereapi.freddycoder.com"
+        - name: EMAIL_CONFIG_PATH
+          value: "/app/secret/configEmail.json"
+        

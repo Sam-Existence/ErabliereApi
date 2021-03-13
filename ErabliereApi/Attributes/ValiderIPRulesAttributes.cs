@@ -1,6 +1,4 @@
-﻿using ErabliereApi.Depot;
-using ErabliereApi.Depot.Sql;
-using ErabliereApi.Donnees;
+﻿using ErabliereApi.Depot.Sql;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;

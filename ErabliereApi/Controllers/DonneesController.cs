@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ErabliereApi.Attributes;
+using ErabliereApi.Controllers.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
@@ -90,6 +91,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donneeRecu">La donnée à ajouter</param>
         [HttpPost]
         [ValiderIPRules]
+        [TriggerAlert]
         public async Task<IActionResult> Ajouter(int id, PostDonnee donneeRecu)
         {
             if (id != donneeRecu.IdErabliere)
