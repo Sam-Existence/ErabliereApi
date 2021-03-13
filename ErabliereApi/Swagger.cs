@@ -124,6 +124,8 @@ namespace ErabliereApi
 
                     c.OperationFilter<AuthorizeCheckOperationFilter>();
                     c.OperationFilter<ValiderIPRulesOperationFilter>();
+
+                    c.OrderActionsBy(description => description.RelativePath);
                 }
 
                 // Set the comments path for the Swagger JSON and UI.

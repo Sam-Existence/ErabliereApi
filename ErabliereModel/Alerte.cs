@@ -11,9 +11,14 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Une liste d'adresse email séparer par des ';'
         /// </summary>
+        /// <example>exemple@courriel.com;exemple2@courriel.com</example>
         [MaxLength(50)]
         public string? EnvoyerA { get; set; }
 
+        /// <summary>
+        /// Si une temperature est reçu et que celle-ci est plus grande que cette valeur, cette validation sera évaluer à vrai.
+        /// </summary>
+        /// <example>0</example>
         [MaxLength(50)]
         public string? TemperatureThresholdLow { get; set; }
 
@@ -23,6 +28,10 @@ namespace ErabliereApi.Donnees
         [MaxLength(50)]
         public string? VacciumThresholdLow { get; set; }
 
+        /// <summary>
+        /// Si un vaccium est reçu et que celui-ci est plus petit que cette valeur, cette validation sera évaluer à vrai.
+        /// </summary>
+        /// <example>200</example>
         [MaxLength(50)]
         public string? VacciumThresholdHight { get; set; }
 

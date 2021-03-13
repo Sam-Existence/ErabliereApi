@@ -32,6 +32,7 @@ namespace ErabliereApi.Controllers
         /// Liste les Alertes
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
+        /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
         /// <response code="200">Une liste d'alerte potentiellement vide.</response>
         [HttpGet]
         public IEnumerable<Alerte> Lister([DefaultValue(0)] int id)
@@ -42,8 +43,9 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Ajouter une Alerte
         /// </summary>
+        /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
         /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="alerte"></param>
+        /// <param name="alerte">Les paramètres de l'alerte</param>
         /// <response code="200">L'alerte a été correctement ajouter.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
         [HttpPost]

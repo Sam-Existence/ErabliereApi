@@ -75,5 +75,5 @@ spec:
         - name: OIDC_AUTHORITY
           value: "https://erabliereapi.freddycoder.com"
         - name: EMAIL_CONFIG_PATH
-          value: "/app/secret/configEmail.json"
+          value: "/app/secret/emailConfig.json"
         

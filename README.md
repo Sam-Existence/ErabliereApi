@@ -1,7 +1,7 @@
 # ErabliereApi
 API Pour receuillir et centraliser les informations des appeils dans des érablières.
 
-Démo : https://erabliereapi.freddycoder.com
+App : https://erabliereapi.freddycoder.com
 
 Documentation swagger : https://erabliereapi.freddycoder.com/api/index.html
 
@@ -72,3 +72,9 @@ sudo cp dist/ErabliereIU/* /var/www/html/
 ### Documentation sur les configuration réseau ubuntu server
 
 https://netplan.io/examples/
+
+### Configuration office365
+
+https://www.powershellgallery.com/packages/ExchangeOnlineManagement/2.0.4
+
+https://docs.microsoft.com/en-us/powershell/exchange/connect-to-exchange-online-powershell?view=exchange-ps

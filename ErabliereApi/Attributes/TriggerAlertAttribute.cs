@@ -12,6 +12,7 @@ using System.Text.Json;
 using static System.Text.Json.JsonSerializer;
 using static System.Environment;
 using static System.IO.File;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers.Attributes
 {
@@ -54,7 +55,7 @@ namespace ErabliereApi.Controllers.Attributes
 
                     var depot = context.HttpContext.RequestServices.GetService(typeof(ErabliereDbContext)) as ErabliereDbContext ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(ErabliereDbContext)}.");
 
-                    var alertes = depot.Alertes.Where(a => a.IdErabliere == _idErabliere).ToArray();
+                    var alertes = depot.Alertes.AsNoTracking().Where(a => a.IdErabliere == _idErabliere).ToArray();
 
                     for (int i = 0; i < alertes.Length; i++)
                     {
