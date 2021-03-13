@@ -16,8 +16,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 sensor = MotionSensor(14)
 
 # Detection dompeux settings
-threshold_seconds = 11
-min_element = 5
+threshold_seconds = 10
+min_element = 6
 collect = []
 scheduler = BackgroundScheduler()
 
@@ -32,19 +32,22 @@ if len(sys.argv) > 2:
     idErabliere = sys.argv[2]
 
 def send_data():
-    # todo : le timezone dans la date est incorrect.
     print('dompeux is over, sending data...')
     url = urlBase + "/erablieres/" + idErabliere + "/dompeux"
     print(url)
     donnees = {'idErabliere': int(idErabliere),
                'dd': collect[0].isoformat(),
                'df': collect[len(collect)-1].isoformat()}
-    h = {"Content-Type":"Application/json"}
-    print(json.dumps(donnees))
-    r = requests.post(url, json = donnees, headers = h, timeout = 2)
-    print(r.status_code)
-    print(r.text)
-    print('done.')
+
+    if donnees['dd'] == donnees['df']:
+        print("Not a real donnees. Edge case of the script and the sensor")
+    else:
+        h = {"Content-Type":"Application/json"}
+        print(json.dumps(donnees))
+        r = requests.post(url, json = donnees, headers = h, timeout = 2)
+        print(r.status_code)
+        print(r.text)
+        print('done.')
 
 def on_motion():
     de = dt.now(timezone.utc).astimezone()
@@ -81,4 +84,4 @@ sensor.when_motion = on_motion
 sensor.when_no_motion = no_motion
 scheduler.start()
 print('Press Ctrl+C to exit\n\n')
-sleep(60*24*200)
+sleep(60*60*24*200)
