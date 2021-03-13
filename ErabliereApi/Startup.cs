@@ -108,7 +108,14 @@ namespace ErabliereApi
             });
 
             // Database
-            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_SQL"), FalseString, OrdinalIgnoreCase))
+            {
+                services.AddDbContext<ErabliereDbContext>(options =>
+                {
+                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                });
+            }
+            else
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
@@ -118,13 +125,6 @@ namespace ErabliereApi
                     {
                         options.LogTo(Console.WriteLine, LogLevel.Information);
                     }
-                });
-            }
-            else
-            {
-                services.AddDbContext<ErabliereDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
                 });
             }
         }

@@ -12,7 +12,7 @@ namespace ErabliereApi.Donnees
         /// Une liste d'adresse email séparer par des ';'
         /// </summary>
         /// <example>exemple@courriel.com;exemple2@courriel.com</example>
-        [MaxLength(50)]
+        [MaxLength(200)]
         public string? EnvoyerA { get; set; }
 
         /// <summary>
