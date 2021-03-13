@@ -140,7 +140,9 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
             }
 
-            _context.Remove(erabliere);
+            var entity = _context.Erabliere.Find(erabliere.Id);
+
+            _context.Remove(entity);
 
             _context.SaveChanges();
 
