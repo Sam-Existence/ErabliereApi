@@ -51,7 +51,7 @@ spec:
         - name: LOG_SQL
           value: "-"
         - name: USE_AUTHENTICATION
-          value: "true"
+          value: "false"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
           value: "true"
         - name: USE_SWAGGER_IMPLICIT_WORKFLOW
@@ -59,7 +59,7 @@ spec:
         - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
           value: "false"
         - name: USE_SWAGGER_PKCE
-          value: "true"
+          value: "false"
         - name: SWAGGER_AUTHORIZATION_URL
           value: "https://erabliereapi.freddycoder.com/oauth2/auth"
         - name: SWAGGER_TOKEN_URL
