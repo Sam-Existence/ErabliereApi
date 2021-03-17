@@ -41,12 +41,19 @@ namespace ErabliereApi.Controllers
         /// <param name="df">La date de fin</param>
         /// <param name="q">La quantité de donnée retourné</param>
         /// <param name="o">L'ordre des dompeux par date d'occurence. "c" = croissant, "d" = décoissant. </param>
+        /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
         /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<GetDompeux> Lister(int id, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o = "c")
+        public IEnumerable<GetDompeux> Lister(int id,
+                                              [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr, 
+                                              DateTimeOffset? dd, 
+                                              DateTimeOffset? df, 
+                                              int? q, 
+                                              string? o = "c")
         {
             var query = _context.Dompeux.AsNoTracking()
                                         .Where(d => d.IdErabliere == id &&
+                                               (ddr == null || d.T > ddr) &&
                                                (dd == null || d.T >= dd) &&
                                                (df == null || d.T <= df));
 
@@ -60,7 +67,18 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            return query.Select(d => _mapper.Map<GetDompeux>(d));
+            var list = query.Select(d => _mapper.Map<GetDompeux>(d)).ToArray();
+
+            if (o == "c" && list.Length > 0)
+            {
+                if (ddr.HasValue)
+                {
+                    HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
+                }
+                HttpContext.Response.Headers.Add("x-dde", list[^1].T.ToString());
+            }
+
+            return list;
         }
 
         /// <summary>

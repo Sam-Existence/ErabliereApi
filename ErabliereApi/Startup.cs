@@ -71,17 +71,19 @@ namespace ErabliereApi
                     options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
                 })
-                .AddCookie()
                 .AddOpenIdConnect(o =>
                 {
-                    o.ClientId = GetEnvironmentVariable("OIDC_CLIENT_ID");
-                    o.ClientSecret = GetEnvironmentVariable("OIDC_CLIENT_PASSWORD");
+                    o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                     o.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-                    o.RequireHttpsMetadata = true;
-
-                    o.AuthenticationMethod = OpenIdConnectRedirectBehavior.RedirectGet;
-                    o.ResponseMode = OpenIdConnectResponseMode.Fragment;
-                    o.ResponseType = OpenIdConnectResponseType.Code;
+                    o.ClientId = GetEnvironmentVariable("OIDC_CLIENT_ID");
+                    o.ResponseType = "code";
+                    o.UsePkce = true;
+                    o.Scope.Add("offline_access");
+                    o.Scope.Add("offline");
+                    o.Scope.Add("profile");
+                    o.Scope.Add("openid");
+                    o.SaveTokens = true;
+                    o.ClientSecret = GetEnvironmentVariable("OIDC_CLIENT_PASSWORD");
                 });
             }
             else

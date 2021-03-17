@@ -90,7 +90,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"redirect_uris\": [\"https://localhost:5001/api/oauth2-redirect.html\",\"https://localhost:5001/signin-oidc\"],\r\n    \"audience\": [\"http://erabliere-api\"],\r\n    \"scope\": \"offline_access offline openid profile\",\r\n    \"grant_types\": [\"implicit\",\"authorization_code\",\"client_credentials\"],\r\n    \"allowed_cors_origins\": [\"https://localhost:5001\"],\r\n    \"response_types\": [\"token\",\"code\"]\r\n}",
+					"raw": "{\r\n    \"redirect_uris\": [\"https://localhost:5001/api/oauth2-redirect.html\"],\r\n    \"audience\": [\"http://erabliere-api\"],\r\n    \"scope\": \"offline_access offline openid profile\",\r\n    \"grant_types\": [\"authorization_code\"],\r\n    \"allowed_cors_origins\": [\"https://localhost:5001\"],\r\n    \"response_types\": [\"code\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -120,7 +120,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"redirect_uris\": [\"https://erabliereapi.freddycoder.com/api/oauth2-redirect.html\"],\r\n    \"audience\": [\"http://erabliere-api\"],\r\n    \"grant_types\": [\"implicit\"],\r\n    \"response_types\": [\"token\"]\r\n}",
+					"raw": "{\r\n    \"redirect_uris\": [\"https://erabliereapi.freddycoder.com/api/oauth2-redirect.html\"],\r\n    \"audience\": [\"http://erabliere-api\"],\r\n    \"grant_types\": [\"authorization_code\"],\r\n    \"response_types\": [\"code\"]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
