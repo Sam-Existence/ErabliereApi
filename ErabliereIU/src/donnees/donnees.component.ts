@@ -131,6 +131,7 @@ export class DonneesComponent implements OnInit {
               
               dompeux[0].data.forEach((d:number) => this.dompeux[0].data?.push(d));
               timeaxes_dompeux.forEach((t: Label) => this.timeaxes_dompeux?.push(t));
+              idsDompeux.forEach((n: number) => this.idsDompeux.push(n));
 
               while (this.timeaxes_dompeux.length > 0 &&
                 new Date(this.timeaxes_dompeux[0].toString()) < new Date(debutFiltre)) {
