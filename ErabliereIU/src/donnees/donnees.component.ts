@@ -123,8 +123,10 @@ export class DonneesComponent implements OnInit {
             
               if (idsDompeux.length > 0 && this.idsDompeux[this.idsDompeux.length - 1] === idsDompeux[0]) {
                 this.dompeux[0].data?.pop();
+                this.timeaxes_dompeux.pop();
 
-                this.dompeux[0].data?.push(dompeux[0].data.shift())
+                this.dompeux[0].data?.push(dompeux[0].data.shift());
+                this.timeaxes_dompeux.push(timeaxes_dompeux.shift());
               }
               
               dompeux[0].data.forEach((d:number) => this.dompeux[0].data?.push(d));
