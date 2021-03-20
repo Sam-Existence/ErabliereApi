@@ -1,6 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label } from 'ng2-charts';
+import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'bar-panel',
@@ -21,7 +21,7 @@ import { Color, Label } from 'ng2-charts';
 
             </div>
             <div class="chart-wrapper">
-                <canvas baseChart 
+                <canvas baseChart class="chart"
                     [datasets]="datasets" 
                     [labels]="timeaxes" 
                     [options]="lineChartOptions"
@@ -35,6 +35,8 @@ import { Color, Label } from 'ng2-charts';
     `
 })
 export class BarPannelComponent {
+    @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
+
     @Input() datasets: ChartDataSets[] = [];
 
     @Input() timeaxes: Label[] = [];
@@ -67,5 +69,5 @@ export class BarPannelComponent {
     @Input() valeurActuel:string = "";
     @Input() symbole:string = "";
 
-    constructor() { }
+    constructor() { this.chart = undefined; }
 }

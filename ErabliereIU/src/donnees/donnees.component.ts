@@ -48,8 +48,11 @@ export class DonneesComponent implements OnInit {
 
       derniereDonneeRecu?:string = undefined;
       ddr?:string = undefined;
+      dernierDompeuxRecu?:string = undefined;
+      ddrDompeux?:string = undefined;
 
       ids:Array<number> = []
+      idsDompeux:Array<number> = []
 
       titre_temperature = "Temperature"
       temperature: ChartDataSets[] = []
@@ -95,15 +98,53 @@ export class DonneesComponent implements OnInit {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
         let finFiltre = new Date().toISOString();
 
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre)
-          .then(e => e.json())
-          .then(e => {
-              this.dompeux = [
-                  { data: e.map((ee: { id: number, t: string, dd:string, df:string }) => (new Date(ee.df).getTime() - new Date(ee.dd).getTime()) / 1000), label: 'Durée en seconde' }
-              ];
+        var h = new Headers();
+        if (this.dernierDompeuxRecu != undefined) {
+          h.append("x-ddr", this.dernierDompeuxRecu.toString());
+        }
 
-              this.timeaxes_dompeux = e.map((ee: { t: string;}) => new Date(ee.t).toLocaleTimeString());
-          });
+        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, { headers: h })
+        .then(e => {
+          this.dernierDompeuxRecu = e.headers.get("x-dde")?.valueOf();
+          this.ddrDompeux = e.headers.get("x-ddr")?.valueOf();
+
+          return e.json();
+        })
+        .then(e => {
+            let idsDompeux = e.map((ee: { id:number }) => ee.id);
+
+            let dompeux = [
+              { data: e.map((ee: { id: number, t: string, dd:string, df:string }) => (new Date(ee.df).getTime() - new Date(ee.dd).getTime()) / 1000), label: 'Durée en seconde' }
+            ];
+
+            let timeaxes_dompeux = e.map((ee: { t: string;}) => new Date(ee.t).toLocaleTimeString());
+
+            if (h.has("x-ddr") && this.ddrDompeux != undefined && h.get("x-ddr")?.valueOf() == this.ddrDompeux) {
+            
+              if (idsDompeux.length > 0 && this.idsDompeux[this.idsDompeux.length - 1] === idsDompeux[0]) {
+                console.log("Last dompeux ID does not changed, update value...");
+
+                this.dompeux[0].data?.pop();
+
+                this.dompeux[0].data?.push(dompeux[0].data.shift())
+              }
+              
+              dompeux[0].data.forEach((d:number) => this.dompeux[0].data?.push(d));
+              timeaxes_dompeux.forEach((t: Label) => this.timeaxes_dompeux?.push(t));
+
+              while (this.timeaxes_dompeux.length > 0 &&
+                new Date(this.timeaxes_dompeux[0].toString()) < new Date(debutFiltre)) {
+                this.timeaxes_dompeux.shift();
+                this.dompeux[0].data?.shift();
+                this.idsDompeux.shift();
+              }
+            }
+            else {
+              this.dompeux = dompeux;
+              this.timeaxes_dompeux = timeaxes_dompeux;
+              this.idsDompeux = idsDompeux;
+            }
+        });
       }
 
       doHttpCall(derniereDonneeRecu:any = undefined) {

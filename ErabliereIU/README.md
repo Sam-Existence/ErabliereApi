@@ -1,27 +1,31 @@
 # ErabliereIU
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
+> This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 11.0.7.
 
-## Development server
+Projet contenant le projet d'interface graphique de ErabliereAPI.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Installer les dépendances
 
-## Code scaffolding
+Il faut avoir node js d'installé sur votre poste. https://nodejs.org
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+npm install
+```
 
-## Build
+## Executer le projet avec npm
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+```
+npm start
+```
 
-## Running unit tests
+## Utiliser les mecanismes d'optimisation en développement
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+L'api utilise des entêtes http pour optimiser la quantitée de données échanger. Les politiques CORS empêche les entêtes d'être lu par le navigateur lorque là requête vient d'un autre origine. Pour tester les mecanismes en développement, executer la commande suivante :
 
-## Running end-to-end tests
+```
+ng build --output-path="..\ErabliereApi\wwwroot\."
+```
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+Démarrer le projet ErabliereApi.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+Pour plus d'info sur les entêtes, rechercher ```x-ddr``` et ```x-dde``` dans le repository ou consulter la page <a href="https://erabliereapi.freddycoder.com/api/index.html" tagert="_blank">swagger</a> pour les actions GET Dompeux et GET Donnees.
