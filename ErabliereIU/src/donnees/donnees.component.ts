@@ -122,8 +122,6 @@ export class DonneesComponent implements OnInit {
             if (h.has("x-ddr") && this.ddrDompeux != undefined && h.get("x-ddr")?.valueOf() == this.ddrDompeux) {
             
               if (idsDompeux.length > 0 && this.idsDompeux[this.idsDompeux.length - 1] === idsDompeux[0]) {
-                console.log("Last dompeux ID does not changed, update value...");
-
                 this.dompeux[0].data?.pop();
 
                 this.dompeux[0].data?.push(dompeux[0].data.shift())
