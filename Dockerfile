@@ -8,7 +8,7 @@ COPY ErabliereIU/ .
 RUN ng build --prod
 
 # Build the api
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
 COPY *.sln  .
@@ -26,7 +26,7 @@ WORKDIR /app/ErabliereApi
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-env /app/ErabliereApi/out ./
 COPY --from=andular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
