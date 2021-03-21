@@ -47,7 +47,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
         [ProducesResponseType(200, Type = typeof(GetDonnee))]
         [HttpGet]
-        public IActionResult Lister(int id,
+        public async Task<IActionResult> Lister(int id,
                                     [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                     DateTimeOffset? dd, 
                                     DateTimeOffset? df, 
@@ -70,7 +70,7 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            var list = query.ToArray();
+            var list = await query.ToArrayAsync();
 
             if (o == "c" && list.Length > 0)
             {

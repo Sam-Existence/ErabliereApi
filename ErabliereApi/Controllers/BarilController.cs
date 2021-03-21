@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
 {
@@ -35,12 +36,13 @@ namespace ErabliereApi.Controllers
         /// <param name="df">Utiliser ce paramètre pour obtenir les barils avec une date plus petite ou égal au paramètre passé.</param>
         /// <response code="200">Une liste de baril potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<Baril> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df)
+        public async Task<IEnumerable<Baril>> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df)
         {
-            return _depot.Barils.AsNoTracking()
+            return await _depot.Barils.AsNoTracking()
                                 .Where(b => b.IdErabliere == id &&
                                        (dd == null || b.DF >= dd) &&
-                                       (df == null || b.DF <= df));
+                                       (df == null || b.DF <= df))
+                                .ToArrayAsync();
         }
 
         /// <summary>

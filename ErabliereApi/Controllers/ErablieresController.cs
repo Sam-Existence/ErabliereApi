@@ -38,9 +38,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Une liste d'érablière</returns>
         [HttpGet]
-        public IEnumerable<Erabliere> Lister()
+        public async Task<IEnumerable<Erabliere>> Lister()
         {
-            return _context.Erabliere.AsNoTracking().ToArray().OrderBy(e => e);
+            return (await _context.Erabliere.AsNoTracking().ToArrayAsync()).OrderBy(e => e);
         }
 
         /// <summary>

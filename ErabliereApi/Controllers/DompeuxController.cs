@@ -44,7 +44,7 @@ namespace ErabliereApi.Controllers
         /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
         /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
-        public IEnumerable<GetDompeux> Lister(int id,
+        public async Task<IEnumerable<GetDompeux>> Lister(int id,
                                               [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr, 
                                               DateTimeOffset? dd, 
                                               DateTimeOffset? df, 
@@ -67,7 +67,7 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            var list = query.Select(d => _mapper.Map<GetDompeux>(d)).ToArray();
+            var list = await query.Select(d => _mapper.Map<GetDompeux>(d)).ToArrayAsync();
 
             if (o == "c" && list.Length > 0)
             {
