@@ -1,0 +1,58 @@
+name: ServeurIdentite
+
+on: 
+  workflow_dispatch:
+    inputs:
+      note:
+        description: 'Note sur le déploiement'  
+
+env:
+  REGISTRY_HOSTNAME: freddycontainers.azurecr.io
+  IMAGE_NAME: serveuridentite
+  IMAGE_TAG: ${{ github.run_id }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Login into acr
+      - name: Login into ACR
+        run: echo ${{ secrets.registryPassword }} | docker login $REGISTRY_HOSTNAME -u ${{ secrets.registryUsername }} --password-stdin
+
+      # Build the image
+      - name: Docker build
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG ./IdentityServer/ErabliereApi.IdentityServer/.
+        
+      # Tag the images
+      - name: Docker tag
+        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
+
+      # Push the image
+      - name: Docker push
+        run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
+
+      # Connect to Azure Kubernetes
+      - name: Azure Kubernetes set context
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          resource-group: 'webapidesign'
+          cluster-name: 'kubem'
+          
+      # Replace variable in kubernetes file
+      - name: Replace variable in k8s file
+        uses: cschleiden/replace-tokens@v1.0
+        with:
+          tokenPrefix: '#{'
+          tokenSuffix: '}'
+          files: './Infrastructure/serveur-identite-deployment.yaml'
+
+      # Deploy to kubernetes
+      - name: Kubectl apply
+        run: |
+          kubectl config current-context
+          kubectl apply -f ./Infrastructure/serveur-identite-service.yaml
+          kubectl apply -f ./Infrastructure/serveur-identite-deployment.yaml

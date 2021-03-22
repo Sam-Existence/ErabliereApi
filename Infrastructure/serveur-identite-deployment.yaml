@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serveur-identite-deployment
+  labels:
+    app: serveuridentite
+  namespace: erabliere-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: serveuridentite
+  template:
+    metadata:
+      labels:
+        app: serveuridentite
+    spec:
+      containers:
+      - name: serveuridentite
+        image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{IMAGE_TAG}
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
