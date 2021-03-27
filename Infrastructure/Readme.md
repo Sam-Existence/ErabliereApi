@@ -71,13 +71,14 @@ Remplacer \<base64-string\> par le résultat sur une seule ligne pour obtenir un
 > Pour les utilisateur de powerhsell : https://adsecurity.org/?p=478
 
 ```
-kind: Secret
+kind: ConfigMap
 apiVersion: v1
 metadata:
   name: identity-server-clients
   namespace: erabliere-api
-type: Opaque
 data:
-  ErabliereApi.IdentityServer.Config.json: <base64-string>
-  ErabliereApi.IdentityServer.Users.json: <base64-string>
+  ErabliereApi.IdentityServer.Config.json: |
+    ...
+  ErabliereApi.IdentityServer.Users.json: |
+    ...
 ```
