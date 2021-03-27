@@ -31,4 +31,4 @@ spec:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
         - name: SECRETS_FOLDER
-          value: "/app/secret"
+          value: ""

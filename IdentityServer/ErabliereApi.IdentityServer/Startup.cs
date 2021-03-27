@@ -7,7 +7,6 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using System;
-using System.Globalization;
 using System.IO;
 
 namespace ErabliereApi.IdentityServer
