@@ -29,6 +29,6 @@ spec:
           mountPath: /app/secrets
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: "Production"
+          value: "Development"
         - name: SECRETS_FOLDER
           value: "/app/secrets"
