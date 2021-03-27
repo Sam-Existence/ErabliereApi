@@ -15,11 +15,20 @@ spec:
       labels:
         app: serveuridentite
     spec:
+      volumes:
+      - name: identity-server-clients-files
+        secret:
+          secretName: identity-server-clients
       containers:
       - name: serveuridentite
         image: #{REGISTRY_HOSTNAME}/#{IMAGE_NAME}:#{IMAGE_TAG}
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: identity-server-clients-files
+          mountPath: /app/secret
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Production"
+        - name: SECRETS_FOLDER
+          value: "/app/secret"

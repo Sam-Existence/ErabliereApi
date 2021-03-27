@@ -14,13 +14,6 @@ namespace ErabliereApi.IdentityServer
 {
     public class Startup
     {
-        public IWebHostEnvironment Environment { get; }
-
-        public Startup(IWebHostEnvironment environment)
-        {
-            Environment = environment;
-        }
-
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
@@ -39,12 +32,23 @@ namespace ErabliereApi.IdentityServer
 
             try
             {
-                config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("ErabliereApi.IdentityServer.Config.json"), deserializerOptions);
-                users = JsonConvert.DeserializeObject<AppUsers>(File.ReadAllText("ErabliereApi.IdentityServer.Users.json"), deserializerOptions);
+                var prefixPath = Environment.GetEnvironmentVariable("SECRETS_FOLDER");
+
+                var configFileName = "ErabliereApi.IdentityServer.Config.json";
+                var usersFileName = "ErabliereApi.IdentityServer.Users.json";
+
+                if (string.IsNullOrWhiteSpace(prefixPath) == false)
+                {
+                    configFileName = Path.Combine(prefixPath, configFileName);
+                    usersFileName = Path.Combine(prefixPath, usersFileName);
+                }
+
+                config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(configFileName), deserializerOptions);
+                users = JsonConvert.DeserializeObject<AppUsers>(File.ReadAllText(usersFileName), deserializerOptions);
             }
             catch (Exception e)
             {
-                Log.Fatal(e, "Config or User file cannor be deserialized.");
+                Log.Fatal(e, "Config or Users file cannor be deserialized.");
 
                 throw;
             }
@@ -64,9 +68,9 @@ namespace ErabliereApi.IdentityServer
             builder.AddDeveloperSigningCredential();
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
         {
-            if (Environment.IsDevelopment())
+            if (environment.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
