@@ -68,6 +68,8 @@ Pour transformer ce fichier json en base64 utiliser ```base64 <path-fichier-conf
 
 Remplacer \<base64-string\> par le résultat sur une seule ligne pour obtenir un secret valide pour la fonctionnalité d'alerte
 
+> Pour les utilisateur de powerhsell : https://adsecurity.org/?p=478
+
 ```
 kind: Secret
 apiVersion: v1

@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.IO;
-using System.Text.Json;
 
 namespace ErabliereApi.IdentityServer
 {
@@ -43,8 +42,15 @@ namespace ErabliereApi.IdentityServer
                     usersFileName = Path.Combine(prefixPath, usersFileName);
                 }
 
-                config = JsonConvert.DeserializeObject<Config>(File.ReadAllText(configFileName), deserializerOptions);
-                users = JsonConvert.DeserializeObject<AppUsers>(File.ReadAllText(usersFileName), deserializerOptions);
+                Console.WriteLine("Deserialize : " + configFileName);
+                var configFile = File.ReadAllText(configFileName);
+                Console.WriteLine(configFile);
+                config = JsonConvert.DeserializeObject<Config>(configFile, deserializerOptions);
+
+                Console.WriteLine("Deserialize : " + usersFileName);
+                var usersFile = File.ReadAllText(usersFileName);
+                Console.WriteLine(usersFile);
+                users = JsonConvert.DeserializeObject<AppUsers>(usersFile, deserializerOptions);
             }
             catch (Exception e)
             {
