@@ -4,11 +4,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
-using ErabliereApi.Donnees.Action.Post;
-using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.AutoMapper;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
-using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Logging;
 using static System.Boolean;
@@ -80,13 +78,7 @@ namespace ErabliereApi
             }
 
             // Automapper
-            services.AddAutoMapper(config =>
-            {
-                config.CreateMap<Dompeux, GetDompeux>();
-
-                config.CreateMap<PostErabliere, Erabliere>();
-                config.CreateMap<PostDonnee, Donnee>();
-            });
+            services.AjouterAutoMapperErabliereApiDonnee();
 
             // Database
             if (string.Equals(GetEnvironmentVariable("USE_SQL"), FalseString, OrdinalIgnoreCase))

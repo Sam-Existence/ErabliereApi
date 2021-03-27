@@ -50,7 +50,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">L'érablière a été correctement ajouté</response>
         /// <response code="400">Le nom de l'érablière est null ou vide ou un érablière avec le nom reçu existe déjà.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(PostErabliere erablieres)
+        public async Task<ActionResult> Ajouter(PostErabliere erablieres)
         {
             if (string.IsNullOrWhiteSpace(erablieres.Nom))
             {

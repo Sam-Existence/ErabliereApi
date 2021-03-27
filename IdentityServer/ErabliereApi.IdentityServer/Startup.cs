@@ -1,12 +1,13 @@
-﻿// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
-using IdentityServerHost.Quickstart.UI;
+﻿using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json;
+using Serilog;
+using System;
+using System.IO;
+using System.Text.Json;
 
 namespace ErabliereApi.IdentityServer
 {
@@ -23,16 +24,34 @@ namespace ErabliereApi.IdentityServer
         {
             services.AddControllersWithViews();
 
+            Config config;
+            AppUsers users;
+
+            var deserializerOptions = new JsonSerializerSettings();
+            deserializerOptions.Converters.Add(new ClaimConverter());
+
+            try
+            {
+                config = JsonConvert.DeserializeObject<Config>(File.ReadAllText("ErabliereApi.IdentityServer.Config.json"), deserializerOptions);
+                users = JsonConvert.DeserializeObject<AppUsers>(File.ReadAllText("ErabliereApi.IdentityServer.Users.json"), deserializerOptions);
+            }
+            catch (Exception e)
+            {
+                Log.Fatal(e, "Config or User file cannor be deserialized.");
+
+                throw;
+            }
+
             var builder = services.AddIdentityServer(options =>
             {
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })
-                .AddInMemoryIdentityResources(Config.Ids)
-                .AddInMemoryApiResources(Config.Apis)
-                .AddInMemoryApiScopes(Config.Scopes)
-                .AddInMemoryClients(Config.Clients)
-                .AddTestUsers(TestUsers.Users);
+                .AddInMemoryIdentityResources(config.Ids)
+                .AddInMemoryApiResources(config.Apis)
+                .AddInMemoryApiScopes(config.Scopes)
+                .AddInMemoryClients(config.Clients)
+                .AddTestUsers(users.Users);
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();

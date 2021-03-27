@@ -761,6 +761,29 @@
 			]
 		}
 	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"console.log(\"Requete : \");",
+					"console.log(pm.request.body);",
+					"console.log(\"Reponse : \");",
+					"console.log(pm.response.text());"
+				]
+			}
+		}
+	],
 	"variable": [
 		{
 			"key": "nombreErabliere",
@@ -768,23 +791,23 @@
 		},
 		{
 			"key": "nomErabliere",
-			"value": "connecting wireless Ergonomic whiteboard Practical"
+			"value": "optimal Wisconsin Keyboard"
 		},
 		{
 			"key": "idErabliere",
-			"value": 1
+			"value": 16
 		},
 		{
 			"key": "dateDonnee",
-			"value": "2021-03-20T20:53:08.550Z"
+			"value": "2021-03-20T12:41:35.238Z"
 		},
 		{
 			"key": "dd",
-			"value": "2021-03-20T20:52:08.550Z"
+			"value": "2021-03-27T02:12:25.613Z"
 		},
 		{
 			"key": "de",
-			"value": "2021-03-20T20:53:08.550Z"
+			"value": "2021-03-27T02:13:25.613Z"
 		}
 	]
 }
