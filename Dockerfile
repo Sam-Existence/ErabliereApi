@@ -11,12 +11,13 @@ RUN ng build --prod
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
 WORKDIR /app
 
-COPY *.sln  .
 COPY ErabliereModel/*.csproj ./ErabliereModel/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
 COPY ErabliereApi.Test/*.csproj ./ErabliereApi.Test/
 
-RUN dotnet restore
+RUN dotnet restore ErabliereModel/*.csproj
+RUN dotnet restore ErabliereApi/*.csproj
+RUN dotnet restore ErabliereApi.Test/*.csproj
 
 COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
