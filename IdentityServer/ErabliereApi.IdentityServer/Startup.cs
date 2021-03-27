@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
 using Serilog;
 using System;
+using System.Globalization;
 using System.IO;
 
 namespace ErabliereApi.IdentityServer
@@ -26,7 +27,10 @@ namespace ErabliereApi.IdentityServer
             Config config;
             AppUsers users;
 
-            var deserializerOptions = new JsonSerializerSettings();
+            var deserializerOptions = new JsonSerializerSettings
+            {
+                
+            };
             deserializerOptions.Converters.Add(new ClaimConverter());
 
             try
