@@ -1,4 +1,3 @@
-using ErabliereApi.Depot;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,9 +17,7 @@ using static System.StringComparison;
 using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
+using IdentityServer4.AccessTokenValidation;
 
 namespace ErabliereApi
 {
@@ -60,31 +57,13 @@ namespace ErabliereApi
             // Authentication
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
-                services.Configure<CookiePolicyOptions>(options =>
-                {
-                    options.CheckConsentNeeded = context => true;
-                    options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax;
-                });
+                services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                        .AddIdentityServerAuthentication(options =>
+                        {
+                            options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
 
-                services.AddAuthentication(options =>
-                {
-                    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
-                })
-                .AddOpenIdConnect(o =>
-                {
-                    o.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                    o.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-                    o.ClientId = GetEnvironmentVariable("OIDC_CLIENT_ID");
-                    o.ResponseType = "code";
-                    o.UsePkce = true;
-                    o.Scope.Add("offline_access");
-                    o.Scope.Add("offline");
-                    o.Scope.Add("profile");
-                    o.Scope.Add("openid");
-                    o.SaveTokens = true;
-                    o.ClientSecret = GetEnvironmentVariable("OIDC_CLIENT_PASSWORD");
-                });
+                            options.ApiName = "erabliereapi";
+                        });
             }
             else
             {
@@ -173,7 +152,6 @@ namespace ErabliereApi
 
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
-                app.UseCookiePolicy();
                 app.UseAuthentication();
                 app.UseAuthorization();
             }

@@ -12,7 +12,6 @@
         "CORS_HEADERS": "*",
         "CORS_METHODS": "*",
         "CORS_ORIGINS": "*",
-        "SWAGGER_XSRF_TOKEN_INTERCEPTOR": "false",
         "USE_SQL": "true",
         "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
         "SQL_USE_STARTUP_MIGRATION": "true",
@@ -20,16 +19,14 @@
         "LOG_SQL": "Console",
         "USE_AUTHENTICATION": "true",
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
-        "USE_SWAGGER_IMPLICIT_WORKFLOW": "false",
-        "USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW": "false",
         "USE_SWAGGER_PKCE": "true",
-        "SWAGGER_AUTHORIZATION_URL": "https://security-dev.freddycoder.com/oauth2/auth",
-        "SWAGGER_TOKEN_URL": "https://security-dev.freddycoder.com/oauth2/token",
+        "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
+        "SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
         "OIDC_CLIENT_ID": "swagger-dev",
         "OIDC_CLIENT_PASSWORD": "D6VDPBGKjmoyKkP~yFnxvMlLqS",
         "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
         "OIDC_AUDIENCE": "http://erabliere-api",
-        "OIDC_AUTHORITY": "https://security-dev.freddycoder.com",
+        "OIDC_AUTHORITY": "https://localhost:5005",
         "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json"
       }
     }

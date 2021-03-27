@@ -38,8 +38,6 @@ spec:
           value: "*"
         - name: CORS_METHODS
           value: "*"
-        - name: SWAGGER_XSRF_TOKEN_INTERCEPTOR
-          value: "false"
         - name: USE_SQL
           value: "true"
         - name: SQL_CONNEXION_STRING
@@ -51,19 +49,15 @@ spec:
         - name: LOG_SQL
           value: "-"
         - name: USE_AUTHENTICATION
-          value: "false"
+          value: "true"
         - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
           value: "true"
-        - name: USE_SWAGGER_IMPLICIT_WORKFLOW
-          value: "false"
-        - name: USE_SWAGGER_CLIENTCREDENTIALS_WORKFLOW
-          value: "false"
         - name: USE_SWAGGER_PKCE
-          value: "false"
+          value: "true"
         - name: SWAGGER_AUTHORIZATION_URL
-          value: "https://erabliereapi.freddycoder.com/oauth2/auth"
+          value: "https://oauth2.freddycoder.com/connect/auth"
         - name: SWAGGER_TOKEN_URL
-          value: "https://erabliereapi.freddycoder.com/oauth2/token"
+          value: "https://oauth2.freddycoder.com/connect/token"
         - name: OIDC_CLIENT_ID
           value: "swagger-prod"
         - name: OIDC_CLIENT_PASSWORD
@@ -73,7 +67,7 @@ spec:
         - name: OIDC_AUDIENCE
           value: "http://erabliere-api"
         - name: OIDC_AUTHORITY
-          value: "https://erabliereapi.freddycoder.com"
+          value: "https://oauth2.freddycoder.com"
         - name: EMAIL_CONFIG_PATH
           value: "/app/secret/emailConfig.json"
         
