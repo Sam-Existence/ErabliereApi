@@ -62,13 +62,9 @@ data:
 
 ### Modifier les configurations du serveur d'identité
 
-Pour modifier les configurations par défaut du serveur d'identité, il faut créer des fichiers de configuration similaire a ceux du projet ErabliereApi.IdentityServer dans votre cluster.
+Pour modifier les configurations par défaut du serveur d'identité, il faut créer des fichiers une configmap similaire à l'exemple suivant :
 
-Pour transformer ce fichier json en base64 utiliser ```base64 <path-fichier-config>```
-
-Remplacer \<base64-string\> par le résultat sur une seule ligne pour obtenir un secret valide pour la fonctionnalité d'alerte
-
-> Pour les utilisateur de powerhsell : https://adsecurity.org/?p=478
+Utiliser la variable d'environnement SECRETS_FOLDER pour indiquer ou trouver les fichiers.
 
 ```
 kind: ConfigMap

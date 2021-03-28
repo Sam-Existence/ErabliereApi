@@ -29,6 +29,10 @@ spec:
           mountPath: /app/secrets
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: "Development"
+          value: "Staging"
+        - name: USE_FORWARDED_HEADERS
+          value: "true"
+        - name: IDENTITY_SERVER_ORIGIN
+          value: "https://oauth2.freddycoder.com"
         - name: SECRETS_FOLDER
           value: "/app/secrets"

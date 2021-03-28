@@ -1,4 +1,5 @@
-﻿using IdentityServerHost.Quickstart.UI;
+﻿using IdentityServer4.Extensions;
+using IdentityServerHost.Quickstart.UI;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -8,6 +9,9 @@ using Newtonsoft.Json;
 using Serilog;
 using System;
 using System.IO;
+using static System.Environment;
+using static System.Boolean;
+using static System.StringComparison;
 
 namespace ErabliereApi.IdentityServer
 {
@@ -17,11 +21,14 @@ namespace ErabliereApi.IdentityServer
         {
             services.AddControllersWithViews();
 
-            // Forwarded headers
-            services.Configure<ForwardedHeadersOptions>(options =>
+            if (string.Equals(GetEnvironmentVariable("USE_FORWARDED_HEADERS"), TrueString, OrdinalIgnoreCase))
             {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
+                // Forwarded headers
+                services.Configure<ForwardedHeadersOptions>(options =>
+                {
+                    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+                });
+            }
 
             Config config;
             AppUsers users;
@@ -34,7 +41,7 @@ namespace ErabliereApi.IdentityServer
 
             try
             {
-                var prefixPath = Environment.GetEnvironmentVariable("SECRETS_FOLDER");
+                var prefixPath = GetEnvironmentVariable("SECRETS_FOLDER");
 
                 var configFileName = "ErabliereApi.IdentityServer.Config.json";
                 var usersFileName = "ErabliereApi.IdentityServer.Users.json";
@@ -83,7 +90,17 @@ namespace ErabliereApi.IdentityServer
             {
                 app.UseDeveloperExceptionPage();
             }
-            else
+
+            if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("IDENTITY_SERVER_ORIGIN")) == false)
+            {
+                app.Use(async (ctx, next) =>
+                {
+                    ctx.SetIdentityServerOrigin(GetEnvironmentVariable("IDENTITY_SERVER_ORIGIN"));
+                    await next();
+                });
+            }
+
+            if (string.Equals(GetEnvironmentVariable("USE_FORWARDED_HEADERS"), TrueString, OrdinalIgnoreCase))
             {
                 app.UseForwardedHeaders();
             }
