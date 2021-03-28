@@ -29,7 +29,7 @@ spec:
           mountPath: /app/secrets
         env:
         - name: ASPNETCORE_ENVIRONMENT
-          value: "Staging"
+          value: "Development"
         - name: USE_FORWARDED_HEADERS
           value: "true"
         - name: IDENTITY_SERVER_ORIGIN
