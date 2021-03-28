@@ -55,7 +55,7 @@ spec:
         - name: USE_SWAGGER_PKCE
           value: "true"
         - name: SWAGGER_AUTHORIZATION_URL
-          value: "https://oauth2.freddycoder.com/connect/auth"
+          value: "https://oauth2.freddycoder.com/connect/authorize"
         - name: SWAGGER_TOKEN_URL
           value: "https://oauth2.freddycoder.com/connect/token"
         - name: OIDC_CLIENT_ID
