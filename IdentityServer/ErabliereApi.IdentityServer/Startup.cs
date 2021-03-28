@@ -27,6 +27,9 @@ namespace ErabliereApi.IdentityServer
                 services.Configure<ForwardedHeadersOptions>(options =>
                 {
                     options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+
+                    options.KnownNetworks.Clear();
+                    options.KnownProxies.Clear();
                 });
             }
 
@@ -105,7 +108,10 @@ namespace ErabliereApi.IdentityServer
                 app.UseForwardedHeaders();
             }
 
-            app.UseIdentityServer();
+            app.UseIdentityServer(options =>
+            {
+                options
+            });
             
             app.UseStaticFiles();
             app.UseRouting();
