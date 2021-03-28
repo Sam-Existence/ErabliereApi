@@ -108,10 +108,7 @@ namespace ErabliereApi.IdentityServer
                 app.UseForwardedHeaders();
             }
 
-            app.UseIdentityServer(options =>
-            {
-                options
-            });
+            app.UseIdentityServer();
             
             app.UseStaticFiles();
             app.UseRouting();
