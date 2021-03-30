@@ -23,13 +23,7 @@ namespace ErabliereApi.Test
 
         public ErabliereControllerTest()
         {
-            var options = new JsonSerializerOptions 
-            { 
-                ReferenceHandler = ReferenceHandler.Preserve,
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
-            };
-
-            _ignoreIdsEqualityComparer = new JsonComparer<object>(options);
+            _ignoreIdsEqualityComparer = new JsonComparer<object>();
         }
 
         [Theory, AutoApiData]
@@ -41,7 +35,7 @@ namespace ErabliereApi.Test
 
             await erabliereController.Ajouter(postErabliere);
 
-            Assert.Equal(initialCount + 1, erabliereDbContext.Erabliere.Count());
+            erabliereDbContext.Erabliere.Count().ShouldBe(initialCount + 1);
         }
 
         [Theory, AutoApiData]

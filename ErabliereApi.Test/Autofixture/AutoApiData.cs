@@ -6,11 +6,12 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Net;
 
 namespace ErabliereApi.Test.Autofixture
 {
@@ -22,6 +23,7 @@ namespace ErabliereApi.Test.Autofixture
 
             var builder = GetServicesProvider();
 
+            fixture.Customize<ActionDescriptor>(c => c.OmitAutoProperties());
             fixture.Customize<ControllerContext>(c => c.OmitAutoProperties());
             fixture.Customize(new AutoNSubstituteCustomization());
 
@@ -30,8 +32,12 @@ namespace ErabliereApi.Test.Autofixture
 
             fixture.Register(() => builder.GetRequiredService<ErabliereDbContext>().PopulatesDbSets(fixture));
             fixture.Register(() => builder.GetRequiredService<IMapper>());
+            fixture.Register(() => fixture.CreateRandomIPAddress());
 
             fixture.Freeze<ErabliereDbContext>();
+            var httpContext = fixture.Freeze<HttpContext>();
+
+            httpContext.RequestServices = builder;
 
             return fixture;
         })
@@ -50,9 +56,7 @@ namespace ErabliereApi.Test.Autofixture
 
             services.AjouterAutoMapperErabliereApiDonnee();
 
-            var builder = services.BuildServiceProvider();
-
-            return builder;
+            return services.BuildServiceProvider();
         }
     }
 }

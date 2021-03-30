@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -14,7 +13,8 @@ namespace ErabliereApi.Test.EqualityComparer
         {
             JsonSerializerOptions = new JsonSerializerOptions
             {
-                ReferenceHandler = ReferenceHandler.Preserve
+                ReferenceHandler = ReferenceHandler.Preserve,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
             };
         }
 

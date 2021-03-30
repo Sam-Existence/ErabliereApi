@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 
@@ -29,7 +30,7 @@ namespace ErabliereApi.Attributes
 
             var id = context.ActionArguments["id"];
 
-            var depot = context.HttpContext.RequestServices.GetService(typeof(ErabliereDbContext)) as ErabliereDbContext ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(ErabliereDbContext)}.");
+            var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
             var erabliere = depot.Erabliere.Find(id);
             
@@ -37,14 +38,26 @@ namespace ErabliereApi.Attributes
             {
                 var ip = GetClientIp(context);
 
-                if (erabliere.IpRule.Split(';').All(eIp =>string.Equals(eIp, ip, StringComparison.OrdinalIgnoreCase) == false))
+                if (context.ModelState.ContainsKey("X-Real-IP") == false &&
+                    erabliere.IpRule.Split(';').All(eIp => string.Equals(eIp, ip, StringComparison.OrdinalIgnoreCase) == false))
                 {
                     context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {ip}.");
                 }
             }
         }
 
-        private static string GetClientIp(ActionExecutingContext context)
+        /// <summary>
+        /// Permet d'extraire l'id de l'applant.
+        /// Si l'entête X-Real-IP est présent, cette entête sera utilisé. 
+        /// Sinon l'adresse ip sera retourner depuis la propriété RemoteIpAddress.
+        /// </summary>
+        /// <remarks>
+        /// La présence de plus de une entête X-Real-IP ajoutera une erreur dans 
+        /// le ModelState.
+        /// </remarks>
+        /// <param name="context"></param>
+        /// <returns></returns>
+        public static string GetClientIp(ActionExecutingContext context)
         {
             if (context.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
             {
@@ -58,6 +71,7 @@ namespace ErabliereApi.Attributes
                 else
                 {
                     context.ModelState.AddModelError("X-Real-IP", "Une seule entête 'X-Real-IP' doit être trouvé dans la requête.");
+                    return "";
                 }
             }
 

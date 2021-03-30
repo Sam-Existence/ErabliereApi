@@ -14,7 +14,7 @@ namespace ErabliereApi.Authorization
         /// <inheritdoc />
         public Task HandleAsync(AuthorizationHandlerContext context)
         {
-            foreach (IAuthorizationRequirement requirement in context.PendingRequirements.ToList())
+            foreach (var requirement in context.PendingRequirements)
             {
                 context.Succeed(requirement);
             }
