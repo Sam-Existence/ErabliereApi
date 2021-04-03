@@ -238,6 +238,80 @@
       ],
       "properties": {
       }
+    },
+    {
+      "enabled": true,
+      "clientId": "erabliereiu",
+      "protocolType": "oidc",
+      "clientSecrets": [
+        {
+          "description": null,
+          "value": "K7gNU3sdo\u002BOL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",
+          "expiration": null,
+          "type": "SharedSecret"
+        }
+      ],
+      "requireClientSecret": true,
+      "clientName": "ErabliereIU",
+      "description": null,
+      "clientUri": null,
+      "logoUri": null,
+      "requireConsent": false,
+      "allowRememberConsent": true,
+      "allowedGrantTypes": [
+        "authorization_code"
+      ],
+      "requirePkce": true,
+      "allowPlainTextPkce": false,
+      "requireRequestObject": false,
+      "allowAccessTokensViaBrowser": false,
+      "redirectUris": [
+        "https://localhost:4200/signin-callback.html"
+      ],
+      "postLogoutRedirectUris": [
+        "https://localhost:5005/signout-callback-oidc"
+      ],
+      "frontChannelLogoutUri": null,
+      "frontChannelLogoutSessionRequired": true,
+      "backChannelLogoutUri": null,
+      "backChannelLogoutSessionRequired": true,
+      "allowOfflineAccess": false,
+      "allowedScopes": [
+        "openid",
+        "profile",
+        "address",
+        "erabliereapi"
+      ],
+      "alwaysIncludeUserClaimsInIdToken": false,
+      "identityTokenLifetime": 300,
+      "allowedIdentityTokenSigningAlgorithms": [
+      ],
+      "accessTokenLifetime": 3600,
+      "authorizationCodeLifetime": 300,
+      "absoluteRefreshTokenLifetime": 2592000,
+      "slidingRefreshTokenLifetime": 1296000,
+      "consentLifetime": null,
+      "refreshTokenUsage": 1,
+      "updateAccessTokenClaimsOnRefresh": false,
+      "refreshTokenExpiration": 1,
+      "accessTokenType": 0,
+      "enableLocalLogin": true,
+      "identityProviderRestrictions": [
+      ],
+      "includeJwtId": true,
+      "claims": [
+      ],
+      "alwaysSendClientClaims": false,
+      "clientClaimsPrefix": "client_",
+      "pairWiseSubjectSalt": null,
+      "userSsoLifetime": null,
+      "userCodeType": null,
+      "deviceCodeLifetime": 300,
+      "allowedCorsOrigins": [
+        "https://localhost:4200"
+      ],
+      "properties": {
+      }
     }
   ]
 }

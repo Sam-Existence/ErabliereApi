@@ -25,20 +25,6 @@ namespace ErabliereApi
     public class Startup
     {
         /// <summary>
-        /// Constructeur d'initialisation
-        /// </summary>
-        /// <param name="configuration"></param>
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        /// <summary>
-        /// Configuration
-        /// </summary>
-        public IConfiguration Configuration { get; }
-
-        /// <summary>
         /// Méthodes ConfigureServices
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
@@ -145,12 +131,8 @@ namespace ErabliereApi
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
                 app.UseAuthentication();
-                app.UseAuthorization();
             }
-            else
-            {
-                app.UseAuthorization();
-            }
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

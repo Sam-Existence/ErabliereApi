@@ -17,7 +17,7 @@ namespace ErabliereApi.OperationFilter
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             var hasIPRulesValidation = context.MethodInfo.DeclaringType?.GetCustomAttributes(true).OfType<ValiderIPRulesAttribute>().Any() == true ||
-                               context.MethodInfo.GetCustomAttributes(true).OfType<ValiderIPRulesAttribute>().Any();
+                                       context.MethodInfo.GetCustomAttributes(true).OfType<ValiderIPRulesAttribute>().Any();
 
             if (hasIPRulesValidation)
             {
