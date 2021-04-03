@@ -3,6 +3,6 @@ export const environment = {
   apiUrl: "https://erabliereapi.freddycoder.com",
   stsAuthority: "https://oauth2.freddycoder.com",
   clientId: "erabliereiu",
-  appRoot: "https://erablireapi.freddycoder.com",
+  appRoot: "https://erabliereapi.freddycoder.com",
   enableAuth: true
 };
