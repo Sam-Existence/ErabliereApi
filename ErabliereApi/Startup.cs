@@ -138,6 +138,11 @@ namespace ErabliereApi
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSpa(spa =>
+            {
+                
+            });
         }
     }
 }
