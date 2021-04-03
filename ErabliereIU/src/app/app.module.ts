@@ -12,6 +12,7 @@ import { CameraComponent } from 'src/camera/camera.component';
 import { AProposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
+import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
     BrowserModule,
     ChartsModule
   ],
-  providers: [],
+  providers: [AuthorisationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

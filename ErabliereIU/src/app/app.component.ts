@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +30,9 @@ import { Component } from '@angular/core';
               <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
             </li>
           </ul>
+          <span [hidden]="useAuthentication == false">
+            <button mat-button (click)="login()">Login</button>
+          </span>
         </div>
       </div>
     </nav>
@@ -38,9 +43,21 @@ export class AppComponent {
   title = 'Érablière IU';
   pageSelectionnee = 0;
   cacheMenuErabliere = false;
+  isLoggedIn: Boolean = false;
+  useAuthentication: Boolean = environment.enableAuth
+
+  constructor (private _authService: AuthorisationService) {
+    this._authService.loginChanged.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    })
+  }
 
   selectionnerPage(i:number) {
     this.pageSelectionnee = i;
     this.cacheMenuErabliere = i == 3 || i == 4;
+  }
+
+  login() {
+    this._authService.login();
   }
 }
