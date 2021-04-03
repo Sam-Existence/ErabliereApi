@@ -13,7 +13,7 @@ import { environment } from 'src/environments/environment';
                    (click)="handleErabliereLiClick(erabliere.id)">{{erabliere.nom}}</a>
             </div>
         </div>
-        <div class="col-10" [hidden]="pageSelectionnee !== 0">
+        <div class="col-lg-10 col-md-12" [hidden]="pageSelectionnee !== 0">
             <div *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
             <donnees-panel [erabliere]="erabliere"></donnees-panel>
             <barils-panel  [erabliere]="erabliere"></barils-panel>

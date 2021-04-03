@@ -3,5 +3,5 @@ export const environment = {
   apiUrl: "https://erabliereapi.freddycoder.com",
   stsAuthority: "https://oauth2.freddycoder.com",
   appRoot: "https://erablireapi.freddycoder.com",
-  enableAuth: false
+  enableAuth: true
 };

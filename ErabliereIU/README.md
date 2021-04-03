@@ -29,3 +29,7 @@ ng build --output-path="..\ErabliereApi\wwwroot\."
 Démarrer le projet ErabliereApi.
 
 Pour plus d'info sur les entêtes, rechercher ```x-ddr``` et ```x-dde``` dans le repository ou consulter la page <a href="https://erabliereapi.freddycoder.com/api/index.html" tagert="_blank">swagger</a> pour les actions GET Dompeux et GET Donnees.
+
+## Créer un certificat ssl
+
+https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70dab07417c8

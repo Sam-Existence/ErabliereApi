@@ -13,25 +13,32 @@ import { AProposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
 import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
+import { AppRoutingModule } from './app-routing.module';
+import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';
+import { DashboardComponent } from 'src/dashboard/dashboard.component';
+import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ErabliereComponent,
     DonneesComponent,
+    DashboardComponent,
     GraphPannelComponent,
     BarPannelComponent,
     BarilsComponent,
     AlerteComponent,
     CameraComponent,
     AProposComponent,
-    DocumentationComponent
+    DocumentationComponent,
+    SigninRedirectCallbackComponent,
+    SignoutRedirectCallbackComponent
   ],
   imports: [
     BrowserModule,
-    ChartsModule
+    ChartsModule,
+    AppRoutingModule
   ],
-  providers: [AuthorisationService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

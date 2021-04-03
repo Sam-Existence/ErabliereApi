@@ -266,7 +266,7 @@
       "requireRequestObject": false,
       "allowAccessTokensViaBrowser": false,
       "redirectUris": [
-        "https://localhost:4200/signin-callback.html"
+        "https://localhost:4200/signin-callback"
       ],
       "postLogoutRedirectUris": [
         "https://localhost:5005/signout-callback-oidc"

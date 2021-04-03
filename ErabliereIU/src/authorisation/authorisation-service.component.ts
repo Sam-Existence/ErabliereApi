@@ -1,10 +1,9 @@
 import { Injectable } from '@angular/core';
-import { AppModule } from 'src/app/app.module';
-import { UserManager, User } from 'oidc-client'
+import { UserManager, User, UserManagerSettings } from 'oidc-client'
 import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthorisationService {
     private _userManager: UserManager;
     private _user?: User | null;
@@ -13,9 +12,10 @@ export class AuthorisationService {
     loginChanged = this._loginChangedSubject.asObservable();
 
     constructor() {
-        const stsSettings = {
+        const stsSettings:UserManagerSettings = {
             authority: environment.stsAuthority,
             client_id: environment.clientId,
+            client_secret: "secret",
             redirect_uri: `${environment.appRoot}/signin-callback`,
             scope: "openid profile erabliereapi",
             response_type: 'code',
@@ -30,12 +30,30 @@ export class AuthorisationService {
 
      isLoggedIn(): Promise<Boolean> {
          return this._userManager.getUser().then(user => {
-            const currentUser = !!user && !user.expired;
+            const isLoggedIn = !!user && !user.expired;
             if (this._user !== user) {
-                this._loginChangedSubject.next(currentUser);
+                this._loginChangedSubject.next(isLoggedIn);
             }
             this._user = user;
-            return currentUser;
-         })
+
+            return isLoggedIn;
+         });
      }
+
+    completeLogin() {
+        return this._userManager.signinRedirectCallback().then(user => {
+            this._user = user;
+            this._loginChangedSubject.next(!!user && !user.expired);
+            return user;
+        });
+    }
+
+    logout() {
+        this._userManager.signoutRedirect();
+    }
+
+    completeLogout() {
+        this._user = null;
+        return this._userManager.signoutRedirectCallback();
+    }
 }
