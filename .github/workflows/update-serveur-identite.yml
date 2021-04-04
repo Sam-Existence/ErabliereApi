@@ -10,7 +10,7 @@ on:
 
 env:
   REGISTRY_HOSTNAME: freddycontainers.azurecr.io
-  IMAGE_NAME: erabliereapi
+  IMAGE_NAME: serveuridentite
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
   IMAGE_TAG: ${{ github.event.inputs.tags }}
   OIDC_CLIENT_PASSWORD: ${{ secrets.OIDC_CLIENT_PASSWORD }}
