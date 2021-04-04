@@ -1,0 +1,45 @@
+name: ServeurIdentite-Update
+
+on: 
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: 'La version de de l`image à utiliser'
+        required: true
+      
+
+env:
+  REGISTRY_HOSTNAME: freddycontainers.azurecr.io
+  IMAGE_NAME: erabliereapi
+  DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
+  IMAGE_TAG: ${{ github.event.inputs.tags }}
+  OIDC_CLIENT_PASSWORD: ${{ secrets.OIDC_CLIENT_PASSWORD }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Connect to Azure Kubernetes
+      - name: Azure Kubernetes set context
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          resource-group: 'webapidesign'
+          cluster-name: 'kubem'
+          
+      # Replace variable in kubernetes file
+      - name: Replace variable in k8s file
+        uses: cschleiden/replace-tokens@v1.0
+        with:
+          tokenPrefix: '#{'
+          tokenSuffix: '}'
+          files: './Infrastructure/serveur-identite-deployment.yaml'
+
+      # Deploy to kubernetes
+      - name: Kubectl apply
+        run: |
+          kubectl config current-context
+          kubectl apply -f ./Infrastructure/serveur-identite-deployment.yaml

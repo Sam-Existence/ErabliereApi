@@ -48,7 +48,9 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="erablieres">L'érablière à créer</param>
         /// <response code="200">L'érablière a été correctement ajouté</response>
-        /// <response code="400">Le nom de l'érablière est null ou vide ou un érablière avec le nom reçu existe déjà.</response>
+        /// <response code="400">
+        /// Le nom de l'érablière dépasse les 50 caractères, est null ou vide ou un érablière avec le nom reçu existe déjà.
+        /// </response>
         [HttpPost]
         public async Task<ActionResult> Ajouter(PostErabliere erablieres)
         {
