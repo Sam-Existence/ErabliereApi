@@ -45,7 +45,7 @@ namespace ErabliereApi
                         .AddIdentityServerAuthentication(options =>
                         {
                             options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-
+                            
                             options.ApiName = "erabliereapi";
                         });
             }

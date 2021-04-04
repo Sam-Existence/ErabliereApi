@@ -50,7 +50,6 @@ export class DashboardComponent implements OnInit {
 
     constructor(private _authService: AuthorisationService) {
         this._authService.loginChanged.subscribe(loggedIn => {
-            console.log("subscribe function _authService.loginChanged called");
             this.isLoggedIn = loggedIn;
         })
     }
@@ -72,5 +71,9 @@ export class DashboardComponent implements OnInit {
     selectionnerPage(i: number) {
         this.pageSelectionnee = i;
         this.cacheMenuErabliere = i == 3 || i == 4;
+
+        if (this.pageSelectionnee == 1) {
+            // Should call Alerte api
+        }
     }
 }
