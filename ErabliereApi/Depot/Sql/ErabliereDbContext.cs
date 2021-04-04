@@ -45,5 +45,10 @@ namespace ErabliereApi.Depot.Sql
         /// Table des érablières
         /// </summary>
         public DbSet<Erabliere> Erabliere { get; private set; }
+
+        /// <summary>
+        /// Table des capteurs
+        /// </summary>
+        public DbSet<Capteur> Capteurs { get; set; }
     }
 }

@@ -28,6 +28,11 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public int? IndiceOrdre { get; set; }
 
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherSectionBaril { get; set; }
+
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)
         {

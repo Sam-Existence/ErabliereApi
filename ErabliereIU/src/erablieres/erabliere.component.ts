@@ -16,7 +16,7 @@ import { environment } from 'src/environments/environment';
         <div class="col-lg-10 col-md-12" [hidden]="pageSelectionnee !== 0">
             <div *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
             <donnees-panel [erabliere]="erabliere"></donnees-panel>
-            <barils-panel  [erabliere]="erabliere"></barils-panel>
+            <barils-panel *ngIf="erabliere.afficherSectionBaril" [erabliere]="erabliere"></barils-panel>
         </div>
         </div>
         <alerte-page class="col-10" [hidden]="pageSelectionnee !== 1"></alerte-page>

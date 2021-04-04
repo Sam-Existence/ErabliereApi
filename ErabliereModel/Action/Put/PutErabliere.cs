@@ -29,5 +29,10 @@ namespace ErabliereApi.Donnees.Action.Put
         /// Un indice permettant l'affichage des érablières dans l'ordre précisé.
         /// </summary>
         public int? IndiceOrdre { get; set; }
+
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherSectionBaril { get; set; }
     }
 }

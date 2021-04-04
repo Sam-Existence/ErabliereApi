@@ -121,6 +121,11 @@ namespace ErabliereApi.Controllers
                 entity.IndiceOrdre = erabliere.IndiceOrdre;
             }
 
+            if (erabliere.AfficherSectionBaril.HasValue)
+            {
+                entity.AfficherSectionBaril = erabliere.AfficherSectionBaril;
+            }
+
             _context.Erabliere.Update(entity);
 
             await _context.SaveChangesAsync();

@@ -51,3 +51,14 @@ python3 extraireInfoImage.py https://www.acscm.com/wp-content/uploads/images/new
 # Au 5 minute                                                                             adresse panneau hmi   adresse api action post données                           id erabliere
 */5 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/extraireInfoImage.py http://<ip-hmi>/1.jpg https://erabliereapi.freddycoder.com/erablieres/3/donnees 3
 ```
+
+## modbus-dl06
+
+Script pour communiquer avec un PLC Direct Logic 06 utilisant modbustcp.
+
+Prérequis
+```
+sudo pip3 install pymodbus
+```
+
+source : https://pymodbus.readthedocs.io/en/latest/readme.html#summary
