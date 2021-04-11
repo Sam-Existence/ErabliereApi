@@ -169,7 +169,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut("{idDonnee}")]
         [ValiderIPRules]
-        public IActionResult Modifier(int id, int idDonnee, PutDonnee donnee)
+        public async Task<IActionResult> Modifier(int id, int idDonnee, PutDonnee donnee)
         {
             if (id != donnee.IdErabliere)
             {
@@ -202,7 +202,7 @@ namespace ErabliereApi.Controllers
 
             _context.Donnees.Update(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             
             return Ok();
         }
