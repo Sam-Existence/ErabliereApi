@@ -13,6 +13,7 @@ using static System.Text.Json.JsonSerializer;
 using static System.Environment;
 using static System.IO.File;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers.Attributes
 {
@@ -174,7 +175,7 @@ namespace ErabliereApi.Controllers.Attributes
             return default;
         }
 
-        private async void TriggerAlerte(Alerte alerte, ILogger<TriggerAlertAttribute> logger)
+        private async Task TriggerAlerte(Alerte alerte, ILogger<TriggerAlertAttribute> logger)
         {
             if (_emailConfig == null)
             {
@@ -229,6 +230,6 @@ namespace ErabliereApi.Controllers.Attributes
             return sb.ToString();
         }
 
-        private readonly static JsonSerializerOptions _mailSerializerSettings = new JsonSerializerOptions { WriteIndented = true };
+        private readonly static JsonSerializerOptions _mailSerializerSettings = new() { WriteIndented = true };
     }
 }

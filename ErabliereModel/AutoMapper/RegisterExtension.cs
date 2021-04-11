@@ -11,6 +11,8 @@ namespace ErabliereApi.Donnees.AutoMapper
             {
                 config.CreateMap<Dompeux, GetDompeux>();
 
+                config.CreateMap<Donnee, GetDonnee>();
+
                 config.CreateMap<PostErabliere, Erabliere>()
                       .ForMember(e => e.IpRule, a => a.MapFrom(p => p.IpRules))
                       .ReverseMap()

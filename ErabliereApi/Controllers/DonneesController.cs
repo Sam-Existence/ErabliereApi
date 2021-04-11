@@ -6,10 +6,16 @@ using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
+using ErabliereApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Net.Mime;
 using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
@@ -19,6 +25,7 @@ namespace ErabliereApi.Controllers
     /// </summary>
     [ApiController]
     [Route("erablieres/{id}/[controller]")]
+    [Authorize]
     public class DonneesController : ControllerBase
     {
         private readonly ErabliereDbContext _context;
@@ -47,12 +54,34 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Retourne une liste de données. La liste est potentiellement vide.</response>
         [ProducesResponseType(200, Type = typeof(GetDonnee))]
         [HttpGet]
+        [Produces(MediaTypeNames.Application.Json, MediaTypeNames.Text.Plain, "text/json", "text/csv")]
         public async Task<IActionResult> Lister(int id,
-                                    [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
-                                    DateTimeOffset? dd, 
-                                    DateTimeOffset? df, 
-                                    int? q, 
-                                    string? o = "c")
+                                                [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
+                                                DateTimeOffset? dd, 
+                                                DateTimeOffset? df, 
+                                                int? q, 
+                                                string? o = "c")
+        {
+            IEnumerable<GetDonnee> list;
+
+            switch (HttpContext.Request.Headers["Accept"].ToString().ToLowerInvariant())
+            {
+                case "text/json":
+                case MediaTypeNames.Text.Plain:
+                case MediaTypeNames.Application.Json:
+                    list = await ListerGenerique(id, ddr, dd, df, q, o);
+
+                    return Ok(list);
+                case "text/csv":
+                    list = await ListerGenerique(id, ddr, dd, df, q, o);
+
+                    return File(list.AsCsvInByteArray(), "text/csv", $"{Guid.NewGuid()}.csv");
+                default:
+                    return new UnsupportedMediaTypeResult();
+            }
+        }
+
+        private async Task<IEnumerable<GetDonnee>> ListerGenerique(int id, DateTimeOffset? ddr, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o)
         {
             var query = _context.Donnees.AsNoTracking()
                                         .Where(d => d.IdErabliere == id &&
@@ -81,7 +110,7 @@ namespace ErabliereApi.Controllers
                 HttpContext.Response.Headers.Add("x-dde", list[^1].D.ToString());
             }
 
-            return Ok(list.Select(d => new { d.Id, d.D, d.T, d.V, d.NB, d.Iddp, d.Nboc, d.PI }));
+            return list.Select(_mapper.Map<GetDonnee>);
         }
 
         /// <summary>

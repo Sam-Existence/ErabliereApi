@@ -1,7 +1,7 @@
 # ErabliereApi
 API Pour receuillir et centraliser les informations des appeils dans des érablières.
 
-App : https://erabliereapi.freddycoder.com
+App (Authentification requise): https://erabliereapi.freddycoder.com
 
 Documentation swagger : https://erabliereapi.freddycoder.com/api/index.html
 

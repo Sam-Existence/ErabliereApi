@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,6 +16,7 @@ namespace ErabliereApi.Controllers
     /// </summary>
     [ApiController]
     [Route("erablieres/{id}/[controller]")]
+    [Authorize]
     public class CapteursController : ControllerBase
     {
         private readonly ErabliereDbContext _depot;

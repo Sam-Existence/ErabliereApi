@@ -3,6 +3,7 @@ using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -17,6 +18,7 @@ namespace ErabliereApi.Controllers
     /// </summary>
     [ApiController]
     [Route("erablieres/{id}/[controller]")]
+    [Authorize]
     public class DompeuxController : ControllerBase
     {
         private readonly ErabliereDbContext _context;
