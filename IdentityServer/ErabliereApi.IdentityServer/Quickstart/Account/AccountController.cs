@@ -1,7 +1,3 @@
-// Copyright (c) Brock Allen & Dominick Baier. All rights reserved.
-// Licensed under the Apache License, Version 2.0. See LICENSE in the project root for license information.
-
-
 using IdentityModel;
 using IdentityServer4;
 using IdentityServer4.Events;
@@ -42,8 +38,6 @@ namespace IdentityServerHost.Quickstart.UI
             IEventService events,
             TestUserStore users)
         {
-            // if the TestUserStore is not in DI, then we'll just use the global users collection
-            // this is where you would plug in your own custom identity management library (e.g. ASP.NET Identity)
             _users = users;
 
             _interaction = interaction;

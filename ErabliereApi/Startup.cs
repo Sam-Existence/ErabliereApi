@@ -25,11 +25,11 @@ namespace ErabliereApi
     public class Startup
     {
         /// <summary>
-        /// Méthodes ConfigureServices
+        /// Mï¿½thodes ConfigureServices
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            // contrôleur
+            // contrï¿½leur
             services.AddControllers();
 
             // Forwarded headers
@@ -71,14 +71,14 @@ namespace ErabliereApi
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase(Guid.NewGuid().ToString());
+                    options.UseInMemoryDatabase(nameof(ErabliereDbContext));
                 });
             }
             else
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' ï¿½ une valeur null."));
 
                     if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
                     {

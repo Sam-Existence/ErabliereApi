@@ -13,7 +13,7 @@ namespace IdentityServerHost.Quickstart.UI
         public static bool IsNativeClient(this AuthorizationRequest context)
         {
             return !context.RedirectUri.StartsWith("https", StringComparison.Ordinal)
-               && !context.RedirectUri.StartsWith("http", StringComparison.Ordinal);
+                && !context.RedirectUri.StartsWith("http", StringComparison.Ordinal);
         }
 
         public static IActionResult LoadingPage(this Controller controller, string viewName, string redirectUri)
