@@ -1,12 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
+import { Baril } from 'src/model/baril';
+import { Erabliere } from 'src/model/erabliere';
 
 @Component({
     selector: 'barils-panel',
     template: `
         <div class="border-top">
             <h3>Barils</h3>
-            <h6>Id érablière {{ erabliere.id }}</h6>
+            <h6>Id érablière {{ erabliere?.id }}</h6>
             <table class="table">
                 <thead>
                     <tr>
@@ -45,14 +48,12 @@ import { environment } from 'src/environments/environment';
     `
 })
 export class BarilsComponent implements OnInit {
-    barils:any;
-    @Input() erabliere:any
+    barils?:Array<Baril>;
+    @Input() erabliere?:Erabliere
 
-    constructor() { }
+    constructor(private _erabliereApi : ErabliereApi) { }
 
     ngOnInit() {
-        fetch(environment.apiUrl + "/erablieres/" + this.erabliere.id + "/baril")
-            .then(e => e.json())
-            .then(d => this.barils = d);
+        this._erabliereApi.getBarils(this.erabliere?.id).then(d => this.barils = d);
     }
 }

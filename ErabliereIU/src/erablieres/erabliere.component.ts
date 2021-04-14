@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
+import { Erabliere } from 'src/model/erabliere';
 
 @Component({
     selector: 'erablieres',
@@ -22,8 +24,7 @@ import { environment } from 'src/environments/environment';
             </div>
         </div>
 
-        <alerte-page class="col-10" [access_token]="access_token" 
-                                    [alertes]="alertes" 
+        <alerte-page class="col-10" [alertes]="alertes" 
                                     [hidden]="pageSelectionnee !== 1"
                                     (click)="handleAlerteClick()"></alerte-page>
 
@@ -41,7 +42,7 @@ import { environment } from 'src/environments/environment';
     `
 })
 export class ErabliereComponent implements OnInit {
-    erablieres:any;
+    erablieres?: Array<Erabliere>;
 
     erabliereSelectionnee?:number;
 
@@ -49,30 +50,23 @@ export class ErabliereComponent implements OnInit {
 
     @Input() pageSelectionnee?:number = 0;
 
-    access_token: any;
     alertes?: Array<any>;
 
-    constructor(private _authService: AuthorisationService){
+    constructor(private _erabliereApi: ErabliereApi){
         this.erabliereSelectionnee = undefined;
     }
 
     ngOnInit() {
-        this._authService.getAccessToken().then(token => {
-            this.access_token = token;
+        this._erabliereApi.getErablieres().then(erablieres => {
+            this.erablieres = erablieres;
+
+            if (this.erablieres.length > 0) {
+                this.erabliereSelectionnee = this.erablieres[0].id;
+            }
+            else {
+                // TODO : Aucun érablière trouvé
+            }
         });
-
-        fetch(environment.apiUrl + "/erablieres")
-            .then(e => e.json())
-            .then(e => {
-                this.erablieres = e
-
-                if (this.erablieres.length > 0) {
-                    this.erabliereSelectionnee = this.erablieres[0].id;
-                }
-                else {
-                    // TODO : Aucun érablière trouvé
-                }
-            });
     }
 
     handleErabliereLiClick(idErabliere: number) {
@@ -84,14 +78,8 @@ export class ErabliereComponent implements OnInit {
     }
 
     loadAlertes() {
-        if (this.access_token != null) {
-            const headers = new Headers();
-            headers.append("Authorization", `Bearer ${this.access_token}`)
-            fetch(environment.apiUrl + "/erablieres/" + this.erabliereSelectionnee + "/alertes", { headers: headers })
-                .then(response => response.json())
-                .then(alertes => {
-                    this.alertes = alertes;
-                });
-        }
+        this._erabliereApi.getAlertes(this.erabliereSelectionnee).then(alertes => {
+            this.alertes = alertes;
+        });
     }
 }

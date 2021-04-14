@@ -17,6 +17,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';
 import { DashboardComponent } from 'src/dashboard/dashboard.component';
 import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
   imports: [
     BrowserModule,
     ChartsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   bootstrap: [AppComponent]
 })

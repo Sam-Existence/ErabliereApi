@@ -7,7 +7,6 @@ import { environment } from "src/environments/environment";
     template: `
         <h3>Alerte</h3>
         <div>
-            <p *ngIf="access_token == null">Vous devez être authentifié pour visionner les alertes.</p>
             <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
             <table *ngIf="alertes != null && alertes.length > 0" class="table">
                 <thead>
@@ -31,7 +30,5 @@ import { environment } from "src/environments/environment";
 export class AlerteComponent{
     constructor() { }
 
-    @Input() access_token: any;
     @Input() alertes?: Array<any>;
-
 }
