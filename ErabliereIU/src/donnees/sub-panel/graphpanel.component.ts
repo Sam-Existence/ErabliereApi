@@ -70,10 +70,10 @@ export class GraphPannelComponent {
     lineChartLegend = true;
     lineChartPlugins = [];
     
-    @Input() titre:string = "";
+    @Input() titre:string="";
     duree:string = "12h"
-    @Input() valeurActuel:string = "";
-    @Input() symbole:string = "";
+    @Input() valeurActuel?:string|null;
+    @Input() symbole:string="";
 
     constructor() { this.chart = undefined; }
 }

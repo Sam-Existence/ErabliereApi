@@ -1,6 +1,6 @@
 export class Baril {
     id?: any
-    df?: Date
+    df?: string
     idErabliere?: any
     qe?: string
     q?: string
