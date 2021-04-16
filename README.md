@@ -16,6 +16,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereModel : Classes métiers représentant les modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
 - GenerateurDonneePython : Script python pour alimenter l'API
+- IdentityServer/ErabliereApi.ServeurIdentite : Server de jeton OIDC
 
 ## Modèles de données
 Dans un premier temps, les informations enregistrés seront les suivantes :
@@ -78,3 +79,14 @@ https://netplan.io/examples/
 https://www.powershellgallery.com/packages/ExchangeOnlineManagement/2.0.4
 
 https://docs.microsoft.com/en-us/powershell/exchange/connect-to-exchange-online-powershell?view=exchange-ps
+
+### Utiliser ubuntu server derière une connexion internet limité
+
+> Utiliser seulement derière des connexion internet limité
+
+Ubuntu effectue des mises à jour de sécurité en arrière plan et peut avoir un impacte sur le nombre de donnée échangé par le système d'expoitation et l'ordinateur.
+
+```
+sudo systemctl disable apt-daily.timer
+sudo systemctl disable apt-daily-upgrade.timer
+```
