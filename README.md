@@ -66,8 +66,13 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 cd ErabliereIU
 npm install
 ng build --prod
+<<<<<<< HEAD
 sudo rm /var/www/html/*
 sudo cp -r dist/ErabliereIU/* /var/www/html/
+=======
+sudo rm -r /var/www/html/*
+sudo cp dist/ErabliereIU/* /var/www/html/
+>>>>>>> 854f0193125f41f54f567417c1e1cb3162661c32
 ```
 
 ### Documentation sur les configuration réseau ubuntu server
@@ -90,3 +95,8 @@ Ubuntu effectue des mises à jour de sécurité en arrière plan et peut avoir u
 sudo systemctl disable apt-daily.timer
 sudo systemctl disable apt-daily-upgrade.timer
 ```
+
+### Install .net 5.0 on a raspberry pi
+
+https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-5-with-the-raspberry-pi/
+

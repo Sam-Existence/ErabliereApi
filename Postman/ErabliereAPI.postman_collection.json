@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "30bf5459-1a5f-445f-8e7c-c16c1a405b63",
+		"_postman_id": "ca22f50d-3bab-40f0-b933-1d32fc4b8636",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -505,12 +505,15 @@
 									}
 								}
 							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
 							"request": {
 								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{$randomInt}},\r\n  \"nb\": {{$randomInt}},\r\n  \"v\": {{$randomInt}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -640,7 +643,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{$randomInt}},\r\n  \"nb\": {{$randomInt}},\r\n  \"v\": {{$randomInt}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -737,6 +740,136 @@
 							}
 						}
 					]
+				},
+				{
+					"name": "Erabliere 3",
+					"item": [
+						{
+							"name": "Ajouter une nouvelle donnée",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"dateDonnee\", new Date().toISOString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres/{{idErabliere}}/donnees",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{idErabliere}}",
+										"donnees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ajouter une nouveau dompeux",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"const maintenant = new Date().toISOString();\r",
+											"\r",
+											"pm.collectionVariables.set(\"dateDonnee\", maintenant);\r",
+											"\r",
+											"pm.collectionVariables.set(\"dd\", new Date(new Date() - 1000 * 60).toISOString());\r",
+											"pm.collectionVariables.set(\"de\", maintenant);"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres/{{idErabliere}}/dompeux",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{idErabliere}}",
+										"dompeux"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									"pm.collectionVariables.set('idErabliere', 3);"
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					]
 				}
 			],
 			"event": [
@@ -745,7 +878,33 @@
 					"script": {
 						"type": "text/javascript",
 						"exec": [
-							""
+							"function temperature() {",
+							"  var date = new Date();",
+							"  var m = date.getMonth();",
+							"  var doy = date.getDay();",
+							"  var hod = date.getHours();",
+							"  return Math.floor((12 * Math.sin((doy-105)*Math.PI/182.5)) + (5*Math.sin(doy*4)) + (5 * Math.sin((hod - 7) * 3.14159 / 12)) * 10);",
+							"}",
+							"",
+							"function vaccium(t) {",
+							"  var vaccium = 0",
+							"  if (t >= -1 - pm.collectionVariables.get('idErabliere')) {",
+							"    vaccium = 243",
+							"  }",
+							"  if (t > 3) {",
+							"      vaccium += 5;",
+							"  }",
+							"  return vaccium;",
+							"}",
+							"",
+							"function niveauBassin() {",
+							"  niveauBassin = 0",
+							"  return niveauBassin",
+							"}",
+							"",
+							"pm.collectionVariables.set('temperature', temperature());",
+							"pm.collectionVariables.set('vaccium', vaccium(pm.collectionVariables.get('temperature')));",
+							"pm.collectionVariables.set('niveauBassin', niveauBassin());"
 						]
 					}
 				},
@@ -808,6 +967,18 @@
 		{
 			"key": "de",
 			"value": "2021-03-27T16:37:25.965Z"
+		},
+		{
+			"key": "temperature",
+			"value": ""
+		},
+		{
+			"key": "vaccium",
+			"value": ""
+		},
+		{
+			"key": "niveauBassin",
+			"value": ""
 		}
 	]
 }
