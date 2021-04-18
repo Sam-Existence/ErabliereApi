@@ -4,6 +4,7 @@ using ErabliereApi.Donnees.Action.Post;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
 using System;
 using System.Linq;
@@ -41,7 +42,7 @@ namespace ErabliereApi.Controllers.Attributes
 
             _idErabliere = int.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'."));
 
-            _donnee = context.ActionArguments["donneeRecu"] as PostDonnee;
+            _donnee = context.ActionArguments.Single(a => a.Value?.GetType() == typeof(PostDonnee)).Value as PostDonnee;
         }
 
         /// <inheritdoc />
@@ -51,10 +52,9 @@ namespace ErabliereApi.Controllers.Attributes
             {
                 try
                 {
-                    var logger = context.HttpContext.RequestServices.GetService(typeof(ILogger<TriggerAlertAttribute>)) as ILogger<TriggerAlertAttribute>
-                                            ?? throw new InvalidProgramException("Un ILogger<TriggerAlertAttrbute> doit être enregistrer");
+                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TriggerAlertAttribute>>();
 
-                    var depot = context.HttpContext.RequestServices.GetService(typeof(ErabliereDbContext)) as ErabliereDbContext ?? throw new InvalidProgramException($"Il doit y avoir un type enregistrer pour {typeof(ErabliereDbContext)}.");
+                    var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
                     var alertes = depot.Alertes.AsNoTracking().Where(a => a.IdErabliere == _idErabliere).ToArray();
 
@@ -67,8 +67,7 @@ namespace ErabliereApi.Controllers.Attributes
                 }
                 catch (Exception e)
                 {
-                    var logger = context.HttpContext.RequestServices.GetService(typeof(ILogger<TriggerAlertAttribute>)) as ILogger<TriggerAlertAttribute>
-                                            ?? throw new InvalidProgramException("Un ILogger<TriggerAlertAttrbute> doit être enregistrer");
+                    var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TriggerAlertAttribute>>();
 
                     logger.LogCritical(new EventId(92837485, "TriggerAlertAttribute.OnActionExecuted"), e, "Une erreur imprévue est survenu lors de l'execution de la fonction d'alertage.");
                 }

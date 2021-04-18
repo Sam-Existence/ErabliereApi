@@ -39,7 +39,7 @@ spec:
         - name: CORS_METHODS
           value: "*"
         - name: USE_SQL
-          value: "true"
+          value: "false"
         - name: SQL_CONNEXION_STRING
           value: "Data Source=erabliere-db-service;Initial Catalog=ErabliereAPI;User ID=SA;Password=#{DATABASE_PASSWORD}"
         - name: SQL_USE_STARTUP_MIGRATION

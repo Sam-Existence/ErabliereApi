@@ -11,9 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Net.Mime;
 using System.Threading.Tasks;
@@ -66,18 +64,14 @@ namespace ErabliereApi.Controllers
 
             switch (HttpContext.Request.Headers["Accept"].ToString().ToLowerInvariant())
             {
-                case "text/json":
-                case MediaTypeNames.Text.Plain:
-                case MediaTypeNames.Application.Json:
-                    list = await ListerGenerique(id, ddr, dd, df, q, o);
-
-                    return Ok(list);
                 case "text/csv":
                     list = await ListerGenerique(id, ddr, dd, df, q, o);
 
                     return File(list.AsCsvInByteArray(), "text/csv", $"{Guid.NewGuid()}.csv");
                 default:
-                    return new UnsupportedMediaTypeResult();
+                    list = await ListerGenerique(id, ddr, dd, df, q, o);
+
+                    return Ok(list);
             }
         }
 
@@ -121,7 +115,7 @@ namespace ErabliereApi.Controllers
         [HttpPost]
         [ValiderIPRules]
         [TriggerAlert]
-        public async Task<IActionResult> Ajouter(int id, PostDonnee donneeRecu)
+        public async Task<IActionResult> Ajouter(int id, [FromBody] PostDonnee donneeRecu)
         {
             if (id != donneeRecu.IdErabliere)
             {
