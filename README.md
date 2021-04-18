@@ -67,7 +67,7 @@ cd ErabliereIU
 npm install
 ng build --prod
 sudo rm /var/www/html/*
-sudo cp dist/ErabliereIU/* /var/www/html/
+sudo cp -r dist/ErabliereIU/* /var/www/html/
 ```
 
 ### Documentation sur les configuration réseau ubuntu server

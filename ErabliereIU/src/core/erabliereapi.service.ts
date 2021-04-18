@@ -37,10 +37,11 @@ export class ErabliereApi {
 
     getDonnees(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Donnee[]>> {
         return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            let headers = new HttpHeaders()
+                                .set('Authorization', `Bearer ${token}`);
 
             if (xddr != null) {
-                headers.set('x-ddr', xddr);
+                headers = headers.set('x-ddr', xddr);
             }
 
             var httpCall = this._httpClient.get<Donnee[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
@@ -51,10 +52,11 @@ export class ErabliereApi {
 
     getDompeux(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Dompeux[]>> {
         return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            let headers = new HttpHeaders()
+                                .set('Authorization', `Bearer ${token}`);
 
             if (xddr != null) {
-                headers.set('x-ddr', xddr);
+                headers = headers.set('x-ddr', xddr);
             }
 
             var httpCall = this._httpClient.get<Dompeux[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
