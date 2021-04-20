@@ -16,7 +16,15 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public DateTimeOffset? DF { get; set; }
 
+        /// <summary>
+        /// L'id de l'érablière possédant le baril
+        /// </summary>
         public int? IdErabliere { get; set; }
+
+        /// <summary>
+        /// L'érablière possédant le baril
+        /// </summary>
+        public Erabliere? Erabliere { get; set; }
 
         /// <summary>
         /// Estimation de la qualité du sirop

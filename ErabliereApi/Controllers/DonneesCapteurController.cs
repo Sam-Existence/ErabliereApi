@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
-using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,9 +16,9 @@ namespace ErabliereApi.Controllers
     /// Contrôler représentant les données des dompeux
     /// </summary>
     [ApiController]
-    [Route("erablieres/{id}/[controller]")]
+    [Route("Capteurs/{id}/[controller]")]
     [Authorize]
-    public class CapteursController : ControllerBase
+    public class DonneesCapteurController : ControllerBase
     {
         private readonly ErabliereDbContext _depot;
         private readonly IMapper _mapper;
@@ -29,26 +27,22 @@ namespace ErabliereApi.Controllers
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="depot">Le dépôt des barils</param>
-        /// <param name="mapper">Interface de mapping entre les données</param>
-        public CapteursController(ErabliereDbContext depot, IMapper mapper)
+        public DonneesCapteurController(ErabliereDbContext depot, IMapper mapper)
         {
             _depot = depot;
             _mapper = mapper;
         }
 
         /// <summary>
-        /// Liste les capteurs
+        /// Liste les DonneesCapteur
         /// </summary>
-        /// <param name="id">Identifiant de l'érablière</param>
-        /// <param name="filtreNom">Permet de filtrer les capteurs recherché selon leur nom</param>
-        /// <response code="200">Une liste de capteurs.</response>
+        /// <param name="id">Identifiant du capteur</param>
+        /// <response code="200">Une liste de DonneesCapteur.</response>
         [HttpGet]
-        public async Task<IEnumerable<GetCapteurs>> Lister(int id, string? filtreNom)
+        public async Task<IEnumerable<DonneeCapteur>> Lister(int id)
         {
-            return await _depot.Capteurs.AsNoTracking()
-                                .Where(b => b.IdErabliere == id &&
-                                       (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom, StringComparison.OrdinalIgnoreCase) == true)))
-                                .ProjectTo<GetCapteurs>(_mapper.ConfigurationProvider)
+            return await _depot.DonneesCapteur.AsNoTracking()
+                                .Where(b => b.IdCapteur == id)
                                 .ToArrayAsync();
         }
 
@@ -56,23 +50,23 @@ namespace ErabliereApi.Controllers
         /// Ajouter un capteur
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="capteur">Le capteur a ajouter</param>
+        /// <param name="donneeCapteur">Le capteur a ajouter</param>
         /// <response code="200">Le capteur a été correctement ajouté.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(int id, PostCapteur capteur)
+        public async Task<IActionResult> Ajouter(int id, PostDonneeCapteur donneeCapteur)
         {
-            if (id != capteur.IdErabliere)
+            if (id != donneeCapteur.IdCapteur)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du capteur à ajouter");
             }
 
-            if (capteur.DC == null)
+            if (donneeCapteur.D == null)
             {
-                capteur.DC = DateTimeOffset.Now;
+                donneeCapteur.D = DateTimeOffset.Now;
             }
 
-            await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur));
+            await _depot.DonneesCapteur.AddAsync(_mapper.Map<DonneeCapteur>(donneeCapteur));
 
             await _depot.SaveChangesAsync();
 
@@ -87,11 +81,11 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(int id, Capteur capteur)
+        public async Task<IActionResult> Modifier(int id, DonneeCapteur capteur)
         {
-            if (id != capteur.IdErabliere)
+            if (id != capteur.IdCapteur)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du capteur à modifier.");
             }
 
             _depot.Update(capteur);
@@ -109,9 +103,9 @@ namespace ErabliereApi.Controllers
         /// <response code="202">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer(int id, Capteur capteur)
+        public async Task<IActionResult> Supprimer(int id, DonneeCapteur capteur)
         {
-            if (id != capteur.IdErabliere)
+            if (id != capteur.IdCapteur)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
             }

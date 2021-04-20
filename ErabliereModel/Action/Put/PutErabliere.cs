@@ -34,5 +34,15 @@ namespace ErabliereApi.Donnees.Action.Put
         /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
         /// </summary>
         public bool? AfficherSectionBaril { get; set; }
+
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherTrioDonnees { get; set; }
+
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherSectionDompeux { get; set; }
     }
 }

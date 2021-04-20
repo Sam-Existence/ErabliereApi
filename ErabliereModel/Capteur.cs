@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace ErabliereApi.Donnees
 {
@@ -15,9 +16,24 @@ namespace ErabliereApi.Donnees
         public DateTimeOffset? DC { get; set; }
 
         /// <summary>
+        /// Indicateur permettant d'afficher ou non le graphique relié au capteur.
+        /// </summary>
+        public bool? AfficherCapteurDashboard { get; set; }
+
+        /// <summary>
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
         public int? IdErabliere { get; set; }
+
+        /// <summary>
+        /// L'érablière de ce capteur
+        /// </summary>
+        public Erabliere? Erabliere { get; set; }
+
+        /// <summary>
+        /// Les données du capteurs
+        /// </summary>
+        public List<DonneeCapteur>? DonneesCapteur { get; set; }
 
         /// <summary>
         /// Le nom donné au capteur

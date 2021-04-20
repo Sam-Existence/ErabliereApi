@@ -28,7 +28,11 @@ namespace ErabliereApi.Test.Autofixture
             fixture.Customize(new AutoNSubstituteCustomization());
 
             fixture.Customize<PostErabliere>(c => c.With(e => e.IpRules, () => fixture.CreateRandomIPAddress().ToString()));
-            fixture.Customize<Erabliere>(c => c.With(e => e.IpRule, () => fixture.CreateRandomIPAddress().ToString()));
+            fixture.Customize<Erabliere>(c => c.With(e => e.IpRule, () => fixture.CreateRandomIPAddress().ToString())
+                                               .Without(e => e.Donnees)
+                                               .Without(e => e.Dompeux)
+                                               .Without(e => e.Barils)
+                                               .Without(e => e.Capteurs));
 
             fixture.Register(() => builder.GetRequiredService<ErabliereDbContext>().PopulatesDbSets(fixture));
             fixture.Register(() => builder.GetRequiredService<IMapper>());

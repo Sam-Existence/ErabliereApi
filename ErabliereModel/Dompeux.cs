@@ -27,6 +27,8 @@ namespace ErabliereApi.Donnees
 
         public int? IdErabliere { get; set; }
 
+        public Erabliere? Erabliere { get; set; }
+
         public int CompareTo([AllowNull] Dompeux other)
         {
             if (other == default)

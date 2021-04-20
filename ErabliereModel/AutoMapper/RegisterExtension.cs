@@ -9,6 +9,8 @@ namespace ErabliereApi.Donnees.AutoMapper
         public static IServiceCollection AjouterAutoMapperErabliereApiDonnee(this IServiceCollection services) =>
             services.AddAutoMapper(config =>
             {
+                config.CreateMap<Capteur, GetCapteurs>();
+
                 config.CreateMap<Dompeux, GetDompeux>();
 
                 config.CreateMap<Donnee, GetDonnee>();
@@ -18,7 +20,12 @@ namespace ErabliereApi.Donnees.AutoMapper
                       .ReverseMap()
                       .ForMember(p => p.IpRules, a => a.MapFrom(e => e.IpRule));
 
+                config.CreateMap<PostCapteur, Capteur>();
+
                 config.CreateMap<PostDonnee, Donnee>();
+
+                config.CreateMap<PostDonneeCapteur, DonneeCapteur>()
+                      .ForMember(d => d.Valeur, o => o.MapFrom(p => p.V));
             });
     }
 }

@@ -7,6 +7,7 @@ using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -43,6 +44,14 @@ namespace ErabliereApi.Controllers
         public async Task<IEnumerable<Erabliere>> Lister()
         {
             return (await _context.Erabliere.AsNoTracking().ToArrayAsync()).OrderBy(e => e);
+        }
+
+        [HttpGet("{id}/[action]")]
+        public async Task<Erabliere> Rapport(int id, DateTimeOffset dd, DateTimeOffset df)
+        {
+            var requete = await _context.Erabliere.FindAsync(id);
+
+            return requete;
         }
 
         /// <summary>

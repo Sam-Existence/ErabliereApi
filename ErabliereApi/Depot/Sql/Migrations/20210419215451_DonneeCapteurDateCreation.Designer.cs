@@ -4,14 +4,16 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ErabliereApi.Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210419215451_DonneeCapteurDateCreation")]
+    partial class DonneeCapteurDateCreation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -72,9 +74,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DF")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("ErabliereId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("IdErabliere")
                         .HasColumnType("int");
 
@@ -88,8 +87,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ErabliereId");
-
                     b.ToTable("Barils");
                 });
 
@@ -99,9 +96,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<bool?>("AfficherCapteurDashboard")
-                        .HasColumnType("bit");
 
                     b.Property<DateTimeOffset?>("DC")
                         .HasColumnType("datetimeoffset");
@@ -137,9 +131,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DF")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("ErabliereId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("IdErabliere")
                         .HasColumnType("int");
 
@@ -147,8 +138,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ErabliereId");
 
                     b.ToTable("Dompeux");
                 });
@@ -162,9 +151,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
                     b.Property<DateTimeOffset?>("D")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int?>("ErabliereId")
-                        .HasColumnType("int");
 
                     b.Property<int?>("IdErabliere")
                         .HasColumnType("int");
@@ -189,8 +175,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ErabliereId");
-
                     b.ToTable("Donnees");
                 });
 
@@ -209,7 +193,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<int?>("IdCapteur")
                         .HasColumnType("int");
 
-                    b.Property<short?>("Valeur")
+                    b.Property<short>("Valeur")
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
@@ -229,12 +213,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<bool?>("AfficherSectionBaril")
                         .HasColumnType("bit");
 
-                    b.Property<bool?>("AfficherSectionDompeux")
-                        .HasColumnType("bit");
-
-                    b.Property<bool?>("AfficherTrioDonnees")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("IndiceOrdre")
                         .HasColumnType("int");
 
@@ -252,37 +230,10 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.ToTable("Erabliere");
                 });
 
-            modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany("Barils")
-                        .HasForeignKey("ErabliereId");
-
-                    b.Navigation("Erabliere");
-                });
-
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Capteurs")
-                        .HasForeignKey("ErabliereId");
-
-                    b.Navigation("Erabliere");
-                });
-
-            modelBuilder.Entity("ErabliereApi.Donnees.Dompeux", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany("Dompeux")
-                        .HasForeignKey("ErabliereId");
-
-                    b.Navigation("Erabliere");
-                });
-
-            modelBuilder.Entity("ErabliereApi.Donnees.Donnee", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany("Donnees")
                         .HasForeignKey("ErabliereId");
 
                     b.Navigation("Erabliere");
@@ -304,13 +255,7 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Erabliere", b =>
                 {
-                    b.Navigation("Barils");
-
                     b.Navigation("Capteurs");
-
-                    b.Navigation("Dompeux");
-
-                    b.Navigation("Donnees");
                 });
 #pragma warning restore 612, 618
         }

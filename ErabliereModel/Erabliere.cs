@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
@@ -32,6 +33,36 @@ namespace ErabliereApi.Donnees
         /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
         /// </summary>
         public bool? AfficherSectionBaril { get; set; }
+
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherTrioDonnees { get; set; }
+
+        /// <summary>
+        /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
+        /// </summary>
+        public bool? AfficherSectionDompeux { get; set; }
+
+        /// <summary>
+        /// Les capteurs de l'érablière
+        /// </summary>
+        public List<Capteur>? Capteurs { get; set; }
+
+        /// <summary>
+        /// Les données relier à l'érablière
+        /// </summary>
+        public List<Donnee>? Donnees { get; set; }
+
+        /// <summary>
+        /// La liste des barils de l'érablière
+        /// </summary>
+        public List<Baril>? Barils { get; set; }
+
+        /// <summary>
+        /// La liste des dompeux de l'érablière
+        /// </summary>
+        public List<Dompeux>? Dompeux { get; set; }
 
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)

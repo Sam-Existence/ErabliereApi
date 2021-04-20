@@ -37,6 +37,11 @@ namespace ErabliereApi.Donnees
         public int? IdErabliere { get; set; }
 
         /// <summary>
+        /// L'erabliere relié à la donnée
+        /// </summary>
+        public Erabliere? Erabliere { get; set; }
+
+        /// <summary>
         /// Interval de date des données alimenté. Utiliser pour optimiser le nombre de données enregistrer
         /// 
         /// Plus grand interval d'alimentation de cette donnée, en seconde

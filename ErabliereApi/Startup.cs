@@ -16,6 +16,7 @@ using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
+using System.Text.Json.Serialization;
 
 namespace ErabliereApi
 {
@@ -29,8 +30,12 @@ namespace ErabliereApi
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
-            // contr�leur
-            services.AddControllers();
+            // contrôleur
+            services.AddControllers()
+                    .AddJsonOptions(o =>
+                    {
+                        o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    });
 
             // Forwarded headers
             services.Configure<ForwardedHeadersOptions>(options =>
