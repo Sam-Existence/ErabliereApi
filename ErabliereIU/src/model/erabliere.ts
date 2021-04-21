@@ -4,4 +4,6 @@ export class Erabliere {
     ipRule?: string;
     indiceOrdre?: number;
     afficherSectionBaril?: boolean;
+    afficherTrioDonnees?: boolean;
+    afficherSectionDompeux?: boolean;
 }

@@ -7,8 +7,8 @@ import { DashboardComponent } from 'src/dashboard/dashboard.component';
 
 const routes: Routes = [
     { path: '', component: DashboardComponent },
-    { path: '/dashboard', component: DashboardComponent },
-    { path: '/alertes', component: AlerteComponent },
+    { path: 'dashboard', component: DashboardComponent },
+    { path: 'alertes', component: AlerteComponent },
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent }
 ]

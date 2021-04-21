@@ -55,5 +55,11 @@ namespace ErabliereApi.Depot.Sql
         /// Table des données des capteurs
         /// </summary>
         public DbSet<DonneeCapteur> DonneesCapteur { get; private set; }
+
+        /// <inheritdoc />
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(ErabliereDbContext).Assembly);
+        }
     }
 }

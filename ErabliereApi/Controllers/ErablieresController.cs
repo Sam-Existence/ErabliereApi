@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
@@ -46,12 +48,18 @@ namespace ErabliereApi.Controllers
             return (await _context.Erabliere.AsNoTracking().ToArrayAsync()).OrderBy(e => e);
         }
 
-        [HttpGet("{id}/[action]")]
-        public async Task<Erabliere> Rapport(int id, DateTimeOffset dd, DateTimeOffset df)
+        /// <summary>
+        /// Obtenir les données pour la page principale d'ErabliereIU
+        /// </summary>
+        /// <returns>Une liste d'érablière</returns>
+        [HttpGet("[action]")]
+        public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset dd, DateTimeOffset df)
         {
-            var requete = await _context.Erabliere.FindAsync(id);
+            var dashboardData = await _context.Erabliere.AsNoTracking()
+                                                  .ProjectTo<GetErabliereDashboard>(_mapper.ConfigurationProvider, new { dd = dd, df = df })
+                                                  .ToArrayAsync();
 
-            return requete;
+            return dashboardData;
         }
 
         /// <summary>
@@ -135,6 +143,16 @@ namespace ErabliereApi.Controllers
             if (erabliere.AfficherSectionBaril.HasValue)
             {
                 entity.AfficherSectionBaril = erabliere.AfficherSectionBaril;
+            }
+
+            if (erabliere.AfficherSectionDompeux.HasValue)
+            {
+                entity.AfficherSectionDompeux = erabliere.AfficherSectionDompeux;
+            }
+
+            if (erabliere.AfficherTrioDonnees.HasValue)
+            {
+                entity.AfficherTrioDonnees = erabliere.AfficherTrioDonnees;
             }
 
             _context.Erabliere.Update(entity);

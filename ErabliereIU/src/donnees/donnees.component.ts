@@ -9,28 +9,28 @@ import { Erabliere } from 'src/model/erabliere';
     template: `
         <div class="border-top">
           <div class="row">
-            <div class="col-md-6">
+            <div *ngIf="erabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
                            [datasets]="temperature"></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="erabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
                            [datasets]="vaccium"></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="erabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
                            [datasets]="niveaubassin"></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="erabliere?.afficherSectionDompeux" class="col-md-6">
               <bar-panel [titre]="titre_dompeux" 
                          [timeaxes]="timeaxes_dompeux" 
                          [datasets]="dompeux"
@@ -87,11 +87,20 @@ export class DonneesComponent implements OnInit {
       constructor(private _erabliereApi:ErabliereApi){ }
 
       ngOnInit() {
-        this.doHttpCall();
-        this.doHttpCallDompeux();
-        setInterval(() => {
-          this.doHttpCall(this.derniereDonneeRecu);
+        if (this.erabliere?.afficherTrioDonnees == true) {
+          this.doHttpCall();
+        }
+        if (this.erabliere?.afficherSectionDompeux == true) {
           this.doHttpCallDompeux();
+        }
+
+        setInterval(() => {
+          if (this.erabliere?.afficherTrioDonnees == true) {
+            this.doHttpCall();
+          }
+          if (this.erabliere?.afficherSectionDompeux == true) {
+            this.doHttpCallDompeux();
+          }
         }, 1000 * 60);
       }
 
@@ -152,7 +161,7 @@ export class DonneesComponent implements OnInit {
         });
       }
 
-      doHttpCall(derniereDonneeRecu:any = undefined) {
+      doHttpCall() {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
         let finFiltre = new Date().toISOString();
 
