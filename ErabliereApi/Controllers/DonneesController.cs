@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Controllers.Attributes;
 using ErabliereApi.Depot.Sql;
@@ -93,7 +94,7 @@ namespace ErabliereApi.Controllers
                 query = query.Take(q.Value);
             }
 
-            var list = await query.ToArrayAsync();
+            var list = await query.ProjectTo<GetDonnee>(_mapper.ConfigurationProvider).ToArrayAsync();
 
             if (o == "c" && list.Length > 0)
             {
@@ -104,7 +105,7 @@ namespace ErabliereApi.Controllers
                 HttpContext.Response.Headers.Add("x-dde", list[^1].D.ToString());
             }
 
-            return list.Select(_mapper.Map<GetDonnee>);
+            return list;
         }
 
         /// <summary>

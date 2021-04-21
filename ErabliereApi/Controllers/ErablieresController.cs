@@ -55,12 +55,42 @@ namespace ErabliereApi.Controllers
         [HttpGet("[action]")]
         public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset dd, DateTimeOffset df)
         {
+            
+
             var dashboardData = await _context.Erabliere.AsNoTracking()
-                                                  .ProjectTo<GetErabliereDashboard>(_mapper.ConfigurationProvider, new { dd = dd, df = df })
+                                                  .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd = dd, df = df })
                                                   .ToArrayAsync();
 
             return dashboardData;
         }
+
+        private static readonly IConfigurationProvider _dashboardMapper = new MapperConfiguration(config =>
+        {
+            DateTimeOffset? ddr = default;
+            DateTimeOffset? dd = default;
+            DateTimeOffset? df = default;
+
+            config.CreateMap<Erabliere, GetErabliereDashboard>()
+                  .ForMember(d => d.Donnees, o => o.MapFrom(e => e.Donnees.Where(d => (ddr == null || d.D > ddr) &&
+                                                                                      (dd == null || d.D >= dd) &&
+                                                                                      (df == null || d.D <= df))))
+                  .ForMember(d => d.Dompeux, o => o.MapFrom(e => e.Dompeux.Where(d => (ddr == null || d.T > ddr) &&
+                                                                                      (dd == null || d.T >= dd) &&
+                                                                                      (df == null || d.T <= df))))
+                  .ReverseMap();
+
+            config.CreateMap<Capteur, GetCapteurs>()
+                  .ReverseMap();
+
+            config.CreateMap<Dompeux, GetDompeux>()
+                  .ReverseMap();
+
+            config.CreateMap<Donnee, GetDonnee>()
+                  .ReverseMap();
+
+            config.CreateMap<Baril, GetBaril>()
+                  .ReverseMap();
+        });
 
         /// <summary>
         /// Créer une érablière
