@@ -29,6 +29,36 @@
         "OIDC_AUTHORITY": "https://localhost:5005",
         "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json"
       }
+    },
+    "Watch": {
+      "commandName": "dotnet",
+      "workingDirectory": "$(ProjectDir)",
+      "commandLineArgs": "watch run",
+      "launchUrl": "api",
+      "applicationUrl": "https://0.0.0.0:5001;http://0.0.0.0:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "USE_CORS": "True",
+        "CORS_HEADERS": "*",
+        "CORS_METHODS": "*",
+        "CORS_ORIGINS": "*",
+        "USE_SQL": "true",
+        "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
+        "SQL_USE_STARTUP_MIGRATION": "true",
+        "DEBUG_HEADERS": "false",
+        "LOG_SQL": "Console",
+        "USE_AUTHENTICATION": "false",
+        "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
+        "USE_SWAGGER_PKCE": "true",
+        "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
+        "SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
+        "OIDC_CLIENT_ID": "swagger-dev",
+        "OIDC_CLIENT_PASSWORD": "D6VDPBGKjmoyKkP~yFnxvMlLqS",
+        "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
+        "OIDC_AUDIENCE": "http://erabliere-api",
+        "OIDC_AUTHORITY": "https://localhost:5005",
+        "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json"
+      }
     }
   }
 }

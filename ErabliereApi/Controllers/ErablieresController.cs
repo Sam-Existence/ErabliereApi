@@ -53,12 +53,10 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Une liste d'érablière</returns>
         [HttpGet("[action]")]
-        public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset dd, DateTimeOffset df)
+        public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr)
         {
-            
-
             var dashboardData = await _context.Erabliere.AsNoTracking()
-                                                  .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd = dd, df = df })
+                                                  .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd = dd, df = df, ddr = ddr })
                                                   .ToArrayAsync();
 
             return dashboardData;
@@ -77,9 +75,16 @@ namespace ErabliereApi.Controllers
                   .ForMember(d => d.Dompeux, o => o.MapFrom(e => e.Dompeux.Where(d => (ddr == null || d.T > ddr) &&
                                                                                       (dd == null || d.T >= dd) &&
                                                                                       (df == null || d.T <= df))))
+                  .ForMember(d => d.Capteurs, o => o.MapFrom(e => e.Capteurs.Where(c => c.AfficherCapteurDashboard == true)))
                   .ReverseMap();
 
-            config.CreateMap<Capteur, GetCapteurs>()
+            config.CreateMap<Capteur, GetCapteursAvecDonnees>()
+                  .ForMember(c => c.Donnees, o => o.MapFrom(e => e.DonneesCapteur.Where(d => (ddr == null || d.D > ddr) &&
+                                                                                             (dd == null || d.D >= dd) &&
+                                                                                             (df == null || d.D <= df))))
+                  .ReverseMap();
+
+            config.CreateMap<DonneeCapteur, GetDonneesCapteur>()
                   .ReverseMap();
 
             config.CreateMap<Dompeux, GetDompeux>()

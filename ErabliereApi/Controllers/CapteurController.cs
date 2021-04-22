@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +48,7 @@ namespace ErabliereApi.Controllers
         {
             return await _depot.Capteurs.AsNoTracking()
                                 .Where(b => b.IdErabliere == id &&
-                                       (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom, StringComparison.OrdinalIgnoreCase) == true)))
+                                       (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
                                 .ProjectTo<GetCapteurs>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync();
         }
@@ -87,14 +88,36 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(int id, Capteur capteur)
+        public async Task<IActionResult> Modifier(int id, PutCapteur capteur)
         {
             if (id != capteur.IdErabliere)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
             }
 
-            _depot.Update(capteur);
+            var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id);
+
+            if (capteurEntity == null || capteurEntity.IdErabliere != capteur.IdErabliere) 
+            {
+                return BadRequest("Le capteur à modifier n'existe pas.");
+            }
+
+            if (capteur.AfficherCapteurDashboard.HasValue)
+            {
+                capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard;
+            }
+
+            if (capteur.DC.HasValue) 
+            {
+                capteurEntity.DC = capteur.DC;
+            }
+
+            if (string.IsNullOrWhiteSpace(capteur.Nom) == false) 
+            {
+                capteurEntity.Nom = capteur.Nom;
+            }
+
+            _depot.Update(capteurEntity);
 
             await _depot.SaveChangesAsync();
 

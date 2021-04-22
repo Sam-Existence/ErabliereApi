@@ -47,7 +47,7 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// Les capteurs de l'érablière
         /// </summary>
-        public List<GetCapteurs>? Capteurs { get; set; }
+        public List<GetCapteursAvecDonnees>? Capteurs { get; set; }
 
         /// <summary>
         /// Les données relier à l'érablière

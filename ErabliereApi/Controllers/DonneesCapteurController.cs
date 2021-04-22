@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
@@ -27,6 +28,7 @@ namespace ErabliereApi.Controllers
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="depot">Le dépôt des barils</param>
+        /// <param name="mapper">Interface de mapping entre les objets</param>
         public DonneesCapteurController(ErabliereDbContext depot, IMapper mapper)
         {
             _depot = depot;
@@ -39,10 +41,11 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant du capteur</param>
         /// <response code="200">Une liste de DonneesCapteur.</response>
         [HttpGet]
-        public async Task<IEnumerable<DonneeCapteur>> Lister(int id)
+        public async Task<IEnumerable<GetDonneesCapteur>> Lister(int id)
         {
             return await _depot.DonneesCapteur.AsNoTracking()
                                 .Where(b => b.IdCapteur == id)
+                                .ProjectTo<GetDonneesCapteur>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync();
         }
 

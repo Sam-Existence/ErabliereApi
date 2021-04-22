@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 
-namespace ErabliereApi.Donnees.Action.Get
+namespace ErabliereApi.Donnees.Action.Put
 {
-    public class GetCapteurs
+    public class PutCapteur
     {
         public int? Id { get; set; }
 
         public string? Nom { get; set; }
+
+        public int? IdErabliere { get; set; }
 
         /// <summary>
         /// Indicateur permettant d'afficher ou non le graphique relié au capteur.
