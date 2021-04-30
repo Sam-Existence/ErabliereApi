@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using OData.Swagger.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -88,6 +89,8 @@ namespace ErabliereApi
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+
+            services.AddOdataSwaggerSupport();
 
             return services;
         }

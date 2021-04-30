@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -16,13 +15,10 @@ using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
-using System.Text.Json.Serialization;
 using Microsoft.OData.Edm;
 using ErabliereApi.Donnees;
-using Microsoft.Net.Http.Headers;
-using System.Linq;
-using Microsoft.AspNetCore.OData;
-using Microsoft.OData.ModelBuilder;
+using Microsoft.AspNet.OData.Extensions;
+using Newtonsoft.Json.Serialization;
 
 namespace ErabliereApi
 {
@@ -41,10 +37,13 @@ namespace ErabliereApi
             {
                 o.EnableEndpointRouting = false;
             })
-            .AddJsonOptions(o =>
+            .AddNewtonsoftJson(o =>
             {
-                o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
             });
+
+            services.AddOData();
 
             // Forwarded headers
             services.Configure<ForwardedHeadersOptions>(options =>
@@ -100,18 +99,6 @@ namespace ErabliereApi
                     }
                 });
             }
-
-            services.AddOData(o => 
-            {
-                o.Select();
-                o.Filter();
-                o.Expand();
-                o.Filter();
-                o.OrderBy();
-                o.Count();
-                o.MaxTop = 100;
-                o.AddModel("odata", GetEdmModel());
-            });
         }
 
         /// <summary>
@@ -162,6 +149,8 @@ namespace ErabliereApi
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.EnableDependencyInjection();
+                endpoints.Select().Expand().Filter().Count().MaxTop(100).OrderBy();
                 endpoints.MapControllers();
             });
 
@@ -169,21 +158,6 @@ namespace ErabliereApi
             {
                 
             });
-        }
-
-        private IEdmModel GetEdmModel()
-        {
-            var builder = new ODataConventionModelBuilder();
-
-            builder.EntitySet<Alerte>(nameof(ErabliereDbContext.Alertes));
-            builder.EntitySet<Baril>(nameof(ErabliereDbContext.Barils));
-            builder.EntitySet<Capteur>(nameof(ErabliereDbContext.Capteurs));
-            builder.EntitySet<Dompeux>(nameof(ErabliereDbContext.Dompeux));
-            builder.EntitySet<Donnee>(nameof(ErabliereDbContext.Donnees));
-            builder.EntitySet<DonneeCapteur>(nameof(ErabliereDbContext.DonneesCapteur));
-            builder.EntitySet<Erabliere>(nameof(ErabliereDbContext.Erabliere));
-
-            return builder.GetEdmModel();
         }
     }
 }
