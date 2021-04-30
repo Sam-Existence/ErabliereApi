@@ -8,6 +8,8 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace ErabliereApi.Controllers
     [ApiController]
     [Route("[controller]")]
     [Authorize]
-    public class ErablieresController : ControllerBase
+    public class ErablieresController : ODataController
     {
         private readonly ErabliereDbContext _context;
         private readonly IMapper _mapper;
@@ -43,9 +45,10 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <returns>Une liste d'érablière</returns>
         [HttpGet]
-        public async Task<IEnumerable<Erabliere>> Lister()
+        [EnableQuery]
+        public IEnumerable<Erabliere> Lister()
         {
-            return (await _context.Erabliere.AsNoTracking().ToArrayAsync()).OrderBy(e => e);
+            return _context.Erabliere.AsNoTracking();
         }
 
         /// <summary>
@@ -56,8 +59,8 @@ namespace ErabliereApi.Controllers
         public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr)
         {
             var dashboardData = await _context.Erabliere.AsNoTracking()
-                                                  .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd = dd, df = df, ddr = ddr })
-                                                  .ToArrayAsync();
+                .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd = dd, df = df, ddr = ddr })
+                .ToArrayAsync();
 
             return dashboardData;
         }

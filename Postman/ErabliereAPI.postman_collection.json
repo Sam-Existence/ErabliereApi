@@ -254,9 +254,7 @@
 									"    pm.expect(donnee.t).to.eq(-15);\r",
 									"    pm.expect(donnee.v).to.eq(0);\r",
 									"    pm.expect(donnee.nb).to.eq(0);\r",
-									"    pm.expect(donnee.iddp).to.eq(null);\r",
 									"    pm.expect(donnee.nboc).to.eq(0);\r",
-									"    pm.expect(donnee.pi).to.eq(null);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -354,9 +352,7 @@
 									"    pm.expect(donnee.t).to.eq(-16);\r",
 									"    pm.expect(donnee.v).to.eq(0);\r",
 									"    pm.expect(donnee.nb).to.eq(0);\r",
-									"    pm.expect(donnee.iddp).to.eq(null);\r",
 									"    pm.expect(donnee.nboc).to.eq(0);\r",
-									"    pm.expect(donnee.pi).to.eq(null);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -631,7 +627,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Vérifier status réponse.\", () => {\r",
-											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"    pm.expect(pm.response.code).to.eq(400); // Validation de l'ip\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -686,7 +682,7 @@
 									"script": {
 										"exec": [
 											"pm.test(\"Vérifier status réponse.\", () => {\r",
-											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"    pm.expect(pm.response.code).to.eq(400); // Validation de l'ip\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -918,6 +914,322 @@
 					}
 				}
 			]
+		},
+		{
+			"name": "DonneesCapteur",
+			"item": [
+				{
+					"name": "PreRequis",
+					"item": [
+						{
+							"name": "Obtenir la liste des érablières Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Vérifier format réponse\", () => {\r",
+											"    const listeErabliere = pm.response.json();\r",
+											"\r",
+											"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
+											"\r",
+											"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/erablieres",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ajouter une nouvelle érablière Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"pm.collectionVariables.set(\"nomErabliere\", pm.variables.replaceIn(\"{{$randomWords}}\").substr(0, 50));"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"nom\": \"{{nomErabliere}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Trouver l'érablière dans la liste Copy",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});\r",
+											"\r",
+											"pm.test(\"Vérifier format réponse\", () => {\r",
+											"    const listeErabliere = pm.response.json();\r",
+											"\r",
+											"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
+											"\r",
+											"    pm.expect(listeErabliere.length).to.eq(pm.collectionVariables.get(\"nombreErabliere\") + 1);\r",
+											"\r",
+											"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
+											"\r",
+											"    const erabliere = listeErabliere.find(e => e.nom == pm.collectionVariables.get(\"nomErabliere\"));\r",
+											"\r",
+											"    pm.collectionVariables.set(\"idErabliere\", erabliere.id);\r",
+											"\r",
+											"    console.log(\"Id de l'érablière : \" + pm.collectionVariables.get(\"idErabliere\"));\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/erablieres",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ajouter un capteur",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"nom\": \"{{$randomWord}}\",\r\n    \"idErabliere\": {{idErabliere}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres/{{idErabliere}}/capteurs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{idErabliere}}",
+										"capteurs"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Obtenir l'id du capteur",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});\r",
+											"\r",
+											"var capteurs = pm.response.json();\r",
+											"\r",
+											"pm.collectionVariables.set(\"idCapteur\", capteurs[0].id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{url}}/erablieres/{{idErabliere}}/capteurs",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{idErabliere}}",
+										"capteurs"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "FeedSensor",
+					"item": [
+						{
+							"name": "Envoyer Donnée Capteur",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Status code is 200\", function () {\r",
+											"    pm.response.to.have.status(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"V\": {{$randomInt}},\r\n    \"idCapteur\": {{idCapteur}}\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/Capteurs/{{idCapteur}}/DonneesCapteur",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"Capteurs",
+										"{{idCapteur}}",
+										"DonneesCapteur"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "OData",
+			"item": [
+				{
+					"name": "Get Nom Erabliere",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{url}}/erablieres?$select=Nom",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							],
+							"query": [
+								{
+									"key": "$select",
+									"value": "Nom"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -978,6 +1290,10 @@
 		},
 		{
 			"key": "niveauBassin",
+			"value": ""
+		},
+		{
+			"key": "idCapteur",
 			"value": ""
 		}
 	]

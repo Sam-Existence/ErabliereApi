@@ -17,6 +17,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
 using System.Text.Json.Serialization;
+using Microsoft.OData.Edm;
+using ErabliereApi.Donnees;
+using Microsoft.Net.Http.Headers;
+using System.Linq;
+using Microsoft.AspNetCore.OData;
+using Microsoft.OData.ModelBuilder;
 
 namespace ErabliereApi
 {
@@ -31,11 +37,14 @@ namespace ErabliereApi
         public void ConfigureServices(IServiceCollection services)
         {
             // contrôleur
-            services.AddControllers()
-                    .AddJsonOptions(o =>
-                    {
-                        o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
-                    });
+            services.AddControllers(o =>
+            {
+                o.EnableEndpointRouting = false;
+            })
+            .AddJsonOptions(o =>
+            {
+                o.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+            });
 
             // Forwarded headers
             services.Configure<ForwardedHeadersOptions>(options =>
@@ -91,6 +100,18 @@ namespace ErabliereApi
                     }
                 });
             }
+
+            services.AddOData(o => 
+            {
+                o.Select();
+                o.Filter();
+                o.Expand();
+                o.Filter();
+                o.OrderBy();
+                o.Count();
+                o.MaxTop = 100;
+                o.AddModel("odata", GetEdmModel());
+            });
         }
 
         /// <summary>
@@ -148,6 +169,21 @@ namespace ErabliereApi
             {
                 
             });
+        }
+
+        private IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+
+            builder.EntitySet<Alerte>(nameof(ErabliereDbContext.Alertes));
+            builder.EntitySet<Baril>(nameof(ErabliereDbContext.Barils));
+            builder.EntitySet<Capteur>(nameof(ErabliereDbContext.Capteurs));
+            builder.EntitySet<Dompeux>(nameof(ErabliereDbContext.Dompeux));
+            builder.EntitySet<Donnee>(nameof(ErabliereDbContext.Donnees));
+            builder.EntitySet<DonneeCapteur>(nameof(ErabliereDbContext.DonneesCapteur));
+            builder.EntitySet<Erabliere>(nameof(ErabliereDbContext.Erabliere));
+
+            return builder.GetEdmModel();
         }
     }
 }

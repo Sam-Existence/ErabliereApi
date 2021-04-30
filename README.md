@@ -66,13 +66,8 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 cd ErabliereIU
 npm install
 ng build --prod
-<<<<<<< HEAD
-sudo rm /var/www/html/*
-sudo cp -r dist/ErabliereIU/* /var/www/html/
-=======
 sudo rm -r /var/www/html/*
-sudo cp dist/ErabliereIU/* /var/www/html/
->>>>>>> 854f0193125f41f54f567417c1e1cb3162661c32
+sudo cp -r dist/ErabliereIU/* /var/www/html/
 ```
 
 ### Documentation sur les configuration réseau ubuntu server
