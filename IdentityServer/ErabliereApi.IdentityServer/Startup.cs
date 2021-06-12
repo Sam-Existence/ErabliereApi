@@ -74,6 +74,11 @@ namespace ErabliereApi.IdentityServer
 
             var builder = services.AddIdentityServer(options =>
             {
+                if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("ISSUER_URI")) == false)
+                {
+                    options.IssuerUri = GetEnvironmentVariable("ISSUER_URI");
+                }
+
                 // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
                 options.EmitStaticAudienceClaim = true;
             })

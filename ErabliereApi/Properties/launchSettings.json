@@ -17,7 +17,7 @@
         "SQL_USE_STARTUP_MIGRATION": "true",
         "DEBUG_HEADERS": "false",
         "LOG_SQL": "-", // Console, -
-        "USE_AUTHENTICATION": "false",
+        "USE_AUTHENTICATION": "true",
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
         "USE_SWAGGER_PKCE": "true",
         "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",

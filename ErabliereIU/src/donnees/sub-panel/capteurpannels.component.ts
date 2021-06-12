@@ -10,32 +10,14 @@ import { Erabliere } from 'src/model/erabliere';
         <div class="border-top">
           <div class="row">
             <div class="col-md-6">
-              <graph-panel [titre]="titre_temperature" 
-                           [valeurActuel]="temperatureValueActuel"
-                           [symbole]="temperatureSymbole"
-                           [timeaxes]="timeaxes" 
-                           [datasets]="temperature"></graph-panel>
+              <div *ngFor="capteur in capteurs">
+                <graph-panel [titre]="capteur.nom" 
+                             [valeurActuel]="capteur.donnees[capteur.donnees.length-1].valeur"
+                             [symbole]="°c"
+                             [timeaxes]="timeaxes" 
+                             [datasets]="temperature"></graph-panel>
+              </div>
             </div>
-            <div class="col-md-6">
-              <graph-panel [titre]="titre_vaccium" 
-                           [valeurActuel]="vacciumValueActuel"
-                           [symbole]="vacciumSymbole"
-                           [timeaxes]="timeaxes" 
-                           [datasets]="vaccium"></graph-panel>
-            </div>
-            <div class="col-md-6">
-              <graph-panel [titre]="titre_niveaubassin" 
-                           [valeurActuel]="niveauBassinValueActuel"
-                           [symbole]="niveauBassinSymbole"
-                           [timeaxes]="timeaxes" 
-                           [datasets]="niveaubassin"></graph-panel>
-            </div>
-            <div class="col-md-6">
-              <bar-panel [titre]="titre_dompeux" 
-                         [timeaxes]="timeaxes_dompeux" 
-                         [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type"></bar-panel>
-            <div>
           </div>
         </div>
     `

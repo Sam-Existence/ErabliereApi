@@ -1,5 +1,5 @@
 # Build the angular app
-FROM node:12.16.1-alpine As andular-builder
+FROM node:12.16.1-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm install
@@ -8,7 +8,7 @@ COPY ErabliereIU/ .
 RUN ng build --prod
 
 # Build the api
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-api-env
 WORKDIR /app
 
 COPY ErabliereModel/*.csproj ./ErabliereModel/
@@ -29,6 +29,12 @@ RUN dotnet publish -c Release -o out
 # Build runtime image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
-COPY --from=build-env /app/ErabliereApi/out ./
-COPY --from=andular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
-ENTRYPOINT ["dotnet", "ErabliereApi.dll"]
+COPY --from=build-api-env /app/ErabliereApi/out ./
+COPY --from=angular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
+
+# Expose port
+EXPOSE 443
+EXPOSE 80
+
+#ENTRYPOINT ["dotnet", "ErabliereApi.dll"]
+ENTRYPOINT ["./docker-entrypoint.sh"]
