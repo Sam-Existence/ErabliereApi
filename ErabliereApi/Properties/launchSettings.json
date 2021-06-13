@@ -27,6 +27,7 @@
         "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
         "OIDC_AUDIENCE": "http://erabliere-api",
         "OIDC_AUTHORITY": "https://localhost:5005",
+        "VALIDATE_ATUDIENCE": "false",
         "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json"
       }
     },
@@ -57,6 +58,7 @@
         "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
         "OIDC_AUDIENCE": "http://erabliere-api",
         "OIDC_AUTHORITY": "https://localhost:5005",
+        "VALIDATE_ATUDIENCE": "false",
         "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json"
       }
     }

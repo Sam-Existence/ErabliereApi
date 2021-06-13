@@ -26,6 +26,7 @@ services:
   #     OIDC_CLIENT_PASSWORD: "D6VDPBGKjmoyKkP~yFnxvMlLqS"
   #     OAUTH2_REDIRECT_URL: "https://localhost:5001/api/oauth2-redirect.html"
   #     OIDC_AUDIENCE: "http://erabliere-api"
+  #     VALIDATE_ATUDIENCE: "false"
   #     OIDC_AUTHORITY: "https://erabliereapi-serveuridentite:5005"
   #     EMAIL_CONFIG_PATH: "-"
   #   ports:
