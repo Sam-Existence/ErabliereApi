@@ -87,18 +87,3 @@ Write-Output $envContent
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 [System.IO.File]::WriteAllText($envPath, $envContent, $Utf8NoBomEncoding);
 
-# Build new images
-Write-Output "### Build IdentityServer Image"
-docker build -t erabliereapi-serveuridentite:latest ./IdentityServer/ErabliereApi.IdentityServer/.
-
-# Pull the node image
-#Write-Output "### Pull the node js image"
-#docker pull node:12.16.1-alpine
-
-#Write-Output "### Build ErabliereApi Image"
-#docker build -t erabliereapi:latest .
-
-# Docker compose
-Write-Output "### Last step : Docker compose"
-
-docker compose up
