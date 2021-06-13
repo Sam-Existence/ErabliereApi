@@ -1,17 +1,5 @@
 export const environment = {
-  production: false,
-
-  //apiUrl: "http://192.168.0.103:5000"
-  //apiUrl: "http://192.168.0.150:5000"
-  apiUrl: "https://localhost:5001",
-  //apiUrl: "https://erabliereapi.freddycoder.com"
-
-  stsAuthority: "https://localhost:5005",
-
-  clientId: "erabliereiu",
-
-  appRoot: "https://localhost:4200",
-  
+  production: false,  
   enableAuth: true
 };
 

@@ -30,6 +30,12 @@
   <ItemGroup>
     <ProjectReference Include="..\ErabliereModel\ErabliereApi.Donnees.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Update="docker-entrypoint.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
   
   <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://json.schemastore.org/launchsettings" /></VisualStudio></ProjectExtensions>
 

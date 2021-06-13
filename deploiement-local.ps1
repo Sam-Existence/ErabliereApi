@@ -7,9 +7,13 @@
 
 $ErrorActionPreference = "Stop"
 
+Write-Output "******************************************************"
+Write-Output "make sure to run the script as administrator"
+Write-Output "******************************************************"
+
 $rootCN = "ErabliereAPIDockerSSLSetup"
-$identityServerCNs = "erabliereapi-serveuridentite", "localhost"
-$webApiCNs = "erabliereapi", "localhost"
+$identityServerCNs = "identite-api", "localhost"
+$webApiCNs = "erabliere-api", "localhost"
 
 $alreadyExistingCertsRoot = Get-ChildItem -Path Cert:\LocalMachine\My -Recurse | Where-Object {$_.Subject -eq "CN=$rootCN"}
 $alreadyExistingCertsIdentityServer = Get-ChildItem -Path Cert:\LocalMachine\My -Recurse | Where-Object {$_.Subject -eq ("CN={0}" -f $identityServerCNs[0])}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserManager, User, UserManagerSettings } from 'oidc-client'
-import { environment } from 'src/environments/environment';
 import { Subject } from 'rxjs';
+import { EnvironmentService } from 'src/environments/environment.service';
 
 @Injectable({ providedIn: 'root' })
 export class AuthorisationService {
@@ -11,15 +11,15 @@ export class AuthorisationService {
 
     loginChanged = this._loginChangedSubject.asObservable();
 
-    constructor() {
+    constructor(private _environmentService: EnvironmentService) {
         const stsSettings:UserManagerSettings = {
-            authority: environment.stsAuthority,
-            client_id: environment.clientId,
+            authority: _environmentService.stsAuthority,
+            client_id: _environmentService.clientId,
             client_secret: "secret",
-            redirect_uri: `${environment.appRoot}/signin-callback`,
+            redirect_uri: `${_environmentService.appRoot}/signin-callback`,
             scope: "openid profile erabliereapi",
             response_type: 'code',
-            post_logout_redirect_uri: `${environment.stsAuthority}/signout-callback`
+            post_logout_redirect_uri: `${_environmentService.stsAuthority}/signout-callback`
         };
         this._userManager = new UserManager(stsSettings);
      }

@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { from, Observable, PartialObserver } from 'rxjs';
 import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
 import { environment } from 'src/environments/environment';
+import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
 import { Baril } from 'src/model/baril';
 import { Dompeux } from 'src/model/dompeux';
@@ -12,33 +13,34 @@ import { Erabliere } from 'src/model/erabliere';
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
     constructor(private _httpClient: HttpClient,
-                private _authService: AuthorisationService) { }
+                private _authService: AuthorisationService,
+                private _environmentService: EnvironmentService) { }
 
     getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Erabliere[]>(environment.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
+            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
         });
     }
 
     getErablieres(): Promise<Erabliere[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Erabliere[]>(environment.apiUrl + '/erablieres', {headers: headers}).toPromise();
+            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
         });
     }
 
     getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Alerte[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", {headers: headers}).toPromise();
+            return this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", {headers: headers}).toPromise();
         });
     }
 
     getBarils(idErabliereSelectionnee:any): Promise<Baril[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Baril[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/baril", {headers: headers}).toPromise();
+            return this._httpClient.get<Baril[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/baril", {headers: headers}).toPromise();
         });
     }
 
@@ -51,7 +53,7 @@ export class ErabliereApi {
                 headers = headers.set('x-ddr', xddr);
             }
 
-            var httpCall = this._httpClient.get<Donnee[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
+            var httpCall = this._httpClient.get<Donnee[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
             
             return httpCall.toPromise();
         });
@@ -66,7 +68,7 @@ export class ErabliereApi {
                 headers = headers.set('x-ddr', xddr);
             }
 
-            var httpCall = this._httpClient.get<Dompeux[]>(environment.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
+            var httpCall = this._httpClient.get<Dompeux[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
             
             return httpCall.toPromise();
         });
