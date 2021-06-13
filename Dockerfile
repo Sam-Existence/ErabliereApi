@@ -15,15 +15,16 @@ COPY ErabliereModel/*.csproj ./ErabliereModel/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
 COPY ErabliereApi.Test/*.csproj ./ErabliereApi.Test/
 
-RUN dotnet restore ErabliereModel/*.csproj
-RUN dotnet restore ErabliereApi/*.csproj
-RUN dotnet restore ErabliereApi.Test/*.csproj
+# RUN dotnet restore ErabliereModel/*.csproj
+# RUN dotnet restore ErabliereApi/*.csproj
+# RUN dotnet restore ErabliereApi.Test/*.csproj
 
 COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
 COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 
 WORKDIR /app/ErabliereApi
+RUN dotnet restore
 RUN dotnet build -c Release
 RUN dotnet publish -c Release -o out
 
