@@ -1,18 +1,13 @@
-name: ErabliereAPI-Update
+name: ErabliereAPI-Deploy
 
 on: 
   workflow_dispatch:
-    inputs:
-      tags:
-        description: 'La version de de l`image à utiliser'
-        required: true
       
-
 env:
-  REGISTRY_HOSTNAME: freddycontainers.azurecr.io
+  REGISTRY_HOSTNAME: erabliereapi
   IMAGE_NAME: erabliereapi
   DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-  IMAGE_TAG: ${{ github.event.inputs.tags }}
+  IMAGE_TAG: latest
   OIDC_CLIENT_PASSWORD: ${{ secrets.OIDC_CLIENT_PASSWORD }}
 
 jobs:
