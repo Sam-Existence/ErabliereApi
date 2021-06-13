@@ -1,0 +1,32 @@
+name: ServeurIdentite-Image
+
+on: 
+  workflow_dispatch:
+
+env:
+  REGISTRY_HOSTNAME: erabliereapi
+  IMAGE_NAME: serveuridentite
+  IMAGE_TAG: latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Login into acr
+      - name: Login into Dockerhub
+        run: echo ${{ secrets.registryPassword }} | docker login -u ${{ secrets.registryUsername }} --password-stdin
+
+      # Build the image
+      - name: Docker build
+        run: docker build -t $IMAGE_NAME:$IMAGE_TAG ./IdentityServer/ErabliereApi.IdentityServer/.
+        
+      # Tag the images
+      - name: Docker tag
+        run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
+
+      # Push the image
+      - name: Docker push
+        run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG

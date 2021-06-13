@@ -1,3 +1,5 @@
+import { Capteur } from "./capteur";
+
 export class Erabliere {
     id?: any;
     nom?: string;
@@ -6,4 +8,5 @@ export class Erabliere {
     afficherSectionBaril?: boolean;
     afficherTrioDonnees?: boolean;
     afficherSectionDompeux?: boolean;
+    capteurs?: Array<Capteur>;
 }

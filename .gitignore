@@ -385,3 +385,7 @@ ErabliereIU/typings
 # System Files
 ErabliereIU/.DS_Store
 ErabliereIU/Thumbs.db
+
+# Docker
+.env
+certs/

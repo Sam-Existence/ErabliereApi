@@ -14,6 +14,13 @@ export class ErabliereApi {
     constructor(private _httpClient: HttpClient,
                 private _authService: AuthorisationService) { }
 
+    getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.get<Erabliere[]>(environment.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
+        });
+    }
+
     getErablieres(): Promise<Erabliere[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
