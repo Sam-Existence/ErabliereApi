@@ -65,13 +65,19 @@ url = sys.argv[2]
 idErabliere = sys.argv[3]
 h = {"Content-Type":"Application/json", "Authorization": "Bearer " + getAccessToken("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret")}
 
+vaccium = 0
 # Cas spéciaux de image_to_string
-vaccium = int(float(r_vaccium[0].replace("HG", "")) * 10)
-if vaccium > 1000:
-  vaccium -= 1000
+if len(r_vaccium) > 0:
+  vaccium = int(float(r_vaccium[0].replace("HG", "")) * 10)
+  if vaccium > 1000:
+    vaccium -= 1000
+
+nb = 0
+if len(r_niveaubassin) > 0:
+  nb = int(float(r_niveaubassin[0].replace("HG ", "")))
 
 donnees = {'t': int(float(r_temperature[0].replace("°C", "")) * 10),
-           'nb': int(float(r_niveaubassin[0].replace("HG ", ""))),
+           'nb': nb,
            'v': vaccium,
            'idErabliere': int(idErabliere)}
 
