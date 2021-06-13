@@ -3,7 +3,6 @@ import base64
 import json
 
 def getAccessToken(url, clientId, clientSecret):
-    url = "https://localhost:5005/connect/token"
 
     # Générer l'entête en base 64
     sample_string = clientId + ":" + clientSecret
@@ -19,8 +18,9 @@ def getAccessToken(url, clientId, clientSecret):
         }
 
     # Envoyer la requete
-    response = requests.request("POST", url, data=body, headers=headers, verify = False)
-
+    print("Start client credential request at " + url)
+    response = requests.request("POST", url, data=body, headers=headers, verify = False, timeout = 10)
+    print("Request terminated, deserialization starting")
     responseObj = json.loads(response.text)
-
-    return responseObj.access_token
+    print(responseObj)
+    return responseObj["access_token"]

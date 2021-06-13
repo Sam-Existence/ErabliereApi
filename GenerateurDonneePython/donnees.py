@@ -2,7 +2,7 @@ import requests
 import datetime
 import math
 import sys
-from .getAccessToken import getAccessToken
+from auth.getAccessToken import getAccessToken
 
 def temperature(t):
   mois = t.strftime('%m')
@@ -31,7 +31,7 @@ urlBase = "https://erabliereapi.freddycoder.com"
 if len(sys.argv) > 2:
   urlBase = sys.argv[2]
 
-token = getAccessToken("https://localhost:5001/connect/token", "raspberrylocal", "secret")
+token = getAccessToken("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret")
 
 for id in range(1, nbErabliere + 1):
   print("Érablière :", id)
@@ -44,5 +44,5 @@ for id in range(1, nbErabliere + 1):
   print("Le vaccium est", vaccium)
   donnees = {'t': t, 'nb': 0, 'v': vaccium, 'idErabliere': id}
   h = {"Authorization": "Bearer " + token, "Content-Type":"Application/json"}
-  r = requests.post(url, json = donnees, headers = h, timeout = 2)
+  r = requests.post(url, json = donnees, headers = h, timeout = 2, verify = False)
   print(r.text)
