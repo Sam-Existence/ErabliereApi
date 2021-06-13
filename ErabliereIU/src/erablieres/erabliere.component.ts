@@ -6,7 +6,7 @@ import { Erabliere } from 'src/model/erabliere';
 
 @Component({
     selector: 'erablieres',
-    templateUrl: 'erablier.component.html'
+    templateUrl: 'erabliere.component.html'
 })
 export class ErabliereComponent implements OnInit {
     erablieres?: Array<Erabliere>;
