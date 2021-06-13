@@ -19,6 +19,7 @@ using Microsoft.OData.Edm;
 using ErabliereApi.Donnees;
 using Microsoft.AspNet.OData.Extensions;
 using Newtonsoft.Json.Serialization;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ErabliereApi
 {
@@ -60,14 +61,6 @@ namespace ErabliereApi
                             options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
                             
                             options.ApiName = "erabliereapi";
-
-                            if (string.Equals(GetEnvironmentVariable("VALIDATE_ATUDIENCE"), FalseString, OrdinalIgnoreCase)) 
-                            {
-                                options.TokenValidationParameters = new TokenValidationParameters
-                                {
-                                    ValidateAudience = false
-                                };
-                            }
                         });
             }
             else
