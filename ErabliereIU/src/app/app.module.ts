@@ -18,6 +18,7 @@ import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redire
 import { DashboardComponent } from 'src/dashboard/dashboard.component';
 import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
     DonneesComponent,
     DashboardComponent,
     GraphPannelComponent,
+    CapteurPannelsComponent,
     BarPannelComponent,
     BarilsComponent,
     AlerteComponent,

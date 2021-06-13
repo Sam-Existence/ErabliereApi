@@ -36,5 +36,4 @@ COPY --from=angular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
 EXPOSE 443
 EXPOSE 80
 
-#ENTRYPOINT ["dotnet", "ErabliereApi.dll"]
-ENTRYPOINT ["./docker-entrypoint.sh"]
+ENTRYPOINT ["dotnet", "ErabliereApi.dll"]

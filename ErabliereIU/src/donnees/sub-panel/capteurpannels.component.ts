@@ -5,7 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
-    selector: 'capteur-panel',
+    selector: 'capteur-panels',
     template: `
         <div class="border-top">
           <div class="row">
@@ -22,7 +22,7 @@ import { Erabliere } from 'src/model/erabliere';
         </div>
     `
 })
-export class CapteurPannelComponent implements OnInit {
+export class CapteurPannelsComponent implements OnInit {
       @Input() erabliere?:Erabliere
       @Input() dureeDonneesRequete:any
 
