@@ -12,6 +12,7 @@
 
 from datetime import datetime as dt
 from datetime import timedelta as td
+from .getAccessToken import getAccessToken
 
 print("Debut execution", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
 
@@ -62,7 +63,7 @@ print("Envoie des données à l'api", sys.argv[1])
 
 url = sys.argv[2]
 idErabliere = sys.argv[3]
-h = {"Content-Type":"Application/json"}
+h = {"Content-Type":"Application/json", "Authorization": "Bearer " + getAccessToken("https://localhost:5005/connect/token", "raspberrylocal", "secret")}
 
 # Cas spéciaux de image_to_string
 vaccium = int(float(r_vaccium[0].replace("HG", "")) * 10)
