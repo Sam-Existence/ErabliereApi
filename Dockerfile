@@ -28,6 +28,7 @@ RUN dotnet publish -c Release -o out
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build-api-env /app/ErabliereApi/out ./
+RUN chmod u+x docker-entrypoint.sh
 COPY --from=angular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
 
 # Expose port
