@@ -5,7 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
-    selector: 'donnees-panel',
+    selector: 'capteur-panel',
     template: `
         <div class="border-top">
           <div class="row">
@@ -13,7 +13,7 @@ import { Erabliere } from 'src/model/erabliere';
               <div *ngFor="capteur in capteurs">
                 <graph-panel [titre]="capteur.nom" 
                              [valeurActuel]="capteur.donnees[capteur.donnees.length-1].valeur"
-                             [symbole]="°c"
+                             [symbole]="temperatureSymbole"
                              [timeaxes]="timeaxes" 
                              [datasets]="temperature"></graph-panel>
               </div>
@@ -22,7 +22,7 @@ import { Erabliere } from 'src/model/erabliere';
         </div>
     `
 })
-export class DonneesComponent implements OnInit {
+export class CapteurPannelComponent implements OnInit {
       @Input() erabliere?:Erabliere
       @Input() dureeDonneesRequete:any
 
