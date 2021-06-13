@@ -1,10 +1,66 @@
 {
 	"info": {
-		"_postman_id": "ca22f50d-3bab-40f0-b933-1d32fc4b8636",
-		"name": "ErablièreAPI",
+		"_postman_id": "cff5ba47-1dc7-4411-bdd8-f76992ae9a06",
+		"name": "ErablièreAPI - Initialiser",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Init",
+			"item": [
+				{
+					"name": "Erabliere A",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erabliere B",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erabliere Saint-Alfred",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Flow 1",
 			"item": [

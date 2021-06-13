@@ -1,0 +1,379 @@
+{
+  "ids": [
+    {
+      "required": true,
+      "emphasize": false,
+      "enabled": true,
+      "name": "openid",
+      "displayName": "Your user identifier",
+      "description": null,
+      "showInDiscoveryDocument": true,
+      "userClaims": [
+        "sub"
+      ],
+      "properties": {
+      }
+    },
+    {
+      "required": false,
+      "emphasize": true,
+      "enabled": true,
+      "name": "profile",
+      "displayName": "User profile",
+      "description": "Your user profile information (first name, last name, etc.)",
+      "showInDiscoveryDocument": true,
+      "userClaims": [
+        "name",
+        "family_name",
+        "given_name",
+        "middle_name",
+        "nickname",
+        "preferred_username",
+        "profile",
+        "picture",
+        "website",
+        "gender",
+        "birthdate",
+        "zoneinfo",
+        "locale",
+        "updated_at"
+      ],
+      "properties": {
+      }
+    },
+    {
+      "required": false,
+      "emphasize": true,
+      "enabled": true,
+      "name": "address",
+      "displayName": "Your postal address",
+      "description": null,
+      "showInDiscoveryDocument": true,
+      "userClaims": [
+        "address"
+      ],
+      "properties": {
+      }
+    }
+  ],
+  "apis": [
+    {
+      "apiSecrets": [
+      ],
+      "scopes": [
+        "erabliereapi"
+      ],
+      "allowedAccessTokenSigningAlgorithms": [
+      ],
+      "enabled": true,
+      "name": "erabliereapi",
+      "displayName": "Access to erabliere api",
+      "description": null,
+      "showInDiscoveryDocument": true,
+      "userClaims": [
+      ],
+      "properties": {
+      }
+    }
+  ],
+  "scopes": [
+    {
+      "required": false,
+      "emphasize": false,
+      "enabled": true,
+      "name": "erabliereapi",
+      "displayName": "Access to erabliere api",
+      "description": null,
+      "showInDiscoveryDocument": true,
+      "userClaims": [
+      ],
+      "properties": {
+      }
+    }
+  ],
+  "clients": [
+    {
+      "enabled": true,
+      "clientId": "erabliereapi",
+      "protocolType": "oidc",
+      "clientSecrets": [
+        {
+          "description": null,
+          "value": "K7gNU3sdo\u002BOL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",
+          "expiration": null,
+          "type": "SharedSecret"
+        }
+      ],
+      "requireClientSecret": true,
+      "clientName": "ErabliereAPI",
+      "description": null,
+      "clientUri": null,
+      "logoUri": null,
+      "requireConsent": false,
+      "allowRememberConsent": true,
+      "allowedGrantTypes": [
+        "authorization_code"
+      ],
+      "requirePkce": true,
+      "allowPlainTextPkce": false,
+      "requireRequestObject": false,
+      "allowAccessTokensViaBrowser": false,
+      "redirectUris": [
+        "https://localhost:5001/api/oauth2-redirect.html"
+      ],
+      "postLogoutRedirectUris": [
+        "https://localhost:5005/signout-callback-oidc"
+      ],
+      "frontChannelLogoutUri": null,
+      "frontChannelLogoutSessionRequired": true,
+      "backChannelLogoutUri": null,
+      "backChannelLogoutSessionRequired": true,
+      "allowOfflineAccess": false,
+      "allowedScopes": [
+        "openid",
+        "profile",
+        "address",
+        "erabliereapi"
+      ],
+      "alwaysIncludeUserClaimsInIdToken": false,
+      "identityTokenLifetime": 300,
+      "allowedIdentityTokenSigningAlgorithms": [
+      ],
+      "accessTokenLifetime": 3600,
+      "authorizationCodeLifetime": 300,
+      "absoluteRefreshTokenLifetime": 2592000,
+      "slidingRefreshTokenLifetime": 1296000,
+      "consentLifetime": null,
+      "refreshTokenUsage": 1,
+      "updateAccessTokenClaimsOnRefresh": false,
+      "refreshTokenExpiration": 1,
+      "accessTokenType": 0,
+      "enableLocalLogin": true,
+      "identityProviderRestrictions": [
+      ],
+      "includeJwtId": true,
+      "claims": [
+      ],
+      "alwaysSendClientClaims": false,
+      "clientClaimsPrefix": "client_",
+      "pairWiseSubjectSalt": null,
+      "userSsoLifetime": null,
+      "userCodeType": null,
+      "deviceCodeLifetime": 300,
+      "allowedCorsOrigins": [
+      ],
+      "properties": {
+      }
+    },
+    {
+      "enabled": true,
+      "clientId": "swagger-dev",
+      "protocolType": "oidc",
+      "clientSecrets": [
+        {
+          "description": null,
+          "value": "rbmWSH\u002BE\u002Bg/flc9lCgEoflckeuVLUGwT2MyszcyHn8c=",
+          "expiration": null,
+          "type": "SharedSecret"
+        }
+      ],
+      "requireClientSecret": true,
+      "clientName": "ErabliereAPI - Swagger",
+      "description": null,
+      "clientUri": null,
+      "logoUri": null,
+      "requireConsent": false,
+      "allowRememberConsent": true,
+      "allowedGrantTypes": [
+        "authorization_code"
+      ],
+      "requirePkce": true,
+      "allowPlainTextPkce": false,
+      "requireRequestObject": false,
+      "allowAccessTokensViaBrowser": false,
+      "redirectUris": [
+        "https://localhost:5001/api/oauth2-redirect.html"
+      ],
+      "postLogoutRedirectUris": [
+        "https://localhost:5005/signout-callback-oidc"
+      ],
+      "frontChannelLogoutUri": null,
+      "frontChannelLogoutSessionRequired": true,
+      "backChannelLogoutUri": null,
+      "backChannelLogoutSessionRequired": true,
+      "allowOfflineAccess": false,
+      "allowedScopes": [
+        "openid",
+        "profile",
+        "address",
+        "erabliereapi"
+      ],
+      "alwaysIncludeUserClaimsInIdToken": false,
+      "identityTokenLifetime": 300,
+      "allowedIdentityTokenSigningAlgorithms": [
+      ],
+      "accessTokenLifetime": 3600,
+      "authorizationCodeLifetime": 300,
+      "absoluteRefreshTokenLifetime": 2592000,
+      "slidingRefreshTokenLifetime": 1296000,
+      "consentLifetime": null,
+      "refreshTokenUsage": 1,
+      "updateAccessTokenClaimsOnRefresh": false,
+      "refreshTokenExpiration": 1,
+      "accessTokenType": 0,
+      "enableLocalLogin": true,
+      "identityProviderRestrictions": [
+      ],
+      "includeJwtId": true,
+      "claims": [
+      ],
+      "alwaysSendClientClaims": false,
+      "clientClaimsPrefix": "client_",
+      "pairWiseSubjectSalt": null,
+      "userSsoLifetime": null,
+      "userCodeType": null,
+      "deviceCodeLifetime": 300,
+      "allowedCorsOrigins": [
+        "https://localhost:5001"
+      ],
+      "properties": {
+      }
+    },
+    {
+      "enabled": true,
+      "clientId": "erabliereiu",
+      "protocolType": "oidc",
+      "clientSecrets": [
+        {
+          "description": null,
+          "value": "K7gNU3sdo\u002BOL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",
+          "expiration": null,
+          "type": "SharedSecret"
+        }
+      ],
+      "requireClientSecret": true,
+      "clientName": "ErabliereIU",
+      "description": null,
+      "clientUri": null,
+      "logoUri": null,
+      "requireConsent": false,
+      "allowRememberConsent": true,
+      "allowedGrantTypes": [
+        "authorization_code"
+      ],
+      "requirePkce": true,
+      "allowPlainTextPkce": false,
+      "requireRequestObject": false,
+      "allowAccessTokensViaBrowser": false,
+      "redirectUris": [
+        "https://localhost:5001/signin-callback"
+      ],
+      "postLogoutRedirectUris": [
+        "https://localhost:5005/signout-callback-oidc"
+      ],
+      "frontChannelLogoutUri": null,
+      "frontChannelLogoutSessionRequired": true,
+      "backChannelLogoutUri": null,
+      "backChannelLogoutSessionRequired": true,
+      "allowOfflineAccess": false,
+      "allowedScopes": [
+        "openid",
+        "profile",
+        "address",
+        "erabliereapi"
+      ],
+      "alwaysIncludeUserClaimsInIdToken": false,
+      "identityTokenLifetime": 300,
+      "allowedIdentityTokenSigningAlgorithms": [
+      ],
+      "accessTokenLifetime": 3600,
+      "authorizationCodeLifetime": 300,
+      "absoluteRefreshTokenLifetime": 2592000,
+      "slidingRefreshTokenLifetime": 1296000,
+      "consentLifetime": null,
+      "refreshTokenUsage": 1,
+      "updateAccessTokenClaimsOnRefresh": false,
+      "refreshTokenExpiration": 1,
+      "accessTokenType": 0,
+      "enableLocalLogin": true,
+      "identityProviderRestrictions": [
+      ],
+      "includeJwtId": true,
+      "claims": [
+      ],
+      "alwaysSendClientClaims": false,
+      "clientClaimsPrefix": "client_",
+      "pairWiseSubjectSalt": null,
+      "userSsoLifetime": null,
+      "userCodeType": null,
+      "deviceCodeLifetime": 300,
+      "properties": {
+      }
+    },
+    {
+      "enabled": true,
+      "clientId": "raspberrylocal",
+      "protocolType": "oidc",
+      "clientSecrets": [
+        {
+          "description": null,
+          "value": "K7gNU3sdo\u002BOL0wNhqoVWhr3g6s1xYv72ol/pe/Unols=",
+          "expiration": null,
+          "type": "SharedSecret"
+        }
+      ],
+      "requireClientSecret": true,
+      "clientName": "RaspberryLocal",
+      "description": null,
+      "clientUri": null,
+      "logoUri": null,
+      "requireConsent": false,
+      "allowRememberConsent": true,
+      "allowedGrantTypes": [
+        "client_credentials"
+      ],
+      "requirePkce": false,
+      "allowPlainTextPkce": false,
+      "requireRequestObject": false,
+      "allowAccessTokensViaBrowser": false,
+      "frontChannelLogoutUri": null,
+      "frontChannelLogoutSessionRequired": true,
+      "backChannelLogoutUri": null,
+      "backChannelLogoutSessionRequired": true,
+      "allowOfflineAccess": false,
+      "allowedScopes": [
+        "openid",
+        "profile",
+        "address",
+        "erabliereapi"
+      ],
+      "alwaysIncludeUserClaimsInIdToken": false,
+      "identityTokenLifetime": 300,
+      "allowedIdentityTokenSigningAlgorithms": [
+      ],
+      "accessTokenLifetime": 3600,
+      "authorizationCodeLifetime": 300,
+      "absoluteRefreshTokenLifetime": 2592000,
+      "slidingRefreshTokenLifetime": 1296000,
+      "consentLifetime": null,
+      "refreshTokenUsage": 1,
+      "updateAccessTokenClaimsOnRefresh": false,
+      "refreshTokenExpiration": 1,
+      "accessTokenType": 0,
+      "enableLocalLogin": true,
+      "identityProviderRestrictions": [
+      ],
+      "includeJwtId": true,
+      "claims": [
+      ],
+      "alwaysSendClientClaims": false,
+      "clientClaimsPrefix": "client_",
+      "pairWiseSubjectSalt": null,
+      "userSsoLifetime": null,
+      "userCodeType": null,
+      "deviceCodeLifetime": 300,
+      "properties": {
+      }
+    }
+  ]
+}

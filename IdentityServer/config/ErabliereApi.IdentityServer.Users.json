@@ -1,0 +1,164 @@
+{
+  "users": [
+    {
+      "subjectId": "818727",
+      "username": "alice",
+      "password": "alice",
+      "providerName": null,
+      "providerSubjectId": null,
+      "isActive": true,
+      "claims": [
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "name",
+          "value": "Alice Smith",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "given_name",
+          "value": "Alice",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "family_name",
+          "value": "Smith",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "email",
+          "value": "AliceSmith@email.com",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "email_verified",
+          "value": "true",
+          "valueType": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "website",
+          "value": "http://alice.com",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "address",
+          "value": "{\u0022street_address\u0022:\u0022One Hacker Way\u0022,\u0022locality\u0022:\u0022Heidelberg\u0022,\u0022postal_code\u0022:69118,\u0022country\u0022:\u0022Germany\u0022}",
+          "valueType": "json"
+        }
+      ]
+    },
+    {
+      "subjectId": "88421113",
+      "username": "bob",
+      "password": "bob",
+      "providerName": null,
+      "providerSubjectId": null,
+      "isActive": true,
+      "claims": [
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "name",
+          "value": "Bob Smith",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "given_name",
+          "value": "Bob",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "family_name",
+          "value": "Smith",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "email",
+          "value": "BobSmith@email.com",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "email_verified",
+          "value": "true",
+          "valueType": "http://www.w3.org/2001/XMLSchema#boolean"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "website",
+          "value": "http://bob.com",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "address",
+          "value": "{\u0022street_address\u0022:\u0022One Hacker Way\u0022,\u0022locality\u0022:\u0022Heidelberg\u0022,\u0022postal_code\u0022:69118,\u0022country\u0022:\u0022Germany\u0022}",
+          "valueType": "json"
+        }
+      ]
+    }
+  ]
+}

@@ -30,9 +30,8 @@ services:
     ports:
       - "5001:443"
     volumes:
-  #    - ./ErabliereApi:/root/Api:cached
       - ./config:/app/wwwroot/assets/config
-      - type: bind
+      - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
         source: ./config/oauth-oidc.json
         target: /app/wwwroot/assets/config/oauth-oidc.json
       - ./ErabliereApi/certs:/https/
@@ -50,15 +49,21 @@ services:
       ASPNETCORE_URLS: "https://+;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: password
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp-identity-server.pfx
-      ISSUER_URI: "https://erabliereapi-serveuridentite:443"
+      ISSUER_URI: "https://identite-api:443"
+      SECRETS_FOLDER: /app/secrets
     ports:
       - "5005:443"
     volumes:
-  #    - ./IdentityServer/ErabliereApi.IdentityServer:/root/IdentityServer:cached
       - ./IdentityServer/ErabliereApi.IdentityServer/certs:/https/
       - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
         source: ./certs/aspnetapp-root-cert.cer
         target: /https-root/aspnetapp-root-cert.cer
+      - ./IdentityServer/config:/app/secrets
+      - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
+        source: ./IdentityServer/config/ErabliereApi.IdentityServer.Users.json
+        target: /app/ErabliereApi.IdentityServer.Users.json
+        source: ./IdentityServer/config/ErabliereApi.IdentityServer.Config.json
+        target: /app/ErabliereApi.IdentityServer.Config.json
     depends_on:
       - sql
   sql:

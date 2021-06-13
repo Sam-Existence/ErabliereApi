@@ -150,19 +150,20 @@ namespace ErabliereApi.Controllers.Attributes
             }
         }
 
-        private static readonly EmailConfig? _emailConfig = TryDeserialize<EmailConfig>(ReadAllText(GetEnvironmentVariable("EMAIL_CONFIG_PATH")));
+        private static readonly EmailConfig? _emailConfig = TryDeserializeEmailConfig();
 
         /// <summary>
         /// Fonction utilisé pour désérialiser les configurations permettant l'envoie de courriel
         /// </summary>
-        /// <typeparam name="T"></typeparam>
         /// <param name="v"></param>
         /// <returns></returns>
-        private static T? TryDeserialize<T>(string v)
+        private static EmailConfig? TryDeserializeEmailConfig()
         {
             try
             {
-                return Deserialize<T>(v);
+                var v = ReadAllText(GetEnvironmentVariable("EMAIL_CONFIG_PATH"));
+
+                return Deserialize<EmailConfig>(v);
             }
             catch (Exception e)
             {
