@@ -41,7 +41,7 @@ services:
   #     - sql
   #     - identite-api
   identite-api:
-    image: "erabliereapi-serveuridentite:latest"
+    image: "erabliereapi/serveuridentite:latest"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
