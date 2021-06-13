@@ -8,6 +8,8 @@ namespace ErabliereApi.Donnees.Action.Get
 
         public string? Nom { get; set; }
 
+        public string? Symbole { get; set; }
+
         /// <summary>
         /// Indicateur permettant d'afficher ou non le graphique relié au capteur.
         /// </summary>

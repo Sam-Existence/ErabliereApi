@@ -28,7 +28,7 @@ namespace ErabliereApi
     public class Startup
     {
         /// <summary>
-        /// M�thodes ConfigureServices
+        /// Méthodes ConfigureServices
         /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
@@ -60,6 +60,14 @@ namespace ErabliereApi
                             options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
                             
                             options.ApiName = "erabliereapi";
+
+                            if (string.Equals(GetEnvironmentVariable("VALIDATE_ATUDIENCE"), FalseString, OrdinalIgnoreCase)) 
+                            {
+                                options.TokenValidationParameters = new TokenValidationParameters
+                                {
+                                    ValidateAudience = false
+                                };
+                            }
                         });
             }
             else

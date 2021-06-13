@@ -366,7 +366,7 @@ ErabliereIU/*.sublime-workspace
 
 # IDE - VSCode
 ErabliereIU/.vscode/*
-!ErabliereIU/.vscode/settings.json
+ErabliereIU/.vscode/settings.json
 !ErabliereIU/.vscode/tasks.json
 !ErabliereIU/.vscode/launch.json
 !ErabliereIU/.vscode/extensions.json
