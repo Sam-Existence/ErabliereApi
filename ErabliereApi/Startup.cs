@@ -81,23 +81,23 @@ namespace ErabliereApi
             services.AjouterAutoMapperErabliereApiDonnee();
 
             // Database
-            if (string.Equals(GetEnvironmentVariable("USE_SQL"), FalseString, OrdinalIgnoreCase))
+            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseInMemoryDatabase(nameof(ErabliereDbContext));
+                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+
+                    if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
+                    {
+                        options.LogTo(Console.WriteLine, LogLevel.Information);
+                    }
                 });
             }
             else
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' � une valeur null."));
-
-                    if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
-                    {
-                        options.LogTo(Console.WriteLine, LogLevel.Information);
-                    }
+                    options.UseInMemoryDatabase(nameof(ErabliereDbContext));
                 });
             }
         }
