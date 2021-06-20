@@ -1,4 +1,3 @@
-import { Injectable } from '@angular/core';
 import { UserManager, User, UserManagerSettings, SignoutResponse } from 'oidc-client'
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
@@ -6,7 +5,6 @@ import { AppUser } from 'src/model/appuser';
 import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
 
-@Injectable({ providedIn: 'root' })
 export class AuthorisationService implements IAuthorisationSerivce {
     private _userManager: UserManager;
     private _user?: User | null;

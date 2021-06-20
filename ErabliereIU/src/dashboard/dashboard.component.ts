@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthorisationService } from 'src/authorisation/authorisation-service';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -48,7 +49,10 @@ export class DashboardComponent implements OnInit {
     isLoggedIn: Boolean = false;
     useAuthentication: Boolean = environment.enableAuth
 
-    constructor(private _authService: AuthorisationService) {
+    private _authService: IAuthorisationSerivce
+
+    constructor(private _authFactoryService: AuthorisationFactoryService) {
+        this._authService = _authFactoryService.getAuthorisationService();
         this._authService.loginChanged.subscribe(loggedIn => {
             this.isLoggedIn = loggedIn;
         })

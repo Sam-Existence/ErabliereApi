@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
@@ -10,9 +11,14 @@ import { Erabliere } from 'src/model/erabliere';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
+    _authService: IAuthorisationSerivce
+
     constructor(private _httpClient: HttpClient,
-                private _authService: IAuthorisationSerivce,
-                private _environmentService: EnvironmentService) { }
+                private _authFactoryService: AuthorisationFactoryService,
+                private _environmentService: EnvironmentService) 
+                { 
+                    this._authService = _authFactoryService.getAuthorisationService();
+                }
 
     getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
         return this._authService.getAccessToken().then(token => {

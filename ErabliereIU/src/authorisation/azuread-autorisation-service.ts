@@ -1,14 +1,11 @@
-import { Injectable } from '@angular/core';
 import { LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
-import { exception } from 'console';
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { AppUser } from 'src/model/appuser';
 import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
 
-@Injectable({ providedIn: 'root' })
 export class AzureADAuthorisationService implements IAuthorisationSerivce {
     private _msalInstance: PublicClientApplication;
     private _activeAcoountId?: string
@@ -18,7 +15,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
 
     constructor(private _environmentService: EnvironmentService) {
         if (this._environmentService.clientId == undefined) {
-            throw exception("/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode");
+            throw new Error("/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode");
         }
         
         const msalConfig: Configuration = {

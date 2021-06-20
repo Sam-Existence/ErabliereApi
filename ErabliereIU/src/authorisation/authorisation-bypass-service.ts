@@ -1,10 +1,11 @@
-import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { AppUser } from "src/model/appuser";
 import { AuthResponse } from "src/model/authresponse";
 import { IAuthorisationSerivce } from "./iauthorisation-service";
 
-@Injectable({ providedIn: 'root' })
 export class AuthorisationBypassService implements IAuthorisationSerivce {
+    loginChanged: Observable<Boolean> = new Observable<Boolean>();
+
     login(): Promise<void> {
         return new Promise<void>(() => { });
     }
