@@ -55,8 +55,8 @@ namespace ErabliereApi
                             {
                                 AuthorizationCode = new OpenApiOAuthFlow
                                 {
-                                    AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
-                                    TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
+                                    AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException(paramName: "SWAGGER_AUTHORIZATION_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
+                                    TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException(paramName: "SWAGGER_TOKEN_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                     Scopes = new Dictionary<string, string>
                                     {
                                         { "erabliereapi", "Erabliere Api scope" }

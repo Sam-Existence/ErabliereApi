@@ -1,8 +1,6 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Observable, PartialObserver } from 'rxjs';
-import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
-import { environment } from 'src/environments/environment';
+import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
 import { Baril } from 'src/model/baril';
@@ -13,7 +11,7 @@ import { Erabliere } from 'src/model/erabliere';
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
     constructor(private _httpClient: HttpClient,
-                private _authService: AuthorisationService,
+                private _authService: IAuthorisationSerivce,
                 private _environmentService: EnvironmentService) { }
 
     getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {

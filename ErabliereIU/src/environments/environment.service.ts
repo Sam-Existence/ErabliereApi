@@ -7,7 +7,9 @@ export class EnvironmentService {
     apiUrl?: string
     appRoot?: string
     clientId?: string
+    tenantId?: string
     stsAuthority?: string
+    authEnable?: boolean
 
     constructor(private _httpClient: HttpClient) {
         
@@ -19,10 +21,12 @@ export class EnvironmentService {
                 this.apiUrl = c.apiUrl;
                 this.appRoot = c.appRoot;
                 this.clientId = c.clientId;
+                this.tenantId = c.tenantId;
                 this.stsAuthority = c.stsAuthority;
+                this.authEnable = c.authEnable;
             })
             .catch((err: any) => {
                 console.error(err);
-              });;
+            });;
     }
 }

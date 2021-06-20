@@ -20,6 +20,8 @@ using ErabliereApi.Donnees;
 using Microsoft.AspNet.OData.Extensions;
 using Newtonsoft.Json.Serialization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.Identity.Web;
+using Microsoft.Extensions.Configuration;
 
 namespace ErabliereApi
 {
@@ -28,6 +30,20 @@ namespace ErabliereApi
     /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Configuration of the app. Use when AzureAD authentication method is used.
+        /// </summary>
+        public IConfiguration Configuration { get; }
+
+        /// <summary>
+        /// Constructor of the startup class with the configuration object in parameter
+        /// </summary>
+        /// <param name="configuration"></param>
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
         /// <summary>
         /// Méthodes ConfigureServices
         /// </summary>
@@ -55,13 +71,20 @@ namespace ErabliereApi
             // Authentication
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
-                services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                        .AddIdentityServerAuthentication(options =>
-                        {
-                            options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
-                            
-                            options.ApiName = "erabliereapi";
-                        });
+                if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("AzureAD:ClientId")) == false)
+                {
+                    services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+                }
+                else
+                {
+                    services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+                            .AddIdentityServerAuthentication(options =>
+                            {
+                                options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+
+                                options.ApiName = "erabliereapi";
+                            });
+                }
             }
             else
             {

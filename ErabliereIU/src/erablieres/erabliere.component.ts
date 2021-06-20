@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
+import { AuthorisationService } from 'src/authorisation/authorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
 import { Erabliere } from 'src/model/erabliere';

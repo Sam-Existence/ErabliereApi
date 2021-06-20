@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthorisationService } from '../authorisation-service.component';
+import { AuthorisationService } from '../authorisation-service';
 
 @Component({
     selector: 'app-signin-callback',
