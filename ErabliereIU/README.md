@@ -34,7 +34,7 @@ Pour plus d'info sur les entêtes, rechercher ```x-ddr``` et ```x-dde``` dans le
 
 https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70dab07417c8
 
-## Mettre a jour ng cli
+## Mettre a jour le projet et ses dépendances
 
 ```
 ng update
