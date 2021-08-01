@@ -6,9 +6,7 @@ on:
 env:
   REGISTRY_HOSTNAME: erabliereapi
   IMAGE_NAME: erabliereapi
-  DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
   IMAGE_TAG: latest
-  OIDC_CLIENT_PASSWORD: ${{ secrets.OIDC_CLIENT_PASSWORD }}
 
 jobs:
   build:

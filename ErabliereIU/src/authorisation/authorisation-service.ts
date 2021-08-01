@@ -1,10 +1,11 @@
-import { Injectable } from '@angular/core';
-import { UserManager, User, UserManagerSettings } from 'oidc-client'
+import { UserManager, User, UserManagerSettings, SignoutResponse } from 'oidc-client'
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
+import { AppUser } from 'src/model/appuser';
+import { AuthResponse } from 'src/model/authresponse';
+import { IAuthorisationSerivce } from './iauthorisation-service';
 
-@Injectable({ providedIn: 'root' })
-export class AuthorisationService {
+export class AuthorisationService implements IAuthorisationSerivce {
     private _userManager: UserManager;
     private _user?: User | null;
     private _loginChangedSubject = new Subject<Boolean>();
@@ -24,7 +25,7 @@ export class AuthorisationService {
         this._userManager = new UserManager(stsSettings);
      }
     
-     login() {
+     login(): Promise<void> {
          return this._userManager.signinRedirect();
      }
 
@@ -40,7 +41,7 @@ export class AuthorisationService {
          });
      }
 
-    completeLogin() {
+    completeLogin(): Promise<AppUser> {
         return this._userManager.signinRedirectCallback().then(user => {
             this._user = user;
             this._loginChangedSubject.next(!!user && !user.expired);
@@ -52,9 +53,12 @@ export class AuthorisationService {
         this._userManager.signoutRedirect();
     }
 
-    completeLogout() {
-        this._user = null;
-        return this._userManager.signoutRedirectCallback();
+    completeLogout(): Promise<AuthResponse> {
+        return new Promise<AuthResponse>(() => {
+            this._user = null;
+            const signoutResponse = this._userManager.signoutRedirectCallback();
+            return new AuthResponse();
+        });
     }
 
     getAccessToken() : Promise<String | null> {

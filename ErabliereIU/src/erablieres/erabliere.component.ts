@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { environment } from 'src/environments/environment';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
@@ -19,12 +19,24 @@ export class ErabliereComponent implements OnInit {
 
     alertes?: Array<any>;
 
-    constructor(private _erabliereApi: ErabliereApi){
+    private _authService: IAuthorisationSerivce
+
+    constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService){
         this.erabliereSelectionnee = undefined;
+        this._authService = authFactory.getAuthorisationService();
     }
 
     ngOnInit() {
+        this._authService.loginChanged.subscribe(loggedIn => {
+            console.log("Erabliere component loggin listner");
+            console.log(loggedIn);
+            if (loggedIn) {
+                this.ngOnInit();
+            }
+        });
+
         this._erabliereApi.getErablieres().then(erablieres => {
+            console.log("On result of getErablieres");
             this.erablieres = erablieres;
 
             if (this.erablieres.length > 0) {

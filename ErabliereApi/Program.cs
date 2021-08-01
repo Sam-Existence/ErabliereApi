@@ -5,12 +5,12 @@ using Microsoft.Extensions.Logging;
 namespace ErabliereApi
 {
     /// <summary>
-    /// Classe Program, contient le point d'entré du programme.
+    /// Classe Program, contient le point d'entrÃ© du programme.
     /// </summary>
     public class Program
     {
         /// <summary>
-        /// Fonction main. le point d'entré du programme.
+        /// Fonction main. le point d'entrÃ© du programme.
         /// </summary>
         /// <param name="args"></param>
         public static void Main(string[] args)
@@ -19,9 +19,9 @@ namespace ErabliereApi
         }
 
         /// <summary>
-        /// Création de l'application
+        /// CrÃ©ation de l'application
         /// </summary>
-        /// <param name="args">Les arguments reçu de la ligne de commande</param>
+        /// <param name="args">Les arguments reÃ§u de la ligne de commande</param>
         /// <returns>Une nouvelle instance de <see cref="IHostBuilder"/></returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)

@@ -1,8 +1,7 @@
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { from, Observable, PartialObserver } from 'rxjs';
-import { AuthorisationService } from 'src/authorisation/authorisation-service.component';
-import { environment } from 'src/environments/environment';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
 import { Baril } from 'src/model/baril';
@@ -12,9 +11,14 @@ import { Erabliere } from 'src/model/erabliere';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
+    private _authService: IAuthorisationSerivce
+
     constructor(private _httpClient: HttpClient,
-                private _authService: AuthorisationService,
-                private _environmentService: EnvironmentService) { }
+                authFactoryService: AuthorisationFactoryService,
+                private _environmentService: EnvironmentService) 
+                { 
+                    this._authService = authFactoryService.getAuthorisationService();
+                }
 
     getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
         return this._authService.getAccessToken().then(token => {
@@ -24,7 +28,9 @@ export class ErabliereApi {
     }
 
     getErablieres(): Promise<Erabliere[]> {
+        console.log("Get erabliere");
         return this._authService.getAccessToken().then(token => {
+            console.log("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
         });

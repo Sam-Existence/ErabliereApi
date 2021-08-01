@@ -2,6 +2,6 @@
     "apiUrl": "https://localhost:5001",
     "stsAuthority": "https://localhost:5005",
     "clientId": "erabliereiu",
-    "appRoot": "https://localhost:5001",
+    "appRoot": "https://localhost:4200",
     "authEnable": true
 }
