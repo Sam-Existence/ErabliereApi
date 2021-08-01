@@ -1,0 +1,8 @@
+{
+    "apiUrl": "https://localhost:5001",
+    "clientId": "<client-id>",
+    "tenantId": "<tenant-id>",
+    "scopes": "<scopes>",
+    "appRoot": "https://localhost:4200",
+    "authEnable": true
+}

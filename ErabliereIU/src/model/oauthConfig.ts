@@ -3,6 +3,7 @@ export class OAuthConfig {
     stsAuthority?: string
     clientId?: string
     tenantId?: string
+    scopes?: string
     appRoot?: string
     authEnable?: boolean
 }

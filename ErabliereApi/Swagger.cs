@@ -59,8 +59,7 @@ namespace ErabliereApi
                                     TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException(paramName: "SWAGGER_TOKEN_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                     Scopes = new Dictionary<string, string>
                                     {
-                                        { "erabliereapi", "Erabliere Api scope" }
-                                    }
+                                        { GetEnvironmentVariable("OIDC_SCOPES") ?? throw new ArgumentNullException("Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_SCOPES'."), "Erabliere Api scope" }                                    }
                                 }
                             }
                         });
@@ -73,7 +72,7 @@ namespace ErabliereApi
                             {
                                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                             },
-                            new[] { "erabliereapi" }
+                            new[] { GetEnvironmentVariable("OIDC_SCOPES") }
                         }
                     });
 
@@ -119,7 +118,7 @@ namespace ErabliereApi
                     c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
                     c.OAuthClientSecret(GetEnvironmentVariable("OIDC_CLIENT_PASSWORD"));
                     c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
-                    c.OAuthScopes("erabliereapi");
+                    c.OAuthScopes(GetEnvironmentVariable("OIDC_SCOPES"));
 
                     if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
                     {

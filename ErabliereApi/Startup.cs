@@ -15,13 +15,11 @@ using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.OData.Edm;
-using ErabliereApi.Donnees;
 using Microsoft.AspNet.OData.Extensions;
 using Newtonsoft.Json.Serialization;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Identity.Web;
 using Microsoft.Extensions.Configuration;
+using ErabliereApi.Extensions;
 
 namespace ErabliereApi
 {
@@ -63,14 +61,21 @@ namespace ErabliereApi
             services.AddOData();
 
             // Forwarded headers
-            services.Configure<ForwardedHeadersOptions>(options =>
-            {
-                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
-            });
+            services.AddErabliereAPIForwardedHeaders(Configuration);
 
             // Authentication
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {
+                if (GetEnvironmentVariable("AzureAD__ClientId") != null && GetEnvironmentVariable("AzureAD:ClientId") == null)
+                {
+                    SetEnvironmentVariable("AzureAD:ClientId", GetEnvironmentVariable("AzureAD__ClientId"));
+                }
+
+                if (GetEnvironmentVariable("AzureAD__TenantId") != null && GetEnvironmentVariable("AzureAD:TenantId") == null)
+                {
+                    SetEnvironmentVariable("AzureAD:TenantId", GetEnvironmentVariable("AzureAD__TenantId"));
+                }
+
                 if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("AzureAD:ClientId")) == false)
                 {
                     services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
@@ -128,7 +133,7 @@ namespace ErabliereApi
         /// <summary>
         /// Configure
         /// </summary>
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
         {
             if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase) &&
                 string.Equals(GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), TrueString, OrdinalIgnoreCase))
@@ -143,10 +148,8 @@ namespace ErabliereApi
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
             }
-            else
-            {
-                app.UseForwardedHeaders();
-            }
+
+            app.UseErabliereAPIForwardedHeadersRules(logger, Configuration);
 
             app.UseDefaultFiles();
             app.UseStaticFiles();

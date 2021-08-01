@@ -51,8 +51,8 @@ export class DashboardComponent implements OnInit {
 
     private _authService: IAuthorisationSerivce
 
-    constructor(private _authFactoryService: AuthorisationFactoryService) {
-        this._authService = _authFactoryService.getAuthorisationService();
+    constructor(authFactoryService: AuthorisationFactoryService) {
+        this._authService = authFactoryService.getAuthorisationService();
         this._authService.loginChanged.subscribe(loggedIn => {
             this.isLoggedIn = loggedIn;
         })

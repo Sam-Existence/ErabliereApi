@@ -8,6 +8,7 @@ export class EnvironmentService {
     appRoot?: string
     clientId?: string
     tenantId?: string
+    scopes?: string
     stsAuthority?: string
     authEnable?: boolean
 
@@ -22,6 +23,7 @@ export class EnvironmentService {
                 this.appRoot = c.appRoot;
                 this.clientId = c.clientId;
                 this.tenantId = c.tenantId;
+                this.scopes = c.scopes;
                 this.stsAuthority = c.stsAuthority;
                 this.authEnable = c.authEnable;
             })

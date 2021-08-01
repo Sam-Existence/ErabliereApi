@@ -11,13 +11,13 @@ import { Erabliere } from 'src/model/erabliere';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
-    _authService: IAuthorisationSerivce
+    private _authService: IAuthorisationSerivce
 
     constructor(private _httpClient: HttpClient,
-                private _authFactoryService: AuthorisationFactoryService,
+                authFactoryService: AuthorisationFactoryService,
                 private _environmentService: EnvironmentService) 
                 { 
-                    this._authService = _authFactoryService.getAuthorisationService();
+                    this._authService = authFactoryService.getAuthorisationService();
                 }
 
     getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
@@ -28,7 +28,9 @@ export class ErabliereApi {
     }
 
     getErablieres(): Promise<Erabliere[]> {
+        console.log("Get erabliere");
         return this._authService.getAccessToken().then(token => {
+            console.log("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
         });

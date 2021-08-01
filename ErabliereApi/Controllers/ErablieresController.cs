@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Delete;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
@@ -206,18 +207,19 @@ namespace ErabliereApi.Controllers
         /// <param name="erabliere">L'érablière a supprimer</param>
         [HttpDelete("{id}")]
         [ValiderIPRules]
-        public IActionResult Supprimer(int id, Erabliere erabliere)
+        [ProducesResponseType(204)]
+        public async Task<IActionResult> Supprimer(int id, DeleteErabliere<int> erabliere)
         {
             if (id != erabliere.Id)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
             }
 
-            var entity = _context.Erabliere.Find(erabliere.Id);
+            var entity = await _context.Erabliere.FindAsync(erabliere.Id);
 
             _context.Remove(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
