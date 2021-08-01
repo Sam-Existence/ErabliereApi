@@ -143,7 +143,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
         }
 
         const requestObj = {
-            scopes: [this._environmentService.scopes]
+            scopes: this._environmentService.scopes?.split(' ') ?? []
         };
 
         console.log("acquireTokenSilent.");
