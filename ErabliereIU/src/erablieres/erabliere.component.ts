@@ -26,7 +26,7 @@ export class ErabliereComponent implements OnInit {
         this._authService = authFactory.getAuthorisationService();
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this._authService.loginChanged.subscribe(loggedIn => {
             console.debug("Erabliere component loggin listner");
             console.debug(loggedIn);
@@ -35,17 +35,17 @@ export class ErabliereComponent implements OnInit {
             }
         });
 
-        this._erabliereApi.getErablieres().then(erablieres => {
-            console.debug("On result of getErablieres");
-            this.erablieres = erablieres;
+        const erablieres = await this._erabliereApi.getErablieresExpandCapteurs();
 
-            if (this.erablieres.length > 0) {
-                this.erabliereSelectionnee = this.erablieres[0].id;
-            }
-            else {
-                // TODO : Aucun érablière trouvé
-            }
-        });
+        console.debug("On result of getErablieres");
+        this.erablieres = erablieres;
+
+        if (this.erablieres.length > 0) {
+            this.erabliereSelectionnee = this.erablieres[0].id;
+        }
+        else {
+            // TODO : Aucun érablière trouvé
+        }
     }
 
     handleErabliereLiClick(idErabliere: number) {

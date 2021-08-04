@@ -31,7 +31,7 @@ import { environment } from 'src/environments/environment';
                         <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
                     </li>
                 </ul>
-                <span [hidden]="useAuthentication == false">
+                <span [hidden]="!useAuthentication">
                     <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
                     <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
                 </span>

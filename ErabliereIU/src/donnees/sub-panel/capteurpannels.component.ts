@@ -13,10 +13,7 @@ import { Erabliere } from 'src/model/erabliere';
             <div class="col-md-6">
               <div *ngFor="let capteur of capteurs">
                 <graph-panel [titre]="capteur.nom" 
-                             [valeurActuel]="valeurActuelOf(capteur)"
-                             [symbole]="symboleOf(capteur)"
-                             [timeaxes]="timeaxeOf(capteur)" 
-                             [datasets]="datasetOf(capteur)"></graph-panel>
+                             [backendAction]="capteur?.id"></graph-panel>
               </div>
             </div>
           </div>
@@ -26,29 +23,14 @@ import { Erabliere } from 'src/model/erabliere';
 export class CapteurPannelsComponent implements OnInit {
   @Input() erabliere?: Erabliere;
 
+  constructor(private _api: ErabliereApi) {
+    
+  }
+
   capteurs?: Capteur[];
 
   ngOnInit(): void {
     this.capteurs = this.erabliere?.capteurs;
   }
-
-  timeaxeOf(capteur:Capteur): Label[] {
-    return [];
-  }
-
-  datasetOf(capteur:Capteur): ChartDataSets[] {
-    return[];
-  }
-
-  valeurActuelOf(capteur: Capteur) : string {
-    if (capteur.donnees != undefined && capteur.donnees != null) {
-      return capteur.donnees[capteur.donnees.length - 1].valeur?.toString() || "";
-    }
-
-    return "";
-  }
-
-  symboleOf(capteur: Capteur) : string {
-    return capteur.symbole || "";
-  }
+  
 }
