@@ -20,7 +20,7 @@ dotnet tool update --global dotnet-ef
 
 ## Chaine de connexion
 
-La chaine de connexion doit être spécifié en variable d'environnement. Pour créer les migrations, il faut ajouter la variable d'environnement SQL_CONNEXION_STRING dans le poste de travail. 
+La chaine de connexion doit être spécifié en variable d'environnement. Pour créer les migrations, il faut ajouter la variable d'environnement ```SQL_CONNEXION_STRING``` et ```USE_SQL``` dans le poste de travail. 
 L'outils ef ne prend pas en compte les variables dans le fichier launchSettings.json.
 
 ## Instruction migration

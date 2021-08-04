@@ -28,15 +28,15 @@ export class ErabliereComponent implements OnInit {
 
     ngOnInit() {
         this._authService.loginChanged.subscribe(loggedIn => {
-            console.log("Erabliere component loggin listner");
-            console.log(loggedIn);
+            console.debug("Erabliere component loggin listner");
+            console.debug(loggedIn);
             if (loggedIn) {
                 this.ngOnInit();
             }
         });
 
         this._erabliereApi.getErablieres().then(erablieres => {
-            console.log("On result of getErablieres");
+            console.debug("On result of getErablieres");
             this.erablieres = erablieres;
 
             if (this.erablieres.length > 0) {

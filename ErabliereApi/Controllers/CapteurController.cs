@@ -65,7 +65,7 @@ namespace ErabliereApi.Controllers
         {
             if (id != capteur.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+                return BadRequest("L'id de la route n'est pas le même que l'id de l'érablière dans les données du capteur à ajouter");
             }
 
             if (capteur.DC == null)

@@ -28,9 +28,9 @@ export class ErabliereApi {
     }
 
     getErablieres(): Promise<Erabliere[]> {
-        console.log("Get erabliere");
+        console.debug("Get erabliere");
         return this._authService.getAccessToken().then(token => {
-            console.log("Get erabliere, after get access token");
+            console.debug("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
         });

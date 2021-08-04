@@ -86,7 +86,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
                 this._loginChangedSubject.next(isLoggedIn);
             }
 
-            console.log("Is logged in result: " + isLoggedIn);
+            console.debug("Is logged in result: " + isLoggedIn);
 
             return resolve(isLoggedIn);
         });
@@ -103,7 +103,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
                 this._activeHomeAccountId = user.homeAccountId;
             }
             
-            console.log("Home account id: " + this._activeHomeAccountId);
+            console.debug("Home account id: " + this._activeHomeAccountId);
 
             return resolve(new AppUser());
         });
@@ -118,7 +118,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
 
     completeLogout() {
         return new Promise<AuthResponse>((resolve, reject) => {
-            console.log("Complete logout");
+            console.debug("Complete logout");
             this._activeHomeAccountId = undefined;
             this._loginChangedSubject.next(false);
             return resolve(new AuthResponse());
@@ -126,8 +126,8 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     }
 
     getAccessToken() : Promise<String | null> {
-        console.log("Get access token");
-        console.log(this._activeHomeAccountId);
+        console.debug("Get access token");
+        console.debug(this._activeHomeAccountId);
         if (this._activeHomeAccountId == null) {
             const user = this._msalInstance.getActiveAccount();
 
@@ -137,7 +137,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
                 this._activeHomeAccountId = user.homeAccountId;
             }
             else {
-                console.log("Active account is null, return null.");
+                console.debug("Active account is null, return null.");
                 return new Promise((resolve, reject) => resolve(null));
             }
         }
@@ -146,15 +146,15 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
             scopes: this._environmentService.scopes?.split(' ') ?? []
         };
 
-        console.log("acquireTokenSilent.");
+        console.debug("acquireTokenSilent.");
         return this._msalInstance.acquireTokenSilent(requestObj).then(user => {
-            console.log(user);
+            console.debug(user);
             if (!!user && !!user.accessToken) {
-                console.log("Return access token succesfully");
+                console.debug("Return access token succesfully");
                 return user.accessToken;
             }
             else {
-                console.log("Return access token unsuccesfully (null)");
+                console.debug("Return access token unsuccesfully (null)");
                 return null;
             }
         });
