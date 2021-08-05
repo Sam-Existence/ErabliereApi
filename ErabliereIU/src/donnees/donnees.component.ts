@@ -1,8 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
+import { GraphPannelComponent } from './sub-panel/graphpanel.component';
 
 @Component({
     selector: 'donnees-panel',
@@ -14,33 +15,38 @@ import { Erabliere } from 'src/model/erabliere';
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="temperature"></graph-panel>
+                           [datasets]="temperature" #temperatureGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <graph-panel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="vaccium"></graph-panel>
+                           [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <graph-panel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="niveaubassin"></graph-panel>
+                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <bar-panel [titre]="titre_dompeux" 
                          [timeaxes]="timeaxes_dompeux" 
                          [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type"></bar-panel>
+                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-panel>
             <div>
           </div>
         </div>
     `
 })
 export class DonneesComponent implements OnInit {
+      @ViewChild('temperatureGraphPannel') temperatureGraphPannel?: GraphPannelComponent
+      @ViewChild('vacciumGraphPannel') vacciumGraphPannel?: GraphPannelComponent
+      @ViewChild('niveaubassinGraphPannel') niveaubassinGraphPannel?: GraphPannelComponent
+      @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
+
       @Input() erabliere?:Erabliere
       @Input() dureeDonneesRequete:any
 
@@ -158,6 +164,8 @@ export class DonneesComponent implements OnInit {
               this.timeaxes_dompeux = timeaxes_dompeux;
               this.idsDompeux = idsDompeux;
             }
+
+            this.dompeuxGraphPannel?.chart?.update();
         });
       }
 
@@ -241,6 +249,10 @@ export class DonneesComponent implements OnInit {
               this.timeaxes = timeaxes as any[];
               this.ids = ids;
             }
+
+            this.temperatureGraphPannel?.chart?.update();
+            this.vacciumGraphPannel?.chart?.update();
+            this.niveaubassinGraphPannel?.chart?.update();
           })
           .catch(reason => {
             console.log(reason);

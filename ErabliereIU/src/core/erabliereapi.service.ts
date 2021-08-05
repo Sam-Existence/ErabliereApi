@@ -29,18 +29,14 @@ export class ErabliereApi {
     }
 
     getErablieres(): Promise<Erabliere[]> {
-        console.debug("Get erabliere");
         return this._authService.getAccessToken().then(token => {
-            console.debug("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
         });
     }
 
     getErablieresExpandCapteurs(): Promise<Erabliere[]> {
-        console.debug("Get erabliere");
         return this._authService.getAccessToken().then(token => {
-            console.debug("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', {headers: headers}).toPromise();
         });

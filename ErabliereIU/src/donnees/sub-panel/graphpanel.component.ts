@@ -68,7 +68,7 @@ export class GraphPannelComponent implements OnInit {
     @Input() titre:string|undefined="";
     duree:string = "12h"
     @Input() valeurActuel?:string|null|number|undefined;
-    @Input() symbole:string="";
+    @Input() symbole:string|undefined;
 
     constructor(private _api:ErabliereApi) { this.chart = undefined; }
 
@@ -146,11 +146,12 @@ export class GraphPannelComponent implements OnInit {
                 }
               }
               else {
-                console.log(donnees);
                 this.datasets = donnees;
                 this.timeaxes = timeaxes as any[];
                 this.ids = ids;
               }
+
+              this.chart?.update();
         });
     }
 
