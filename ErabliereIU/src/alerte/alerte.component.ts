@@ -1,25 +1,67 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { AuthorisationService } from "src/authorisation/authorisation-service";
-import { environment } from "src/environments/environment";
+import { Alerte } from "src/model/alerte";
 
 @Component({
     selector: 'alerte-page',
     template: `
-        <h3>Alerte</h3>
+        <h3>Alertes</h3>
         <div>
             <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
             <table *ngIf="alertes != null && alertes.length > 0" class="table">
                 <thead>
                     <tr>
                         <th>
-                            Json
+                            Id
+                        </th>
+                        <th>
+                            Envoyer à
+                        </th>
+                        <th>
+                            Temperature min.
+                        </th>
+                        <th>
+                            Temperature max.
+                        </th>
+                        <th>
+                            Vaccium min.
+                        </th>
+                        <th>
+                            Vaccium max.
+                        </th>
+                        <th>
+                            Niveau bassin min.
+                        </th>
+                        <th>
+                            Niveau bassin max.
                         </th>
                     <tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let alerte of alertes">
                         <td>
-                            {{alerte}}
+                            {{alerte.id}}
+                        </td>
+                        <td>
+                            {{alerte.envoyerA}}
+                                
+                        </td>
+                        <td>
+                            {{alerte.temperatureThresholdHight}}
+                        </td>
+                        <td>
+                            {{alerte.temperatureThresholdLow}}
+                        </td>
+                        <td>
+                            {{alerte.vacciumThresholdHight}}
+                        </td>
+                        <td>
+                            {{alerte.vacciumThresholdLow}}
+                        </td>
+                        <td>
+                            {{alerte.niveauBassinThresholdHight}}
+                        </td>
+                        <td>
+                            {{alerte.niveauBassinThresholdLow}}
                         </td>
                     <tr>
                 </tbody>
@@ -30,5 +72,5 @@ import { environment } from "src/environments/environment";
 export class AlerteComponent{
     constructor() { }
 
-    @Input() alertes?: Array<any>;
+    @Input() alertes?: Array<Alerte>;
 }

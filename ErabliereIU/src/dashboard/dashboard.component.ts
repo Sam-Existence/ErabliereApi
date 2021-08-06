@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
+import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 
 @Component({
     selector: 'dashboard',
@@ -38,7 +40,7 @@ import { environment } from 'src/environments/environment';
             </div>
             </div>
         </nav>
-        <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere"></erablieres>
+        <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere" #erabliereComponent></erablieres>
     `
 })
 export class DashboardComponent implements OnInit {
@@ -72,12 +74,14 @@ export class DashboardComponent implements OnInit {
         this._authService.logout();
     }
 
+    @ViewChild('erabliereComponent') erabierePage?: ErabliereComponent
+
     selectionnerPage(i: number) {
         this.pageSelectionnee = i;
         this.cacheMenuErabliere = i == 3 || i == 4;
 
         if (this.pageSelectionnee == 1) {
-            // Should call Alerte api
+            this.erabierePage?.loadAlertes();
         }
     }
 }

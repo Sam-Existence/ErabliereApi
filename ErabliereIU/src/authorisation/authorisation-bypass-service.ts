@@ -22,9 +22,7 @@ export class AuthorisationBypassService implements IAuthorisationSerivce {
         return new Promise<AuthResponse>((resolve, reject) => resolve(new AuthResponse()));
     }
     getAccessToken(): Promise<String | null> {
-        console.debug("getAccessToken");
         return new Promise((resolve, reject) => {
-            console.debug("getAccessTokenPromise");
             return resolve(null);
         });
     }

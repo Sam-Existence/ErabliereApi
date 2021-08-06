@@ -1,6 +1,11 @@
 name: ErabliereAPI-Image
 
-on: 
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
   workflow_dispatch:
 
 env:
@@ -25,8 +30,10 @@ jobs:
         
       # Tag the images
       - name: Docker tag
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: docker tag $IMAGE_NAME:$IMAGE_TAG $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
 
       # Push the image
       - name: Docker push
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG

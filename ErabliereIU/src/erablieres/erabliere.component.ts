@@ -35,7 +35,22 @@ export class ErabliereComponent implements OnInit {
 
         const erablieres = await this._erabliereApi.getErablieresExpandCapteurs();
 
-        this.erablieres = erablieres;
+        this.erablieres = erablieres.sort((a, b) => {
+            if (a.indiceOrdre != null && b.indiceOrdre == null)
+            {
+                return -1;
+            }
+            else if (b.indiceOrdre != null && a.indiceOrdre == null)
+            {
+                return 1;
+            }
+            else if (a.indiceOrdre != null && b.indiceOrdre != null)
+            {
+                return a.indiceOrdre - b.indiceOrdre;
+            }
+
+            return a.nom?.localeCompare(b.nom ?? "") ?? 0;
+        });
 
         if (this.erablieres.length > 0) {
             this.erabliereSelectionnee = this.erablieres[0].id;
@@ -47,10 +62,10 @@ export class ErabliereComponent implements OnInit {
 
     handleErabliereLiClick(idErabliere: number) {
         this.erabliereSelectionnee = idErabliere;
-    }
 
-    handleAlerteClick() {
-        this.loadAlertes();
+        if (this.pageSelectionnee == 1) {
+            this.loadAlertes();
+        }
     }
 
     loadAlertes() {
