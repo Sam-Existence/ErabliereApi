@@ -1,7 +1,7 @@
 version: "3.2"
 services:
   erabliere-api:
-    image: "erabliereapi:local"
+    image: "erabliereapi/erabliereapi:latest"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
