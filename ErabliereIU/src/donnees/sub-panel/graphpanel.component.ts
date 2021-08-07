@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
+import { interval } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
@@ -74,14 +75,20 @@ export class GraphPannelComponent implements OnInit {
 
     @Input() backendAction?: any;
 
+    interval?:any
+
     ngOnInit(): void {
         if (this.backendAction != null) {
             this.doHttpCall();
 
-            setInterval(() => {
+            this.interval = setInterval(() => {
                 this.doHttpCall();
             }, 1000 * 60);
         }
+    }
+
+    ngOnDestroy() {
+        clearInterval(this.interval);
     }
 
     dernierDonneeRecu?:string = undefined;

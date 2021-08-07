@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
 import { Baril } from 'src/model/baril';
@@ -9,7 +9,7 @@ import { Erabliere } from 'src/model/erabliere';
     template: `
         <div class="border-top">
             <h3>Barils</h3>
-            <h6>Id érablière {{ erabliere?.id }}</h6>
+            <h6>Id érablière {{ erabliereId }}</h6>
             <table class="table">
                 <thead>
                     <tr>
@@ -47,13 +47,21 @@ import { Erabliere } from 'src/model/erabliere';
         </div>
     `
 })
-export class BarilsComponent implements OnInit {
+export class BarilsComponent implements OnInit, OnChanges {
     barils?:Array<Baril>;
-    @Input() erabliere?:Erabliere
+    @Input() erabliereId:any
 
     constructor(private _erabliereApi : ErabliereApi) { }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        this.fetchBaril();
+    }
+
     ngOnInit() {
-        this._erabliereApi.getBarils(this.erabliere?.id).then(d => this.barils = d);
+        this.fetchBaril();
+    }
+
+    fetchBaril() {
+        this._erabliereApi.getBarils(this.erabliereId).then(d => this.barils = d);
     }
 }

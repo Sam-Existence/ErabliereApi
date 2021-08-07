@@ -19,6 +19,7 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { HttpClientModule } from '@angular/common/http';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';
 import { EnvironmentService } from 'src/environments/environment.service';
+import { GraphiqueComponent } from 'src/graphique/graphique.component';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -30,6 +31,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
   declarations: [
     AppComponent,
     ErabliereComponent,
+    GraphiqueComponent,
     DonneesComponent,
     DashboardComponent,
     GraphPannelComponent,

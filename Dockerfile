@@ -35,4 +35,8 @@ COPY --from=angular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
 EXPOSE 443
 EXPOSE 80
 
+#Create a new user (erabliereapp) and new group (erabliereapi); then switch into that user’s context 
+#RUN useradd erabliereapp && groupadd erabliereapi 
+#USER erabliereapp:erabliereapi 
+
 ENTRYPOINT ["dotnet", "ErabliereApi.dll"]

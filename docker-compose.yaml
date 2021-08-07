@@ -1,7 +1,7 @@
-version: "3"
+version: "3.2"
 services:
   erabliere-api:
-    image: "erabliereapi/erabliereapi:latest"
+    image: "erabliereapi:local"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
@@ -25,6 +25,7 @@ services:
       OIDC_CLIENT_PASSWORD: "D6VDPBGKjmoyKkP~yFnxvMlLqS"
       OAUTH2_REDIRECT_URL: "https://localhost:5001/api/oauth2-redirect.html"
       OIDC_AUDIENCE: "http://erabliere-api"
+      OIDC_SCOPES: "erabliereapi"
       OIDC_AUTHORITY: "https://identite-api"
       EMAIL_CONFIG_PATH: "-"
     ports:

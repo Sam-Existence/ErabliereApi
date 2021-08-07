@@ -54,6 +54,7 @@ namespace ErabliereApi.Controllers
                                             (ddr == null || b.D >= ddr) &&
                                             (dd == null || b.D >= dd) &&
                                             (df == null || b.D <= df))
+                                .OrderByDescending(b => b.D)
                                 .ProjectTo<GetDonneesCapteur>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync();
         }
