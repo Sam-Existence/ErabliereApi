@@ -1,17 +1,17 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { Capteur } from 'src/model/capteur';
+import { GraphPannelComponent } from './graphpanel.component';
 
 @Component({
     selector: 'capteur-panels',
     template: `
         <div class="border-top">
           <div class="row">
-            <div class="col-md-6">
-              <div *ngFor="let capteur of capteurs">
+            <div class="col-md-6" *ngFor="let capteur of capteurs">
                 <graph-panel [titre]="capteur.nom" 
                              [symbole]="capteur.symbole"
-                             [backendAction]="capteur?.id"></graph-panel>
-              </div>
+                             [idCapteur]="capteur?.id"></graph-panel>
             </div>
           </div>
         </div>
@@ -20,8 +20,12 @@ import { Capteur } from 'src/model/capteur';
 export class CapteurPannelsComponent implements OnInit {
   @Input() capteurs?: Capteur[];
 
-  ngOnInit(): void {
+  // dataList:Array<GraphPannelComponent> = new Array<GraphPannelComponent>();
 
+  ngOnInit(): void {
+    // this.capteurs?.forEach(capteur => {
+
+    // });
   }
   
 }

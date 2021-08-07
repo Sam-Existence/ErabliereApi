@@ -213,13 +213,13 @@ export class DonneesComponent implements OnInit {
         }
 
         this._erabliereApi.getDonnees(this.erabliereId, debutFiltre, finFiltre, xddr)
-          .then(resp => {
-            var h = resp.headers;
+          .then(reponse => {
+            var h = reponse.headers;
 
             this.derniereDonneeRecu = h.get("x-dde")?.valueOf();
             this.ddr = h.get("x-ddr")?.valueOf();
 
-            var e = resp.body;
+            var e = reponse.body;
 
             if (e == null) {
               return;

@@ -3,6 +3,7 @@ using AutoMapper.QueryableExtensions;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -54,9 +55,33 @@ namespace ErabliereApi.Controllers
                                             (ddr == null || b.D >= ddr) &&
                                             (dd == null || b.D >= dd) &&
                                             (df == null || b.D <= df))
-                                .OrderByDescending(b => b.D)
+                                .OrderBy(b => b.D)
                                 .ProjectTo<GetDonneesCapteur>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync();
+        }
+
+        /// <summary>
+        /// Liste les données de plusieurs capteurs DonneesCapteur
+        /// </summary>
+        /// <param name="ids">Identifiant des capteurs</param>
+        /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
+        /// <param name="dd">Date de début</param>
+        /// <param name="df">Date de début</param>
+        /// <response code="200">Une liste Tupple avec l'id du catpeur et la liste des DonneesCapteur.</response>
+        [HttpGet]
+        [Route("/DonneesCapteur/Grape")]
+        public async IAsyncEnumerable<Pair<int, IEnumerable<GetDonneesCapteur>>> ListerPlusieurs(
+                                                    [FromQuery] string ids,
+                                                    [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
+                                                    DateTimeOffset? dd,
+                                                    DateTimeOffset? df)
+        {
+            foreach (var idstr in ids.Split(';'))
+            {
+                var id = int.Parse(idstr);
+
+                yield return new Pair<int, IEnumerable<GetDonneesCapteur>>(id, await Lister(id, ddr, dd, df));
+            }
         }
 
         /// <summary>

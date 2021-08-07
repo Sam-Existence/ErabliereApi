@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
-import { interval } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
@@ -73,12 +72,12 @@ export class GraphPannelComponent implements OnInit {
 
     constructor(private _api:ErabliereApi) { this.chart = undefined; }
 
-    @Input() backendAction?: any;
+    @Input() idCapteur?: any;
 
     interval?:any
 
     ngOnInit(): void {
-        if (this.backendAction != null) {
+        if (this.idCapteur != null) {
             this.doHttpCall();
 
             this.interval = setInterval(() => {
@@ -105,7 +104,7 @@ export class GraphPannelComponent implements OnInit {
           xddr = this.dernierDonneeRecu.toString();
         }
 
-        this._api.getDonneesCapteur(this.backendAction, debutFiltre, finFiltre, xddr).then(resp => {
+        this._api.getDonneesCapteur(this.idCapteur, debutFiltre, finFiltre, xddr).then(resp => {
             const h = resp.headers;
 
             this.dernierDonneeRecu = h.get("x-dde")?.valueOf();
