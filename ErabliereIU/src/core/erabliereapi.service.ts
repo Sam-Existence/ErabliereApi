@@ -7,6 +7,7 @@ import { Alerte } from 'src/model/alerte';
 import { Baril } from 'src/model/baril';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
+import { DonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 
 @Injectable({ providedIn: 'root' })
@@ -28,11 +29,16 @@ export class ErabliereApi {
     }
 
     getErablieres(): Promise<Erabliere[]> {
-        console.log("Get erabliere");
         return this._authService.getAccessToken().then(token => {
-            console.log("Get erabliere, after get access token");
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
+        });
+    }
+
+    getErablieresExpandCapteurs(): Promise<Erabliere[]> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', {headers: headers}).toPromise();
         });
     }
 
@@ -60,6 +66,21 @@ export class ErabliereApi {
             }
 
             var httpCall = this._httpClient.get<Donnee[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
+            
+            return httpCall.toPromise();
+        });
+    }
+
+    getDonneesCapteur(idCapteur:any, debutFiltre:string, finFiltre: string, xddr?: any): Promise<HttpResponse<DonneeCapteur[]>> {
+        return this._authService.getAccessToken().then(token => {
+            let headers = new HttpHeaders()
+                                .set('Authorization', `Bearer ${token}`);
+
+            if (xddr != null) {
+                headers = headers.set('x-ddr', xddr);
+            }
+
+            var httpCall = this._httpClient.get<DonneeCapteur[]>(this._environmentService.apiUrl + '/capteurs/' + idCapteur + "/DonneesCapteur?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
             
             return httpCall.toPromise();
         });

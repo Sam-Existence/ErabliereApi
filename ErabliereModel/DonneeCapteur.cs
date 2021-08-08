@@ -4,8 +4,14 @@ namespace ErabliereApi.Donnees
 {
     public class DonneeCapteur : IIdentifiable<Guid?, DonneeCapteur>
     {
+        /// <summary>
+        /// L'id de la donnée du capteur
+        /// </summary>
         public Guid? Id { get; set; }
 
+        /// <summary>
+        /// La valeur de la donnée
+        /// </summary>
         public short? Valeur { get; set; }
 
         /// <summary>

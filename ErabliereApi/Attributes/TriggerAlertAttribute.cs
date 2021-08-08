@@ -155,23 +155,31 @@ namespace ErabliereApi.Controllers.Attributes
         /// <summary>
         /// Fonction utilisé pour désérialiser les configurations permettant l'envoie de courriel
         /// </summary>
-        /// <param name="v"></param>
         /// <returns></returns>
         private static EmailConfig? TryDeserializeEmailConfig()
         {
-            try
-            {
-                var v = ReadAllText(GetEnvironmentVariable("EMAIL_CONFIG_PATH"));
+            var path = GetEnvironmentVariable("EMAIL_CONFIG_PATH");
 
-                return Deserialize<EmailConfig>(v);
-            }
-            catch (Exception e)
+            if (string.IsNullOrWhiteSpace(path))
             {
-                Console.Error.WriteLine("Erreur en désérialisant les configurations de l'email. La fonctionnalité des alertes ne pourra pas être utilisé.");
-                Console.Error.WriteLine(e.Message);
-                Console.Error.WriteLine(e.StackTrace);
+                Console.WriteLine("La variable d'environment 'EMAIL_CONFIG_PATH' ne possédant pas de valeur, les configurations de courriel ne seront pas désérialisé.");
             }
+            else
+            {
+                try
+                {
+                    var v = ReadAllText(path);
 
+                    return Deserialize<EmailConfig>(v);
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("Erreur en désérialisant les configurations de l'email. La fonctionnalité des alertes ne pourra pas être utilisé.");
+                    Console.Error.WriteLine(e.Message);
+                    Console.Error.WriteLine(e.StackTrace);
+                }
+            }
+            
             return default;
         }
 

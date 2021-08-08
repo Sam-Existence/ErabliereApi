@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,10 @@ namespace ErabliereApi.Donnees.Action.Post
     public class PostCapteur
     {
         public string? Nom { get; set; }
+
+        [Required]
+        [MaxLength(5)]
+        public string? Symbole { get; set; }
 
         /// <summary>
         /// La date de création de l'entité.

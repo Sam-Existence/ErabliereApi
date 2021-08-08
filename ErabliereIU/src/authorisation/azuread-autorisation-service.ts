@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { BrowserCacheLocation, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { BrowserCacheLocation, LogLevel, PopupRequest, PublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
@@ -29,7 +29,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
             },
             cache: {
                 cacheLocation: BrowserCacheLocation.LocalStorage,
-                secureCookies: true
+                storeAuthStateInCookie: false,
             },
             system: {
                 loggerOptions: {
@@ -65,8 +65,11 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
      }
     
      login() {
-         console.log("Login")
-         return this._msalInstance.loginPopup().then(async response => {
+         const popupParam:PopupRequest = {
+             scopes: this._environmentService.scopes?.split(' ') ?? [],
+             prompt: "select_account"
+         }
+         return this._msalInstance.loginPopup(popupParam).then(async response => {
             this._msalInstance.setActiveAccount(response.account);
 
             this._activeHomeAccountId = response.account?.homeAccountId;
@@ -76,9 +79,18 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
      }
 
      isLoggedIn(): Promise<Boolean> {
-        console.log("Is logged in");
         return new Promise(async (resolve, reject) => {
-            const user = this._msalInstance.getActiveAccount();
+            let user = this._msalInstance.getActiveAccount();
+
+            if (user == null) {
+                const users = this._msalInstance.getAllAccounts();
+
+                if (users.length > 0) {
+                    user = users[0];
+                    this._activeHomeAccountId = user.homeAccountId
+                    this._msalInstance.setActiveAccount(user);
+                }
+            }
 
             const isLoggedIn = !!user && user.homeAccountId == this._activeHomeAccountId;
 
@@ -86,14 +98,11 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
                 this._loginChangedSubject.next(isLoggedIn);
             }
 
-            console.log("Is logged in result: " + isLoggedIn);
-
             return resolve(isLoggedIn);
         });
      }
 
     completeLogin() {
-        console.log("Complete login")
         return new Promise<AppUser>((resolve, reject) => {
             const user = this._msalInstance.getActiveAccount();
 
@@ -102,15 +111,12 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
             if (user != null) {
                 this._activeHomeAccountId = user.homeAccountId;
             }
-            
-            console.log("Home account id: " + this._activeHomeAccountId);
 
             return resolve(new AppUser());
         });
     }
 
     logout() {
-        console.log("Logout")
         this._msalInstance.loginPopup().then(async response => {
             await this.completeLogout();
         });
@@ -118,7 +124,6 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
 
     completeLogout() {
         return new Promise<AuthResponse>((resolve, reject) => {
-            console.log("Complete logout");
             this._activeHomeAccountId = undefined;
             this._loginChangedSubject.next(false);
             return resolve(new AuthResponse());
@@ -126,8 +131,6 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     }
 
     getAccessToken() : Promise<String | null> {
-        console.log("Get access token");
-        console.log(this._activeHomeAccountId);
         if (this._activeHomeAccountId == null) {
             const user = this._msalInstance.getActiveAccount();
 
@@ -137,24 +140,19 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
                 this._activeHomeAccountId = user.homeAccountId;
             }
             else {
-                console.log("Active account is null, return null.");
                 return new Promise((resolve, reject) => resolve(null));
             }
         }
 
-        const requestObj = {
-            scopes: this._environmentService.scopes?.split(' ') ?? []
+        const requestObj:SilentRequest = {
+            scopes: this._environmentService.scopes?.split(' ') ?? [],
         };
 
-        console.log("acquireTokenSilent.");
         return this._msalInstance.acquireTokenSilent(requestObj).then(user => {
-            console.log(user);
             if (!!user && !!user.accessToken) {
-                console.log("Return access token succesfully");
                 return user.accessToken;
             }
             else {
-                console.log("Return access token unsuccesfully (null)");
                 return null;
             }
         });

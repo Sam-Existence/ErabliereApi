@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
@@ -11,7 +12,9 @@ import { Erabliere } from 'src/model/erabliere';
 export class ErabliereComponent implements OnInit {
     erablieres?: Array<Erabliere>;
 
-    erabliereSelectionnee?:number;
+    erabliereSelectionnee?:Erabliere;
+
+    idSelectionnee?:number
 
     @Input() cacheMenuErabliere?:boolean;
 
@@ -26,38 +29,57 @@ export class ErabliereComponent implements OnInit {
         this._authService = authFactory.getAuthorisationService();
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         this._authService.loginChanged.subscribe(loggedIn => {
-            console.log("Erabliere component loggin listner");
-            console.log(loggedIn);
             if (loggedIn) {
                 this.ngOnInit();
             }
         });
 
-        this._erabliereApi.getErablieres().then(erablieres => {
-            console.log("On result of getErablieres");
-            this.erablieres = erablieres;
+        const erablieres = await this._erabliereApi.getErablieresExpandCapteurs();
 
-            if (this.erablieres.length > 0) {
-                this.erabliereSelectionnee = this.erablieres[0].id;
+        this.erablieres = erablieres.sort((a, b) => {
+            if (a.indiceOrdre != null && b.indiceOrdre == null)
+            {
+                return -1;
             }
-            else {
-                // TODO : Aucun érablière trouvé
+            else if (b.indiceOrdre != null && a.indiceOrdre == null)
+            {
+                return 1;
             }
+            else if (a.indiceOrdre != null && b.indiceOrdre != null)
+            {
+                return a.indiceOrdre - b.indiceOrdre;
+            }
+
+            return a.nom?.localeCompare(b.nom ?? "") ?? 0;
         });
+
+        if (this.erablieres.length > 0) {
+            this.erabliereSelectionnee = this.erablieres[0];
+            this.idSelectionnee = this.erabliereSelectionnee.id;
+        }
+        else {
+            // TODO : Aucun érablière trouvé
+        }
     }
 
     handleErabliereLiClick(idErabliere: number) {
-        this.erabliereSelectionnee = idErabliere;
-    }
+        if (this.erablieres == null || this.erablieres == undefined) {
+            return;
+        }
 
-    handleAlerteClick() {
-        this.loadAlertes();
+        this.erabliereSelectionnee = this.erablieres.find(e => e.id === idErabliere);
+
+        this.idSelectionnee = this.erabliereSelectionnee?.id;
+
+        if (this.pageSelectionnee == 1) {
+            this.loadAlertes();
+        }
     }
 
     loadAlertes() {
-        this._erabliereApi.getAlertes(this.erabliereSelectionnee).then(alertes => {
+        this._erabliereApi.getAlertes(this.erabliereSelectionnee?.id).then(alertes => {
             this.alertes = alertes;
         });
     }

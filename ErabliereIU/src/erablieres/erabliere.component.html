@@ -2,20 +2,16 @@
     <div class="col-lg border-right" [hidden]="cacheMenuErabliere">
         <div class="list-group">
             <a *ngFor="let erabliere of erablieres" href="#" class="list-group-item list-group-item-action"
-                [class.active]="erabliereSelectionnee === erabliere.id"
+                [class.active]="erabliereSelectionnee?.id === erabliere.id"
                 (click)="handleErabliereLiClick(erabliere.id)">{{erabliere.nom}}</a>
         </div>
     </div>
 
-    <div class="col-lg-10 col-md-12" [hidden]="pageSelectionnee !== 0">
-        <div *ngFor="let erabliere of erablieres" [hidden]="erabliereSelectionnee !== erabliere.id">
-            <donnees-panel *ngIf="erabliere.afficherTrioDonnees" [erabliere]="erabliere"></donnees-panel>
-            <capteur-panels [erabliere]="erabliere"></capteur-panels>
-            <barils-panel *ngIf="erabliere.afficherSectionBaril" [erabliere]="erabliere"></barils-panel>
-        </div>
+    <div *ngIf="erabliereSelectionnee !== null" class="col-lg-10 col-md-12" [hidden]="pageSelectionnee !== 0">
+        <graphique [erabliere]="erabliereSelectionnee"></graphique>
     </div>
 
-    <alerte-page class="col-10" [alertes]="alertes" [hidden]="pageSelectionnee !== 1" (click)="handleAlerteClick()">
+    <alerte-page class="col-10" [alertes]="alertes" [hidden]="pageSelectionnee !== 1">
     </alerte-page>
 
     <camera-page class="col-10" [hidden]="pageSelectionnee !== 2"></camera-page>

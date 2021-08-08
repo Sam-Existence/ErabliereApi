@@ -45,12 +45,12 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Le symbole qui représente l'unité observer par le capteur.
         /// <summary>
-        /// </exemple>
+        /// <example>
         /// "°c" pour représenter la temperature en celcius
         /// </example>
         [Required]
         [MaxLength(5)]
-        public string? Symbole {get;set;}
+        public string? Symbole { get; set; }
 
         public int CompareTo(Capteur? other)
         {

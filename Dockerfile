@@ -1,11 +1,11 @@
 # Build the angular app
-FROM node:12.16.1-alpine AS angular-builder
+FROM node:14.17.4-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm install
 RUN npm install -g @angular/cli
 COPY ErabliereIU/ .
-RUN ng build --prod
+RUN ng build --configuration production
 
 # Build the api
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-api-env
@@ -34,5 +34,9 @@ COPY --from=angular-builder /usr/src/app/dist/ErabliereIU ./wwwroot
 # Expose port
 EXPOSE 443
 EXPOSE 80
+
+#Create a new user (erabliereapp) and new group (erabliereapi); then switch into that user’s context 
+#RUN useradd erabliereapp && groupadd erabliereapi 
+#USER erabliereapp:erabliereapi 
 
 ENTRYPOINT ["dotnet", "ErabliereApi.dll"]

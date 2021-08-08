@@ -1,8 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
+import { GraphPannelComponent } from './sub-panel/graphpanel.component';
 
 @Component({
     selector: 'donnees-panel',
@@ -14,34 +16,42 @@ import { Erabliere } from 'src/model/erabliere';
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="temperature"></graph-panel>
+                           [datasets]="temperature" #temperatureGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <graph-panel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="vaccium"></graph-panel>
+                           [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <graph-panel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
-                           [datasets]="niveaubassin"></graph-panel>
+                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
               <bar-panel [titre]="titre_dompeux" 
                          [timeaxes]="timeaxes_dompeux" 
                          [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type"></bar-panel>
+                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-panel>
             <div>
           </div>
         </div>
     `
 })
 export class DonneesComponent implements OnInit {
-      @Input() erabliere?:Erabliere
+      @ViewChild('temperatureGraphPannel') temperatureGraphPannel?: GraphPannelComponent
+      @ViewChild('vacciumGraphPannel') vacciumGraphPannel?: GraphPannelComponent
+      @ViewChild('niveaubassinGraphPannel') niveaubassinGraphPannel?: GraphPannelComponent
+      @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
+
+      intervalRequetes?:any
+
+      @Input() initialErabliere?: Erabliere
+      @Input() erabliereSubject: Subject<Erabliere> = new Subject<Erabliere>()
       @Input() dureeDonneesRequete:any
 
       timeaxes: Label[] = [];
@@ -84,24 +94,54 @@ export class DonneesComponent implements OnInit {
       dompeux_line_type: ChartType = "bar"
       dompeux_chart_type:string = "bar"
 
+      erabliereAfficherTrioDonnees: boolean | undefined;
+      erabliereAfficherSectionDompeux: boolean | undefined;
+      erabliereId: any;
+
       constructor(private _erabliereApi:ErabliereApi){ }
 
       ngOnInit() {
-        if (this.erabliere?.afficherTrioDonnees == true) {
+        this.erabliereSubject.subscribe(response => {
+          this.ngOnDestroy();
+          this.ddr = undefined;
+          this.ddrDompeux = undefined;
+          this.dernierDompeuxRecu = undefined;
+          this.derniereDonneeRecu = undefined;
+
+          this.erabliereAfficherTrioDonnees = response.afficherTrioDonnees;
+          this.erabliereAfficherSectionDompeux = response.afficherSectionDompeux;
+          this.erabliereId = response.id;
+
+          this.fetchDataAndBuildGraph()
+        });
+
+        this.erabliereAfficherTrioDonnees = this.initialErabliere?.afficherTrioDonnees;
+        this.erabliereAfficherSectionDompeux = this.initialErabliere?.afficherSectionDompeux;
+        this.erabliereId = this.initialErabliere?.id;
+
+        this.fetchDataAndBuildGraph();
+      }
+
+      fetchDataAndBuildGraph() {
+        if (this.erabliereAfficherTrioDonnees == true) {
           this.doHttpCall();
         }
-        if (this.erabliere?.afficherSectionDompeux == true) {
+        if (this.erabliereAfficherSectionDompeux == true) {
           this.doHttpCallDompeux();
         }
 
-        setInterval(() => {
-          if (this.erabliere?.afficherTrioDonnees == true) {
+        this.intervalRequetes = setInterval(() => {
+          if (this.erabliereAfficherTrioDonnees == true) {
             this.doHttpCall();
           }
-          if (this.erabliere?.afficherSectionDompeux == true) {
+          if (this.erabliereAfficherSectionDompeux == true) {
             this.doHttpCallDompeux();
           }
         }, 1000 * 60);
+      }
+
+      ngOnDestroy() {
+        clearInterval(this.intervalRequetes);
       }
 
       doHttpCallDompeux() {
@@ -113,7 +153,7 @@ export class DonneesComponent implements OnInit {
           xddr = this.dernierDompeuxRecu.toString();
         }
 
-        this._erabliereApi.getDompeux(this.erabliere?.id, debutFiltre, finFiltre, xddr)
+        this._erabliereApi.getDompeux(this.erabliereId, debutFiltre, finFiltre, xddr)
         .then(resp=> {
           const h = resp.headers;
 
@@ -158,6 +198,8 @@ export class DonneesComponent implements OnInit {
               this.timeaxes_dompeux = timeaxes_dompeux;
               this.idsDompeux = idsDompeux;
             }
+
+            this.dompeuxGraphPannel?.chart?.update();
         });
       }
 
@@ -170,14 +212,14 @@ export class DonneesComponent implements OnInit {
           xddr = this.derniereDonneeRecu.toString();
         }
 
-        this._erabliereApi.getDonnees(this.erabliere?.id, debutFiltre, finFiltre, xddr)
-          .then(resp => {
-            var h = resp.headers;
+        this._erabliereApi.getDonnees(this.erabliereId, debutFiltre, finFiltre, xddr)
+          .then(reponse => {
+            var h = reponse.headers;
 
             this.derniereDonneeRecu = h.get("x-dde")?.valueOf();
             this.ddr = h.get("x-ddr")?.valueOf();
 
-            var e = resp.body;
+            var e = reponse.body;
 
             if (e == null) {
               return;
@@ -241,6 +283,10 @@ export class DonneesComponent implements OnInit {
               this.timeaxes = timeaxes as any[];
               this.ids = ids;
             }
+
+            this.temperatureGraphPannel?.chart?.update();
+            this.vacciumGraphPannel?.chart?.update();
+            this.niveaubassinGraphPannel?.chart?.update();
           })
           .catch(reason => {
             console.log(reason);

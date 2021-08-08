@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
+import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 
 @Component({
     selector: 'dashboard',
@@ -31,14 +33,14 @@ import { environment } from 'src/environments/environment';
                         <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
                     </li>
                 </ul>
-                <span [hidden]="useAuthentication == false">
+                <span [hidden]="!useAuthentication">
                     <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
                     <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
                 </span>
             </div>
             </div>
         </nav>
-        <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere"></erablieres>
+        <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere" #erabliereComponent></erablieres>
     `
 })
 export class DashboardComponent implements OnInit {
@@ -72,12 +74,14 @@ export class DashboardComponent implements OnInit {
         this._authService.logout();
     }
 
+    @ViewChild('erabliereComponent') erabierePage?: ErabliereComponent
+
     selectionnerPage(i: number) {
         this.pageSelectionnee = i;
         this.cacheMenuErabliere = i == 3 || i == 4;
 
         if (this.pageSelectionnee == 1) {
-            // Should call Alerte api
+            this.erabierePage?.loadAlertes();
         }
     }
 }
