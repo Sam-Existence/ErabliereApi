@@ -12,7 +12,7 @@
 
 from datetime import datetime as dt
 from datetime import timedelta as td
-from auth.getAccessToken import getAccessToken
+from erabliere_api_proxy import ErabliereApiProxy
 
 print("Debut execution", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
 
@@ -59,11 +59,10 @@ print("niveau bassin", r_niveaubassin)
 
 import json
 
-print("Envoie des données à l'api", sys.argv[1])
+print("Envoie des données à l'api", sys.argv[2])
 
 url = sys.argv[2]
 idErabliere = sys.argv[3]
-h = {"Content-Type":"Application/json", "Authorization": "Bearer " + getAccessToken("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret")}
 
 vaccium = 0
 # Cas spéciaux de image_to_string
@@ -76,14 +75,8 @@ nb = 0
 if len(r_niveaubassin) > 0:
   nb = int(float(r_niveaubassin[0].replace("HG ", "")))
 
-donnees = {'t': int(float(r_temperature[0].replace("°C", "")) * 10),
-           'nb': nb,
-           'v': vaccium,
-           'idErabliere': int(idErabliere)}
-
-print(json.dumps(donnees))
-
-reponse = requests.post(url, json=donnees, headers=h, timeout = 2, verify = False)
+proxy = ErabliereApiProxy(url, "AzureAD")
+reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
 
 print("réponse", reponse.status_code)
 
