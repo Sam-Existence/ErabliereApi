@@ -1,4 +1,4 @@
-# GenerateurDonnePython
+# GenerateurDonneePython
 
 Dossier contenant des scripts permettant d'envoyer des données à l'api. Les script sont lancer avec cron. Pour obtenir des logs plus détaillé, voir le bout de code bash suivant :
 
