@@ -19,10 +19,37 @@
 
 import os
 import time
+import sys
 
 def measure_temp():
         temp = os.popen("vcgencmd measure_temp").readline()
         return (temp.replace("temp=",""))
 
 
-print(measure_temp())
+t = measure_temp()
+
+print(t)
+
+if len(sys.argv) == 1:
+  exit()
+
+from erabliere_api_proxy import ErabliereApiProxy
+
+authType = None
+
+if len(sys.argv) > 2:
+  authType = sys.argv[2]
+
+proxy = ErabliereApiProxy(sys.argv[1], authType)
+
+def getAllDigit(x):
+  xp = ""
+  for c in x:
+    if c.isdigit():
+      xp = xp + c
+
+  return int(xp)
+
+r = proxy.envoyer_donnee_capteur(int(sys.argv[len(sys.argv)-1]), getAllDigit(t))
+
+print(r)

@@ -24,3 +24,4 @@ def getAccessToken(url, clientId, clientSecret):
     responseObj = json.loads(response.text)
     print(responseObj)
     return responseObj["access_token"]
+
