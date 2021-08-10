@@ -6,7 +6,6 @@ using System;
 using ErabliereApi.Donnees.AutoMapper;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Logging;
 using static System.Boolean;
 using static System.Environment;
@@ -128,6 +127,8 @@ namespace ErabliereApi
                     options.UseInMemoryDatabase(nameof(ErabliereDbContext));
                 });
             }
+
+            services.AddHealthChecks();
         }
 
         /// <summary>
@@ -179,6 +180,7 @@ namespace ErabliereApi
                 endpoints.EnableDependencyInjection();
                 endpoints.Select().Expand().Filter().Count().MaxTop(100).OrderBy();
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
 
             app.UseSpa(spa =>
