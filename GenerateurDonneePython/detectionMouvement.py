@@ -11,13 +11,14 @@ from datetime import timedelta as td
 from datetime import timezone
 from time import sleep, time
 from apscheduler.schedulers.background import BackgroundScheduler
+from auth.getAccessTokenAAD import getAccessToken
 
 # Raspberry Pi GPIO pin config
 sensor = MotionSensor(14)
 
 # Detection dompeux settings
 threshold_seconds = 10
-min_element = 6
+min_element = 4
 collect = []
 scheduler = BackgroundScheduler()
 
@@ -33,8 +34,8 @@ if len(sys.argv) > 2:
 
 def send_data():
     print('dompeux is over, sending data...')
-    url = urlBase + "/erablieres/" + idErabliere + "/dompeux"
-    print(url)
+    proxy = ErabliereApiProxy(urlBase, "AzureAD")
+    action = "/erablieres/" + idErabliere + "/dompeux"
     donnees = {'idErabliere': int(idErabliere),
                'dd': collect[0].isoformat(),
                'df': collect[len(collect)-1].isoformat()}
@@ -42,9 +43,7 @@ def send_data():
     if donnees['dd'] == donnees['df']:
         print("Not a real donnees. Edge case of the script and the sensor")
     else:
-        h = {"Content-Type":"Application/json"}
-        print(json.dumps(donnees))
-        r = requests.post(url, json = donnees, headers = h, timeout = 2)
+        r = proxy.envoyer_dompeux(action, donnees['dd'], donnees['df'])
         print(r.status_code)
         print(r.text)
         print('done.')
