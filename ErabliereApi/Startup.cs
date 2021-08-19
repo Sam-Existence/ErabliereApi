@@ -19,6 +19,10 @@ using Newtonsoft.Json.Serialization;
 using Microsoft.Identity.Web;
 using Microsoft.Extensions.Configuration;
 using ErabliereApi.Extensions;
+using StackExchange.Profiling;
+using System.Data.Common;
+using Microsoft.Data.SqlClient;
+using StackExchange.Profiling.SqlFormatters;
 
 namespace ErabliereApi
 {
@@ -50,6 +54,11 @@ namespace ErabliereApi
             services.AddControllers(o =>
             {
                 o.EnableEndpointRouting = false;
+                
+                if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+                {
+                    o.Filters.Add<MiniProfilerAsyncLogger>();
+                }
             })
             .AddNewtonsoftJson(o =>
             {
@@ -112,7 +121,20 @@ namespace ErabliereApi
             {
                 services.AddDbContext<ErabliereDbContext>(options =>
                 {
-                    options.UseSqlServer(GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null."));
+                    var connectionString = GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null.");
+
+                    if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+                    {
+                        DbConnection connection = new SqlConnection(connectionString);
+                        
+                        connection = new StackExchange.Profiling.Data.ProfiledDbConnection(connection, MiniProfiler.Current);
+
+                        options.UseSqlServer(connection);
+                    }
+                    else
+                    {
+                        options.UseSqlServer(connectionString);
+                    }
 
                     if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
                     {
@@ -129,6 +151,22 @@ namespace ErabliereApi
             }
 
             services.AddHealthChecks();
+
+            if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+            {
+                var profilerBuilder = services.AddMiniProfiler(o =>
+                {
+                    if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+                    {
+                        o.SqlFormatter = new SqlServerFormatter();
+                    }
+                });
+
+                if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+                {
+                    profilerBuilder.AddEntityFramework();
+                }
+            }
         }
 
         /// <summary>
@@ -148,6 +186,11 @@ namespace ErabliereApi
             {
                 IdentityModelEventSource.ShowPII = true;
                 app.UseDeveloperExceptionPage();
+            }
+
+            if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+            {
+                app.UseMiniProfiler();
             }
 
             app.UseErabliereAPIForwardedHeadersRules(logger, Configuration);
