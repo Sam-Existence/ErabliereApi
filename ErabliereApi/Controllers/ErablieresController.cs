@@ -120,11 +120,11 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
             }
 
-            await _context.Erabliere.AddAsync(_mapper.Map<Erabliere>(erablieres));
+            var entity = await _context.Erabliere.AddAsync(_mapper.Map<Erabliere>(erablieres));
 
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new { id = entity.Entity.Id });
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest($"L'id de la route ne concorde pas avec l'id de l'érablière à modifier.");
             }
 
-            var entity = _context.Erabliere.Find(id);
+            var entity = await _context.Erabliere.FindAsync(id);
 
             if (entity == null)
             {

@@ -73,11 +73,11 @@ namespace ErabliereApi.Controllers
                 capteur.DC = DateTimeOffset.Now;
             }
 
-            await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur));
+            var entity = await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur));
 
             await _depot.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new { id = entity.Entity.Id });
         }
 
         /// <summary>

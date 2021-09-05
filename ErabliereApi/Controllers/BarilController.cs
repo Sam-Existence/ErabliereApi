@@ -62,11 +62,11 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
             }
 
-            await _depot.Barils.AddAsync(baril);
+            var entity = await _depot.Barils.AddAsync(baril);
 
             await _depot.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new { id = entity.Entity.Id });
         }
 
         /// <summary>

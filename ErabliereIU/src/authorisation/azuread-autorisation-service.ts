@@ -14,7 +14,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
 
     loginChanged = this._loginChangedSubject.asObservable();
 
-    constructor(private _environmentService: EnvironmentService, private _router: Router) {
+    constructor(private _environmentService: EnvironmentService) {
         if (this._environmentService.clientId == undefined) {
             throw new Error("/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode");
         }
@@ -155,6 +155,13 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
             else {
                 return null;
             }
+        })
+        .catch(reason => {
+            console.log(reason);
+            this._activeHomeAccountId = undefined;
+            this._msalInstance.setActiveAccount(null);
+            this._loginChangedSubject.next(false);
+            return null;
         });
     }
 }

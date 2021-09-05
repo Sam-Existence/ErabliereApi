@@ -8,7 +8,7 @@ import { IAuthorisationSerivce } from "./iauthorisation-service";
 
 @Injectable({ providedIn: 'root' })
 export class AuthorisationFactoryService {
-    constructor(private _environment: EnvironmentService, private _router: Router) {
+    constructor(private _environment: EnvironmentService) {
 
     }
 
@@ -18,7 +18,7 @@ export class AuthorisationFactoryService {
         if (this._cache == null) {
             if (this._environment.authEnable == true) {
                 if (this._environment.tenantId != undefined && this._environment.tenantId?.length > 1) {
-                    this._cache = new AzureADAuthorisationService(this._environment, this._router);
+                    this._cache = new AzureADAuthorisationService(this._environment);
                 }
                 else {
                     this._cache = new AuthorisationService(this._environment);

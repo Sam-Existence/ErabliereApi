@@ -102,11 +102,11 @@ namespace ErabliereApi.Controllers
                 dompeux.T = DateTimeOffset.Now;
             }
 
-            await _context.Dompeux.AddAsync(dompeux);
+            var entity = await _context.Dompeux.AddAsync(dompeux);
 
             await _context.SaveChangesAsync();
 
-            return Ok();
+            return Ok(new { id = entity.Entity.Id });
         }
 
         /// <summary>
