@@ -11,7 +11,7 @@
         <graphique [erabliere]="erabliereSelectionnee"></graphique>
     </div>
 
-    <alerte-page class="col-10" [alertes]="alertes" [hidden]="pageSelectionnee !== 1">
+    <alerte-page class="col-10" [alertes]="alertes" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
     </alerte-page>
 
     <camera-page class="col-10" [hidden]="pageSelectionnee !== 2"></camera-page>

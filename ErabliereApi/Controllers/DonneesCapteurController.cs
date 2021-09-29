@@ -50,7 +50,7 @@ namespace ErabliereApi.Controllers
                                                                  DateTimeOffset? dd, 
                                                                  DateTimeOffset? df)
         {
-            return await _depot.DonneesCapteur.AsNoTracking()
+            var donnees = await _depot.DonneesCapteur.AsNoTracking()
                                 .Where(b => b.IdCapteur == id &&
                                             (ddr == null || b.D >= ddr) &&
                                             (dd == null || b.D >= dd) &&
@@ -58,6 +58,17 @@ namespace ErabliereApi.Controllers
                                 .OrderBy(b => b.D)
                                 .ProjectTo<GetDonneesCapteur>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync();
+
+            if (donnees.Length > 0)
+            {
+                if (ddr.HasValue)
+                {
+                    HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
+                }
+                HttpContext.Response.Headers.Add("x-dde", donnees[^1].D.ToString());
+            }
+
+            return donnees;
         }
 
         /// <summary>

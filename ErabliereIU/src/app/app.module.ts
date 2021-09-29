@@ -20,6 +20,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { GraphiqueComponent } from 'src/graphique/graphique.component';
+import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -39,6 +41,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     BarPannelComponent,
     BarilsComponent,
     AlerteComponent,
+    AjouterAlerteComponent,
     CameraComponent,
     AProposComponent,
     DocumentationComponent,
@@ -49,7 +52,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     BrowserModule,
     ChartsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [{
     provide: APP_INITIALIZER,

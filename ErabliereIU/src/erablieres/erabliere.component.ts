@@ -14,7 +14,7 @@ export class ErabliereComponent implements OnInit {
 
     erabliereSelectionnee?:Erabliere;
 
-    idSelectionnee?:number
+    idSelectionnee?:any
 
     @Input() cacheMenuErabliere?:boolean;
 

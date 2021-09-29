@@ -60,7 +60,7 @@ namespace ErabliereApi.Controllers
 
             await _depot.SaveChangesAsync();
 
-            return Ok(new { id = entity.Entity.Id });
+            return Ok(entity.Entity);
         }
 
         /// <summary>
@@ -78,11 +78,11 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
             }
 
-            _depot.Update(alerte);
+            var entity = _depot.Update(alerte);
 
             await _depot.SaveChangesAsync();
 
-            return Ok();
+            return Ok(entity.Entity);
         }
 
         /// <summary>

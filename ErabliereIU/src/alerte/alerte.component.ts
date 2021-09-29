@@ -5,6 +5,10 @@ import { Alerte } from "src/model/alerte";
     selector: 'alerte-page',
     template: `
         <h3>Alertes</h3>
+        <ajouter-alerte-modal
+            [idErabliereSelectionee]="idErabliereSelectionee"
+            [alertes]="alertes">
+        </ajouter-alerte-modal>
         <div>
             <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
             <table *ngIf="alertes != null && alertes.length > 0" class="table">
@@ -73,4 +77,6 @@ export class AlerteComponent{
     constructor() { }
 
     @Input() alertes?: Array<Alerte>;
+
+    @Input() idErabliereSelectionee:any
 }
