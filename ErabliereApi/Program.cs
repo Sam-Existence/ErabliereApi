@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 
 namespace ErabliereApi
 {
@@ -15,7 +16,7 @@ namespace ErabliereApi
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
-            Console.WriteLine(System.Environment.ProcessorCount);
+            Console.WriteLine(Environment.ProcessorCount);
             CreateHostBuilder(args).Build().Run();
         }
 
