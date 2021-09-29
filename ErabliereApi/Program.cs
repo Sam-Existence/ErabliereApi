@@ -15,6 +15,7 @@ namespace ErabliereApi
         /// <param name="args"></param>
         public static void Main(string[] args)
         {
+            Console.WriteLine(System.Environment.ProcessorCount);
             CreateHostBuilder(args).Build().Run();
         }
 
