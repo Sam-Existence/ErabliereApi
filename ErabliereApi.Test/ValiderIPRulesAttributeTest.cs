@@ -10,12 +10,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace ErabliereApi.Test
 {
     public class ValiderIPRulesAttributeTest
     {
+        public static ActionExecutionDelegate ExecutionDelegate => new (() => Task.FromResult<ActionExecutedContext>(default));
+        
         [Theory, AutoApiData]
         public void ValiderIPRulesAttributes_SetOrder_OrderIsSet(int order)
         {
@@ -25,20 +28,21 @@ namespace ErabliereApi.Test
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_AucuneAdresseIp_InvalidOperationException(ValiderIPRulesAttribute attribute,
+        public async Task OnActionExecuting_AucuneAdresseIp_InvalidOperationException(ValiderIPRulesAttribute attribute,
                                                                                     ActionExecutingContext context,
                                                                                     ErabliereDbContext dbContext)
         {
             var erabliere = dbContext.Erabliere.First();
             context.ActionArguments["id"] = erabliere.Id;
 
-            var exception = Should.Throw<InvalidOperationException>(() => attribute.OnActionExecuting(context));
+            var exception = await Should.ThrowAsync<InvalidOperationException>(
+                async () => await attribute.OnActionExecutionAsync(context, ExecutionDelegate));
 
             exception.Message.ShouldBe("Aucune adresse ip distante trouvé.");
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_SelfHostedInvalidIP_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute, 
+        public async Task OnActionExecuting_SelfHostedInvalidIP_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute, 
                                                                                     ActionExecutingContext context,
                                                                                     ErabliereDbContext dbContext,
                                                                                     IFixture fixture)
@@ -47,13 +51,13 @@ namespace ErabliereApi.Test
             context.ActionArguments["id"] = erabliere.Id;
             context.HttpContext.Connection.RemoteIpAddress = fixture.CreateRandomIPAddress();
 
-            attribute.OnActionExecuting(context);
+            await attribute.OnActionExecutionAsync(context, ExecutionDelegate);
 
             context.ModelState.ErrorCount.ShouldBe(1);
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_ExecutionDeriereReverseProxy_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
+        public async Task OnActionExecuting_ExecutionDeriereReverseProxy_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
                                                                                                ActionExecutingContext context,
                                                                                                ErabliereDbContext dbContext,
                                                                                                IPAddress adresse)
@@ -63,13 +67,13 @@ namespace ErabliereApi.Test
             context.HttpContext.Request.Headers.ContainsKey(Arg.Is("X-Real-IP")).Returns(true);
             context.HttpContext.Request.Headers[Arg.Is("X-Real-IP")].Returns(new StringValues(adresse.ToString()));
 
-            attribute.OnActionExecuting(context);
+            await attribute.OnActionExecutionAsync(context, ExecutionDelegate);
 
             context.ModelState.ErrorCount.ShouldBe(1);
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_ExecutionDeriereReverseProxyPlusieursREALIP_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
+        public async Task OnActionExecuting_ExecutionDeriereReverseProxyPlusieursREALIP_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
                                                                                                               ActionExecutingContext context,
                                                                                                               ErabliereDbContext dbContext,
                                                                                                               List<IPAddress> adresses)
@@ -79,14 +83,14 @@ namespace ErabliereApi.Test
             context.HttpContext.Request.Headers.ContainsKey(Arg.Is("X-Real-IP")).Returns(true);
             context.HttpContext.Request.Headers[Arg.Is("X-Real-IP")].Returns(new StringValues(adresses.Select(ip => ip.ToString()).ToArray()));
 
-            attribute.OnActionExecuting(context);
+            await attribute.OnActionExecutionAsync(context, ExecutionDelegate);
 
             context.ModelState.ErrorCount.ShouldBe(1);
             context.ModelState["X-Real-IP"].Errors.Single().ErrorMessage.ShouldBe("Une seule entête 'X-Real-IP' doit être trouvé dans la requête.");
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_ExecutionNominale_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
+        public async Task OnActionExecuting_ExecutionNominale_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
                                                                                     ActionExecutingContext context,
                                                                                     ErabliereDbContext dbContext)
         {
@@ -94,13 +98,13 @@ namespace ErabliereApi.Test
             context.ActionArguments["id"] = erabliere.Id;
             context.HttpContext.Connection.RemoteIpAddress = new IPAddress(erabliere.IpRule.Split('.').Select(b => byte.Parse(b)).ToArray());
 
-            attribute.OnActionExecuting(context);
+            await attribute.OnActionExecutionAsync(context, ExecutionDelegate);
 
             context.ModelState.ErrorCount.ShouldBe(0);
         }
 
         [Theory, AutoApiData]
-        public void OnActionExecuting_ExecutionDeriereReverseREALIPIdentique_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
+        public async Task OnActionExecuting_ExecutionDeriereReverseREALIPIdentique_ValidationCOnfigAutofixture(ValiderIPRulesAttribute attribute,
                                                                                                               ActionExecutingContext context,
                                                                                                               ErabliereDbContext dbContext)
         {
@@ -109,7 +113,7 @@ namespace ErabliereApi.Test
             context.HttpContext.Request.Headers.ContainsKey(Arg.Is("X-Real-IP")).Returns(true);
             context.HttpContext.Request.Headers[Arg.Is("X-Real-IP")].Returns(new StringValues(erabliere.IpRule));
 
-            attribute.OnActionExecuting(context);
+            await attribute.OnActionExecutionAsync(context, ExecutionDelegate);
 
             context.ModelState.ErrorCount.ShouldBe(0);
         }

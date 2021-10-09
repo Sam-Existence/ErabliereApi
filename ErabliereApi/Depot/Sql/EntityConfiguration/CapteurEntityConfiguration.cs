@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ErabliereApi.Depot.Sql.EntityConfiguration
 {
+    /// <summary>
+    /// Classe de configuration entity framework des capteurs
+    /// </summary>
     public class CapteurEntityConfiguration : IEntityTypeConfiguration<Capteur>
     {
+        /// <inheritdoc />
         public void Configure(EntityTypeBuilder<Capteur> capteur)
         {
             capteur.HasMany(c => c.DonneesCapteur)

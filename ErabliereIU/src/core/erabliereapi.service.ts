@@ -49,6 +49,20 @@ export class ErabliereApi {
         });
     }
 
+    postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, {headers: headers}).toPromise();
+        });
+    }
+
+    putAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.put<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, {headers: headers}).toPromise();
+        });
+    }
+
     getBarils(idErabliereSelectionnee:any): Promise<Baril[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
