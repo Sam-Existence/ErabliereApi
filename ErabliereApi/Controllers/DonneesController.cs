@@ -239,7 +239,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete("{idDonnee}")]
         [ValiderIPRules]
-        public IActionResult Supprimer(int id, int idDonnee, Donnee donnee)
+        public async Task<IActionResult> Supprimer(int id, int idDonnee, Donnee donnee)
         {
             if (id != donnee.IdErabliere)
             {
@@ -251,7 +251,7 @@ namespace ErabliereApi.Controllers
                 return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
             }
 
-            var entity = _context.Donnees.Find(donnee.Id);
+            var entity = await _context.Donnees.FindAsync(donnee.Id);
 
             if (entity == null)
             {
@@ -265,7 +265,7 @@ namespace ErabliereApi.Controllers
 
             _context.Donnees.Remove(entity);
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
