@@ -55,12 +55,12 @@ export class AjouterAlerteComponent implements OnInit {
         if (this.alerte != undefined) {
             this.alerte.idErabliere = this.idErabliereSelectionee;
             this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
-            this.alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMin'].value;
-            this.alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMax'].value;
-            this.alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMin'].value;
-            this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMax'].value;
-            this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMin'].value;
-            this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMax'].value;
+            this.alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
+            this.alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
+            this.alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMax'].value;
+            this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
+            this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
+            this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
             console.log(JSON.stringify(this.alerte));
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
