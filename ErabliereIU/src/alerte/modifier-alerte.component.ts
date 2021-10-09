@@ -4,10 +4,10 @@ import { Alerte } from "src/model/alerte";
 import { FormGroup, FormBuilder } from "@angular/forms";
 
 @Component({
-    selector: 'ajouter-alerte-modal',
-    templateUrl: 'ajouter-alerte.component.html'
+    selector: 'modifier-alerte-modal',
+    templateUrl: 'modifier-alerte.component.html'
 })
-export class AjouterAlerteComponent implements OnInit {
+export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: FormBuilder) 
     {
         this.alerteForm = this.fb.group({});
@@ -29,11 +29,9 @@ export class AjouterAlerteComponent implements OnInit {
         });
     }
     
-    display:boolean = false;
+    @Input() display:boolean = false;
 
-    alerte:Alerte = new Alerte();
-
-    @Input() alertes?: Array<Alerte>;
+    @Input() alerte?:Alerte;
 
     @Input() idErabliereSelectionee:any
 
@@ -43,15 +41,11 @@ export class AjouterAlerteComponent implements OnInit {
 
     }
 
-    onButtonAjouterClick() {
-        this.display = true;
-    }
-
     onButtonAnnuleClick() {
-        this.display = false;
+        
     }
 
-    onButtonCreerClick() {
+    onButtonModifierClick() {
         if (this.alerte != undefined) {
             this.alerte.idErabliere = this.idErabliereSelectionee;
             this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
@@ -61,11 +55,9 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMax'].value;
             this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMin'].value;
             this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMax'].value;
-            console.log(JSON.stringify(this.alerte));
-            this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
+            this._api.putAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
                          this.display = false;
-                         this.alertes?.push(r);
                      });
         }
         else {

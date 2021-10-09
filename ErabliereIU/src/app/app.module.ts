@@ -22,6 +22,7 @@ import { EnvironmentService } from 'src/environments/environment.service';
 import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -42,6 +43,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     BarilsComponent,
     AlerteComponent,
     AjouterAlerteComponent,
+    ModifierAlerteComponent,
     CameraComponent,
     AProposComponent,
     DocumentationComponent,
