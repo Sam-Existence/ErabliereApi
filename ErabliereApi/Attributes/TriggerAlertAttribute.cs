@@ -46,9 +46,11 @@ namespace ErabliereApi.Controllers.Attributes
         }
 
         /// <inheritdoc />
-        public override void OnActionExecuted(ActionExecutedContext context)
+        public override async Task OnResultExecutionAsync(ResultExecutingContext context, ResultExecutionDelegate next)
         {
-            if (context.Canceled == false)
+            var result = await next();
+
+            if (result.Canceled == false)
             {
                 try
                 {
@@ -56,7 +58,7 @@ namespace ErabliereApi.Controllers.Attributes
 
                     var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-                    var alertes = depot.Alertes.AsNoTracking().Where(a => a.IdErabliere == _idErabliere).ToArray();
+                    var alertes = await depot.Alertes.AsNoTracking().Where(a => a.IdErabliere == _idErabliere).ToArrayAsync();
 
                     for (int i = 0; i < alertes.Length; i++)
                     {

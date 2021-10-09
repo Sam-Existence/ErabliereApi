@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Attributes
 {
@@ -21,7 +22,7 @@ namespace ErabliereApi.Attributes
         }
 
         /// <inheritdoc />
-        public override void OnActionExecuting(ActionExecutingContext context)
+        public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             if (string.Equals(Environment.GetEnvironmentVariable("DEBUG_HEADERS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
             {
@@ -32,8 +33,8 @@ namespace ErabliereApi.Attributes
 
             var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-            var erabliere = depot.Erabliere.Find(id);
-            
+            var erabliere = await depot.Erabliere.FindAsync(id);
+
             if (string.IsNullOrWhiteSpace(erabliere?.IpRule) == false && erabliere.IpRule != "-")
             {
                 var ip = GetClientIp(context);
@@ -44,6 +45,8 @@ namespace ErabliereApi.Attributes
                     context.ModelState.AddModelError("IP", $"L'adresse IP est différente de l'adresse ip aloué pour créer des alimentations à cette érablière. L'adresse IP reçu est {ip}.");
                 }
             }
+
+            await next();
         }
 
         /// <summary>
@@ -57,7 +60,7 @@ namespace ErabliereApi.Attributes
         /// </remarks>
         /// <param name="context"></param>
         /// <returns></returns>
-        public static string GetClientIp(ActionExecutingContext context)
+        private static string GetClientIp(ActionExecutingContext context)
         {
             if (context.HttpContext.Request.Headers.ContainsKey("X-Real-IP"))
             {

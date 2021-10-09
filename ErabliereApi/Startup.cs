@@ -129,11 +129,11 @@ namespace ErabliereApi
                         
                         connection = new StackExchange.Profiling.Data.ProfiledDbConnection(connection, MiniProfiler.Current);
 
-                        options.UseSqlServer(connection);
+                        options.UseSqlServer(connection, o => o.EnableRetryOnFailure());
                     }
                     else
                     {
-                        options.UseSqlServer(connectionString);
+                        options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
                     }
 
                     if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
