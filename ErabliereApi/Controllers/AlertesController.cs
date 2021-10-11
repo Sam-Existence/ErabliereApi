@@ -79,7 +79,7 @@ namespace ErabliereApi.Controllers
         {
             if (id != alerte.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
+                return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à modifier.");
             }
 
             var entity = _depot.Update(alerte);
@@ -95,7 +95,7 @@ namespace ErabliereApi.Controllers
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="alerte">L'alerte a supprimer</param>
         /// <param name="token">Jeton d'annulation de la tâche</param>
-        /// <response code="202">L'alerte a été correctement supprimé.</response>
+        /// <response code="204">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
         [HttpDelete]
         public async Task<IActionResult> Supprimer(int id, Alerte alerte, CancellationToken token)

@@ -1,4 +1,5 @@
-<div *ngIf="display">
+<div>
+    <p>Id: {{ alerte?.id }}</p>
     <form [formGroup]="alerteForm">
         <div class="form-group">
           Destinataires: <input class="form-control" type="text" formControlName="destinataire">

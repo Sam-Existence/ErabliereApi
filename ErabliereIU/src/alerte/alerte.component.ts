@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
+import { Subject } from "rxjs";
 import { Alerte } from "src/model/alerte";
 
 @Component({
@@ -9,9 +10,10 @@ import { Alerte } from "src/model/alerte";
             [idErabliereSelectionee]="idErabliereSelectionee"
             [alertes]="alertes">
         </ajouter-alerte-modal>
-        <modifier-alerte-modal
+        <modifier-alerte-modal *ngIf="displayEditForm"
             [idErabliereSelectionee]="idErabliereSelectionee"
-            [display]="displayEditForm">
+            [displayEditFormSubject]="displayEditFormSubject"
+            [alerteEditFormSubject]="alerteEditFormSubject">
         </modifier-alerte-modal>
         <div>
             <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
@@ -82,16 +84,29 @@ import { Alerte } from "src/model/alerte";
         </div>
     `
 })
-export class AlerteComponent{
+export class AlerteComponent implements OnInit {
     constructor() { }
+
+    ngOnInit(): void {
+        this.displayEditFormSubject.subscribe(b => {
+             this.displayEditForm = b.valueOf();
+        });
+    }
 
     @Input() alertes?: Array<Alerte>;
 
     @Input() idErabliereSelectionee:any
 
+    displayEditFormSubject = new Subject<Boolean>();
+    displayEditFormObservable = this.displayEditFormSubject.asObservable();
     displayEditForm: boolean = false;
 
+    alerteEditFormSubject = new Subject<Alerte>();
+    alerteEditFormObservable = this.displayEditFormSubject.asObservable();
+    alerteEditForm?: Alerte;
+
     onButtonModifierClick(alerteId:any) {
-        this.displayEditForm = true;
+        this.alerteEditFormSubject.next(this.alertes?.find(a => a.id == alerteId));
+        this.displayEditFormSubject.next(true);
     }
 }

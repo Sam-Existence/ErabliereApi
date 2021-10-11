@@ -61,7 +61,6 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
             this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
             this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
-            console.log(JSON.stringify(this.alerte));
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
                          this.display = false;

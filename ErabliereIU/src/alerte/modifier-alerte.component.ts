@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { Subject } from "rxjs";
 
 @Component({
     selector: 'modifier-alerte-modal',
@@ -10,22 +11,30 @@ import { FormGroup, FormBuilder } from "@angular/forms";
 export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: FormBuilder) 
     {
-        this.alerteForm = this.fb.group({});
+        this.alerteForm = this.fb.group({
+            id: this.alerte?.id,
+            destinataire: this.alerte?.envoyerA,
+            temperatureMin: this.alerte?.temperatureThresholdHight,
+            temperatureMax: this.alerte?.temperatureThresholdLow,
+            vacciumMin: this.alerte?.vacciumThresholdHight,
+            vacciumMax: this.alerte?.vacciumThresholdLow,
+            niveauBassinMin: this.alerte?.niveauBassinThresholdHight,
+            niveauBassinMax: this.alerte?.niveauBassinThresholdLow
+        });
     }
     
     ngOnInit(): void {
-        this.initializeForm();
-    }
-
-    initializeForm() {
-        this.alerteForm = this.fb.group({
-            destinataire: '',
-            temperatureMin: '',
-            temperatureMax: '',
-            vacciumMin: '',
-            vacciumMax: '',
-            niveauBassinMin: '',
-            niveauBassinMax: ''
+        this.alerteEditFormSubject.subscribe(alerte => {
+            this.alerteForm.setValue({
+                id: this.alerte?.id,
+                destinataire: alerte.envoyerA,
+                temperatureMin: alerte.temperatureThresholdHight,
+                temperatureMax: alerte.temperatureThresholdLow,
+                vacciumMin: alerte.vacciumThresholdHight,
+                vacciumMax: alerte.vacciumThresholdLow,
+                niveauBassinMin: alerte.niveauBassinThresholdHight,
+                niveauBassinMax: alerte.niveauBassinThresholdLow
+            });
         });
     }
     
@@ -35,6 +44,10 @@ export class ModifierAlerteComponent implements OnInit {
 
     @Input() idErabliereSelectionee:any
 
+    @Input() displayEditFormSubject = new Subject<Boolean>();
+
+    @Input() alerteEditFormSubject = new Subject<Alerte>();
+
     alerteForm: FormGroup;
 
     onSubmit() {
@@ -42,26 +55,24 @@ export class ModifierAlerteComponent implements OnInit {
     }
 
     onButtonAnnuleClick() {
-        
+        this.displayEditFormSubject.next(false);
     }
 
     onButtonModifierClick() {
-        if (this.alerte != undefined) {
-            this.alerte.idErabliere = this.idErabliereSelectionee;
-            this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
-            this.alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMin'].value;
-            this.alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMax'].value;
-            this.alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMin'].value;
-            this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMax'].value;
-            this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMin'].value;
-            this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMax'].value;
-            this._api.putAlerte(this.idErabliereSelectionee, this.alerte)
-                     .then(r => {
-                         this.display = false;
-                     });
-        }
-        else {
-            console.log("this.alerte is undefined");
-        }
+        let alerte = new Alerte();
+
+        alerte.id = this.alerteForm.controls['id'].value;
+        alerte.idErabliere = this.idErabliereSelectionee;
+        alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
+        alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
+        alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
+        alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMax'].value;
+        alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
+        alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
+        alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
+        this._api.putAlerte(this.idErabliereSelectionee, alerte)
+                 .then(r => {
+                     this.displayEditFormSubject.next(false);
+                 });
     }
 }
