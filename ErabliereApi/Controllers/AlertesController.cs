@@ -93,7 +93,7 @@ namespace ErabliereApi.Controllers
         /// Supprimer une alerte
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
-        /// <param name="alerte">L'alerte a supprimer</param>
+        /// <param name="alerte">L'alerte à supprimer</param>
         /// <param name="token">Jeton d'annulation de la tâche</param>
         /// <response code="204">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
@@ -102,7 +102,37 @@ namespace ErabliereApi.Controllers
         {
             if (id != alerte.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
+                return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.");
+            }
+
+            _depot.Remove(alerte);
+
+            await _depot.SaveChangesAsync(token);
+
+            return NoContent();
+        }
+
+        /// <summary>
+        /// Supprimer une alerte
+        /// </summary>
+        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="idAlerte">L'id de l'alerte à supprimer</param>
+        /// <param name="token">Jeton d'annulation de la tâche</param>
+        /// <response code="204">L'alerte a été correctement supprimé.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
+        [HttpDelete("{idAlerte}")]
+        public async Task<IActionResult> Supprimer(int id, int idAlerte, CancellationToken token)
+        {
+            var alerte = await _depot.Alertes.FindAsync(idAlerte);
+
+            if (alerte == null)
+            {
+                return NoContent();
+            }
+
+            if (id != alerte.IdErabliere)
+            {
+                return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.");
             }
 
             _depot.Remove(alerte);

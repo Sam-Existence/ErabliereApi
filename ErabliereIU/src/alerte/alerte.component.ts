@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
+import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
 
 @Component({
@@ -13,7 +14,8 @@ import { Alerte } from "src/model/alerte";
         <modifier-alerte-modal *ngIf="displayEditForm"
             [idErabliereSelectionee]="idErabliereSelectionee"
             [displayEditFormSubject]="displayEditFormSubject"
-            [alerteEditFormSubject]="alerteEditFormSubject">
+            [alerteEditFormSubject]="alerteEditFormSubject"
+            [alerte]="alerteEditForm">
         </modifier-alerte-modal>
         <div>
             <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
@@ -76,7 +78,7 @@ import { Alerte } from "src/model/alerte";
                         </td>
                         <td>
                             <button (click)="onButtonModifierClick(alerte.id)">modifier</button>
-                            <button>supprimer</button>
+                            <button (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
                         </td>
                     <tr>
                 </tbody>
@@ -85,11 +87,19 @@ import { Alerte } from "src/model/alerte";
     `
 })
 export class AlerteComponent implements OnInit {
-    constructor() { }
+    constructor(private _api: ErabliereApi) { }
 
     ngOnInit(): void {
         this.displayEditFormSubject.subscribe(b => {
              this.displayEditForm = b.valueOf();
+        });
+
+        this.alerteEditFormSubject.subscribe(b => {
+            if (this.alertes != undefined) {
+                var i = this.alertes.findIndex(a => a.id == this.alerteEditForm?.id);
+
+                this.alertes[i] = b;
+            }
         });
     }
 
@@ -106,7 +116,20 @@ export class AlerteComponent implements OnInit {
     alerteEditForm?: Alerte;
 
     onButtonModifierClick(alerteId:any) {
-        this.alerteEditFormSubject.next(this.alertes?.find(a => a.id == alerteId));
+        this.alerteEditForm = this.alertes?.find(a => a.id == alerteId);
+        this.alerteEditFormSubject.next(this.alerteEditForm);
         this.displayEditFormSubject.next(true);
+    }
+
+    onButtonDeleteClick(alerteId:any) {
+        if (confirm("Voulez-vous vraiment supprimer l'alerte " + alerteId + " ? ")) {
+            this._api.deleteAlerte(this.idErabliereSelectionee, alerteId)
+                     .then(a => {
+                        this._api.getAlertes(this.idErabliereSelectionee)
+                                 .then(a => {
+                                     this.alertes = a;
+                                 });
+                     });
+        }
     }
 }

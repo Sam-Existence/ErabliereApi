@@ -12,21 +12,23 @@ export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: FormBuilder) 
     {
         this.alerteForm = this.fb.group({
-            id: this.alerte?.id,
-            destinataire: this.alerte?.envoyerA,
-            temperatureMin: this.alerte?.temperatureThresholdHight,
-            temperatureMax: this.alerte?.temperatureThresholdLow,
-            vacciumMin: this.alerte?.vacciumThresholdHight,
-            vacciumMax: this.alerte?.vacciumThresholdLow,
-            niveauBassinMin: this.alerte?.niveauBassinThresholdHight,
-            niveauBassinMax: this.alerte?.niveauBassinThresholdLow
+            id: '',
+            destinataire: '',
+            temperatureMin: '',
+            temperatureMax: '',
+            vacciumMin: '',
+            vacciumMax: '',
+            niveauBassinMin: '',
+            niveauBassinMax: ''
         });
     }
     
     ngOnInit(): void {
-        this.alerteEditFormSubject.subscribe(alerte => {
+        let alerte = this.alerte;
+
+        if (alerte != undefined) {
             this.alerteForm.setValue({
-                id: this.alerte?.id,
+                id: alerte.id,
                 destinataire: alerte.envoyerA,
                 temperatureMin: alerte.temperatureThresholdHight,
                 temperatureMax: alerte.temperatureThresholdLow,
@@ -35,10 +37,8 @@ export class ModifierAlerteComponent implements OnInit {
                 niveauBassinMin: alerte.niveauBassinThresholdHight,
                 niveauBassinMax: alerte.niveauBassinThresholdLow
             });
-        });
+        }
     }
-    
-    @Input() display:boolean = false;
 
     @Input() alerte?:Alerte;
 
@@ -73,6 +73,7 @@ export class ModifierAlerteComponent implements OnInit {
         this._api.putAlerte(this.idErabliereSelectionee, alerte)
                  .then(r => {
                      this.displayEditFormSubject.next(false);
+                     this.alerteEditFormSubject.next(r);
                  });
     }
 }

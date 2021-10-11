@@ -63,6 +63,13 @@ export class ErabliereApi {
         });
     }
 
+    deleteAlerte(idErabliereSelectionnee:any, alerteId:any): Promise<any> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.delete(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes/" + alerteId, {headers: headers}).toPromise();
+        });
+    }
+
     getBarils(idErabliereSelectionnee:any): Promise<Baril[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
