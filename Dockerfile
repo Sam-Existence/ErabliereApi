@@ -8,7 +8,7 @@ COPY ErabliereIU/ .
 RUN ng build --configuration production
 
 # Build the api
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build-api-env
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-api-env
 WORKDIR /app
 
 COPY ErabliereModel/*.csproj ./ErabliereModel/
@@ -22,10 +22,11 @@ COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 WORKDIR /app/ErabliereApi
 RUN dotnet restore
 RUN dotnet build -c Release
+RUN dotnet test -c Release
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:5.0
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /app
 COPY --from=build-api-env /app/ErabliereApi/out ./
 RUN chmod u+x docker-entrypoint.sh

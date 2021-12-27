@@ -1,11 +1,11 @@
 name: ErabliereAPI-Deploy
 
 on: 
-  workflow_run:
-      workflows: ["ErabliereAPI-Image"]
-      branches: [master]
-      types: 
-        - completed
+  # workflow_run:
+  #     workflows: ["ErabliereAPI-Image"]
+  #     branches: [master]
+  #     types: 
+  #       - completed
   workflow_dispatch:
 
 #env:

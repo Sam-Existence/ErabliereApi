@@ -88,8 +88,3 @@ Ubuntu effectue des mises à jour de sécurité en arrière plan et peut avoir u
 sudo systemctl disable apt-daily.timer
 sudo systemctl disable apt-daily-upgrade.timer
 ```
-
-### Install .net 5.0 on a raspberry pi
-
-https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-5-with-the-raspberry-pi/
-
