@@ -1,10 +1,215 @@
 {
 	"info": {
-		"_postman_id": "ca22f50d-3bab-40f0-b933-1d32fc4b8636",
+		"_postman_id": "e51cdd6f-53b9-44bc-b761-34678186ba18",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Init",
+			"item": [
+				{
+					"name": "Erabliere A",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code == 200) {\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    pm.collectionVariables.set(\"ErabliereA_ID\", pm.response.json().id);\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 400\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière A' existe déjà\");\r",
+									"    });\r",
+									"\r",
+									"    const getRequest = {\r",
+									"        url: pm.request.url + \"?$filter=Nom eq 'Érablière A'\",\r",
+									"        method: 'GET',\r",
+									"    };\r",
+									"\r",
+									"    pm.sendRequest(getRequest, (error, response) => {\r",
+									"        if (error) {\r",
+									"            console.log(error);\r",
+									"            pm.expect(error).to.be.null;\r",
+									"        } else {\r",
+									"            pm.test(\"Recherche Erabliere A a fonctionné\", () => {\r",
+									"                pm.expect(response.code).to.eq(200);\r",
+									"            });\r",
+									"            pm.collectionVariables.set(\"ErabliereA_ID\", response.json()[0].id);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"L'id est bien initialisé\", () => {\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereA_ID')).to.eq(pm.response.json()[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"Érablière A\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erabliere B",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code == 200) {\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    pm.collectionVariables.set(\"ErabliereB_ID\", pm.response.json().id);\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 400\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière B' existe déjà\");\r",
+									"    });\r",
+									"\r",
+									"    pm.sendRequest(pm.request.url + \"?$filter=Nom eq 'Érablière B'\", (error, response) => {\r",
+									"        if (error) {\r",
+									"            console.log(error);\r",
+									"            pm.expect(error).to.be.null;\r",
+									"        } else {\r",
+									"            pm.test(\"Recherche Erabliere B a fonctionné\", () => {\r",
+									"                pm.expect(response.code).to.eq(200);\r",
+									"            })\r",
+									"            pm.collectionVariables.set(\"ErabliereB_ID\", response.json()[0].id);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"L'id est bien initialisé\", () => {\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereB_ID')).to.eq(pm.response.json()[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"Érablière B\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erabliere Saint-Alfred",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code == 200) {\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    pm.collectionVariables.set(\"ErabliereSaintAlfred_ID\", pm.response.json().id);\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 400\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière Saint-Alfred' existe déjà\");\r",
+									"    });\r",
+									"\r",
+									"    pm.sendRequest(pm.request.url + \"?$filter=Nom eq 'Érablière Saint-Alfred'\", (error, response) => {\r",
+									"        if (error) {\r",
+									"            console.log(error);\r",
+									"            pm.expect(error).to.be.null;\r",
+									"        } else {\r",
+									"            pm.test(\"Recherche Erabliere Saint-Alfred a fonctionné\", () => {\r",
+									"                pm.expect(response.code).to.eq(200);\r",
+									"            })\r",
+									"            pm.collectionVariables.set(\"ErabliereSaintAlfred_ID\", response.json()[0].id);\r",
+									"        }\r",
+									"    });\r",
+									"}\r",
+									"\r",
+									"pm.test(\"L'id est bien initialisé\", () => {\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereSaintAlfred_ID')).to.eq(pm.response.json()[0].id);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nom\": \"Érablière Saint-Alfred\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/erablieres",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Flow 1",
 			"item": [
@@ -209,7 +414,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": -15,\r\n  \"nb\": 0,\r\n  \"v\": 0,\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+							"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": -15,\r\n  \"nb\": 0,\r\n  \"v\": 0,\r\n  \"idErabliere\": \"{{idErabliere}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -307,7 +512,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": -16,\r\n  \"nb\": 0,\r\n  \"v\": 0,\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+							"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": -16,\r\n  \"nb\": 0,\r\n  \"v\": 0,\r\n  \"idErabliere\": \"{{idErabliere}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -405,7 +610,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{idErabliere}},\r\n    \"nom\": \"{{nomErabliere}}\"\r\n}",
+							"raw": "{\r\n    \"id\": \"{{idErabliere}}\",\r\n    \"nom\": \"{{nomErabliere}}\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -509,7 +714,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": \"{{ErabliereA_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -517,13 +722,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/donnees",
+									"raw": "{{url}}/erablieres/{{ErabliereA_ID}}/donnees",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereA_ID}}",
 										"donnees"
 									]
 								}
@@ -564,7 +769,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": \"{{ErabliereA_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -572,13 +777,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/dompeux",
+									"raw": "{{url}}/erablieres/{{ErabliereA_ID}}/dompeux",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereA_ID}}",
 										"dompeux"
 									]
 								}
@@ -592,7 +797,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.collectionVariables.set('idErabliere', 1);"
+									""
 								]
 							}
 						},
@@ -639,7 +844,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": \"{{ErabliereB_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -647,13 +852,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/donnees",
+									"raw": "{{url}}/erablieres/{{ErabliereB_ID}}/donnees",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereB_ID}}",
 										"donnees"
 									]
 								}
@@ -694,7 +899,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": \"{{ErabliereB_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -702,13 +907,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/dompeux",
+									"raw": "{{url}}/erablieres/{{ErabliereB_ID}}/dompeux",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereB_ID}}",
 										"dompeux"
 									]
 								}
@@ -722,7 +927,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.collectionVariables.set('idErabliere', 2);"
+									""
 								]
 							}
 						},
@@ -769,7 +974,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": \"{{ErabliereSaintAlfred_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -777,13 +982,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/donnees",
+									"raw": "{{url}}/erablieres/{{ErabliereSaintAlfred_ID}}/donnees",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereSaintAlfred_ID}}",
 										"donnees"
 									]
 								}
@@ -824,7 +1029,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n  \"t\": \"{{dateDonnee}}\",\r\n  \"dd\": \"{{dd}}\",\r\n  \"df\": \"{{de}}\",\r\n  \"idErabliere\": \"{{ErabliereSaintAlfred_ID}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -832,13 +1037,13 @@
 									}
 								},
 								"url": {
-									"raw": "{{url}}/erablieres/{{idErabliere}}/dompeux",
+									"raw": "{{url}}/erablieres/{{ErabliereSaintAlfred_ID}}/dompeux",
 									"host": [
 										"{{url}}"
 									],
 									"path": [
 										"erablieres",
-										"{{idErabliere}}",
+										"{{ErabliereSaintAlfred_ID}}",
 										"dompeux"
 									]
 								}
@@ -852,7 +1057,7 @@
 							"script": {
 								"type": "text/javascript",
 								"exec": [
-									"pm.collectionVariables.set('idErabliere', 3);"
+									""
 								]
 							}
 						},
@@ -1073,7 +1278,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"nom\": \"{{$randomWord}}\",\r\n    \"idErabliere\": {{idErabliere}}\r\n}",
+									"raw": "{\r\n    \"nom\": \"{{$randomWord}}\",\r\n    \"idErabliere\": \"{{idErabliere}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1155,7 +1360,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"V\": {{$randomInt}},\r\n    \"idCapteur\": {{idCapteur}}\r\n}",
+									"raw": "{\r\n    \"V\": {{$randomInt}},\r\n    \"idCapteur\": \"{{idCapteur}}\"\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -1392,6 +1597,18 @@
 		},
 		{
 			"key": "idCapteur",
+			"value": ""
+		},
+		{
+			"key": "ErabliereA_ID",
+			"value": ""
+		},
+		{
+			"key": "ErabliereB_ID",
+			"value": ""
+		},
+		{
+			"key": "ErabliereSaintAlfred_ID",
 			"value": ""
 		}
 	]

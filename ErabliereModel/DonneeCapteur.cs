@@ -19,7 +19,10 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public DateTimeOffset? D { get; set; }
 
-        public int? IdCapteur { get; set; }
+        /// <summary>
+        /// L'id du capteur de la donnée
+        /// </summary>
+        public Guid? IdCapteur { get; set; }
 
         public Capteur? Capteur { get; set; }
 

@@ -7,9 +7,9 @@ using ErabliereApi.Donnees.Action.Delete;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
-using Microsoft.AspNet.OData;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -142,7 +142,7 @@ namespace ErabliereApi.Controllers
         /// <returns></returns>
         [HttpPut("{id}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Modifier(int id, PutErabliere erabliere)
+        public async Task<IActionResult> Modifier(Guid id, PutErabliere erabliere)
         {
             if (id != erabliere.Id)
             {
@@ -208,7 +208,7 @@ namespace ErabliereApi.Controllers
         [HttpDelete("{id}")]
         [ValiderIPRules]
         [ProducesResponseType(204)]
-        public async Task<IActionResult> Supprimer(int id, DeleteErabliere<int> erabliere)
+        public async Task<IActionResult> Supprimer(Guid id, DeleteErabliere<Guid> erabliere)
         {
             if (id != erabliere.Id)
             {
@@ -217,9 +217,12 @@ namespace ErabliereApi.Controllers
 
             var entity = await _context.Erabliere.FindAsync(erabliere.Id);
 
-            _context.Remove(entity);
+            if (entity != null)
+            {
+                _context.Remove(entity);
 
-            await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync();
+            }
 
             return NoContent();
         }

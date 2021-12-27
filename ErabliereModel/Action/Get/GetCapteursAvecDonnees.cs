@@ -1,18 +1,15 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.Get
 {
     public class GetCapteursAvecDonnees
     {
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string? Nom { get; set; }
 
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// La date de création de l'entité.

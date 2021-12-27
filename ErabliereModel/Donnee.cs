@@ -4,12 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Donnee : IIdentifiable<int?, Donnee>
+    /// <summary>
+    /// ModÃ¨le donnÃ©e reprÃ©sente un trio de donnÃ©e. La tempÃ©rature, le niveau de vaccium et le niveau d'un bassin
+    /// </summary>
+    public class Donnee : IIdentifiable<Guid?, Donnee>
     {
         /// <summary>
         /// L'id de l'occurence
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date de la transaction
@@ -17,7 +20,7 @@ namespace ErabliereApi.Donnees
         public DateTimeOffset? D { get; set; }
 
         /// <summary>
-        /// Temperature en dixième de celcius
+        /// Temperature en dixiï¿½me de celcius
         /// </summary>
         public short? T { get; set; }
 
@@ -27,36 +30,36 @@ namespace ErabliereApi.Donnees
         public short? NB { get; set; }
 
         /// <summary>
-        /// Vaccium en dixième de HG
+        /// Vaccium en dixiÃ¨me de HG
         /// </summary>
         public short? V { get; set; }
 
         /// <summary>
-        /// Id de dl'érablière relier a cette donnée
+        /// Id de l'Ã©rabliÃ¨re reliÃ© a cette donnÃ©e
         /// </summary>
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
-        /// L'erabliere relié à la donnée
+        /// L'erabliere reliÃ© Ã  la donnï¿½e
         /// </summary>
         public Erabliere? Erabliere { get; set; }
 
         /// <summary>
-        /// Interval de date des données alimenté. Utiliser pour optimiser le nombre de données enregistrer
+        /// Interval de date des donnÃ©es alimentÃ©. Utiliser pour optimiser le nombre de donnÃ©es enregistrer
         /// 
-        /// Plus grand interval d'alimentation de cette donnée, en seconde
+        /// Plus grand interval d'alimentation de cette donnÃ©e, en seconde
         /// </summary>
         public int? PI { get; set; }
 
         /// <summary>
-        /// Nombre d'occurence enrgistrer de cette donnée
+        /// Nombre d'occurence enrgistrer de cette donnï¿½e
         /// </summary>
         public int Nboc { get; set; }
 
         /// <summary>
-        /// Id donnée précédente
+        /// Id donnÃ©e prÃ©cÃ©dente
         /// </summary>
-        public int? Iddp { get; set; }
+        public Guid? Iddp { get; set; }
 
         /// <inheritdoc />
         public int CompareTo([AllowNull] Donnee other)
@@ -71,14 +74,19 @@ namespace ErabliereApi.Donnees
                 return other.D.HasValue ? -1 : 0;
             }
 
+            if (!other.D.HasValue)
+            {
+                return 1;
+            }
+
             return D.Value.CompareTo(other.D.Value);
         }
 
         /// <summary>
-        /// Indique si la donnée en paramètre est dans le future et possède les même valeur pour
-        /// le niveau bassin, la température et le vaccium
+        /// Indique si la donnÃ©e en paramÃ¨tre est dans le future et possÃ¨de les mÃªme valeur pour
+        /// le niveau bassin, la tempÃ©rature et le vaccium
         /// </summary>
-        /// <param name="donnee">Une donnée</param>
+        /// <param name="donnee">Une donnÃ©e</param>
         public bool IdentiqueMemeLigneDeTemps(PostDonnee donnee) => donnee.NB == NB &&
                                                                     donnee.T == T &&
                                                                     donnee.V == V &&

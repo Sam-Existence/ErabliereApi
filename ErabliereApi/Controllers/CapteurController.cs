@@ -44,7 +44,7 @@ namespace ErabliereApi.Controllers
         /// <param name="filtreNom">Permet de filtrer les capteurs recherché selon leur nom</param>
         /// <response code="200">Une liste de capteurs.</response>
         [HttpGet]
-        public async Task<IEnumerable<GetCapteurs>> Lister(int id, string? filtreNom)
+        public async Task<IEnumerable<GetCapteurs>> Lister(Guid id, string? filtreNom)
         {
             return await _depot.Capteurs.AsNoTracking()
                                 .Where(b => b.IdErabliere == id &&
@@ -61,7 +61,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement ajouté.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(int id, PostCapteur capteur)
+        public async Task<IActionResult> Ajouter(Guid id, PostCapteur capteur)
         {
             if (id != capteur.IdErabliere)
             {
@@ -88,7 +88,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(int id, PutCapteur capteur)
+        public async Task<IActionResult> Modifier(Guid id, PutCapteur capteur)
         {
             if (id != capteur.IdErabliere)
             {
@@ -132,7 +132,7 @@ namespace ErabliereApi.Controllers
         /// <response code="202">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer(int id, Capteur capteur)
+        public async Task<IActionResult> Supprimer(Guid id, Capteur capteur)
         {
             if (id != capteur.IdErabliere)
             {

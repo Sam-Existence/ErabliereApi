@@ -14,7 +14,6 @@ using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
-using Microsoft.AspNet.OData.Extensions;
 using Newtonsoft.Json.Serialization;
 using Microsoft.Identity.Web;
 using Microsoft.Extensions.Configuration;
@@ -23,6 +22,7 @@ using StackExchange.Profiling;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using StackExchange.Profiling.SqlFormatters;
+using Microsoft.AspNetCore.OData;
 
 namespace ErabliereApi
 {
@@ -64,9 +64,9 @@ namespace ErabliereApi
             {
                 o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
                 o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            });
+            })
+            .AddOData(o => o.Select().Expand().Filter().Count().SetMaxTop(100).OrderBy());
 
-            services.AddOData();
 
             // Forwarded headers
             services.AddErabliereAPIForwardedHeaders(Configuration);
@@ -220,8 +220,6 @@ namespace ErabliereApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.EnableDependencyInjection();
-                endpoints.Select().Expand().Filter().Count().MaxTop(100).OrderBy();
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });

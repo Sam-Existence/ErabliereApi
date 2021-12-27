@@ -1,26 +1,28 @@
 # ErabliereApi
-API Pour receuillir et centraliser les informations des appeils dans des érablières.
+API Pour receuillir et centraliser les informations des appareils dans des érablières.
 
 ## But
-Le but de ce projet est de centraliser l'informations des érablières dans le but d'analyser, lever des alertes et automatiser certaine mecanisme.
+Le but de ce projet est d'analyser, lever des alertes et automatiser certaine mecanisme. Basé sur les données receuillis et de façon centralisé.
 
-L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine. Intégrer des visualisations de caméra est aussi planifié.
+L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine.
 
 ## Structure
-- ErabliereAPI : Projet de l'api dotnet core
+- ErabliereAPI : Projet du web API
 - ErabliereIU : Application angular pour l'affichage des données
-- ErabliereModel : Classes métiers représentant les modèles de données
+- ErabliereModel : Projet du modèles de données
 - Infrastructure : Fichier yaml pour le déploiement kubernetes
-- GenerateurDonneePython : Script python pour alimenter l'API
+- PythonScripts : Script python pour alimenter l'API
 - IdentityServer/ErabliereApi.ServeurIdentite : Server de jeton OIDC
 
 ## Modèles de données
-Dans un premier temps, les informations enregistrés seront les suivantes :
+Les informations enregistré peuvent être :
 
+- Érablière. Noeud racine de la structure de donnée
+- Capteurs. Représente un capteur
+- DonneeCapteur. Une donnée d'une capteur
 - Temperature, Vaccium, Niveau du bassin (Données extraire par un script depuis un image d'un HMI)
 - Les dompeux (Capturer à l'aide d'un capteur de mouvenement)
 - Informations sur les barils (Entré manuellement depuis un ordinateur client)
-- Érablière. Noeud racine de la structure de donnée
 
 ## Utilisation
 

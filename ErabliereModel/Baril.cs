@@ -4,12 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Baril : IIdentifiable<int?, Baril>
+    /// <summary>
+    /// Un baril
+    /// </summary>
+    public class Baril : IIdentifiable<Guid?, Baril>
     {
         /// <summary>
         /// Id du baril
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date ou le baril a été fermé
@@ -19,7 +22,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// L'id de l'érablière possédant le baril
         /// </summary>
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// L'érablière possédant le baril

@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace ErabliereApi.Donnees
 {
-    public class Capteur : IIdentifiable<int?, Capteur>
+    /// <summary>
+    /// Représente un capteur
+    /// </summary>
+    public class Capteur : IIdentifiable<Guid?, Capteur>
     {
         /// <summary>
         /// L'id de l'occurence
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date de l'ajout du capteur
@@ -23,7 +26,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// L'érablière de ce capteur
@@ -33,7 +36,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Les données du capteurs
         /// </summary>
-        public List<DonneeCapteur>? DonneesCapteur { get; set; }
+        public List<DonneeCapteur> DonneesCapteur { get; set; } = new();
 
         /// <summary>
         /// Le nom donné au capteur
@@ -44,7 +47,7 @@ namespace ErabliereApi.Donnees
 
         /// <summary>
         /// Le symbole qui représente l'unité observer par le capteur.
-        /// <summary>
+        /// </summary>
         /// <example>
         /// "°c" pour représenter la temperature en celcius
         /// </example>
@@ -52,6 +55,7 @@ namespace ErabliereApi.Donnees
         [MaxLength(5)]
         public string? Symbole { get; set; }
 
+        /// <inheritdoc />
         public int CompareTo(Capteur? other)
         {
             return Nom?.CompareTo(other?.Nom) ?? 1;

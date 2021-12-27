@@ -3,6 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Post
 {
+    /// <summary>
+    /// Modèle de création d'une entité <see cref="Donnee"/>
+    /// </summary>
     public class PostDonnee
     {
         /// <summary>
@@ -29,6 +32,6 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
         [Required]
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
     }
 }

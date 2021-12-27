@@ -1,15 +1,19 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees.Action.Get
 {
+    /// <summary>
+    /// Modèle d'obtention d'un json pouvant représenter un dashboard. Contient beaucoup 
+    /// d'information
+    /// </summary>
     public class GetErabliereDashboard
     {
         /// <summary>
         /// L'id de l'érablière
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Le nom de l'érablière

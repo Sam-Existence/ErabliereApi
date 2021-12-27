@@ -4,12 +4,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees.Action.Get
 {
+    /// <summary>
+    /// Modèle de retour d'obtention d'un ou plusieurs barils
+    /// </summary>
     public class GetBaril
     {
         /// <summary>
         /// Id du baril
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date ou le baril a été fermé

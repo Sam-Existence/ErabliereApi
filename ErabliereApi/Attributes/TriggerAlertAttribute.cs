@@ -23,7 +23,7 @@ namespace ErabliereApi.Controllers.Attributes
     /// </summary>
     public class TriggerAlertAttribute : ActionFilterAttribute
     {
-        private int? _idErabliere;
+        private Guid? _idErabliere;
         private PostDonnee? _donnee;
 
         /// <summary>
@@ -38,11 +38,11 @@ namespace ErabliereApi.Controllers.Attributes
         /// <inheritdoc />
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var id = context.ActionArguments["id"].ToString();
+            var id = context.ActionArguments["id"]?.ToString() ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'.");
 
-            _idErabliere = int.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'."));
+            _idErabliere = Guid.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'."));
 
-            _donnee = context.ActionArguments.Single(a => a.Value?.GetType() == typeof(PostDonnee)).Value as PostDonnee;
+            _donnee = context.ActionArguments.Values.Single(a => a?.GetType() == typeof(PostDonnee)) as PostDonnee;
         }
 
         /// <inheritdoc />
@@ -185,7 +185,7 @@ namespace ErabliereApi.Controllers.Attributes
             return default;
         }
 
-        private async Task TriggerAlerte(Alerte alerte, ILogger<TriggerAlertAttribute> logger)
+        private async void TriggerAlerte(Alerte alerte, ILogger<TriggerAlertAttribute> logger)
         {
             if (_emailConfig == null)
             {

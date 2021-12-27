@@ -12,10 +12,10 @@
         "CORS_HEADERS": "*",
         "CORS_METHODS": "*",
         "CORS_ORIGINS": "*",
-        "USE_SQL": "true",
+        "USE_SQL": "false",
         "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
-        "SQL_USE_STARTUP_MIGRATION": "true",
-        "DEBUG_HEADERS": "true",
+        "SQL_USE_STARTUP_MIGRATION": "false",
+        "DEBUG_HEADERS": "false",
         "LOG_SQL": "-", // Console, -
 
         // Utiliser l'authentification

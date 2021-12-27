@@ -2,13 +2,25 @@ using System;
 
 namespace ErabliereApi.Donnees.Action.Put
 {
+    /// <summary>
+    /// Modèle de modification d'un capteur
+    /// </summary>
     public class PutCapteur
     {
-        public int? Id { get; set; }
+        /// <summary>
+        /// L'id du capteur à modifier
+        /// </summary>
+        public Guid? Id { get; set; }
 
+        /// <summary>
+        /// Le nom du capteur
+        /// </summary>
         public string? Nom { get; set; }
 
-        public int? IdErabliere { get; set; }
+        /// <summary>
+        /// L'id de l'érablière
+        /// </summary>
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// Indicateur permettant d'afficher ou non le graphique relié au capteur.

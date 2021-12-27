@@ -54,7 +54,7 @@ namespace ErabliereApi.Controllers
         [ProducesResponseType(200, Type = typeof(GetDonnee))]
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json, MediaTypeNames.Text.Plain, "text/json", "text/csv")]
-        public async Task<IActionResult> Lister(int id,
+        public async Task<IActionResult> Lister(Guid id,
                                                 [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                                 DateTimeOffset? dd, 
                                                 DateTimeOffset? df, 
@@ -76,7 +76,7 @@ namespace ErabliereApi.Controllers
             }
         }
 
-        private async Task<IEnumerable<GetDonnee>> ListerGenerique(int id, DateTimeOffset? ddr, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o)
+        private async Task<IEnumerable<GetDonnee>> ListerGenerique(Guid id, DateTimeOffset? ddr, DateTimeOffset? dd, DateTimeOffset? df, int? q, string? o)
         {
             var query = _context.Donnees.AsNoTracking()
                                         .Where(d => d.IdErabliere == id &&
@@ -116,7 +116,7 @@ namespace ErabliereApi.Controllers
         [HttpPost]
         [ValiderIPRules]
         [TriggerAlert]
-        public async Task<IActionResult> Ajouter(int id, [FromBody] PostDonnee donneeRecu)
+        public async Task<IActionResult> Ajouter(Guid id, [FromBody] PostDonnee donneeRecu)
         {
             if (id != donneeRecu.IdErabliere)
             {
@@ -193,7 +193,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux à ajouter</param>
         [HttpPut("{idDonnee}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Modifier(int id, int idDonnee, PutDonnee donnee)
+        public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee)
         {
             if (id != donnee.IdErabliere)
             {
@@ -239,7 +239,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete("{idDonnee}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Supprimer(int id, int idDonnee, Donnee donnee)
+        public async Task<IActionResult> Supprimer(Guid id, Guid idDonnee, Donnee donnee)
         {
             if (id != donnee.IdErabliere)
             {
