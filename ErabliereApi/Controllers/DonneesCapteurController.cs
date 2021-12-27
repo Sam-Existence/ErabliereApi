@@ -103,7 +103,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement ajouté.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(int id, PostDonneeCapteur donneeCapteur)
+        public async Task<IActionResult> Ajouter(Guid id, PostDonneeCapteur donneeCapteur)
         {
             if (id != donneeCapteur.IdCapteur)
             {

@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.Post
 {
@@ -12,6 +8,6 @@ namespace ErabliereApi.Donnees.Action.Post
 
         public DateTimeOffset? D { get; set; }
 
-        public int? IdCapteur { get; set; }
+        public Guid? IdCapteur { get; set; }
     }
 }

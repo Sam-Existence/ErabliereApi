@@ -14,19 +14,23 @@ namespace ErabliereApi.Depot.Sql.EntityConfiguration
         {
             erabliere.HasMany(c => c.Capteurs)
                      .WithOne(c => c.Erabliere)
-                     .HasForeignKey(e => e.IdErabliere);
+                     .HasForeignKey(e => e.IdErabliere)
+                     .OnDelete(DeleteBehavior.Cascade);
 
             erabliere.HasMany(c => c.Donnees)
                      .WithOne(c => c.Erabliere)
-                     .HasForeignKey(e => e.IdErabliere);
+                     .HasForeignKey(e => e.IdErabliere)
+                     .OnDelete(DeleteBehavior.Cascade);
 
             erabliere.HasMany(c => c.Barils)
                      .WithOne(c => c.Erabliere)
-                     .HasForeignKey(e => e.IdErabliere);
+                     .HasForeignKey(e => e.IdErabliere)
+                     .OnDelete(DeleteBehavior.Cascade);
 
             erabliere.HasMany(c => c.Dompeux)
                      .WithOne(c => c.Erabliere)
-                     .HasForeignKey(e => e.IdErabliere);
+                     .HasForeignKey(e => e.IdErabliere)
+                     .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

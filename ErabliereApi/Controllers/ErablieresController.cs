@@ -46,7 +46,7 @@ namespace ErabliereApi.Controllers
         /// <returns>Une liste d'érablière</returns>
         [HttpGet]
         [EnableQuery]
-        public IEnumerable<Erabliere> Lister()
+        public IQueryable<Erabliere> Lister()
         {
             return _context.Erabliere.AsNoTracking();
         }

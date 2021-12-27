@@ -22,7 +22,7 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// L'id de l'érablière possédant le baril
         /// </summary>
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// Estimation de la qualité du sirop

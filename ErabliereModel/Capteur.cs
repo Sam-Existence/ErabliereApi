@@ -51,7 +51,6 @@ namespace ErabliereApi.Donnees
         /// <example>
         /// "°c" pour représenter la temperature en celcius
         /// </example>
-        [Required]
         [MaxLength(5)]
         public string? Symbole { get; set; }
 

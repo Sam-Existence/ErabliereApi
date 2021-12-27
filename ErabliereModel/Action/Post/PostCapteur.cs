@@ -11,12 +11,13 @@ namespace ErabliereApi.Donnees.Action.Post
         /// <summary>
         /// Le nom du capteur
         /// </summary>
+        [Required]
+        [MaxLength(50)]
         public string? Nom { get; set; }
 
         /// <summary>
         /// Le symbole utilisé pour l'affichage des valeurs
         /// </summary>
-        [Required]
         [MaxLength(5)]
         public string? Symbole { get; set; }
 

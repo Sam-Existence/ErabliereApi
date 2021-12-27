@@ -24,9 +24,6 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
                         <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 2" (click)="selectionnerPage(2)" role="button">Camera</a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
                     </li>
                     <li class="nav-item">

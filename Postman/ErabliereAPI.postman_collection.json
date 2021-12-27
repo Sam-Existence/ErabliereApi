@@ -47,7 +47,7 @@
 									"}\r",
 									"\r",
 									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereA_ID')).to.eq(pm.response.json()[0].id);\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereA_ID')).to.not.be.empty;\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -112,7 +112,7 @@
 									"}\r",
 									"\r",
 									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereB_ID')).to.eq(pm.response.json()[0].id);\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereB_ID')).to.not.be.empty;\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -124,7 +124,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"Érablière B\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"raw": "{\r\n  \"nom\": \"Érablière B\",\r\n  \"ipRules\": \"192.160.45.45\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -177,7 +177,7 @@
 									"}\r",
 									"\r",
 									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereSaintAlfred_ID')).to.eq(pm.response.json()[0].id);\r",
+									"    pm.expect(pm.collectionVariables.get('ErabliereSaintAlfred_ID')).to.not.be.empty;\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -1127,7 +1127,7 @@
 					"name": "PreRequis",
 					"item": [
 						{
-							"name": "Obtenir la liste des érablières Copy",
+							"name": "Obtenir la liste des érablières",
 							"event": [
 								{
 									"listen": "test",
@@ -1165,7 +1165,7 @@
 							"response": []
 						},
 						{
-							"name": "Ajouter une nouvelle érablière Copy",
+							"name": "Ajouter une nouvelle érablière",
 							"event": [
 								{
 									"listen": "test",
@@ -1389,7 +1389,7 @@
 			"name": "OData",
 			"item": [
 				{
-					"name": "Get Nom Erabliere",
+					"name": "Dashboard OData request",
 					"event": [
 						{
 							"listen": "test",
@@ -1408,61 +1408,21 @@
 					},
 					"request": {
 						"method": "GET",
-						"header": [
-							{
-								"key": "Accept",
-								"value": "application/json",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"url": {
-							"raw": "{{url}}/erablieres?$select=nom",
-							"host": [
-								"{{url}}"
-							],
-							"path": [
-								"erablieres"
-							],
-							"query": [
-								{
-									"key": "$select",
-									"value": "nom"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Select + OrderBy",
-					"request": {
-						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/erablieres?$select=id,nom,afficherSectionBaril&filter=nom &$orderBy=nom&$top=10",
+							"raw": "https://localhost:5001/erablieres?$expand=capteurs($filter=afficherCapteurDashboard eq true)",
+							"protocol": "https",
 							"host": [
-								"{{url}}"
+								"localhost"
 							],
+							"port": "5001",
 							"path": [
 								"erablieres"
 							],
 							"query": [
 								{
-									"key": "$select",
-									"value": "id,nom,afficherSectionBaril"
-								},
-								{
-									"key": "filter",
-									"value": "nom "
-								},
-								{
-									"key": "$orderBy",
-									"value": "nom"
-								},
-								{
-									"key": "$top",
-									"value": "10"
+									"key": "$expand",
+									"value": "capteurs($filter=afficherCapteurDashboard eq true)"
 								}
 							]
 						}
@@ -1473,6 +1433,19 @@
 		},
 		{
 			"name": "Get Dashboard",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1550,10 +1523,10 @@
 			"script": {
 				"type": "text/javascript",
 				"exec": [
-					"console.log(\"Requete : \");",
-					"console.log(pm.request.body);",
-					"console.log(\"Reponse : \");",
-					"console.log(pm.response.text());"
+					"// console.log(\"Requete : \");",
+					"// console.log(pm.request.body);",
+					"// console.log(\"Reponse : \");",
+					"// console.log(pm.response.text());"
 				]
 			}
 		}

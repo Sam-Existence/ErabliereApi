@@ -12,9 +12,9 @@
         "CORS_HEADERS": "*",
         "CORS_METHODS": "*",
         "CORS_ORIGINS": "*",
-        "USE_SQL": "false",
-        "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPI;Trusted_Connection=True;",
-        "SQL_USE_STARTUP_MIGRATION": "false",
+        "USE_SQL": "true",
+        "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPIV2;Trusted_Connection=True;",
+        "SQL_USE_STARTUP_MIGRATION": "true",
         "DEBUG_HEADERS": "false",
         "LOG_SQL": "-", // Console, -
 
@@ -51,8 +51,8 @@
         "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
 
         // Profilage
-        "MiniProfiler.Enable": "true",
-        "MiniProlifer.EntityFramework.Enable": "true"
+        "MiniProfiler.Enable": "false",
+        "MiniProlifer.EntityFramework.Enable": "false"
       }
     }
   }

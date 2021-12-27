@@ -14,7 +14,6 @@ using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
-using Newtonsoft.Json.Serialization;
 using Microsoft.Identity.Web;
 using Microsoft.Extensions.Configuration;
 using ErabliereApi.Extensions;
@@ -22,7 +21,14 @@ using StackExchange.Profiling;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using StackExchange.Profiling.SqlFormatters;
+using Newtonsoft.Json;
 using Microsoft.AspNetCore.OData;
+using System.Text.Json.Serialization;
+using Microsoft.OData.Edm;
+using Microsoft.AspNetCore.OData.Batch;
+using System.Text.Json;
+using Microsoft.OData.ModelBuilder;
+using ErabliereApi.Donnees;
 
 namespace ErabliereApi
 {
@@ -53,20 +59,19 @@ namespace ErabliereApi
             // contrôleur
             services.AddControllers(o =>
             {
-                o.EnableEndpointRouting = false;
-                
                 if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
                 {
                     o.Filters.Add<MiniProfilerAsyncLogger>();
                 }
             })
-            .AddNewtonsoftJson(o =>
+            .AddOData(o =>
             {
-                o.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
-                o.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                o.Select().Filter().OrderBy().SetMaxTop(100).Expand();
             })
-            .AddOData(o => o.Select().Expand().Filter().Count().SetMaxTop(100).OrderBy());
-
+            .AddJsonOptions(c =>
+            {
+                c.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+            });
 
             // Forwarded headers
             services.AddErabliereAPIForwardedHeaders(Configuration);
@@ -84,150 +89,150 @@ namespace ErabliereApi
                     SetEnvironmentVariable("AzureAD:TenantId", GetEnvironmentVariable("AzureAD__TenantId"));
                 }
 
-                if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("AzureAD:ClientId")) == false)
-                {
-                    services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
-                }
-                else
-                {
-                    services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                            .AddIdentityServerAuthentication(options =>
-                            {
-                                options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("AzureAD:ClientId")) == false)
+{
+    services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
+}
+else
+{
+    services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
+            .AddIdentityServerAuthentication(options =>
+            {
+                options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
 
-                                options.ApiName = "erabliereapi";
-                            });
-                }
+                options.ApiName = "erabliereapi";
+            });
+}
             }
             else
-            {
-                services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
-            }
+{
+    services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
+}
 
-            // Swagger
-            services.AjouterSwagger();
+// Swagger
+services.AjouterSwagger();
 
-            // Cors
-            if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
-            {
-                services.AddCors();
-            }
+// Cors
+if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
+{
+    services.AddCors();
+}
 
-            // Automapper
-            services.AjouterAutoMapperErabliereApiDonnee();
+// Automapper
+services.AjouterAutoMapperErabliereApiDonnee();
 
-            // Database
-            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
-            {
-                services.AddDbContext<ErabliereDbContext>(options =>
-                {
-                    var connectionString = GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null.");
+// Database
+if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
+{
+    services.AddDbContext<ErabliereDbContext>(options =>
+    {
+        var connectionString = GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null.");
 
-                    if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
-                    {
-                        DbConnection connection = new SqlConnection(connectionString);
-                        
-                        connection = new StackExchange.Profiling.Data.ProfiledDbConnection(connection, MiniProfiler.Current);
+        if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+        {
+            DbConnection connection = new SqlConnection(connectionString);
 
-                        options.UseSqlServer(connection, o => o.EnableRetryOnFailure());
-                    }
-                    else
-                    {
-                        options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
-                    }
+            connection = new StackExchange.Profiling.Data.ProfiledDbConnection(connection, MiniProfiler.Current);
 
-                    if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
-                    {
-                        options.LogTo(Console.WriteLine, LogLevel.Information);
-                    }
-                });
-            }
-            else
-            {
-                services.AddDbContext<ErabliereDbContext>(options =>
-                {
-                    options.UseInMemoryDatabase(nameof(ErabliereDbContext));
-                });
-            }
+            options.UseSqlServer(connection, o => o.EnableRetryOnFailure());
+        }
+        else
+        {
+            options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
+        }
 
-            services.AddHealthChecks();
+        if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
+        {
+            options.LogTo(Console.WriteLine, LogLevel.Information);
+        }
+    });
+}
+else
+{
+    services.AddDbContext<ErabliereDbContext>(options =>
+    {
+        options.UseInMemoryDatabase(nameof(ErabliereDbContext));
+    });
+}
 
-            if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
-            {
-                var profilerBuilder = services.AddMiniProfiler(o =>
-                {
-                    if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
-                    {
-                        o.SqlFormatter = new SqlServerFormatter();
-                    }
-                });
+services.AddHealthChecks();
 
-                if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
-                {
-                    profilerBuilder.AddEntityFramework();
-                }
-            }
+if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+{
+    var profilerBuilder = services.AddMiniProfiler(o =>
+    {
+        if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+        {
+            o.SqlFormatter = new SqlServerFormatter();
+        }
+    });
+
+    if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+    {
+        profilerBuilder.AddEntityFramework();
+    }
+}
         }
 
         /// <summary>
         /// Configure
         /// </summary>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
+{
+    if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase) &&
+        string.Equals(GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), TrueString, OrdinalIgnoreCase))
+    {
+        var database = serviceProvider.GetRequiredService<ErabliereDbContext>();
+
+        database.Database.Migrate();
+    }
+
+    if (env.IsDevelopment())
+    {
+        IdentityModelEventSource.ShowPII = true;
+        app.UseDeveloperExceptionPage();
+    }
+
+    if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+    {
+        app.UseMiniProfiler();
+    }
+
+    app.UseErabliereAPIForwardedHeadersRules(logger, Configuration);
+
+    app.UseDefaultFiles();
+    app.UseStaticFiles();
+
+    app.UtiliserSwagger();
+
+    app.UseRouting();
+
+    if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
+    {
+        app.UseCors(option =>
         {
-            if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase) &&
-                string.Equals(GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), TrueString, OrdinalIgnoreCase))
-            {
-                var database = serviceProvider.GetRequiredService<ErabliereDbContext>();
+            option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
+            option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(','));
+            option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
+        });
+    }
 
-                database.Database.Migrate();
-            }
+    if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+    {
+        app.UseAuthentication();
+    }
+    app.UseAuthorization();
 
-            if (env.IsDevelopment())
-            {
-                IdentityModelEventSource.ShowPII = true;
-                app.UseDeveloperExceptionPage();
-            }
+    app.UseEndpoints(endpoints =>
+    {
+        endpoints.MapControllers();
+        endpoints.MapHealthChecks("/health");
+    });
 
-            if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
-            {
-                app.UseMiniProfiler();
-            }
+    app.UseSpa(spa =>
+    {
 
-            app.UseErabliereAPIForwardedHeadersRules(logger, Configuration);
-
-            app.UseDefaultFiles();
-            app.UseStaticFiles();
-
-            app.UtiliserSwagger();
-
-            app.UseRouting();
-
-            if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
-            {
-                app.UseCors(option =>
-                {
-                    option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
-                    option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(','));
-                    option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
-                });
-            }
-
-            if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
-            {
-                app.UseAuthentication();
-            }
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-                endpoints.MapHealthChecks("/health");
-            });
-
-            app.UseSpa(spa =>
-            {
-                
-            });
-        }
+    });
+}
     }
 }
