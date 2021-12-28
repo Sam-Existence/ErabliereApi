@@ -57,7 +57,7 @@ jobs:
 
       # Analyse newman results
       - name: Analyse newman result
-         run: |
-           # analyse the newman results
-           cat newman.json
-           python3 Infrastructure/kubernetes/staging/analyse-newman-result.py newman.json
+        run: |
+          # analyse the newman results
+          cat newman.json
+          python3 Infrastructure/kubernetes/staging/analyse-newman-result.py newman.json
