@@ -14,6 +14,7 @@ spec:
       - |
         #!/bin/sh
         newman run /testing/postman/ErabliereAPI.postman_collection.json --env-var url=http://erabliere-api-service
+        exit 0
     volumeMounts:
     - name: erabliereapi-test
       mountPath: /testing/postman
