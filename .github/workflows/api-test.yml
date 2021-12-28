@@ -38,7 +38,7 @@ jobs:
           kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n erabliereapi-staging
 
           # create a configmap from the Postman folder
-          kubectl create configmap erabliereapi-staging-config --from-file=Postman/ --dry-run -o yaml | kubectl apply -f - -n erabliereapi-staging
+          kubectl create configmap erabliereapi-postman-test --from-file=Postman/ --dry-run=client -o yaml | kubectl apply -f - -n erabliereapi-staging
 
           # create the newman pod
           kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n erabliereapi-staging
