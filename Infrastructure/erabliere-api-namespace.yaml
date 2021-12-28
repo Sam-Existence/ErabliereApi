@@ -1,6 +1,0 @@
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: erabliere-api
-  labels:
-    name: erabliere-api

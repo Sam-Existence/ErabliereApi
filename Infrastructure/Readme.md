@@ -2,23 +2,21 @@
 
 ### Déployer dans un nouveau cluster
 
-Pour un mode sans persistance des données : 
-1. Api
+La solution se déploie en un script. Il faut manuellement aller ajouter les applications dans Azure-AD pour complété la configuration corretement.
 
-Pour un mode avec de la persistance des données :
-1. Storage.
-2. Database.
-3. Api.
-
-### Générer un secret pour la base de donnée 
+Pour modifier le déploiement, avant d'executer la dernière commande, vous pouvez modifier les fichiers dans .\AzureAKS-TLS\erabliereapi.
 
 ```
-kubectl create secret generic mssql --from-literal=SA_PASSWORD="V3ryStr0ngPa55!" --namespace=erabliere-api
+git clone https://github.com/freddycoder/AzureAKS-TLS.git
+cd AzureAKS-TLS
+.\azure-aks-cluster-deployment.ps1 -resourceGroup erabliereapi -location canadaeast -aksClusterName kerabliereapi -namespace erabliereapi-prod -appScriptPath .\erabliereapi\application-deployment.ps1 -useLetsEncryptProd true -skipDependenciesInstall true -customDomain erabliereapi.freddycoder.com
 ```
 
-Les configurations de la BD sont basé sur ce cours : https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers
+> Les configurations de la BD sont basé sur ce cours : https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers
 
 ### Fonctionnalité d'alerte
+
+> Ceci est géré dans le script de déploiement. Cette section est conserver a des fins de documentation.
 
 Pour que la fonctionnalité d'alerte fonctionne, il faut que des configurations mail soit accessible. Elles doivent être mis en place manuellement.
 

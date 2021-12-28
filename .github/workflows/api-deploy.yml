@@ -8,13 +8,6 @@ on:
   #       - completed
   workflow_dispatch:
 
-#env:
-#  REGISTRY_HOSTNAME: erabliereapi
-#  IMAGE_NAME: erabliereapi
-#  DATABASE_PASSWORD: ${{ secrets.SQL_SA_PASSWORD }}
-#  IMAGE_TAG: latest
-#  OIDC_CLIENT_PASSWORD: ${{ secrets.OIDC_CLIENT_PASSWORD }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -29,24 +22,6 @@ jobs:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           resource-group: 'erabliereapi'
           cluster-name: 'erabliereapi-summer21'
-          
-      # These line are commented and will probably be remove to use a new way to deploy the app
-      # For now well do a restart rollout
-      # Replace variable in kubernetes file
-      #- name: Replace variable in k8s file
-      #  uses: cschleiden/replace-tokens@v1.0
-      #  with:
-      #    tokenPrefix: '#{'
-      #    tokenSuffix: '}'
-      #    files: './Infrastructure/erabliere-api-deployment.yaml'
-
-      # Deploy to kubernetes
-      #- name: Kubectl apply
-      #  run: |
-      #    kubectl config current-context
-      #    kubectl apply -f ./Infrastructure/erabliere-api-namespace.yaml
-      #    kubectl apply -f ./Infrastructure/erabliere-api-service.yaml
-      #    kubectl apply -f ./Infrastructure/erabliere-api-deployment.yaml
 
       # Deploy to kubernetes
       - name: Kubectl restart deployment

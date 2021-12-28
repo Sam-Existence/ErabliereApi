@@ -26,8 +26,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      # Login into acr
-      - name: Login into ACR
+      # Login into dockerhub
+      - name: Login into dockerhub
         run: echo ${{ secrets.registryPassword }} | docker login -u ${{ secrets.registryUsername }} --password-stdin
 
       # Build the image
