@@ -34,6 +34,9 @@ jobs:
           # create the staging deployment
           kubectl apply -f Infrastructure/kubernetes/staging/deployment.yaml -n erabliereapi-staging
 
+          # wait for the deployment to be ready
+          kubectl rollout status deployment erabliereapi-staging-deployment -n erabliereapi-staging
+
           # create the staging service
           kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n erabliereapi-staging
 
