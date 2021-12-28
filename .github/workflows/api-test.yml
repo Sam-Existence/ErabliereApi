@@ -1,0 +1,63 @@
+name: ErabliereAPI-Test
+
+on: 
+  workflow_run:
+      workflows: ["ErabliereAPI-Image"]
+      branches: [master]
+      types: 
+        - completed
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      # Connect to Azure Kubernetes
+      - name: Azure Kubernetes set context
+        uses: Azure/aks-set-context@v1
+        with:
+          creds: '${{ secrets.AZURE_CREDENTIALS }}'
+          resource-group: 'erabliereapi'
+          cluster-name: 'kerabliereapi'
+
+      # Deploy to kubernetes
+      - name: Kubectl test workflow
+        run: |
+          kubectl config current-context
+          
+          # create the staging namespace
+          kubectl create namespace erabliereapi-staging
+
+          # create the staging deployment
+          kubectl apply -f Infrastructure/kubernetes/staging/deployment.yaml -n erabliereapi-staging
+
+          # create the staging service
+          kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n erabliereapi-staging
+
+          # create the newman pod
+          kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n erabliereapi-staging
+
+          # attach to the newman pod
+          kubectl attach newman-pod -n erabliereapi-staging
+
+          # extract the test results
+          kubectl cp newman-pod:/var/log/newman/newman.json . -n erabliereapi-staging
+          
+          # delete the newman pod
+          kubectl delete pod newman-pod -n erabliereapi-staging
+
+          # delete the staging deployment
+          kubectl delete deployment erabliereapi-staging -n erabliereapi-staging
+
+          # delete the staging namespace
+          kubectl delete namespace erabliereapi-staging
+
+      # Analyse newman results
+      - name: Analyse newman result
+         run: |
+           # analyse the newman results
+           cat newman.json
+           python3 Infrastructure/kubernetes/staging/analyse-newman-result.py newman.json

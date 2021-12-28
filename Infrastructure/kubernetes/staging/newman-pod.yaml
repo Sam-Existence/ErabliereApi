@@ -1,0 +1,36 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: securetesting-newman
+  labels:
+    app: securetesting-newman
+spec:
+  containers:
+  - name: securetesting-newman
+    image: erabliereapi/securetesting-newman:latest
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        #!/bin/sh
+        PASSWORD=$(dotnet /app/ReadPassword.dll)
+        newman run /testing/example/newman.postman_collection.json --env-var arg1=$PASSWORD
+    env:
+    - name: REPRT_SECRET
+      value: /app/secrets
+    - name: SECRET_FILE_NAME
+      value: password
+    volumeMounts:
+    - name: securetesting-secret
+      mountPath: /app/secrets
+      readOnly: true
+    - name: securetesting-test-examples
+      mountPath: /testing/example
+      readOnly: true
+  volumes:
+  - name: securetesting-secret
+    secret:
+      secretName: password-secret
+  - name: securetesting-test-examples
+    configMap:
+      name: securetesting-example

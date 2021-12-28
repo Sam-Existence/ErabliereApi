@@ -5,12 +5,12 @@ on:
     branches:
       - master
     paths-ignore:
-      - GenerateurDonneePython/**
+      - PythonScripts/**
       - .github/**
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
-      - GenerateurDonneePython/**
+      - PythonScripts/**
       - .github/**
   workflow_dispatch:
 

@@ -1,8 +1,8 @@
-name: ErabliereAPI-Deploy
+name: ErabliereAPI-Test
 
 on: 
   workflow_run:
-      workflows: ["ErabliereAPI-Image"]
+      workflows: ["ErabliereAPI-Test"]
       branches: [master]
       types: 
         - completed
