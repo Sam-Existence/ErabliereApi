@@ -21,10 +21,10 @@ jobs:
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
           resource-group: 'erabliereapi'
-          cluster-name: 'erabliereapi-summer21'
+          cluster-name: 'kerabliereapi'
 
       # Deploy to kubernetes
       - name: Kubectl restart deployment
         run: |
           kubectl config current-context
-          kubectl rollout restart deployment erabliereapi-deployment -n erabliere-api-prod
+          kubectl rollout restart deployment erabliereapi-deployment -n erabliereapi-prod
