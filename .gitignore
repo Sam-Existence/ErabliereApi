@@ -341,6 +341,9 @@ healthchecksdb
 
 # IU
 
+# ng update
+ErabliereIU/.angular/cache
+
 # compiled output
 ErabliereIU/dist
 ErabliereIU/tmp
