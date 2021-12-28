@@ -43,17 +43,14 @@ jobs:
           # create the newman pod
           kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n erabliereapi-staging
 
-          # attach to the newman pod
-          kubectl attach securetesting-newman -n erabliereapi-staging
+          # wait for the newman pod to be ready
+          kubectl wait --for=condition=Completed -n erabliereapi-staging pod/securetesting-newman --timeout=60s
+
+          # get the newman pod logs
+          kubectl logs -n erabliereapi-staging securetesting-newman
 
           # extract the test results
           kubectl cp newman-pod:/var/log/newman/newman.json . -n erabliereapi-staging
-          
-          # delete the newman pod
-          kubectl delete pod newman-pod -n erabliereapi-staging
-
-          # delete the staging deployment
-          kubectl delete deployment erabliereapi-staging -n erabliereapi-staging
 
           # delete the staging namespace
           kubectl delete namespace erabliereapi-staging
@@ -63,4 +60,3 @@ jobs:
         run: |
           # analyse the newman results
           cat newman.json
-          python3 Infrastructure/kubernetes/staging/analyse-newman-result.py newman.json
