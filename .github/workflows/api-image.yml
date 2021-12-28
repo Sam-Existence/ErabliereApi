@@ -7,11 +7,13 @@ on:
     paths-ignore:
       - PythonScripts/**
       - .github/**
+      - Infrastructure/**
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
       - PythonScripts/**
       - .github/**
+      - Infrastructure/**
   workflow_dispatch:
 
 env:
