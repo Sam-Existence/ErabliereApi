@@ -1,17 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.Post
 {
+    /// <summary>
+    /// Modèle de création d'un capteur
+    /// </summary>
     public class PostCapteur
     {
+        /// <summary>
+        /// Le nom du capteur
+        /// </summary>
+        [Required]
+        [MaxLength(50)]
         public string? Nom { get; set; }
 
-        [Required]
+        /// <summary>
+        /// Le symbole utilisé pour l'affichage des valeurs
+        /// </summary>
         [MaxLength(5)]
         public string? Symbole { get; set; }
 
@@ -25,6 +31,9 @@ namespace ErabliereApi.Donnees.Action.Post
         /// </summary>
         public bool? AfficherCapteurDashboard { get; set; }
 
-        public int? IdErabliere { get; set; }
+        /// <summary>
+        /// L'id de l'érablière
+        /// </summary>
+        public Guid? IdErabliere { get; set; }
     }
 }

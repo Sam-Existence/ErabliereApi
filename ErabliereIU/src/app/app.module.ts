@@ -8,7 +8,6 @@ import { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component
 import { BarilsComponent } from 'src/barils/barils.component';
 import { ChartsModule } from 'ng2-charts';
 import { AlerteComponent } from 'src/alerte/alerte.component';
-import { CameraComponent } from 'src/camera/camera.component';
 import { AProposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
@@ -44,7 +43,6 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     AlerteComponent,
     AjouterAlerteComponent,
     ModifierAlerteComponent,
-    CameraComponent,
     AProposComponent,
     DocumentationComponent,
     SigninRedirectCallbackComponent,

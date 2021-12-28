@@ -9,7 +9,7 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// L'id de l'occurence
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date de la transaction
@@ -46,6 +46,6 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// Id donnée précédente
         /// </summary>
-        public int? Iddp { get; set; }
+        public Guid? Iddp { get; set; }
     }
 }

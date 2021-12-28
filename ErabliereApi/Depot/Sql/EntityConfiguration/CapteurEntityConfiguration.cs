@@ -14,7 +14,8 @@ namespace ErabliereApi.Depot.Sql.EntityConfiguration
         {
             capteur.HasMany(c => c.DonneesCapteur)
                    .WithOne(dc => dc.Capteur)
-                   .HasForeignKey(dc => dc.IdCapteur);
+                   .HasForeignKey(dc => dc.IdCapteur)
+                   .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

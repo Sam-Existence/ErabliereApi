@@ -3,12 +3,15 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Dompeux : IIdentifiable<int?, Dompeux>
+    /// <summary>
+    /// Représente un dompeux et certaine informations relié
+    /// </summary>
+    public class Dompeux : IIdentifiable<Guid?, Dompeux>
     {
         /// <summary>
         /// Id du dompeux
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date de l'occurence
@@ -25,7 +28,7 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public DateTimeOffset? DF { get; set; }
 
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         public Erabliere? Erabliere { get; set; }
 

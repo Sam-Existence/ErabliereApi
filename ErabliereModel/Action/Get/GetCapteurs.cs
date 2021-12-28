@@ -4,7 +4,7 @@ namespace ErabliereApi.Donnees.Action.Get
 {
     public class GetCapteurs
     {
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         public string? Nom { get; set; }
 

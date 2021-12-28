@@ -4,36 +4,36 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace ErabliereApi.Depot.Sql.Migrations
+#nullable disable
+
+namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    [Migration("20210803141732_FixMissingSymbol")]
-    partial class FixMissingSymbol
+    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.5")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "6.0.1")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
             modelBuilder.Entity("ErabliereApi.Donnees.Alerte", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("EnvoyerA")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("IdErabliere")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NiveauBassinThresholdHight")
                         .HasMaxLength(50)
@@ -66,16 +66,15 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("DF")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IdErabliere")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Q")
                         .HasMaxLength(15)
@@ -94,10 +93,9 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("AfficherCapteurDashboard")
                         .HasColumnType("bit");
@@ -105,8 +103,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DC")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IdErabliere")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Nom")
                         .IsRequired()
@@ -114,7 +112,6 @@ namespace ErabliereApi.Depot.Sql.Migrations
                         .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Symbole")
-                        .IsRequired()
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
 
@@ -127,10 +124,9 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Dompeux", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("DD")
                         .HasColumnType("datetimeoffset");
@@ -138,8 +134,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DF")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IdErabliere")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("T")
                         .HasColumnType("datetimeoffset");
@@ -153,19 +149,18 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Donnee", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTimeOffset?>("D")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IdErabliere")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<int?>("Iddp")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("Iddp")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short?>("NB")
                         .HasColumnType("smallint");
@@ -198,8 +193,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("D")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<int?>("IdCapteur")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("IdCapteur")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<short?>("Valeur")
                         .HasColumnType("smallint");
@@ -213,10 +208,9 @@ namespace ErabliereApi.Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Erabliere", b =>
                 {
-                    b.Property<int?>("Id")
+                    b.Property<Guid?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<bool?>("AfficherSectionBaril")
                         .HasColumnType("bit");
@@ -248,7 +242,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Barils")
-                        .HasForeignKey("IdErabliere");
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Erabliere");
                 });
@@ -257,7 +252,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Capteurs")
-                        .HasForeignKey("IdErabliere");
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Erabliere");
                 });
@@ -266,7 +262,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Dompeux")
-                        .HasForeignKey("IdErabliere");
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Erabliere");
                 });
@@ -275,7 +272,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Donnees")
-                        .HasForeignKey("IdErabliere");
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Erabliere");
                 });
@@ -284,7 +282,8 @@ namespace ErabliereApi.Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Capteur", "Capteur")
                         .WithMany("DonneesCapteur")
-                        .HasForeignKey("IdCapteur");
+                        .HasForeignKey("IdCapteur")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Capteur");
                 });

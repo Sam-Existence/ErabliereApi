@@ -37,7 +37,7 @@ export class ErabliereApi {
 
     getErablieresExpandCapteurs(): Promise<Erabliere[]> {
         return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
             return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', {headers: headers}).toPromise();
         });
     }

@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ErabliereApi.Donnees.Action.Get
 {
+    /// <summary>
+    /// Modèle de retour d'obtention d'un ou plusieurs dompeux
+    /// </summary>
     public class GetDompeux
     {
         /// <summary>
         /// Id du dompeux
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Date de l'occurence

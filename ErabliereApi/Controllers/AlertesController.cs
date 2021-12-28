@@ -3,6 +3,7 @@ using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -37,7 +38,7 @@ namespace ErabliereApi.Controllers
         /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
         /// <response code="200">Une liste d'alerte potentiellement vide.</response>
         [HttpGet]
-        public async Task<IEnumerable<Alerte>> Lister(int id, CancellationToken token)
+        public async Task<IEnumerable<Alerte>> Lister(Guid id, CancellationToken token)
         {
             return await _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id).ToArrayAsync(token);
         }
@@ -52,7 +53,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">L'alerte a été correctement ajouter.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(int id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Ajouter(Guid id, Alerte alerte, CancellationToken token)
         {
             if (id != alerte.IdErabliere)
             {
@@ -75,7 +76,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(int id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Modifier(Guid id, Alerte alerte, CancellationToken token)
         {
             if (id != alerte.IdErabliere)
             {
@@ -98,7 +99,7 @@ namespace ErabliereApi.Controllers
         /// <response code="204">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer(int id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Supprimer(Guid id, Alerte alerte, CancellationToken token)
         {
             if (id != alerte.IdErabliere)
             {
@@ -121,7 +122,7 @@ namespace ErabliereApi.Controllers
         /// <response code="204">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
         [HttpDelete("{idAlerte}")]
-        public async Task<IActionResult> Supprimer(int id, int idAlerte, CancellationToken token)
+        public async Task<IActionResult> Supprimer(Guid id, Guid idAlerte, CancellationToken token)
         {
             var alerte = await _depot.Alertes.FindAsync(idAlerte);
 

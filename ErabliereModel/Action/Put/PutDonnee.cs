@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ErabliereApi.Donnees.Action.Put
 {
+    /// <summary>
+    /// Modèle de donnée de modification d'une donnée
+    /// </summary>
     public class PutDonnee
     {
         /// <summary>
         /// Id de la donnée à modifier
         /// </summary>
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         /// <summary>
         /// Vaccium en dixième de HG
@@ -19,6 +20,6 @@ namespace ErabliereApi.Donnees.Action.Put
         /// <summary>
         /// Id de dl'érablière relier a cette donnée
         /// </summary>
-        public int? IdErabliere { get; set; }
+        public Guid? IdErabliere { get; set; }
     }
 }

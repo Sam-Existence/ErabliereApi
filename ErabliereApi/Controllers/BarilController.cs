@@ -38,7 +38,7 @@ namespace ErabliereApi.Controllers
         /// <param name="df">Utiliser ce paramètre pour obtenir les barils avec une date plus petite ou égal au paramètre passé.</param>
         /// <response code="200">Une liste de baril potentiellement vide.</response>
         [HttpGet]
-        public async Task<IEnumerable<Baril>> Lister([DefaultValue(0)] int id, DateTimeOffset? dd, DateTimeOffset? df)
+        public async Task<IEnumerable<Baril>> Lister(Guid id, DateTimeOffset? dd, DateTimeOffset? df)
         {
             return await _depot.Barils.AsNoTracking()
                                 .Where(b => b.IdErabliere == id &&
@@ -55,7 +55,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le baril a été correctement ajouter.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter([DefaultValue(0)] int id, Baril baril)
+        public async Task<IActionResult> Ajouter(Guid id, Baril baril)
         {
             if (id != baril.IdErabliere)
             {
@@ -77,7 +77,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le baril a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier([DefaultValue(0)] int id, Baril baril)
+        public async Task<IActionResult> Modifier(Guid id, Baril baril)
         {
             if (id != baril.IdErabliere)
             {
@@ -99,7 +99,7 @@ namespace ErabliereApi.Controllers
         /// <response code="202">Le baril a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer([DefaultValue(0)] int id, Baril baril)
+        public async Task<IActionResult> Supprimer(Guid id, Baril baril)
         {
             if (id != baril.IdErabliere)
             {

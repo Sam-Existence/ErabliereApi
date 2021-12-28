@@ -1,15 +1,19 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Erabliere : IIdentifiable<int?, Erabliere>
+    /// <summary>
+    /// Modèle représentant une érablière
+    /// </summary>
+    public class Erabliere : IIdentifiable<Guid?, Erabliere>
     {
         /// <summary>
         /// L'id de l'érablière
         /// </summary>
-        public int? Id { get; set; }
+        public Guid? Id { get; set; }
 
         /// <summary>
         /// Le nom de l'érablière
@@ -47,22 +51,22 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// Les capteurs de l'érablière
         /// </summary>
-        public List<Capteur>? Capteurs { get; set; }
+        public List<Capteur> Capteurs { get; set; } = new();
 
         /// <summary>
         /// Les données relier à l'érablière
         /// </summary>
-        public List<Donnee>? Donnees { get; set; }
+        public List<Donnee> Donnees { get; set; } = new();
 
         /// <summary>
         /// La liste des barils de l'érablière
         /// </summary>
-        public List<Baril>? Barils { get; set; }
+        public List<Baril> Barils { get; set; } = new();
 
         /// <summary>
         /// La liste des dompeux de l'érablière
         /// </summary>
-        public List<Dompeux>? Dompeux { get; set; }
+        public List<Dompeux> Dompeux { get; set; } = new();
 
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)

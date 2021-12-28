@@ -46,7 +46,7 @@ namespace ErabliereApi.Controllers
         /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
         /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
         [HttpGet]
-        public async Task<IEnumerable<GetDompeux>> Lister(int id,
+        public async Task<IEnumerable<GetDompeux>> Lister(Guid id,
                                               [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr, 
                                               DateTimeOffset? dd, 
                                               DateTimeOffset? df, 
@@ -90,7 +90,7 @@ namespace ErabliereApi.Controllers
         /// <param name="dompeux"></param>
         [HttpPost]
         [ValiderIPRules]
-        public async Task<IActionResult> Ajouter(int id, Dompeux dompeux)
+        public async Task<IActionResult> Ajouter(Guid id, Dompeux dompeux)
         {
             if (id != dompeux.IdErabliere)
             {
@@ -117,7 +117,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux à modifier</param>
         [HttpPut("{idDompeux}")]
         [ValiderIPRules]
-        public async Task<IActionResult> Modifier(int id, int idDompeux, Dompeux donnee)
+        public async Task<IActionResult> Modifier(Guid id, Guid idDompeux, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {
@@ -143,7 +143,7 @@ namespace ErabliereApi.Controllers
         /// <param name="donnee">Le dompeux a supprimer</param>
         [HttpDelete("{idDompeux}")]
         [ValiderIPRules]
-        public IActionResult Supprimer(int id, int idDompeux, Dompeux donnee)
+        public IActionResult Supprimer(Guid id, Guid idDompeux, Dompeux donnee)
         {
             if (id != donnee.IdErabliere)
             {

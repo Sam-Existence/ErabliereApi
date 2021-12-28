@@ -45,7 +45,7 @@ namespace ErabliereApi.Controllers
         /// <param name="df">Date de début</param>
         /// <response code="200">Une liste de DonneesCapteur.</response>
         [HttpGet]
-        public async Task<IEnumerable<GetDonneesCapteur>> Lister(int id,
+        public async Task<IEnumerable<GetDonneesCapteur>> Lister(Guid id,
                                                                  [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                                                  DateTimeOffset? dd, 
                                                                  DateTimeOffset? df)
@@ -81,7 +81,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Une liste Tupple avec l'id du catpeur et la liste des DonneesCapteur.</response>
         [HttpGet]
         [Route("/DonneesCapteur/Grape")]
-        public async IAsyncEnumerable<Pair<int, IEnumerable<GetDonneesCapteur>>> ListerPlusieurs(
+        public async IAsyncEnumerable<Pair<Guid, IEnumerable<GetDonneesCapteur>>> ListerPlusieurs(
                                                     [FromQuery] string ids,
                                                     [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                                     DateTimeOffset? dd,
@@ -89,9 +89,9 @@ namespace ErabliereApi.Controllers
         {
             foreach (var idstr in ids.Split(';'))
             {
-                var id = int.Parse(idstr);
+                var id = Guid.Parse(idstr);
 
-                yield return new Pair<int, IEnumerable<GetDonneesCapteur>>(id, await Lister(id, ddr, dd, df));
+                yield return new Pair<Guid, IEnumerable<GetDonneesCapteur>>(id, await Lister(id, ddr, dd, df));
             }
         }
 
@@ -103,7 +103,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement ajouté.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(int id, PostDonneeCapteur donneeCapteur)
+        public async Task<IActionResult> Ajouter(Guid id, PostDonneeCapteur donneeCapteur)
         {
             if (id != donneeCapteur.IdCapteur)
             {
@@ -130,7 +130,7 @@ namespace ErabliereApi.Controllers
         /// <response code="200">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(int id, DonneeCapteur capteur)
+        public async Task<IActionResult> Modifier(Guid id, DonneeCapteur capteur)
         {
             if (id != capteur.IdCapteur)
             {
@@ -152,7 +152,7 @@ namespace ErabliereApi.Controllers
         /// <response code="202">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer(int id, DonneeCapteur capteur)
+        public async Task<IActionResult> Supprimer(Guid id, DonneeCapteur capteur)
         {
             if (id != capteur.IdCapteur)
             {

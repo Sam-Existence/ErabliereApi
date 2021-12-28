@@ -30,7 +30,7 @@ Les migrations ont été créer ainsi :
 > Dans la console de gestion des packages nuget
 ```
 PM> cd .\ErabliereApi
-PM> dotnet ef --startup-project . migrations add InitialSchema --output-dir "Depot\\Sql\\Migrations" --namespace "ErabliereApi.Depot.Sql.Migrations"
+PM> dotnet ef --startup-project . migrations add InitialSchema --output-dir "Depot\\Sql\\Migrations" --namespace "Depot.Sql.Migrations"
 ```
 
 ## Update database

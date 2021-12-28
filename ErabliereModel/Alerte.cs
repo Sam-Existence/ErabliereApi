@@ -1,12 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees
 {
-    public class Alerte : IIdentifiable<int?, Alerte>
+    /// <summary>
+    /// Une alerte
+    /// </summary>
+    public class Alerte : IIdentifiable<Guid?, Alerte>
     {
-        public int? Id { get; set; }
-        public int? IdErabliere { get; set; }
+        public Guid? Id { get; set; }
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// Une liste d'adresse email séparer par des ';'
