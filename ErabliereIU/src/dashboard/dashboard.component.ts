@@ -37,6 +37,16 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
             </div>
             </div>
         </nav>
+        <div *ngIf="!isLoggedIn" class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-information" role="alert">
+                        <strong>Vous n'êtes pas connecté </strong> <a href="#" (click)="login()">Cliquer ici pour vous connecter</a>
+                        <p>Pour obtenir un compte, communiquer à l'administrateur. Vous trouverez les informations dans la page À propos.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere" #erabliereComponent></erablieres>
     `
 })

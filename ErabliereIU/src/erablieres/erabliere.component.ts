@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
@@ -10,7 +9,7 @@ import { Erabliere } from 'src/model/erabliere';
     templateUrl: 'erabliere.component.html'
 })
 export class ErabliereComponent implements OnInit {
-    erablieres?: Array<Erabliere>;
+    erablieres: Array<Erabliere> = [];
 
     erabliereSelectionnee?:Erabliere;
 
