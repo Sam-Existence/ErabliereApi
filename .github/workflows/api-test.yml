@@ -41,7 +41,7 @@ jobs:
           kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n erabliereapi-staging
 
           # attach to the newman pod
-          kubectl attach newman-pod -n erabliereapi-staging
+          kubectl attach securetesting-newman -n erabliereapi-staging
 
           # extract the test results
           kubectl cp newman-pod:/var/log/newman/newman.json . -n erabliereapi-staging
