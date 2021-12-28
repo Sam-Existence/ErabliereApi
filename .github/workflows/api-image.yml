@@ -8,12 +8,14 @@ on:
       - PythonScripts/**
       - .github/**
       - Infrastructure/**
+      - Postman/**
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
       - PythonScripts/**
       - .github/**
       - Infrastructure/**
+      - Postman/**
   workflow_dispatch:
 
 env:
