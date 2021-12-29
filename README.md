@@ -7,6 +7,12 @@ Le but de ce projet est d'analyser, lever des alertes et automatiser certaine me
 L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine.
 
 ## Structure
+
+### Diagramme de haut niveau de la solution
+
+![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/ErabliereApi.drawio.png?raw=true)
+
+### Dossier du repository
 - ErabliereAPI : Projet du web API
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Projet du modèles de données
