@@ -1,4 +1,4 @@
 requests
 azure-identity
-pytesseract
 pillow
+pytesseract
