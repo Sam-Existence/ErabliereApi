@@ -50,10 +50,10 @@ jobs:
           kubectl wait --for=condition=Ready -n erabliereapi-staging pod/securetesting-newman --timeout=60s
 
           # attach to the newman pod
-          kubectl attach securetesting-newman -n erabliereapi-staging
+          kubectl attach securetesting-newman -c securetesting-newman -n erabliereapi-staging
 
           # extract the test results
-          kubectl cp securetesting-newman:/var/log/newman/newman.json . -n erabliereapi-staging
+          kubectl cp securetesting-newman:/test-results . -n erabliereapi-staging -c file-copy
 
           # delete the staging namespace
           kubectl delete namespace erabliereapi-staging
@@ -62,4 +62,4 @@ jobs:
       - name: Analyse newman result
         run: |
           # analyse the newman results
-          cat newman.json
+          cat junit-report.xml

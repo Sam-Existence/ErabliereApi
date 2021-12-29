@@ -6,6 +6,11 @@ metadata:
     app: securetesting-newman
 spec:
   containers:
+  - name: file-copy
+    image: ubuntu
+    volumeMounts:
+    - name: shared-data
+      mountPath: /test-results
   - name: securetesting-newman
     image: erabliereapi/securetesting-newman:latest
     command: 
@@ -13,15 +18,16 @@ spec:
       - -c
       - |
         #!/bin/sh
-        newman run /testing/postman/ErabliereAPI.postman_collection.json -n 2 --env-var url=http://erabliere-api-service
+        newman run /testing/postman/ErabliereAPI.postman_collection.json -n 2 --reporters cli,junit --reporter-junit-export junit-report.xml --env-var url=http://erabliere-api-service
     volumeMounts:
     - name: erabliereapi-test
       mountPath: /testing/postman
       readOnly: true
+    - name: shared-data
+      mountPath: /test-results
   volumes:
-  - name: securetesting-secret
-    secret:
-      secretName: password-secret
   - name: erabliereapi-test
     configMap:
       name: erabliereapi-postman-test
+  - name: shared-data
+    emptyDir: {}
