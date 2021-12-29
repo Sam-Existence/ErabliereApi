@@ -1410,12 +1410,10 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "https://localhost:5001/erablieres?$expand=capteurs($filter=afficherCapteurDashboard eq true)",
-							"protocol": "https",
+							"raw": "{{url}}/erablieres?$expand=capteurs($filter=afficherCapteurDashboard eq true)",
 							"host": [
-								"localhost"
+								"{{url}}"
 							],
-							"port": "5001",
 							"path": [
 								"erablieres"
 							],
