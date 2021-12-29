@@ -246,6 +246,11 @@ export class DonneesComponent implements OnInit {
               this.vacciumValueActuel = vva != null ? (vva / 10).toFixed(1) : null;
               this.niveauBassinValueActuel = e[e.length - 1].nb?.toString();
             }
+            else if (e.length == 0) {
+              this.temperatureValueActuel = null;
+              this.vacciumValueActuel = null;
+              this.niveauBassinValueActuel = null;
+            }
 
             if (h.has("x-ddr") && this.ddr != undefined && h.get("x-ddr")?.valueOf() == this.ddr) {
               

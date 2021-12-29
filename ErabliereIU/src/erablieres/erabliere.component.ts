@@ -10,7 +10,7 @@ import { Erabliere } from 'src/model/erabliere';
 })
 export class ErabliereComponent implements OnInit {
     erablieres?: Array<Erabliere>;
-    etat: string = "Initialisation...";
+    etat: string = "Chargement des erablieres...";
 
     erabliereSelectionnee?:Erabliere;
 
@@ -27,14 +27,21 @@ export class ErabliereComponent implements OnInit {
     constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService){
         this.erabliereSelectionnee = undefined;
         this._authService = authFactory.getAuthorisationService();
-    }
-
-    async ngOnInit() {
         this._authService.loginChanged.subscribe(loggedIn => {
             if (loggedIn) {
                 this.ngOnInit();
             }
+            else {
+                this.erablieres = undefined;
+                this.erabliereSelectionnee = undefined;
+                this.idSelectionnee = undefined;
+                this.etat = "Vous n'êtes pas connecté";
+            }
         });
+    }
+
+    async ngOnInit() {
+        this.etat = "Chargement des erablieres...";
 
         const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs().catch(err => {
             console.log(err);
