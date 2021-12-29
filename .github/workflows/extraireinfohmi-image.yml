@@ -21,7 +21,7 @@ jobs:
 
       # Build the image
       - name: Docker build
-        run: docker build -f Infrastracture/docker/extraireInfoHmi.dockerfile -t $IMAGE_NAME:$IMAGE_TAG .
+        run: docker build -f Infrastructure/docker/extraireInfoHmi.dockerfile -t $IMAGE_NAME:$IMAGE_TAG .
         
       # Tag the images
       - name: Docker tag
