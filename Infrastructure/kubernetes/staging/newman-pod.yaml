@@ -19,7 +19,7 @@ spec:
       - -c
       - |
         #!/bin/sh
-        newman run /testing/postman/ErabliereAPI.postman_collection.json -n 2 --reporters cli,junit --reporter-junit-export junit-report.xml --env-var url=http://erabliere-api-service
+        newman run /testing/postman/ErabliereAPI.postman_collection.json -n 2 --reporters cli,junit --reporter-junit-export /test-results/junit-report.xml --env-var url=http://erabliere-api-service
     volumeMounts:
     - name: erabliereapi-test
       mountPath: /testing/postman
