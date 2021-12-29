@@ -5,7 +5,6 @@ WORKDIR /app
 ENV TZ=Canada/Eastern
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN apt-get update && apt-get install -y python3-pip && apt-get install -y tesseract-ocr
-COPY PythonScripts/extraireInfoImage.py /app/extraireInfoHmi.py
-COPY PythonScripts/requirements.txt /app/requirements.txt
+COPY PythonScripts/. /app/.
 RUN pip install Pillow
 RUN pip3 install -r requirements.txt
