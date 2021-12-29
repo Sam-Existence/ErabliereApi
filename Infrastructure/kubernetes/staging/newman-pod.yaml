@@ -8,6 +8,7 @@ spec:
   containers:
   - name: file-copy
     image: ubuntu
+    command: ["/bin/bash", "-c", "tail -f /dev/null"]
     volumeMounts:
     - name: shared-data
       mountPath: /test-results
