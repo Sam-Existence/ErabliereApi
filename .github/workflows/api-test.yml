@@ -29,13 +29,13 @@ jobs:
           kubectl config current-context
           
           # create the staging namespace
-          kubectl create namespace erabliereapi-staging
+          kubectl apply -f Infrastructure/kubernetes/staging/namespace.yaml
 
           # create the staging deployment
           kubectl apply -f Infrastructure/kubernetes/staging/deployment.yaml -n erabliereapi-staging
 
           # wait for the deployment to be ready
-          kubectl rollout status deployment erabliereapi-staging-deployment -n erabliereapi-staging
+          kubectl rollout status deployment erabliereapi-deployment -n erabliereapi-staging
 
           # create the staging service
           kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n erabliereapi-staging
