@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20211229202840_AddAlerteCapteurs")]
+    partial class AddAlerteCapteurs
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,8 +89,6 @@ namespace Depot.Sql.Migrations
                         .HasColumnType("smallint");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("IdCapteur");
 
                     b.ToTable("AlerteCapteurs");
                 });
@@ -267,16 +267,6 @@ namespace Depot.Sql.Migrations
                     b.ToTable("Erabliere");
                 });
 
-            modelBuilder.Entity("ErabliereApi.Donnees.AlerteCapteur", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Capteur", "Capteur")
-                        .WithMany("AlertesCapteur")
-                        .HasForeignKey("IdCapteur")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Capteur");
-                });
-
             modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
@@ -329,8 +319,6 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
                 {
-                    b.Navigation("AlertesCapteur");
-
                     b.Navigation("DonneesCapteur");
                 });
 

@@ -12,12 +12,12 @@ using System.Threading.Tasks;
 namespace ErabliereApi.Controllers
 {
     /// <summary>
-    /// Contrôler pour interagir avec les alertes
+    /// Contrôler pour interagir avec les alertes des capteurs
     /// </summary>
     [ApiController]
-    [Route("erablieres/{id}/[controller]")]
+    [Route("Capteurs/{id}/[controller]")]
     [Authorize]
-    public class AlertesController : ControllerBase
+    public class AlerteCapteursController : ControllerBase
     {
         private readonly ErabliereDbContext _depot;
 
@@ -25,22 +25,22 @@ namespace ErabliereApi.Controllers
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="depot"></param>
-        public AlertesController(ErabliereDbContext depot)
+        public AlerteCapteursController(ErabliereDbContext depot)
         {
             _depot = depot;
         }
 
         /// <summary>
-        /// Liste les Alertes
+        /// Liste les alertes d'un capteur
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="token">Jeton d'annulation de la tâche</param>
         /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
         /// <response code="200">Une liste d'alerte potentiellement vide.</response>
         [HttpGet]
-        public async Task<IEnumerable<Alerte>> Lister(Guid id, CancellationToken token)
+        public async Task<IEnumerable<AlerteCapteur>> Lister(Guid id, CancellationToken token)
         {
-            return await _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id).ToArrayAsync(token);
+            return await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.IdCapteur == id).ToArrayAsync(token);
         }
 
         /// <summary>
@@ -52,15 +52,21 @@ namespace ErabliereApi.Controllers
         /// <param name="token">Jeton d'annulation de la tâche</param>
         /// <response code="200">L'alerte a été correctement ajouter.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
+        /// <response code="400">Le capteur n'existe pas</response>
         [HttpPost]
-        public async Task<IActionResult> Ajouter(Guid id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Ajouter(Guid id, AlerteCapteur alerte, CancellationToken token)
         {
-            if (id != alerte.IdErabliere)
+            if (id != alerte.IdCapteur)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à ajouter");
+                return BadRequest("L'id de la route ne concorde pas avec l'id du capteur à ajouter");
             }
 
-            var entity = await _depot.Alertes.AddAsync(alerte, token);
+            if (await (_depot.Capteurs.FindAsync(new object?[] { id }, cancellationToken: token)) == null)
+            {
+                return BadRequest("Le capteur n'existe pas");
+            }
+
+            var entity = await _depot.AlerteCapteurs.AddAsync(alerte, token);
 
             await _depot.SaveChangesAsync(token);
 
@@ -76,9 +82,9 @@ namespace ErabliereApi.Controllers
         /// <response code="200">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
         [HttpPut]
-        public async Task<IActionResult> Modifier(Guid id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Modifier(Guid id, AlerteCapteur alerte, CancellationToken token)
         {
-            if (id != alerte.IdErabliere)
+            if (id != alerte.IdCapteur)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à modifier.");
             }
@@ -99,9 +105,9 @@ namespace ErabliereApi.Controllers
         /// <response code="204">L'alerte a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
         [HttpDelete]
-        public async Task<IActionResult> Supprimer(Guid id, Alerte alerte, CancellationToken token)
+        public async Task<IActionResult> Supprimer(Guid id, AlerteCapteur alerte, CancellationToken token)
         {
-            if (id != alerte.IdErabliere)
+            if (id != alerte.IdCapteur)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.");
             }
@@ -124,14 +130,14 @@ namespace ErabliereApi.Controllers
         [HttpDelete("{idAlerte}")]
         public async Task<IActionResult> Supprimer(Guid id, Guid idAlerte, CancellationToken token)
         {
-            var alerte = await _depot.Alertes.FindAsync(idAlerte);
+            var alerte = await _depot.AlerteCapteurs.FindAsync(new object?[] { idAlerte }, cancellationToken: token);
 
             if (alerte == null)
             {
                 return NoContent();
             }
 
-            if (id != alerte.IdErabliere)
+            if (id != alerte.IdCapteur)
             {
                 return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.");
             }

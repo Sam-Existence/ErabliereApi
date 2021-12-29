@@ -39,6 +39,11 @@ namespace ErabliereApi.Donnees
         public List<DonneeCapteur> DonneesCapteur { get; set; } = new();
 
         /// <summary>
+        /// Les alertes du capteur
+        /// </summary>
+        public List<AlerteCapteur> AlertesCapteur { get; set; } = new();
+
+        /// <summary>
         /// Le nom donné au capteur
         /// </summary>
         [Required]
