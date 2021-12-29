@@ -14,31 +14,12 @@ spec:
       labels:
         app: erabliereapi
     spec:
-      # volumes:
-      # - name: email-config-secret
-      #   secret:
-      #     secretName: erabliereapi-email-config
-      # - name: erabliere-iu-oidc-config
-      #   configMap:
-      #     name: erabliere-iu-oidc
-      # - name: k8s-startup-config
-      #   configMap:
-      #     name: k8s-startup
-      #     defaultMode: 0744
       containers:
       - name: erabliereapi
         image: erabliereapi/erabliereapi:v2
         imagePullPolicy: Always
-        #command: ["/app/k8s-startup/k8s-startup.sh"]
         ports:
         - containerPort: 80
-        # volumeMounts:
-        # - name: email-config-secret
-        #   mountPath: /app/mountsecret
-        # - name: erabliere-iu-oidc-config
-        #   mountPath: /app/mountconfig
-        # - name: k8s-startup-config
-        #   mountPath: /app/k8s-startup
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Staging"
@@ -68,30 +49,6 @@ spec:
           value: "-"
         - name: USE_AUTHENTICATION
           value: "false"
-        # - name: USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW
-        #   value: "true"
-        # - name: USE_SWAGGER_PKCE
-        #   value: "true"
-        # - name: SWAGGER_AUTHORIZATION_URL
-        #   value: "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize"
-        # - name: SWAGGER_TOKEN_URL
-        #   value: "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token"
-        # - name: OIDC_CLIENT_ID
-        #   value: "<swagger-client-id>"
-        # - name: OIDC_CLIENT_PASSWORD
-        #   value: ""
-        # - name: OAUTH2_REDIRECT_URL
-        #   value: "https://<domain>/api/oauth2-redirect.html"
-        # - name: OIDC_AUDIENCE
-        #   value: "api://<client-id>"
-        # - name: OIDC_AUTHORITY
-        #   value: "https://login.microsoftonline.com/<tenant-id>/"
-        # - name: OIDC_SCOPES
-        #   value: "api://<client-id>/ErabliereAPI"
-        # - name: AzureAD__ClientId
-        #   value: "<client-id>"
-        # - name: AzureAD__TenantId
-        #   value: "<tenant-id>"
         - name: EMAIL_CONFIG_PATH
           value: "/app/secret/emailConfig.json"
         
