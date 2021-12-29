@@ -1,87 +1,52 @@
-# GenerateurDonneePython
+# PythonScripts
 
-Dossier contenant des scripts permettant d'envoyer des données à l'api. Les script sont lancer avec cron. Pour obtenir des logs plus détaillé, voir le bout de code bash suivant :
+Les scripts python sont installé sur des serveurs permettant d'interoger des appareils qui n'ont pas la capacité d'envoyer des requêtes http.
 
-Capturer les logs de cron
+### Authentification
+
+Trois mode d'authentification sont supporté (Aucune authentification, IdentityServer4 et AzureAD). La documentation suivante se concentrera sur l'installation des scripts avec AzureAD.
+
+Les configurations d'authentification en mode 'client credentials' devront se trouvé dans
+
+Linux
 ```
-sudo nano /etc/rsyslog.d/50-default.conf
-# Enlever le # devant cron.*
-sudo service rsyslog restart
-service cron restart
-cat /var/log/cron.log
-sudo halt --reboot
-```
-
-## detectionMouvement.py
-
-Script pour interagir avec un capteur détecteur de mouvement pour capturer les dompeux lors de la saison des sucres. L'idée était de placer un capteur près de la coulé d'eau dans un bassin, mais le capteur de détecte pas bien ce type de mouvement.
-
-Les scripts suivant sont executer sur un raspberry pi 3 qui execute ubuntu server comme OS. 
-
-```bash
-sudo apt update
-sudo apt install python3-gpiozero
-sudo apt install python3-pip
-sudo pip3 install apscheduler
-sudo pip3 install pytz
+/home/ubuntu/.erabliereapi/auth.config
 ```
 
-### Lancer le script au démarrage du raspberry
-
-Copier le script dans le repertoire /bin
+Windows
 ```
-sudo cp -i detectionMouvement.py /bin
-sudo crontab -e
-@reboot python3 /bin/detectionMouvement.py >/var/log/detectionMouvement.log 2>&1
+E:\config\python\aad-client-credentials.json
 ```
 
-## dl06_modbus.py
+Le json de configuration devra ressembler à ceci:
 
-Script permettant de scanner une série de registre du PLC et d'envoyer les valeurs à l'api
-
-### Cronjob
-
-L'url de l'api est hard-codé dans le script.
 
 ```
-*/15 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/dl06_modbus_client.py >/home/ubuntu/dl06_modbusextract_run.log 2>&1
+[
+    {
+        "TenantId": "<tenantId>",
+        "ClientId": "<clientId>",
+        "ClientSecret": "<clientSecret>",
+        "Authority": "https://login.microsoftonline.com",
+        "Scopes": "api://<api-clientId>/.default"
+    }
+]
 ```
 
-## donnes.py
+### Dépendances
 
-script de génération de données utiliser pour facilité le développement
-
-documentation apscheduler : https://apscheduler.readthedocs.io/en/stable/modules/schedulers/base.html#apscheduler.schedulers.base.BaseScheduler.add_job
-
-### Cronjob
-
-Envoyer des donnée a un api sur une machine de développement
+Les dépendances des scripts sont restauré utilisant pip et le fichier requirements.txt
 
 ```
-*/1 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/donnees.py 3 http://192.168.0.103:5000 >/home/ubuntu/generateurdonnees_debug.log 2>&1
+pip install -r requirements.txt
 ```
 
 ## extraireInfoImage.py
 
-Script pour extraire des informations d'une image. Le but est d'extraire les information d'un paneau d'un interface HMI avec la fonctionnalité server web activé. Il est possible de faire une requête au panneau pour obtenir l'écran demander sous image jpg.
-
 ```
-python3 extraireInfoImage.py https://www.acscm.com/wp-content/uploads/images/news/2015/5-tips-for-better-hmi-page.png
+python .\extraireInfoImage.py http://<ip-address-hmi>/1.jpg https://erabliereapi.freddycoder.com <guid-erabliere>
 ```
 
-### Cronjob
+## Work in progress
 
-```
-# Au 5 minute                                                                             adresse panneau hmi   adresse api action post données                           id erabliere
-*/5 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/extraireInfoImage.py http://<ip-hmi>/1.jpg https://erabliereapi.freddycoder.com 3
-```
-
-## monitorRaspberry
-
-Un script permettant de lire la temperature du processeur du raspberry et d'envoyer la valeur à l'api.
-
-### Cronjob
-
-```
-*/5 * * * * python3 /home/ubuntu/erabliereapi/GenerateurDonneePython/monitorRaspberry.py https://erabliereapi.freddycoder.com AzureAD 3 >/home/ubuntu/monitor_raspberry.log 2>&1
-```
+Les autres scripts et la documentation est en cours d'amélioration.

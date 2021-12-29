@@ -1,5 +1,6 @@
 import json
 import requests
+import os
 from auth.getAccessToken import getAccessToken as getAccessTokenIdentity
 from auth.getAccessTokenAAD import getAccessToken as getAccessTokenAAD
 from auth.getAccessTokenAAD import AzureADAccessTokenProvider
@@ -43,7 +44,10 @@ class ErabliereApiProxy:
     if (self.auth_provider == "AzureAD"):
       if self.authConfig == None:
         print("Open config from file")
-        authConfig = open("/home/ubuntu/.erabliereapi/auth.config",)
+        authPath = "/home/ubuntu/.erabliereapi/auth.config"
+        if (os.name == "nt"):
+          authPath = "E:\\config\\python\\aad-client-credentials.json"
+        authConfig = open(authPath,)
         self.authConfig = json.load(authConfig)[0]
         authConfig.close()
       token = self.aad_token_provider.getAccessToken(self.authConfig)

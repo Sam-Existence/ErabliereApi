@@ -1,0 +1,4 @@
+requests
+azure-identity
+pytesseract
+pillow

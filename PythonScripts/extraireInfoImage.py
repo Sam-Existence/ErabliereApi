@@ -1,3 +1,4 @@
+# For linux
 # sudo apt-get update
 # sudo apt install tesseract-ocr
 # sudo apt-get install python-dev python-setuptools
@@ -10,19 +11,28 @@
 # sudo pip3 install pytesseract
 # sudo pip3 install pillow
 
+# For windows
+# Add the tesseact-orc package in the environment variable PATH 
+# the location is C:\Users\<USER>\AppData\Local\Tesseract-OCR\
+
 from datetime import datetime as dt
 from datetime import timedelta as td
 from erabliere_api_proxy import ErabliereApiProxy
+import requests
+import os
+import sys
 
 print("Debut execution", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
-
-import requests
-import sys
 
 print("requests", sys.argv[1])
 response = requests.get(sys.argv[1])
 print(response.status_code)
 temp_file = "/tmp/tmp_image.jpg"
+
+# Check if it is windows
+if os.name == 'nt':
+    temp_file = "__pycache__\\tmp_image.jpg"
+
 file = open(temp_file, "wb")
 print("write file", temp_file)
 file.write(response.content)

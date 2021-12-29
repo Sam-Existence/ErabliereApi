@@ -2,11 +2,14 @@
 from azure.identity import ClientSecretCredential
 import json
 from os import path
+import os
 import time
 
 def getAccessToken(config):
   print("Get AAD access token")
   aadTokenFile = '/home/ubuntu/aad_oauth_token.json'
+  if os.name == 'nt':
+    aadTokenFile = '__pycache__\\aad_oauth_token.json'
   if path.exists(aadTokenFile):
     f = open(aadTokenFile,)
     data = json.load(f)
@@ -23,7 +26,10 @@ def getAccessToken(config):
 
   print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
-  with open('/home/ubuntu/aad_oauth_token.json', 'w') as outfile:
+  pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
+  if os.name == 'nt':
+    pathSaveFile = '__pycache__\\aad_oauth_token.json'
+  with open(pathSaveFile, 'w') as outfile:
     json.dump(accessToken, outfile)
 
   return accessToken.token
@@ -41,6 +47,8 @@ class AzureADAccessTokenProvider:
       return self.in_memory_token[0]
 
     aadTokenFile = '/home/ubuntu/aad_oauth_token.json'
+    if os.name == 'nt':
+      aadTokenFile = '__pycache__\\aad_oauth_token.json'
     if path.exists(aadTokenFile):
       f = open(aadTokenFile,)
       self.in_memory_token = json.load(f)
@@ -57,7 +65,10 @@ class AzureADAccessTokenProvider:
 
     print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
-    with open('/home/ubuntu/aad_oauth_token.json', 'w') as outfile:
+    pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
+    if os.name == 'nt':
+      pathSaveFile = '__pycache__\\aad_oauth_token.json'
+    with open(pathSaveFile, 'w') as outfile:
       json.dump(accessToken, outfile)
 
     self.in_memory_token = accessToken
