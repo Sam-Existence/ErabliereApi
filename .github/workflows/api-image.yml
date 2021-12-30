@@ -11,7 +11,7 @@ on:
       - Postman/**
       - .gitignore
       - '*.png'
-      - IdentityServer
+      - IdentityServer/**
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -21,7 +21,7 @@ on:
       - Postman/**
       - .gitignore
       - '*.png'
-      - IdentityServer
+      - IdentityServer/**
   workflow_dispatch:
 
 env:

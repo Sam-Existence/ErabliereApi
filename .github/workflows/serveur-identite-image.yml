@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - IdentityServer
+      - IdentityServer/**
   workflow_dispatch:
 
 env:
