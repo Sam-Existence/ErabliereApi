@@ -84,9 +84,13 @@ namespace ErabliereApi.Controllers
                                                (dd == null || d.D >= dd) &&
                                                (df == null || d.D <= df));
 
-            if (o == "d")
+            if (string.IsNullOrWhiteSpace(o) || o == "c")
             {
-                query = query.OrderByDescending(d => d);
+                query = query.OrderBy(d => d.D);
+            }
+            else if (o == "d")
+            {
+                query = query.OrderByDescending(d => d.D);
             }
 
             if (q.HasValue)
