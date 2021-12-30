@@ -26,7 +26,7 @@ spec:
         - name: USE_SQL
           value: "true"
         - name: SQL_CONNEXION_STRING
-          mapFrom:
+          valueFrom:
             secretKeyRef:
               name: erabliereapi-sql-credentials
               key: connexionstring
