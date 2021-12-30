@@ -41,10 +41,10 @@ Les dépendances des scripts sont restauré utilisant pip et le fichier requirem
 pip install -r requirements.txt
 ```
 
-## extraireInfoImage.py
+## extraireInfoHmi.py
 
 ```
-python .\extraireInfoImage.py http://<ip-address-hmi>/1.jpg https://erabliereapi.freddycoder.com <guid-erabliere>
+python .\extraireInfoHmi.py http://<ip-address-hmi>/1.jpg https://erabliereapi.freddycoder.com <guid-erabliere>
 ```
 
 ## Work in progress
