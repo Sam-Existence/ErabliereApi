@@ -10,7 +10,8 @@ on:
       - Infrastructure/**
       - Postman/**
       - .gitignore
-      - .png
+      - '*.png'
+      - IdentityServer
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -19,7 +20,8 @@ on:
       - Infrastructure/**
       - Postman/**
       - .gitignore
-      - .png
+      - '*.png'
+      - IdentityServer
   workflow_dispatch:
 
 env:

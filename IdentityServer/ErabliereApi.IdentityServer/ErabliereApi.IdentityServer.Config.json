@@ -177,7 +177,7 @@
           "type": "SharedSecret"
         }
       ],
-      "requireClientSecret": true,
+      "requireClientSecret": false,
       "clientName": "ErabliereAPI - Swagger",
       "description": null,
       "clientUri": null,

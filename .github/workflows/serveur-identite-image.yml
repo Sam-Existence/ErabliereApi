@@ -1,6 +1,11 @@
 name: ServeurIdentite-Image
 
-on: 
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - IdentityServer
   workflow_dispatch:
 
 env:
