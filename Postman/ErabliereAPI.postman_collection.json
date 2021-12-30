@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e51cdd6f-53b9-44bc-b761-34678186ba18",
+		"_postman_id": "4cb0fce2-828b-4374-af8c-9cfef3728c4d",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -44,11 +44,7 @@
 									"            pm.collectionVariables.set(\"ErabliereA_ID\", response.json()[0].id);\r",
 									"        }\r",
 									"    });\r",
-									"}\r",
-									"\r",
-									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereA_ID')).to.not.be.empty;\r",
-									"});"
+									"}"
 								],
 								"type": "text/javascript"
 							}
@@ -109,11 +105,7 @@
 									"            pm.collectionVariables.set(\"ErabliereB_ID\", response.json()[0].id);\r",
 									"        }\r",
 									"    });\r",
-									"}\r",
-									"\r",
-									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereB_ID')).to.not.be.empty;\r",
-									"});"
+									"}"
 								],
 								"type": "text/javascript"
 							}
@@ -174,11 +166,7 @@
 									"            pm.collectionVariables.set(\"ErabliereSaintAlfred_ID\", response.json()[0].id);\r",
 									"        }\r",
 									"    });\r",
-									"}\r",
-									"\r",
-									"pm.test(\"L'id est bien initialisé\", () => {\r",
-									"    pm.expect(pm.collectionVariables.get('ErabliereSaintAlfred_ID')).to.not.be.empty;\r",
-									"});"
+									"}"
 								],
 								"type": "text/javascript"
 							}
