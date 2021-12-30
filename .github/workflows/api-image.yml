@@ -9,6 +9,8 @@ on:
       - .github/**
       - Infrastructure/**
       - Postman/**
+      - .gitignore
+      - *.png
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -16,6 +18,8 @@ on:
       - .github/**
       - Infrastructure/**
       - Postman/**
+      - .gitignore
+      - *.png
   workflow_dispatch:
 
 env:
