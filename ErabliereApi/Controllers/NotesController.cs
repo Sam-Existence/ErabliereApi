@@ -39,6 +39,7 @@ namespace ErabliereApi.Controllers
         /// Lister les notes avec les fonctionnalité de OData
         /// </summary>
         /// <returns></returns>
+        [HttpGet]
         [EnableQuery]
         public IQueryable<Note> Lister(Guid id)
         {
