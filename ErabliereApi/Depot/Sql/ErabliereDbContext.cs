@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace ErabliereApi.Depot.Sql
 {
@@ -60,6 +61,16 @@ namespace ErabliereApi.Depot.Sql
         /// Table des données des capteurs
         /// </summary>
         public DbSet<DonneeCapteur> DonneesCapteur { get; private set; }
+
+        /// <summary>
+        /// Table des notes
+        /// </summary>
+        public DbSet<Note> Notes { get; private set; }
+
+        /// <summary>
+        /// Table de la docuemntation
+        /// </summary>
+        public DbSet<Documentation> Documentation { get; private set; }
 
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)

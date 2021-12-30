@@ -13,9 +13,11 @@ namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
     [Migration("20211229202840_AddAlerteCapteurs")]
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     partial class AddAlerteCapteurs
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
 #pragma warning disable 612, 618
             modelBuilder

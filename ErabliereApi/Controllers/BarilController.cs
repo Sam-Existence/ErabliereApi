@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace ErabliereApi.Controllers
 {
     /// <summary>
-    /// Contrôler représentant les données des dompeux
+    /// Contrôler représentant les données des barils
     /// </summary>
     [ApiController]
     [Route("erablieres/{id}/[controller]")]

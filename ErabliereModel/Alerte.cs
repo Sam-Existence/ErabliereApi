@@ -9,7 +9,14 @@ namespace ErabliereApi.Donnees
     /// </summary>
     public class Alerte : IIdentifiable<Guid?, Alerte>
     {
+        /// <summary>
+        /// L'id de l'alerte
+        /// </summary>
         public Guid? Id { get; set; }
+
+        /// <summary>
+        /// L'id de l'érablière
+        /// </summary>
         public Guid? IdErabliere { get; set; }
 
         /// <summary>
@@ -26,9 +33,15 @@ namespace ErabliereApi.Donnees
         [MaxLength(50)]
         public string? TemperatureThresholdLow { get; set; }
 
+        /// <summary>
+        /// Pourrait être interprété comme TemperatureMinValue
+        /// </summary>
         [MaxLength(50)]
         public string? TemperatureThresholdHight { get; set; }
 
+        /// <summary>
+        /// Pourrait être interprété comme VacciumMaxValue
+        /// </summary>
         [MaxLength(50)]
         public string? VacciumThresholdLow { get; set; }
 
@@ -39,9 +52,15 @@ namespace ErabliereApi.Donnees
         [MaxLength(50)]
         public string? VacciumThresholdHight { get; set; }
 
+        /// <summary>
+        /// Pourrait être interprété comme NiveauBassinMaxValue
+        /// </summary>
         [MaxLength(50)]
         public string? NiveauBassinThresholdLow { get; set; }
 
+        /// <summary>
+        /// Pourrait être interprété comme NiveauBassinMinValue
+        /// </summary>
         [MaxLength(50)]
         public string? NiveauBassinThresholdHight { get; set; }
 
@@ -61,6 +80,11 @@ namespace ErabliereApi.Donnees
             if (Id != null && other.Id == null)
             {
                 return 1;
+            }
+
+            if (Id == null)
+            {
+                return -1;
             }
 
             return Id.Value.CompareTo(other.Id);

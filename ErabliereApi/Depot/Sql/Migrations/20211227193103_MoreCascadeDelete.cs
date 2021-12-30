@@ -4,6 +4,7 @@
 
 namespace Depot.Sql.Migrations
 {
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
     public partial class MoreCascadeDelete : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,6 +47,7 @@ namespace Depot.Sql.Migrations
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Barils_Erabliere_IdErabliere",

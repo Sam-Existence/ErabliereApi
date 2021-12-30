@@ -15,7 +15,9 @@ namespace Depot.Sql.Migrations
     [Migration("20211227192602_CascadeDeleteDonneeCapteur")]
     partial class CascadeDeleteDonneeCapteur
     {
+#pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
+#pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
         {
 #pragma warning disable 612, 618
             modelBuilder

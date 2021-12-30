@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ErabliereApi.Donnees.Action.Get
 {
+    /// <summary>
+    /// Modèle de retour d'obtention des données
+    /// </summary>
     public class GetDonnee
     {
         /// <summary>

@@ -54,6 +54,11 @@ namespace ErabliereApi.Donnees
                 return other.DF.HasValue ? -1 : 0;
             }
 
+            if (!other.DF.HasValue)
+            {
+                return -1;
+            }
+
             return DF.Value.CompareTo(other.DF.Value);
         }
     }

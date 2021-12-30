@@ -2,6 +2,9 @@
 
 namespace ErabliereApi.Donnees.Action.Post
 {
+    /// <summary>
+    /// Modèle d'ajout d'une érablière
+    /// </summary>
     public class PostErabliere
     {
         /// <summary>

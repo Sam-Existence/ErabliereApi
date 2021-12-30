@@ -12,9 +12,9 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    [Migration("20211227193103_MoreCascadeDelete")]
+    [Migration("20211230200245_AddNoteAndDocumentation")]
 #pragma warning disable CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
-    partial class MoreCascadeDelete
+    partial class AddNoteAndDocumentation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
 #pragma warning restore CS1591 // Commentaire XML manquant pour le type ou le membre visible publiquement
@@ -66,6 +66,35 @@ namespace Depot.Sql.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Alertes");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.AlerteCapteur", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DC")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EnvoyerA")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<Guid?>("IdCapteur")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<short?>("MaxValue")
+                        .HasColumnType("smallint");
+
+                    b.Property<short?>("MinVaue")
+                        .HasColumnType("smallint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdCapteur");
+
+                    b.ToTable("AlerteCapteurs");
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
@@ -124,6 +153,32 @@ namespace Depot.Sql.Migrations
                     b.HasIndex("IdErabliere");
 
                     b.ToTable("Capteurs");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.Documentation", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdErabliere");
+
+                    b.ToTable("Documentation");
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Dompeux", b =>
@@ -242,6 +297,45 @@ namespace Depot.Sql.Migrations
                     b.ToTable("Erabliere");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("NoteDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdErabliere");
+
+                    b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.AlerteCapteur", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Capteur", "Capteur")
+                        .WithMany("AlertesCapteur")
+                        .HasForeignKey("IdCapteur")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Capteur");
+                });
+
             modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
@@ -256,6 +350,16 @@ namespace Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Capteurs")
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Erabliere");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.Documentation", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany("Documentations")
                         .HasForeignKey("IdErabliere")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -292,8 +396,20 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Capteur");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany("Notes")
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Erabliere");
+                });
+
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
                 {
+                    b.Navigation("AlertesCapteur");
+
                     b.Navigation("DonneesCapteur");
                 });
 
@@ -303,9 +419,13 @@ namespace Depot.Sql.Migrations
 
                     b.Navigation("Capteurs");
 
+                    b.Navigation("Documentations");
+
                     b.Navigation("Dompeux");
 
                     b.Navigation("Donnees");
+
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

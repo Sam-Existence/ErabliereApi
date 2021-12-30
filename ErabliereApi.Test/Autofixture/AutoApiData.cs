@@ -32,7 +32,9 @@ namespace ErabliereApi.Test.Autofixture
                                                .Without(e => e.Donnees)
                                                .Without(e => e.Dompeux)
                                                .Without(e => e.Barils)
-                                               .Without(e => e.Capteurs));
+                                               .Without(e => e.Capteurs)
+                                               .Without(e => e.Documentations)
+                                               .Without(e => e.Notes));
 
             fixture.Register(() => builder.GetRequiredService<ErabliereDbContext>().PopulatesDbSets(fixture));
             fixture.Register(() => builder.GetRequiredService<IMapper>());

@@ -68,6 +68,16 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public List<Dompeux> Dompeux { get; set; } = new();
 
+        /// <summary>
+        /// La liste des notes
+        /// </summary>
+        public List<Note> Notes { get; set; } = new();
+
+        /// <summary>
+        /// La liste des documentations
+        /// </summary>
+        public List<Documentation> Documentations { get; set; } = new();
+
         /// <inheritdoc />
         public int CompareTo([AllowNull] Erabliere other)
         {

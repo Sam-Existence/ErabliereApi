@@ -151,6 +151,32 @@ namespace Depot.Sql.Migrations
                     b.ToTable("Capteurs");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Documentation", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdErabliere");
+
+                    b.ToTable("Documentation");
+                });
+
             modelBuilder.Entity("ErabliereApi.Donnees.Dompeux", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -267,6 +293,35 @@ namespace Depot.Sql.Migrations
                     b.ToTable("Erabliere");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("Created")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte[]>("File")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("NoteDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Text")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdErabliere");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("ErabliereApi.Donnees.AlerteCapteur", b =>
                 {
                     b.HasOne("ErabliereApi.Donnees.Capteur", "Capteur")
@@ -291,6 +346,16 @@ namespace Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany("Capteurs")
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Erabliere");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.Documentation", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany("Documentations")
                         .HasForeignKey("IdErabliere")
                         .OnDelete(DeleteBehavior.Cascade);
 
@@ -327,6 +392,16 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Capteur");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany("Notes")
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("Erabliere");
+                });
+
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
                 {
                     b.Navigation("AlertesCapteur");
@@ -340,9 +415,13 @@ namespace Depot.Sql.Migrations
 
                     b.Navigation("Capteurs");
 
+                    b.Navigation("Documentations");
+
                     b.Navigation("Dompeux");
 
                     b.Navigation("Donnees");
+
+                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }

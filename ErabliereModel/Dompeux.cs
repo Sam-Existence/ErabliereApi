@@ -28,10 +28,17 @@ namespace ErabliereApi.Donnees
         /// </summary>
         public DateTimeOffset? DF { get; set; }
 
+        /// <summary>
+        /// Clé étrangère de l'érablière
+        /// </summary>
         public Guid? IdErabliere { get; set; }
 
+        /// <summary>
+        /// L'érablière relié
+        /// </summary>
         public Erabliere? Erabliere { get; set; }
 
+        /// <inheritdoc />
         public int CompareTo([AllowNull] Dompeux other)
         {
             if (other == default)
@@ -42,6 +49,11 @@ namespace ErabliereApi.Donnees
             if (T.HasValue == false)
             {
                 return other.T.HasValue ? -1 : 0;
+            }
+
+            if (!other.T.HasValue)
+            {
+                return -1;
             }
 
             return T.Value.CompareTo(other.T.Value);

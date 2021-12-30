@@ -211,9 +211,9 @@ if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, Ord
     {
         app.UseCors(option =>
         {
-            option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(','));
-            option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(','));
-            option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(','));
+            option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(',') ?? new[] { "*" });
+            option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(',') ?? new[] { "*" });
+            option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(',') ?? new[] { "*" });
         });
     }
 
