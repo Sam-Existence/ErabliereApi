@@ -23,32 +23,20 @@ spec:
         env:
         - name: ASPNETCORE_ENVIRONMENT
           value: "Staging"
-        - name: USE_CORS
-          value: "False"
-        - name: CORS_ORIGINS
-          value: "*"
-        - name: CORS_HEADERS
-          value: "*"
-        - name: CORS_METHODS
-          value: "*"
-        - name: Forwarded_headers
-          value: "false"
-        - name: USE_SCHEMA_FROM_PROXY
-          value: "false"
-        - name: Forwarded_headers.Debug_headers
-          value: "false"
         - name: USE_SQL
-          value: "false"
+          value: "true"
         - name: SQL_CONNEXION_STRING
-          value: "Data Source=erabliere-db-service;Initial Catalog=ErabliereAPI-Staging;User ID=SA;Password=<SA-PASSWORD>"
+          mapFrom:
+            secretKeyRef:
+              name: erabliereapi-sql-credentials
+              key: connexionstring
         - name: SQL_USE_STARTUP_MIGRATION
           value: "true"
-        - name: DEBUG_HEADERS
-          value: "false"
-        - name: LOG_SQL
-          value: "-"
         - name: USE_AUTHENTICATION
           value: "false"
         - name: EMAIL_CONFIG_PATH
           value: "/app/secret/emailConfig.json"
-        
+      volumes:
+      - name: erabliereapi-sql-credentials
+        secret:
+          secretName: erabliereapi-sql-credentials
