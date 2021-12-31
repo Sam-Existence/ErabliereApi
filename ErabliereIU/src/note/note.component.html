@@ -1,4 +1,7 @@
 <div class="row ml-1">
+    <div *ngIf="notes == undefined || notes.length == 0">
+        <p>Aucune note</p>
+    </div>
     <div *ngFor="let note of notes">
         <div class="row">
             <h4 class="mt-4">{{ note.title }}</h4>

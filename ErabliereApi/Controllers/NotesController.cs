@@ -54,11 +54,12 @@ namespace ErabliereApi.Controllers
         /// <param name="token"></param>
         /// <returns></returns>
         [HttpPost]
+        [ProducesResponseType(200, Type = typeof(Note))]
         public async Task<IActionResult> Ajouter(Guid id, PostNote postNote, CancellationToken token)
         {
             if (id != postNote.IdErabliere)
             {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à ajouter");
+                return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
             }
 
             if (postNote.Created == null)
@@ -75,7 +76,7 @@ namespace ErabliereApi.Controllers
 
             await _depot.SaveChangesAsync(token);
 
-            return Ok(entite);
+            return Ok(entite.Entity);
         }
     }
 }

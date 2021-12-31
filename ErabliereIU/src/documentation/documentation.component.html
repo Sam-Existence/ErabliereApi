@@ -1,4 +1,7 @@
 <div class="row ml-1">
+    <div *ngIf="documentations == undefined || documentations.length == 0">
+        <p>Aucune documentation</p>
+    </div>
     <div *ngFor="let documentation of documentations" class="col-12">
         <div class="row">
             <h4 class="mt-4">{{ documentation.title }}</h4>
