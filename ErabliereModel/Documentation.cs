@@ -29,10 +29,22 @@ namespace ErabliereApi.Donnees
         public DateTimeOffset? Created { get; set; }
 
         /// <summary>
+        /// Le titre de la documentation
+        /// </summary>
+        [MaxLength(200)]
+        public string? Title { get; set; }
+
+        /// <summary>
         /// Le text de la documentation
         /// </summary>
         [MaxLength(2000)]
         public string? Text { get; set; }
+
+        /// <summary>
+        /// L'extension du fichier
+        /// </summary>
+        [MaxLength(20)]
+        public string? FileExtension { get; set; }
 
         /// <summary>
         /// Le fichier de la documentation

@@ -25,9 +25,21 @@ namespace ErabliereApi.Donnees.Action.Post
         public DateTimeOffset? Created { get; set; }
 
         /// <summary>
+        /// Le titre de la documentation
+        /// </summary>
+        [MaxLength(200)]
+        public string? Title { get; set; }
+
+        /// <summary>
         /// Text de la documentation
         /// </summary>
         public string? Text { get; set; }
+
+        /// <summary>
+        /// L'extension du fichier
+        /// </summary>
+        [MaxLength(20)]
+        public string? FileExtension { get; set; }
 
         /// <summary>
         /// Base64 string

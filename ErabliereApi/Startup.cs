@@ -71,6 +71,7 @@ namespace ErabliereApi
             .AddJsonOptions(c =>
             {
                 c.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
+                c.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
             });
 
             // Forwarded headers

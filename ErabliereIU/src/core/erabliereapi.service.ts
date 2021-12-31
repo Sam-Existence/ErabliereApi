@@ -5,6 +5,7 @@ import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service'
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
 import { Baril } from 'src/model/baril';
+import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur } from 'src/model/donneeCapteur';
@@ -119,6 +120,20 @@ export class ErabliereApi {
             var httpCall = this._httpClient.get<Dompeux[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
             
             return httpCall.toPromise();
+        });
+    }
+
+    getDocumentations(idErabliereSelectionnee:any): Promise<Documentation[]> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation", {headers: headers}).toPromise();
+        });
+    }
+
+    getNotes(idErabliereSelectionnee:any): Promise<Documentation[]> {
+        return this._authService.getAccessToken().then(token => {
+            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes", {headers: headers}).toPromise();
         });
     }
 }

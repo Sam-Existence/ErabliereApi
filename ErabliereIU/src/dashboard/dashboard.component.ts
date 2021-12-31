@@ -20,8 +20,11 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
                     <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
@@ -85,10 +88,18 @@ export class DashboardComponent implements OnInit {
 
     selectionnerPage(i: number) {
         this.pageSelectionnee = i;
-        this.cacheMenuErabliere = i == 3 || i == 4;
+        this.cacheMenuErabliere = i == 3;
 
         if (this.pageSelectionnee == 1) {
             this.erabierePage?.loadAlertes();
+        }
+
+        if (this.pageSelectionnee == 4) {
+            this.erabierePage?.loadDocumentations();
+        }
+
+        if (this.pageSelectionnee == 5) {
+            this.erabierePage?.loadNotes();
         }
     }
 }

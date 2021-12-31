@@ -1,15 +1,15 @@
-<h3>Documentation</h3>
-<hr/>
-<h4 class="mt-4">Spécification de l'api</h4>
-<a href="{{urlApi}}/api/index.html" target="_blank" rel="noopener noreferrer">Swagger</a>
-
-
-<h4 class="mt-4">Connecter un PLC</h4>
-<ul>
-    <li><a href="https://library.automationdirect.com/connecting-plc-internet/" target="_blank">Automation direct, connecting-plc-internet</a></li>
-    <li><a href="https://www.youtube.com/watch?v=hmyxPwlbqPc" target="_blank">Troubleshooting port 1 connection issues (youtube)</a></li>
-</ul>
-
-
-<h4 class="mt-4">Note sur les cables de courant alternatif</h4>
-<img src="assets/images/cableconnexioncourantalternatif.jpg" />
+<div class="row ml-1">
+    <div *ngFor="let documentation of documentations" class="col-12">
+        <div class="row">
+            <h4 class="mt-4">{{ documentation.title }}</h4>
+        </div>
+        
+        <div class="row">
+            <p>{{ documentation.text }}</p>
+        </div>
+        
+        <div class="row">
+            <img *ngIf="documentation.file != ''" src="data:image/png;base64,{{ documentation.file }}" />
+        </div>
+    </div>
+</div>

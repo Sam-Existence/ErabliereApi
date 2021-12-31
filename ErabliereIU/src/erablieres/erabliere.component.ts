@@ -2,7 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
+import { Note } from 'src/model/note';
 
 @Component({
     selector: 'erablieres',
@@ -21,8 +23,11 @@ export class ErabliereComponent implements OnInit {
     @Input() pageSelectionnee?:number = 0;
 
     alertes?: Array<any>;
+    documentations?: Array<Documentation>;
+    notes?: Array<Note>;
 
     private _authService: IAuthorisationSerivce
+    
 
     constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService){
         this.erabliereSelectionnee = undefined;
@@ -89,11 +94,31 @@ export class ErabliereComponent implements OnInit {
         if (this.pageSelectionnee == 1) {
             this.loadAlertes();
         }
+
+        if (this.pageSelectionnee == 4) {
+            this.loadDocumentations();
+        }
+
+        if (this.pageSelectionnee == 5) {
+            this.loadNotes();
+        }
     }
 
     loadAlertes() {
         this._erabliereApi.getAlertes(this.erabliereSelectionnee?.id).then(alertes => {
             this.alertes = alertes;
+        });
+    }
+
+    loadDocumentations() {
+        this._erabliereApi.getDocumentations(this.erabliereSelectionnee?.id).then(documentations => {
+            this.documentations = documentations;
+        });
+    }
+
+    loadNotes() {
+        this._erabliereApi.getNotes(this.erabliereSelectionnee?.id).then(notes => {
+            this.notes = notes;
         });
     }
 }

@@ -22,6 +22,7 @@ import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
+import { NoteComponent } from 'src/note/note.component';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -45,6 +46,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ModifierAlerteComponent,
     AProposComponent,
     DocumentationComponent,
+    NoteComponent,
     SigninRedirectCallbackComponent,
     SignoutRedirectCallbackComponent
   ],

@@ -19,6 +19,12 @@ namespace ErabliereApi.Donnees.Action.Post
         public Guid? IdErabliere { get; set; }
 
         /// <summary>
+        /// Le titre de la note
+        /// </summary>
+        [MaxLength(200)]
+        public string? Title { get; set; }
+
+        /// <summary>
         /// Le text de la note
         /// </summary>
         [MaxLength(2000)]
@@ -28,6 +34,12 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Base64 string
         /// </summary>
         public string? File { get; set; }
+
+        /// <summary>
+        /// L'extension du fichier
+        /// </summary>
+        [MaxLength(20)]
+        public string? FileExtension { get; set; }
 
         /// <summary>
         /// La date de cération

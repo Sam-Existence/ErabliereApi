@@ -1,0 +1,15 @@
+<div class="row ml-1">
+    <div *ngFor="let note of notes">
+        <div class="row">
+            <h4 class="mt-4">{{ note.title }}</h4>
+        </div>
+        
+        <div class="row">
+            <p>{{ note.text }}</p>
+        </div>
+        
+        <div class="row">
+            <img *ngIf="note.file != ''" src="data:image/png;base64,{{ note.file }}" />
+        </div>
+    </div>
+</div>

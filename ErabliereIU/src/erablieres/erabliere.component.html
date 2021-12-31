@@ -16,11 +16,14 @@
         <graphique [erabliere]="erabliereSelectionnee"></graphique>
     </div>
 
-    <alerte-page class="col-10" [alertes]="alertes" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
+    <alerte-page class="col-lg-10 col-md-12" [alertes]="alertes" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
     </alerte-page>
 
+    <documentation class="col-lg-10 col-md-12" [documentations]="documentations" [hidden]="pageSelectionnee !== 4"></documentation>
+
+    <note class="col-lg-10 col-md-12" [notes]="notes" [hidden]="pageSelectionnee !== 5"></note>
+
     <div class="container">
-        <documentation class="col-12" [hidden]="pageSelectionnee !== 4"></documentation>
         <div>
             <div class="container">
                 <apropos class="col-12" [hidden]="pageSelectionnee !== 3"></apropos>
