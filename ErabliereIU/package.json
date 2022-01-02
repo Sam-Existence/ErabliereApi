@@ -21,7 +21,7 @@
     "@angular/router": "~13.1.1",
     "@babel/core": "^7.16.0",
     "@azure/msal-browser": "^2.20.0",
-    "bootstrap": "^4.6.0",
+    "bootstrap": "^4.6.1",
     "chart.js": "^2.9.4",
     "jquery": "^3.5.1",
     "ng": "0.0.0",
