@@ -25,7 +25,7 @@
     "chart.js": "^2.9.4",
     "jquery": "^3.5.1",
     "ng": "0.0.0",
-    "ng2-charts": "^2.4.2",
+    "ng2-charts": "^2.4.3",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.16.1",
     "rxjs": "~6.6.7",
