@@ -34,8 +34,8 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
                     </li>
                 </ul>
                 <span [hidden]="!useAuthentication">
-                    <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
-                    <button class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
+                    <button id="login-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
+                    <button id="logout-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
                 </span>
             </div>
             </div>

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErabliereApi", "ErabliereApi\ErabliereApi.csproj", "{1B190AD3-99F9-4144-BB0A-5E8A2F379C9C}"
 EndProject
@@ -12,6 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OIDC", "OIDC", "{585C97B6-8F3F-4B69-B560-B6D06000B553}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ErabliereApi.IdentityServer", "IdentityServer\ErabliereApi.IdentityServer\ErabliereApi.IdentityServer.csproj", "{9C943378-0017-4006-AFD8-FDC825DA08AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ErabliereApi.Integration.Test", "ErabliereApi.Integration.Test\ErabliereApi.Integration.Test.csproj", "{E1CDDDBF-92D1-4781-94E1-181C458251ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +37,10 @@ Global
 		{9C943378-0017-4006-AFD8-FDC825DA08AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C943378-0017-4006-AFD8-FDC825DA08AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C943378-0017-4006-AFD8-FDC825DA08AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1CDDDBF-92D1-4781-94E1-181C458251ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1CDDDBF-92D1-4781-94E1-181C458251ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1CDDDBF-92D1-4781-94E1-181C458251ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1CDDDBF-92D1-4781-94E1-181C458251ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
