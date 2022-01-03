@@ -23,7 +23,7 @@
     "@azure/msal-browser": "^2.20.0",
     "bootstrap": "^4.6.1",
     "chart.js": "^2.9.4",
-    "ng": "0.0.5",
+    "ng": "0.0.0",
     "jquery": "^3.6.0",
     "ng2-charts": "^2.4.3",
     "oidc-client": "^1.11.5",
