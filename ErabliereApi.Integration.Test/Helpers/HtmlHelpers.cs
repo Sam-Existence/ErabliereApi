@@ -12,9 +12,9 @@ using AngleSharp.Io;
 
 namespace ErabliereApi.Integration.Test.Helpers
 {
-    public class HtmlHelpers
+    public static class HtmlHelpers
     {
-        public static async Task<IHtmlDocument> GetDocumentAsync(HttpResponseMessage response)
+        public static async Task<IHtmlDocument> GetDocumentAsync(this HttpResponseMessage response)
         {
             var content = await response.Content.ReadAsStringAsync();
             var document = await BrowsingContext.New()

@@ -1,4 +1,6 @@
+using AngleSharp.Html.Dom;
 using ErabliereApi.Integration.Test.ApplicationFactory;
+using ErabliereApi.Integration.Test.Helpers;
 using System;
 using System.Threading.Tasks;
 using Xunit;
@@ -29,7 +31,11 @@ namespace ErabliereApi.Integration.Test
 
             response.EnsureSuccessStatusCode();
 
+            var content = await response.GetDocumentAsync();
 
+            var loginButton = content.QuerySelector("button[id='login-button']") as IHtmlButtonElement;
+
+            // ... to be continue
         }
     }
 }

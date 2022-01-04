@@ -46,9 +46,17 @@ namespace ErabliereApi.Controllers
         /// <returns>Une liste d'érablière</returns>
         [HttpGet]
         [EnableQuery]
+        [AllowAnonymous]
         public IQueryable<Erabliere> Lister()
         {
-            return _context.Erabliere.AsNoTracking();
+            var query = _context.Erabliere.AsNoTracking();
+
+            if (User.Identity?.IsAuthenticated == false)
+            {
+                query = query.Where(e => e.IsPublic == true);
+            }
+
+            return query;
         }
 
         /// <summary>

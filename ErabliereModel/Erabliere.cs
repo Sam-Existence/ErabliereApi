@@ -49,6 +49,11 @@ namespace ErabliereApi.Donnees
         public bool? AfficherSectionDompeux { get; set; }
 
         /// <summary>
+        /// Indique si une érablière est publique ou une authentification est requise
+        /// </summary>
+        public bool IsPublic { get; set; }
+
+        /// <summary>
         /// Les capteurs de l'érablière
         /// </summary>
         public List<Capteur> Capteurs { get; set; } = new();
