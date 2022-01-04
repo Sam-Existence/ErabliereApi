@@ -28,16 +28,19 @@ namespace ErabliereApi.Controllers
     {
         private readonly ErabliereDbContext _context;
         private readonly IMapper _mapper;
+        private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
 
         /// <summary>
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="context">Classe de contexte pour accéder à la BD</param>
         /// <param name="mapper">mapper de donnée</param>
-        public ErablieresController(ErabliereDbContext context, IMapper mapper)
+        /// <param name="config">Permet d'accéder au configuration de l'api</param>
+        public ErablieresController(ErabliereDbContext context, IMapper mapper, Microsoft.Extensions.Configuration.IConfiguration config)
         {
             _context = context;
             _mapper = mapper;
+            _config = config;
         }
 
         /// <summary>
@@ -51,7 +54,8 @@ namespace ErabliereApi.Controllers
         {
             var query = _context.Erabliere.AsNoTracking();
 
-            if (User.Identity?.IsAuthenticated == false)
+            if (string.Equals(_config["USE_AUTHENTICATION"], bool.TrueString, StringComparison.OrdinalIgnoreCase) && 
+                User.Identity?.IsAuthenticated == false)
             {
                 query = query.Where(e => e.IsPublic == true);
             }
