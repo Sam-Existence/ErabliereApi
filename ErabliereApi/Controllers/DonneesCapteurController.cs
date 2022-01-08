@@ -99,7 +99,7 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Ajouter un capteur
         /// </summary>
-        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="id">L'identifiant du capteurs</param>
         /// <param name="donneeCapteur">Le capteur a ajouter</param>
         /// <response code="200">Le capteur a été correctement ajouté.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
