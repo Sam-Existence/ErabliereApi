@@ -127,7 +127,7 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Modifier un capteur
         /// </summary>
-        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="id">L'identifiant du capteur</param>
         /// <param name="capteur">Le capteur a modifier</param>
         /// <response code="200">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
@@ -149,7 +149,7 @@ namespace ErabliereApi.Controllers
         /// <summary>
         /// Supprimer un capteur
         /// </summary>
-        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="id">Identifiant du capteur</param>
         /// <param name="capteur">Le capteur a supprimer</param>
         /// <response code="202">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
