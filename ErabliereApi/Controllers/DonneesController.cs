@@ -15,6 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mime;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers
@@ -187,6 +188,33 @@ namespace ErabliereApi.Controllers
             }
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Action permettant d'importer une liste de données
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="donnees"></param>
+        /// <param name="token"></param>
+        /// <returns>Le nombre d'entré enregistré dans la base de données</returns>
+        [HttpPost]
+        [ValiderIPRules]
+        [Route("Importer")]
+        public async Task<IActionResult> Importer(Guid id, Donnee[] donnees, CancellationToken token)
+        {
+            await _context.AddRangeAsync(donnees.Select(d =>
+            {
+                if (d.IdErabliere == null)
+                {
+                    d.IdErabliere = id;
+                }
+
+                return donnees;
+            }), cancellationToken: token);
+
+            var nbStateEntrySaved = await _context.SaveChangesAsync(token);
+
+            return Ok(nbStateEntrySaved);
         }
 
         /// <summary>
