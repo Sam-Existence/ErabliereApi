@@ -21,14 +21,9 @@ using StackExchange.Profiling;
 using System.Data.Common;
 using Microsoft.Data.SqlClient;
 using StackExchange.Profiling.SqlFormatters;
-using Newtonsoft.Json;
 using Microsoft.AspNetCore.OData;
 using System.Text.Json.Serialization;
-using Microsoft.OData.Edm;
-using Microsoft.AspNetCore.OData.Batch;
 using System.Text.Json;
-using Microsoft.OData.ModelBuilder;
-using ErabliereApi.Donnees;
 
 namespace ErabliereApi
 {
@@ -71,7 +66,7 @@ namespace ErabliereApi
             .AddJsonOptions(c =>
             {
                 c.JsonSerializerOptions.DictionaryKeyPolicy = JsonNamingPolicy.CamelCase;
-                c.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                c.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
             // Forwarded headers
