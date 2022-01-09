@@ -10,6 +10,7 @@ import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
+import { Note } from 'src/model/note';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -109,9 +110,15 @@ export class ErabliereApi {
         return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation", { headers: headers }).toPromise();
     }
 
-    async getNotes(idErabliereSelectionnee:any): Promise<Documentation[]> {
+    async getNotes(idErabliereSelectionnee:any): Promise<Note[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", { headers: headers }).toPromise();
+        return await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", { headers: headers }).toPromise();
+    }
+
+    async postNote(idErabliereSelectionnee:any, note:Note): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes", note, { headers: headers }).toPromise();
     }
 }

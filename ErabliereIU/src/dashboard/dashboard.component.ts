@@ -24,10 +24,10 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
                     <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
                     </li>
-                    <li class="nav-item">
+                    <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
                     </li>
                     <li class="nav-item">

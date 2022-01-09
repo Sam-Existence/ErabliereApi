@@ -1,0 +1,21 @@
+<div *ngIf="!display">
+    <button class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
+</div>
+<div *ngIf="display">
+    <form [formGroup]="noteForm">
+        <div class="form-group">
+          Titre: <input class="form-control" type="text" formControlName="title">
+        </div>
+        <div class="form-group">
+          Texte: <input class="form-control" type="text" formControlName="text">
+        </div>
+        <div class="form-group">
+          Fichier: <input class="form-control" type="file" formControlName="file">
+        </div>
+        <div class="form-group">
+          Date de la note: <input class="form-control" type="datetime" formControlName="noteDate">
+        </div>
+      <button class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
+      <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+    </form>
+</div>
