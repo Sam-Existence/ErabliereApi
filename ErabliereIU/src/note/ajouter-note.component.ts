@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { FormGroup, FormBuilder } from "@angular/forms";
 import { Note } from "src/model/note";
@@ -21,6 +21,7 @@ export class AjouterNoteComponent implements OnInit {
             title: '',
             text: '',
             file: '',
+            fileBase64: '',
             noteDate: '',
         });
     }
@@ -32,6 +33,8 @@ export class AjouterNoteComponent implements OnInit {
     @Input() notes?: Note[];
 
     @Input() idErabliereSelectionee:any
+
+    @Output() needToUpdate = new EventEmitter();
 
     noteForm: FormGroup;
 
@@ -52,17 +55,27 @@ export class AjouterNoteComponent implements OnInit {
             this.note.idErabliere = this.idErabliereSelectionee;
             this.note.title = this.noteForm.controls['title'].value;
             this.note.text = this.noteForm.controls['text'].value;
-            this.note.file = this.noteForm.controls['file'].value;
+            this.note.file = this.noteForm.controls['fileBase64'].value;
             if (this.noteForm.controls['noteDate'].value != "") {
                 this.note.noteDate = this.noteForm.controls['noteDate'].value;
             }
             this._api.postNote(this.idErabliereSelectionee, this.note)
                 .then(r => {
-                    this.display = false;
+                    this.noteForm.reset();
+                    this.needToUpdate.emit();
                 });
         }
         else {
             console.log("this.note is undefined");
         }
+    }
+
+    convertToBase64(event:any) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            this.noteForm.controls['fileBase64'].setValue(reader.result?.toString().split(',')[1]);
+        };
     }
 }

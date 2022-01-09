@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from 'src/model/note';
 
 @Component({
@@ -9,8 +9,14 @@ export class NoteComponent implements OnInit {
     @Input() idErabliereSelectionee:any
 
     @Input() notes?: Note[];
+
+    @Output() needToUpdate = new EventEmitter();
     
     constructor () { }
 
     ngOnInit(): void { }
+
+    updateNotes(event:any) {
+        this.needToUpdate.emit();
+    }
 }

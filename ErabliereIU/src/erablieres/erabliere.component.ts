@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { Alerte } from 'src/model/alerte';
 import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
@@ -14,22 +15,15 @@ import { Note } from 'src/model/note';
 export class ErabliereComponent implements OnInit {
     erablieres?: Array<Erabliere>;
     etat: string = "Chargement des erablieres...";
-
     erabliereSelectionnee?:Erabliere;
-
     idSelectionnee?:any
-
     @Input() cacheMenuErabliere?:boolean;
-
     @Input() pageSelectionnee?:number = 0;
-
-    alertes?: Array<any>;
+    alertes?: Array<Alerte>;
     documentations?: Array<Documentation>;
     notes?: Array<Note>;
-
     private _authService: IAuthorisationSerivce
     
-
     constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
         this.erabliereSelectionnee = undefined;
         this._authService = authFactory.getAuthorisationService();

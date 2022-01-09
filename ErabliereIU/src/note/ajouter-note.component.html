@@ -10,7 +10,7 @@
           Texte: <input class="form-control" type="text" formControlName="text">
         </div>
         <div class="form-group">
-          Fichier: <input class="form-control" type="file" formControlName="file">
+          Fichier: <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
         </div>
         <div class="form-group">
           Date de la note: <input class="form-control" type="datetime" formControlName="noteDate">
