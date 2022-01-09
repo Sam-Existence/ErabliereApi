@@ -14,137 +14,141 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ErabliereApi.Controllers
+namespace ErabliereApi.Controllers;
+
+/// <summary>
+/// Contrôler représentant les données des dompeux
+/// </summary>
+[ApiController]
+[Route("erablieres/{id}/[controller]")]
+[Authorize]
+public class CapteursController : ControllerBase
 {
+    private readonly ErabliereDbContext _depot;
+    private readonly IMapper _mapper;
+
     /// <summary>
-    /// Contrôler représentant les données des dompeux
+    /// Constructeur par initialisation
     /// </summary>
-    [ApiController]
-    [Route("erablieres/{id}/[controller]")]
-    [Authorize]
-    public class CapteursController : ControllerBase
+    /// <param name="depot">Le dépôt des barils</param>
+    /// <param name="mapper">Interface de mapping entre les données</param>
+    public CapteursController(ErabliereDbContext depot, IMapper mapper)
     {
-        private readonly ErabliereDbContext _depot;
-        private readonly IMapper _mapper;
+        _depot = depot;
+        _mapper = mapper;
+    }
 
-        /// <summary>
-        /// Constructeur par initialisation
-        /// </summary>
-        /// <param name="depot">Le dépôt des barils</param>
-        /// <param name="mapper">Interface de mapping entre les données</param>
-        public CapteursController(ErabliereDbContext depot, IMapper mapper)
+    /// <summary>
+    /// Liste les capteurs
+    /// </summary>
+    /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="filtreNom">Permet de filtrer les capteurs recherché selon leur nom</param>
+    /// <response code="200">Une liste de capteurs.</response>
+    [HttpGet]
+    public async Task<IEnumerable<GetCapteurs>> Lister(Guid id, string? filtreNom)
+    {
+        return await _depot.Capteurs.AsNoTracking()
+                            .Where(b => b.IdErabliere == id &&
+                                    (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
+                            .ProjectTo<GetCapteurs>(_mapper.ConfigurationProvider)
+                            .ToArrayAsync();
+    }
+
+    /// <summary>
+    /// Ajouter un capteur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="capteur">Le capteur a ajouter</param>
+    /// <response code="200">Le capteur a été correctement ajouté.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
+    [HttpPost]
+    public async Task<IActionResult> Ajouter(Guid id, PostCapteur capteur)
+    {
+        if (id != capteur.IdErabliere)
         {
-            _depot = depot;
-            _mapper = mapper;
+            return BadRequest("L'id de la route n'est pas le même que l'id de l'érablière dans les données du capteur à ajouter");
         }
 
-        /// <summary>
-        /// Liste les capteurs
-        /// </summary>
-        /// <param name="id">Identifiant de l'érablière</param>
-        /// <param name="filtreNom">Permet de filtrer les capteurs recherché selon leur nom</param>
-        /// <response code="200">Une liste de capteurs.</response>
-        [HttpGet]
-        public async Task<IEnumerable<GetCapteurs>> Lister(Guid id, string? filtreNom)
+        if (capteur.DC == null)
         {
-            return await _depot.Capteurs.AsNoTracking()
-                                .Where(b => b.IdErabliere == id &&
-                                       (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
-                                .ProjectTo<GetCapteurs>(_mapper.ConfigurationProvider)
-                                .ToArrayAsync();
+            capteur.DC = DateTimeOffset.Now;
         }
 
-        /// <summary>
-        /// Ajouter un capteur
-        /// </summary>
-        /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="capteur">Le capteur a ajouter</param>
-        /// <response code="200">Le capteur a été correctement ajouté.</response>
-        /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
-        [HttpPost]
-        public async Task<IActionResult> Ajouter(Guid id, PostCapteur capteur)
+        var entity = await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur));
+
+        await _depot.SaveChangesAsync();
+
+        return Ok(new { id = entity.Entity.Id });
+    }
+
+    /// <summary>
+    /// Modifier un capteur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="capteur">Le capteur a modifier</param>
+    /// <response code="200">Le capteur a été correctement supprimé.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
+    [HttpPut]
+    public async Task<IActionResult> Modifier(Guid id, PutCapteur capteur)
+    {
+        if (id != capteur.IdErabliere)
         {
-            if (id != capteur.IdErabliere)
-            {
-                return BadRequest("L'id de la route n'est pas le même que l'id de l'érablière dans les données du capteur à ajouter");
-            }
-
-            if (capteur.DC == null)
-            {
-                capteur.DC = DateTimeOffset.Now;
-            }
-
-            var entity = await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur));
-
-            await _depot.SaveChangesAsync();
-
-            return Ok(new { id = entity.Entity.Id });
+            return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
         }
 
-        /// <summary>
-        /// Modifier un capteur
-        /// </summary>
-        /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="capteur">Le capteur a modifier</param>
-        /// <response code="200">Le capteur a été correctement supprimé.</response>
-        /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
-        [HttpPut]
-        public async Task<IActionResult> Modifier(Guid id, PutCapteur capteur)
+        var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id);
+
+        if (capteurEntity == null || capteurEntity.IdErabliere != capteur.IdErabliere)
         {
-            if (id != capteur.IdErabliere)
-            {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
-            }
-
-            var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id);
-
-            if (capteurEntity == null || capteurEntity.IdErabliere != capteur.IdErabliere) 
-            {
-                return BadRequest("Le capteur à modifier n'existe pas.");
-            }
-
-            if (capteur.AfficherCapteurDashboard.HasValue)
-            {
-                capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard;
-            }
-
-            if (capteur.DC.HasValue) 
-            {
-                capteurEntity.DC = capteur.DC;
-            }
-
-            if (string.IsNullOrWhiteSpace(capteur.Nom) == false) 
-            {
-                capteurEntity.Nom = capteur.Nom;
-            }
-
-            _depot.Update(capteurEntity);
-
-            await _depot.SaveChangesAsync();
-
-            return Ok();
+            return BadRequest("Le capteur à modifier n'existe pas.");
         }
 
-        /// <summary>
-        /// Supprimer un capteur
-        /// </summary>
-        /// <param name="id">Identifiant de l'érablière</param>
-        /// <param name="capteur">Le capteur a supprimer</param>
-        /// <response code="202">Le capteur a été correctement supprimé.</response>
-        /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
-        [HttpDelete]
-        public async Task<IActionResult> Supprimer(Guid id, Capteur capteur)
+        if (capteur.AfficherCapteurDashboard.HasValue)
         {
-            if (id != capteur.IdErabliere)
-            {
-                return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
-            }
-
-            _depot.Remove(capteur);
-
-            await _depot.SaveChangesAsync();
-
-            return NoContent();
+            capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard;
         }
+
+        if (capteur.AjouterDonneeDepuisInterface.HasValue)
+        {
+            capteurEntity.AjouterDonneeDepuisInterface = capteur.AjouterDonneeDepuisInterface.Value;
+        }
+
+        if (capteur.DC.HasValue)
+        {
+            capteurEntity.DC = capteur.DC;
+        }
+
+        if (string.IsNullOrWhiteSpace(capteur.Nom) == false)
+        {
+            capteurEntity.Nom = capteur.Nom;
+        }
+
+        _depot.Update(capteurEntity);
+
+        await _depot.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Supprimer un capteur
+    /// </summary>
+    /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="capteur">Le capteur a supprimer</param>
+    /// <response code="202">Le capteur a été correctement supprimé.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
+    [HttpDelete]
+    public async Task<IActionResult> Supprimer(Guid id, Capteur capteur)
+    {
+        if (id != capteur.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
+        }
+
+        _depot.Remove(capteur);
+
+        await _depot.SaveChangesAsync();
+
+        return NoContent();
     }
 }

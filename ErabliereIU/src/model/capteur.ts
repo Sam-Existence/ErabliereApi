@@ -5,6 +5,7 @@ export class Capteur {
     nom?: string;
     symbole?: string;
     afficherCapteurDashboard?: boolean;
+    ajouterDonneeDepuisInterface: boolean = false
     dc?: string;
     donnees?: DonneeCapteur[];
 }

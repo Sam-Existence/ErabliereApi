@@ -28,6 +28,11 @@ public class PutCapteur
     public bool? AfficherCapteurDashboard { get; set; }
 
     /// <summary>
+    /// Indicateur permettant d'indiquer si les données sont entré depuis un interface graphique
+    /// </summary>
+    public bool? AjouterDonneeDepuisInterface { get; set; }
+
+    /// <summary>
     /// La date de création de l'entité.
     /// </summary>
     public DateTimeOffset? DC { get; set; }

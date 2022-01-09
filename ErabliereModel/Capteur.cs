@@ -25,6 +25,11 @@ public class Capteur : IIdentifiable<Guid?, Capteur>
     public bool? AfficherCapteurDashboard { get; set; }
 
     /// <summary>
+    /// Indicateur permettant d'indiquer si les données sont entré depuis un interface graphique
+    /// </summary>
+    public bool AjouterDonneeDepuisInterface { get; set; }
+
+    /// <summary>
     /// Id de dl'érablière relier a cette donnée
     /// </summary>
     public Guid? IdErabliere { get; set; }
