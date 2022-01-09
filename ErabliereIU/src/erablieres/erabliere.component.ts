@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -29,7 +30,7 @@ export class ErabliereComponent implements OnInit {
     private _authService: IAuthorisationSerivce
     
 
-    constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService){
+    constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
         this.erabliereSelectionnee = undefined;
         this._authService = authFactory.getAuthorisationService();
         this._authService.loginChanged.subscribe(loggedIn => {
@@ -75,6 +76,25 @@ export class ErabliereComponent implements OnInit {
                 this.etat = "Chargement des erablieres terminé";
                 this.erabliereSelectionnee = this.erablieres[0];
                 this.idSelectionnee = this.erabliereSelectionnee.id;
+
+                // verifier quel est la page selectionnee base sur l'url
+                if (this._router.url.indexOf("/alertes") > -1) {
+                    this.pageSelectionnee = 1;
+                }
+                else if (this._router.url.indexOf("/documentations") > -1) {
+                    this.pageSelectionnee = 4;
+                }
+                else if (this._router.url.indexOf("/notes") > -1) {
+                    this.pageSelectionnee = 5;
+                }
+                else if (this._router.url.indexOf("/apropos") > -1) {
+                    this.pageSelectionnee = 3;
+                }
+                else {
+                    this.pageSelectionnee = 0;
+                }
+
+                this.handleErabliereLiClick(this.erabliereSelectionnee.id);
             }
             else {
                 this.etat = "Aucune erablière";

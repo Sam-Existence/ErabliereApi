@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
@@ -92,14 +93,17 @@ export class DashboardComponent implements OnInit {
 
         if (this.pageSelectionnee == 1) {
             this.erabierePage?.loadAlertes();
+            //this.location.replace('/alertes');
         }
 
         if (this.pageSelectionnee == 4) {
             this.erabierePage?.loadDocumentations();
+            //this.location.replace('/documentations');
         }
 
         if (this.pageSelectionnee == 5) {
             this.erabierePage?.loadNotes();
+            //this.location.replace('/notes');
         }
     }
 }

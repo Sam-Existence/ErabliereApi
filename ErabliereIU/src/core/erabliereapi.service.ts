@@ -133,7 +133,7 @@ export class ErabliereApi {
     getNotes(idErabliereSelectionnee:any): Promise<Documentation[]> {
         return this._authService.getAccessToken().then(token => {
             const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate", {headers: headers}).toPromise();
+            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", {headers: headers}).toPromise();
         });
     }
 }
