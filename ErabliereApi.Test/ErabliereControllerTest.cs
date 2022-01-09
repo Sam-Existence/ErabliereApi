@@ -6,88 +6,85 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Test.Autofixture;
 using ErabliereApi.Test.EqualityComparer;
 using Shouldly;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Xunit;
 
-namespace ErabliereApi.Test
+namespace ErabliereApi.Test;
+
+public class ErabliereControllerTest
 {
-    public class ErabliereControllerTest
+    private readonly JsonComparer<object> _ignoreIdsEqualityComparer;
+
+    public ErabliereControllerTest()
     {
-        private readonly JsonComparer<object> _ignoreIdsEqualityComparer;
+        _ignoreIdsEqualityComparer = new JsonComparer<object>();
+    }
 
-        public ErabliereControllerTest()
+    [Theory, AutoApiData]
+    public async Task Ajouter_Erabliere_CountErabliereIncrementerDeUn(ErablieresController erabliereController,
+                                                                      PostErabliere postErabliere,
+                                                                      ErabliereDbContext erabliereDbContext)
+    {
+        var initialCount = erabliereDbContext.Erabliere.Count();
+
+        await erabliereController.Ajouter(postErabliere);
+
+        erabliereDbContext.Erabliere.Count().ShouldBe(initialCount + 1);
+    }
+
+    [Theory, AutoApiData]
+    public async Task Ajouter_Erabliere_DbSetContientErabliere(ErablieresController erabliereController,
+                                                               PostErabliere postErabliere,
+                                                               ErabliereDbContext erabliereDbContext,
+                                                               IMapper mapper)
+    {
+        var initialSet = new HashSet<Erabliere>(erabliereDbContext.Erabliere);
+
+        await erabliereController.Ajouter(postErabliere);
+
+        initialSet.ShouldNotContain(mapper.Map<Erabliere>(postErabliere), _ignoreIdsEqualityComparer);
+
+        string customMessageFunc()
         {
-            _ignoreIdsEqualityComparer = new JsonComparer<object>();
-        }
+            var sb = new StringBuilder();
 
-        [Theory, AutoApiData]
-        public async Task Ajouter_Erabliere_CountErabliereIncrementerDeUn(ErablieresController erabliereController, 
-                                                                          PostErabliere postErabliere, 
-                                                                          ErabliereDbContext erabliereDbContext)
-        {
-            var initialCount = erabliereDbContext.Erabliere.Count();
-
-            await erabliereController.Ajouter(postErabliere);
-
-            erabliereDbContext.Erabliere.Count().ShouldBe(initialCount + 1);
-        }
-
-        [Theory, AutoApiData]
-        public async Task Ajouter_Erabliere_DbSetContientErabliere(ErablieresController erabliereController, 
-                                                                   PostErabliere postErabliere, 
-                                                                   ErabliereDbContext erabliereDbContext, 
-                                                                   IMapper mapper)
-        {
-            var initialSet = new HashSet<Erabliere>(erabliereDbContext.Erabliere);
-
-            await erabliereController.Ajouter(postErabliere);
-
-            initialSet.ShouldNotContain(mapper.Map<Erabliere>(postErabliere), _ignoreIdsEqualityComparer);
-
-            string customMessageFunc()
+            sb.AppendLine("erabliereDbContext.Erabliere.ShouldContain");
+            sb.AppendLine(JsonSerializer.Serialize(mapper.Map<Erabliere>(postErabliere), _ignoreIdsEqualityComparer.JsonSerializerOptions));
+            sb.AppendLine("But was actually");
+            foreach (var e in erabliereDbContext.Erabliere)
             {
-                var sb = new StringBuilder();
-
-                sb.AppendLine("erabliereDbContext.Erabliere.ShouldContain");
-                sb.AppendLine(JsonSerializer.Serialize(mapper.Map<Erabliere>(postErabliere), _ignoreIdsEqualityComparer.JsonSerializerOptions));
-                sb.AppendLine("But was actually");
-                foreach (var e in erabliereDbContext.Erabliere)
-                {
-                    sb.AppendLine(JsonSerializer.Serialize(e, _ignoreIdsEqualityComparer.JsonSerializerOptions));
-                }
-
-                return sb.ToString();
+                sb.AppendLine(JsonSerializer.Serialize(e, _ignoreIdsEqualityComparer.JsonSerializerOptions));
             }
 
-            var erabliereSansIds = erabliereDbContext.Erabliere.Select(e => mapper.Map<PostErabliere>(e));
-
-            erabliereSansIds.ShouldContain(postErabliere, _ignoreIdsEqualityComparer, customMessageFunc());
+            return sb.ToString();
         }
 
-        [Theory, AutoApiData]
-        public async Task Ajouter_Erabliere_NePeutPasAvoirDeuxFoisLeMemeNom(ErablieresController erabliereController, 
-                                                                            PostErabliere postErabliere, 
-                                                                            ErabliereDbContext erabliereDbContext,
-                                                                            IMapper mapper)
-        {
-            var initialCount = erabliereDbContext.Erabliere.Count();
-            var bdErabliere = erabliereDbContext.Erabliere.First();
+        var erabliereSansIds = erabliereDbContext.Erabliere.Select(e => mapper.Map<PostErabliere>(e));
 
-            postErabliere.Nom = bdErabliere.Nom;
+        erabliereSansIds.ShouldContain(postErabliere, _ignoreIdsEqualityComparer, customMessageFunc());
+    }
 
-            await erabliereController.Ajouter(postErabliere);
+    [Theory, AutoApiData]
+    public async Task Ajouter_Erabliere_NePeutPasAvoirDeuxFoisLeMemeNom(ErablieresController erabliereController,
+                                                                        PostErabliere postErabliere,
+                                                                        ErabliereDbContext erabliereDbContext,
+                                                                        IMapper mapper)
+    {
+        var initialCount = erabliereDbContext.Erabliere.Count();
+        var bdErabliere = erabliereDbContext.Erabliere.First();
 
-            erabliereDbContext.Erabliere.Count().ShouldBe(initialCount);
+        postErabliere.Nom = bdErabliere.Nom;
 
-            var erabliereSansIds = erabliereDbContext.Erabliere.Select(e => mapper.Map<PostErabliere>(e));
+        await erabliereController.Ajouter(postErabliere);
 
-            erabliereSansIds.ShouldNotContain(postErabliere, _ignoreIdsEqualityComparer);
-        }
+        erabliereDbContext.Erabliere.Count().ShouldBe(initialCount);
+
+        var erabliereSansIds = erabliereDbContext.Erabliere.Select(e => mapper.Map<PostErabliere>(e));
+
+        erabliereSansIds.ShouldNotContain(postErabliere, _ignoreIdsEqualityComparer);
     }
 }

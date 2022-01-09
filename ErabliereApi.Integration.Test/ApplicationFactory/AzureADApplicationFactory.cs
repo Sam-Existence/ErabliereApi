@@ -1,6 +1,5 @@
-﻿namespace ErabliereApi.Integration.Test.ApplicationFactory
+﻿namespace ErabliereApi.Integration.Test.ApplicationFactory;
+
+public class AzureADApplicationFactory<TStartup> : ErabliereApiApplicationFactory<TStartup> where TStartup : class
 {
-    public class AzureADApplicationFactory<TStartup> : ErabliereApiApplicationFactory<TStartup> where TStartup : class
-    {
-    }
 }
