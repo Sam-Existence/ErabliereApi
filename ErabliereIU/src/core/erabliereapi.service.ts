@@ -22,118 +22,96 @@ export class ErabliereApi {
                     this._authService = authFactoryService.getAuthorisationService();
                 }
 
-    getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
-        });
+    async getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
     }
 
-    getErablieres(): Promise<Erabliere[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', {headers: headers}).toPromise();
-        });
+    async getErablieres(): Promise<Erabliere[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', { headers: headers }).toPromise();
     }
 
-    getErablieresExpandCapteurs(): Promise<Erabliere[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
-            return this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', {headers: headers}).toPromise();
-        });
+    async getErablieresExpandCapteurs(): Promise<Erabliere[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
+        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', { headers: headers }).toPromise();
     }
 
-    getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", {headers: headers}).toPromise();
-        });
+    async getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", { headers: headers }).toPromise();
     }
 
-    postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, {headers: headers}).toPromise();
-        });
+    async postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, { headers: headers }).toPromise();
     }
 
-    putAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.put<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, {headers: headers}).toPromise();
-        });
+    async putAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, { headers: headers }).toPromise();
     }
 
-    deleteAlerte(idErabliereSelectionnee:any, alerteId:any): Promise<any> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.delete(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes/" + alerteId, {headers: headers}).toPromise();
-        });
+    async deleteAlerte(idErabliereSelectionnee:any, alerteId:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes/" + alerteId, { headers: headers }).toPromise();
     }
 
-    getBarils(idErabliereSelectionnee:any): Promise<Baril[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Baril[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/baril", {headers: headers}).toPromise();
-        });
+    async getBarils(idErabliereSelectionnee:any): Promise<Baril[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Baril[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/baril", { headers: headers }).toPromise();
     }
 
-    getDonnees(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Donnee[]>> {
-        return this._authService.getAccessToken().then(token => {
-            let headers = new HttpHeaders()
-                                .set('Authorization', `Bearer ${token}`);
-
-            if (xddr != null) {
-                headers = headers.set('x-ddr', xddr);
-            }
-
-            var httpCall = this._httpClient.get<Donnee[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
-            
-            return httpCall.toPromise();
-        });
+    async getDonnees(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Donnee[]>> {
+        const token = await this._authService.getAccessToken();
+        let headers = new HttpHeaders()
+            .set('Authorization', `Bearer ${token}`);
+        if (xddr != null) {
+            headers = headers.set('x-ddr', xddr);
+        }
+        var httpCall = this._httpClient.get<Donnee[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees?dd=" + debutFiltre + "&df=" + finFiltre, { headers: headers, observe: 'response' });
+        return await httpCall.toPromise();
     }
 
-    getDonneesCapteur(idCapteur:any, debutFiltre:string, finFiltre: string, xddr?: any): Promise<HttpResponse<DonneeCapteur[]>> {
-        return this._authService.getAccessToken().then(token => {
-            let headers = new HttpHeaders()
-                                .set('Authorization', `Bearer ${token}`);
-
-            if (xddr != null) {
-                headers = headers.set('x-ddr', xddr);
-            }
-
-            var httpCall = this._httpClient.get<DonneeCapteur[]>(this._environmentService.apiUrl + '/capteurs/' + idCapteur + "/DonneesCapteur?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
-            
-            return httpCall.toPromise();
-        });
+    async getDonneesCapteur(idCapteur:any, debutFiltre:string, finFiltre: string, xddr?: any): Promise<HttpResponse<DonneeCapteur[]>> {
+        const token = await this._authService.getAccessToken();
+        let headers = new HttpHeaders()
+            .set('Authorization', `Bearer ${token}`);
+        if (xddr != null) {
+            headers = headers.set('x-ddr', xddr);
+        }
+        var httpCall = this._httpClient.get<DonneeCapteur[]>(this._environmentService.apiUrl + '/capteurs/' + idCapteur + "/DonneesCapteur?dd=" + debutFiltre + "&df=" + finFiltre, { headers: headers, observe: 'response' });
+        return await httpCall.toPromise();
     }
 
-    getDompeux(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Dompeux[]>> {
-        return this._authService.getAccessToken().then(token => {
-            let headers = new HttpHeaders()
-                                .set('Authorization', `Bearer ${token}`);
-
-            if (xddr != null) {
-                headers = headers.set('x-ddr', xddr);
-            }
-
-            var httpCall = this._httpClient.get<Dompeux[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, {headers: headers, observe: 'response'})
-            
-            return httpCall.toPromise();
-        });
+    async getDompeux(idErabliereSelectionnee:any, debutFiltre:string, finFiltre:string, xddr?:any): Promise<HttpResponse<Dompeux[]>> {
+        const token = await this._authService.getAccessToken();
+        let headers = new HttpHeaders()
+            .set('Authorization', `Bearer ${token}`);
+        if (xddr != null) {
+            headers = headers.set('x-ddr', xddr);
+        }
+        var httpCall = this._httpClient.get<Dompeux[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/dompeux?dd=" + debutFiltre + "&df=" + finFiltre, { headers: headers, observe: 'response' });
+        return await httpCall.toPromise();
     }
 
-    getDocumentations(idErabliereSelectionnee:any): Promise<Documentation[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation", {headers: headers}).toPromise();
-        });
+    async getDocumentations(idErabliereSelectionnee:any): Promise<Documentation[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation", { headers: headers }).toPromise();
     }
 
-    getNotes(idErabliereSelectionnee:any): Promise<Documentation[]> {
-        return this._authService.getAccessToken().then(token => {
-            const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-            return this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", {headers: headers}).toPromise();
-        });
+    async getNotes(idErabliereSelectionnee:any): Promise<Documentation[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", { headers: headers }).toPromise();
     }
 }
