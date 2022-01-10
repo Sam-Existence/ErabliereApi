@@ -11,67 +11,66 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData.Query;
 
-namespace ErabliereApi.Controllers
+namespace ErabliereApi.Controllers;
+
+/// <summary>
+/// Contrôler représentant les documentations
+/// </summary>
+[ApiController]
+[Route("erablieres/{id}/[controller]")]
+[Authorize]
+public class DocumentationController : ControllerBase
 {
+    private readonly ErabliereDbContext _depot;
+    private readonly IMapper _mapper;
+
     /// <summary>
-    /// Contrôler représentant les documentations
+    /// Constructeur par défaut
     /// </summary>
-    [ApiController]
-    [Route("erablieres/{id}/[controller]")]
-    [Authorize]
-    public class DocumentationController : ControllerBase
+    /// <param name="depot"></param>
+    /// <param name="mapper"></param>
+    public DocumentationController(ErabliereDbContext depot, IMapper mapper)
     {
-        private readonly ErabliereDbContext _depot;
-        private readonly IMapper _mapper;
+        _depot = depot;
+        _mapper = mapper;
+    }
 
-        /// <summary>
-        /// Constructeur par défaut
-        /// </summary>
-        /// <param name="depot"></param>
-        /// <param name="mapper"></param>
-        public DocumentationController(ErabliereDbContext depot, IMapper mapper)
+    /// <summary>
+    /// Lister la documentation avec les fonctionnalité de OData
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [EnableQuery]
+    public IQueryable<Documentation> Lister(Guid id)
+    {
+        return _depot.Documentation.AsNoTracking().Where(d => d.IdErabliere == id);
+    }
+
+    /// <summary>
+    /// Action permettant d'ajouter une documentation
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="postDocumentation"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [ProducesResponseType(200, Type = typeof(Documentation))]
+    public async Task<IActionResult> Ajouter(Guid id, PostDocumentation postDocumentation, CancellationToken token)
+    {
+        if (id != postDocumentation.IdErabliere)
         {
-            _depot = depot;
-            _mapper = mapper;
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière possédant la note");
         }
 
-        /// <summary>
-        /// Lister la documentation avec les fonctionnalité de OData
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [EnableQuery]
-        public IQueryable<Documentation> Lister(Guid id)
+        if (postDocumentation.Created == null)
         {
-            return _depot.Documentation.AsNoTracking().Where(d => d.IdErabliere == id);
+            postDocumentation.Created = DateTimeOffset.Now;
         }
 
-        /// <summary>
-        /// Action permettant d'ajouter une documentation
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="postDocumentation"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ProducesResponseType(200, Type = typeof(Documentation))]
-        public async Task<IActionResult> Ajouter(Guid id, PostDocumentation postDocumentation, CancellationToken token)
-        {
-            if (id != postDocumentation.IdErabliere)
-            {
-                return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière possédant la note");
-            }
+        var entite = await _depot.Documentation.AddAsync(_mapper.Map<Documentation>(postDocumentation), token);
 
-            if (postDocumentation.Created == null)
-            {
-                postDocumentation.Created = DateTimeOffset.Now;
-            }
+        await _depot.SaveChangesAsync(token);
 
-            var entite = await _depot.Documentation.AddAsync(_mapper.Map<Documentation>(postDocumentation), token);
-
-            await _depot.SaveChangesAsync(token);
-
-            return Ok(entite.Entity);
-        }
+        return Ok(entite.Entity);
     }
 }

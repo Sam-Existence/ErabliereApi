@@ -1,7 +1,6 @@
-namespace IdentityServerHost.Quickstart.UI
+namespace IdentityServerHost.Quickstart.UI;
+
+public class RedirectViewModel
 {
-    public class RedirectViewModel
-    {
-        public string RedirectUrl { get; set; }
-    }
+    public string RedirectUrl { get; set; }
 }

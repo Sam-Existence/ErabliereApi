@@ -11,72 +11,71 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ErabliereApi.Controllers
+namespace ErabliereApi.Controllers;
+
+/// <summary>
+/// Contrôler représentant les données des notes
+/// </summary>
+[ApiController]
+[Route("erablieres/{id}/[controller]")]
+[Authorize]
+public class NotesController : ControllerBase
 {
+    private readonly ErabliereDbContext _depot;
+    private readonly IMapper _mapper;
+
     /// <summary>
-    /// Contrôler représentant les données des notes
+    /// Constructeur par défaut
     /// </summary>
-    [ApiController]
-    [Route("erablieres/{id}/[controller]")]
-    [Authorize]
-    public class NotesController : ControllerBase
+    /// <param name="depot"></param>
+    /// <param name="mapper"></param>
+    public NotesController(ErabliereDbContext depot, IMapper mapper)
     {
-        private readonly ErabliereDbContext _depot;
-        private readonly IMapper _mapper;
+        _depot = depot;
+        _mapper = mapper;
+    }
 
-        /// <summary>
-        /// Constructeur par défaut
-        /// </summary>
-        /// <param name="depot"></param>
-        /// <param name="mapper"></param>
-        public NotesController(ErabliereDbContext depot, IMapper mapper)
+    /// <summary>
+    /// Lister les notes avec les fonctionnalité de OData
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [EnableQuery]
+    public IQueryable<Note> Lister(Guid id)
+    {
+        return _depot.Notes.AsNoTracking().Where(n => n.IdErabliere == id);
+    }
+
+    /// <summary>
+    /// Action permettant d'ajouter une note
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="postNote"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPost]
+    [ProducesResponseType(200, Type = typeof(Note))]
+    public async Task<IActionResult> Ajouter(Guid id, PostNote postNote, CancellationToken token)
+    {
+        if (id != postNote.IdErabliere)
         {
-            _depot = depot;
-            _mapper = mapper;
+            return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
         }
 
-        /// <summary>
-        /// Lister les notes avec les fonctionnalité de OData
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [EnableQuery]
-        public IQueryable<Note> Lister(Guid id)
+        if (postNote.Created == null)
         {
-            return _depot.Notes.AsNoTracking().Where(n => n.IdErabliere == id);
+            postNote.Created = DateTimeOffset.Now;
         }
 
-        /// <summary>
-        /// Action permettant d'ajouter une note
-        /// </summary>
-        /// <param name="id"></param>
-        /// <param name="postNote"></param>
-        /// <param name="token"></param>
-        /// <returns></returns>
-        [HttpPost]
-        [ProducesResponseType(200, Type = typeof(Note))]
-        public async Task<IActionResult> Ajouter(Guid id, PostNote postNote, CancellationToken token)
+        if (postNote.NoteDate == null)
         {
-            if (id != postNote.IdErabliere)
-            {
-                return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
-            }
-
-            if (postNote.Created == null)
-            {
-                postNote.Created = DateTimeOffset.Now;
-            }
-
-            if (postNote.NoteDate == null)
-            {
-                postNote.NoteDate = DateTimeOffset.Now;
-            }
-
-            var entite = await _depot.Notes.AddAsync(_mapper.Map<Note>(postNote), token);
-
-            await _depot.SaveChangesAsync(token);
-
-            return Ok(entite.Entity);
+            postNote.NoteDate = DateTimeOffset.Now;
         }
+
+        var entite = await _depot.Notes.AddAsync(_mapper.Map<Note>(postNote), token);
+
+        await _depot.SaveChangesAsync(token);
+
+        return Ok(entite.Entity);
     }
 }
