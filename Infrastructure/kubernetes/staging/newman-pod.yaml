@@ -28,9 +28,6 @@ spec:
       mountPath: /test-results
     securityContext:
       allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
     resources:
       limits:
         cpu: "100m"

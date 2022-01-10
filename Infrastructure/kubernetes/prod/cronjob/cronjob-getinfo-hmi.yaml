@@ -21,9 +21,6 @@ spec:
               mountPath: /home/ubuntu/.erabliereapi
             securityContext:
               allowPrivilegeEscalation: false
-              capabilities:
-                drop:
-                  - ALL
             resources:
               limits:
                 cpu: "100m"

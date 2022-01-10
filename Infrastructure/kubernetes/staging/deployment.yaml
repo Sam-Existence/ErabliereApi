@@ -38,12 +38,6 @@ spec:
           value: "/app/secret/emailConfig.json"
         securityContext:
           allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - ALL
-            add:
-              - NET_ADMIN
-              - SYS_TIME
         resources:
           limits:
             cpu: "150m"
