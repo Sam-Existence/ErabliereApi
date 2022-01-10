@@ -41,6 +41,9 @@ spec:
           capabilities:
             drop:
               - ALL
+            add:
+              - NET_ADMIN
+              - SYS_TIME
         resources:
           limits:
             cpu: "150m"
