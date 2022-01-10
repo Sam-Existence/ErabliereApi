@@ -31,6 +31,10 @@ spec:
       capabilities:
         drop:
           - ALL
+    resources:
+      limits:
+        cpu: "100m"
+        memory: "100Mi"
   volumes:
   - name: erabliereapi-test
     configMap:

@@ -41,6 +41,10 @@ spec:
           capabilities:
             drop:
               - ALL
+        resources:
+          limits:
+            cpu: "150m"
+            memory: "250Mi"
       volumes:
       - name: erabliereapi-sql-credentials
         secret:
