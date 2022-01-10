@@ -19,6 +19,8 @@ spec:
             volumeMounts:
             - name: extraire-info-hmi-config
               mountPath: /home/ubuntu/.erabliereapi
+            securityContext:
+              allowPrivilegeEscalation: false
           restartPolicy: Never
           volumes:
           - name: extraire-info-hmi-config

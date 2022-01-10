@@ -26,6 +26,11 @@ spec:
       readOnly: true
     - name: shared-data
       mountPath: /test-results
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
   volumes:
   - name: erabliereapi-test
     configMap:

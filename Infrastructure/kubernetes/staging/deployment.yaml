@@ -36,6 +36,11 @@ spec:
           value: "false"
         - name: EMAIL_CONFIG_PATH
           value: "/app/secret/emailConfig.json"
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
       volumes:
       - name: erabliereapi-sql-credentials
         secret:
