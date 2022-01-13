@@ -1,9 +1,5 @@
 ﻿using ErabliereApi.Depot.Sql;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Attributes;
 

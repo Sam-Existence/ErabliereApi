@@ -1,12 +1,6 @@
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using System;
 using ErabliereApi.Donnees.AutoMapper;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
 using static System.Boolean;
 using static System.Environment;
 using static System.StringComparison;
@@ -15,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Logging;
 using IdentityServer4.AccessTokenValidation;
 using Microsoft.Identity.Web;
-using Microsoft.Extensions.Configuration;
 using ErabliereApi.Extensions;
 using StackExchange.Profiling;
 using System.Data.Common;
@@ -24,7 +17,6 @@ using StackExchange.Profiling.SqlFormatters;
 using Microsoft.AspNetCore.OData;
 using System.Text.Json.Serialization;
 using System.Text.Json;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace ErabliereApi;
 

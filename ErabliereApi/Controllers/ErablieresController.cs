@@ -11,10 +11,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers;
 
@@ -77,7 +73,7 @@ public class ErablieresController : ControllerBase
         return dashboardData;
     }
 
-    private static readonly IConfigurationProvider _dashboardMapper = new MapperConfiguration(config =>
+    private static readonly AutoMapper.IConfigurationProvider _dashboardMapper = new MapperConfiguration(config =>
     {
         DateTimeOffset? ddr = default;
         DateTimeOffset? dd = default;

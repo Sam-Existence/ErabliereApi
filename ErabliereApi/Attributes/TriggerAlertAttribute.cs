@@ -3,18 +3,13 @@ using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.DependencyInjection;
 using MimeKit;
-using System;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using static System.Text.Json.JsonSerializer;
 using static System.Environment;
 using static System.IO.File;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Controllers.Attributes;
 
