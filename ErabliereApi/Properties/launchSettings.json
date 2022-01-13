@@ -52,7 +52,10 @@
 
         // Profilage
         "MiniProfiler.Enable": "false",
-        "MiniProlifer.EntityFramework.Enable": "false"
+        "MiniProlifer.EntityFramework.Enable": "false",
+
+        // Kestrel
+        "Kestrel:Limits:MaxRequestHeaderCount": "80"
       }
     }
   }

@@ -24,6 +24,7 @@ using StackExchange.Profiling.SqlFormatters;
 using Microsoft.AspNetCore.OData;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace ErabliereApi;
 
@@ -151,8 +152,10 @@ public class Startup
             });
         }
 
+        // HealthCheck
         services.AddHealthChecks();
 
+        // MiniProfiler
         if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
         {
             var profilerBuilder = services.AddMiniProfiler(o =>

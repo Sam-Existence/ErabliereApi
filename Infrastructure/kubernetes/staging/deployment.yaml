@@ -36,6 +36,8 @@ spec:
           value: "false"
         - name: EMAIL_CONFIG_PATH
           value: "/app/secret/emailConfig.json"
+        - name: Kestrel__Limits__MaxRequestHeaderCount
+          value: "70"
         securityContext:
           allowPrivilegeEscalation: false
         resources:

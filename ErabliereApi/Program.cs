@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Text.Json;
 
 namespace ErabliereApi;
 
@@ -32,5 +35,14 @@ public class Program
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
+                webBuilder.ConfigureKestrel((c, o) =>
+                {
+                    c.Configuration.Bind("Kestrel", o);
+
+                    Console.WriteLine("Kestrel configuration:");
+                    Console.WriteLine($"AddServerHeader: {o.AddServerHeader}");
+                    Console.WriteLine($"Limits.MaxRequestHeaderCount: {o.Limits.MaxRequestHeaderCount}");
+                    Console.WriteLine($"Limits.MaxRequestBodySize: {o.Limits.MaxRequestBodySize}");
+                });
             });
 }
