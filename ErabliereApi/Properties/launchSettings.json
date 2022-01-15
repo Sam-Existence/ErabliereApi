@@ -55,7 +55,8 @@
         "MiniProlifer.EntityFramework.Enable": "false",
 
         // Kestrel
-        "Kestrel:Limits:MaxRequestHeaderCount": "80"
+        "Kestrel:Limits:MaxRequestHeaderCount": "80",
+        "Kestrel:Limits:MinRequestBodyDataRate:BytesPerSecond": "300"
       }
     }
   }

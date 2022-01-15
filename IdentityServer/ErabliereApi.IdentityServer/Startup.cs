@@ -12,6 +12,7 @@ using System.IO;
 using static System.Environment;
 using static System.Boolean;
 using static System.StringComparison;
+using Ganss.XSS;
 
 namespace ErabliereApi.IdentityServer;
 
@@ -90,6 +91,10 @@ public class Startup
 
         // not recommended for production - you need to store your key material somewhere secure
         builder.AddDeveloperSigningCredential();
+
+        // add htmlSanitizer
+        services.AddTransient<HtmlSanitizer>();
+
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)

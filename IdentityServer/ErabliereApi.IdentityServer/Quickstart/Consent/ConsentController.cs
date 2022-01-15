@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Validation;
 using System.Collections.Generic;
 using System;
+using Ganss.XSS;
 
 namespace IdentityServerHost.Quickstart.UI;
 
@@ -28,15 +29,18 @@ public class ConsentController : Controller
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
     private readonly ILogger<ConsentController> _logger;
+    private readonly HtmlSanitizer _sanitizer;
 
     public ConsentController(
         IIdentityServerInteractionService interaction,
         IEventService events,
-        ILogger<ConsentController> logger)
+        ILogger<ConsentController> logger,
+        HtmlSanitizer sanitizer)
     {
         _interaction = interaction;
         _events = events;
         _logger = logger;
+        _sanitizer = sanitizer;
     }
 
     /// <summary>
@@ -47,7 +51,7 @@ public class ConsentController : Controller
     [HttpGet]
     public async Task<IActionResult> Index(string returnUrl)
     {
-        var vm = await BuildViewModelAsync(returnUrl, NoConsentRequestMatichingRequest);
+        var vm = await BuildViewModelAsync(returnUrl);
         if (vm != null)
         {
             return View("Index", vm);
@@ -156,13 +160,13 @@ public class ConsentController : Controller
         else
         {
             // we need to redisplay the consent UI
-            result.ViewModel = await BuildViewModelAsync(model.ReturnUrl, NoConsentRequestMatichingRequest, model);
+            result.ViewModel = await BuildViewModelAsync(model.ReturnUrl, model);
         }
 
         return result;
     }
 
-    private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, string noConsentRequestMatichingRequest, ConsentInputModel model = null)
+    private async Task<ConsentViewModel> BuildViewModelAsync(string returnUrl, ConsentInputModel model = null)
     {
         var request = await _interaction.GetAuthorizationContextAsync(returnUrl);
         if (request != null)
@@ -171,7 +175,7 @@ public class ConsentController : Controller
         }
         else
         {
-            _logger.LogError(noConsentRequestMatichingRequest, returnUrl);
+            _logger.LogError(NoConsentRequestMatichingRequest, Uri.EscapeDataString(returnUrl));
         }
 
         return null;
