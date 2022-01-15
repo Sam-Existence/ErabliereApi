@@ -34,6 +34,7 @@ public class UnitTest1 : IClassFixture<AzureADApplicationFactory<Startup>>
 
         var loginButton = content.QuerySelector("button[id='login-button']") as IHtmlButtonElement;
 
+        Assert.NotNull(loginButton);
         // ... to be continue
     }
 }

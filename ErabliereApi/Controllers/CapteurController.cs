@@ -88,7 +88,7 @@ public class CapteursController : ControllerBase
     {
         if (id != capteur.IdErabliere)
         {
-            return BadRequest("L'id de la route ne concorde pas avec l'id du baril à modifier.");
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière possédant le capteur à modifier.");
         }
 
         var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id);

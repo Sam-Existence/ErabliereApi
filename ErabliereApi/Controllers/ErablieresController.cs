@@ -64,11 +64,11 @@ public class ErablieresController : ControllerBase
     /// </summary>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet("[action]")]
-    public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr)
+    public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token)
     {
         var dashboardData = await _context.Erabliere.AsNoTracking()
             .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd, df, ddr })
-            .ToArrayAsync();
+            .ToArrayAsync(token);
 
         return dashboardData;
     }

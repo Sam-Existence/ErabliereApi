@@ -25,22 +25,19 @@ namespace IdentityServerHost.Quickstart.UI;
 [Authorize]
 public class ConsentController : Controller
 {
-    private const string NoConsentRequestMatichingRequest = "No consent request matching request: {0}";
+    private const string NoConsentRequestMatichingRequest = "No consent request matching request: {returnUrl}";
     private readonly IIdentityServerInteractionService _interaction;
     private readonly IEventService _events;
     private readonly ILogger<ConsentController> _logger;
-    private readonly HtmlSanitizer _sanitizer;
 
     public ConsentController(
         IIdentityServerInteractionService interaction,
         IEventService events,
-        ILogger<ConsentController> logger,
-        HtmlSanitizer sanitizer)
+        ILogger<ConsentController> logger)
     {
         _interaction = interaction;
         _events = events;
         _logger = logger;
-        _sanitizer = sanitizer;
     }
 
     /// <summary>

@@ -11,7 +11,8 @@ import { GraphPannelComponent } from './graphpanel.component';
             <div class="col-md-6" *ngFor="let capteur of capteurs">
                 <graph-panel [titre]="capteur.nom" 
                              [symbole]="capteur.symbole"
-                             [idCapteur]="capteur?.id"></graph-panel>
+                             [idCapteur]="capteur.id"
+                             [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-panel>
             </div>
           </div>
         </div>

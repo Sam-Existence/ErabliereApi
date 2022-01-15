@@ -9,14 +9,22 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
         <div class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
 
-            <div class="btn-group">
-                <div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Durée {{ duree }}
-                    </a>
+            <div class="container">
+                <div class="col-6 btn-group">
+                    <div class="dropdown show">
+                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Durée {{ duree }}
+                        </a>
 
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                    <a class="dropdown-item" href="#">12h</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                        <a class="dropdown-item" href="#">12h</a>
+                    </div>
+
+                    <button *ngIf="ajouterDonneeDepuisInterface" class="btn btn-primary" (click)="afficherFormAjouterDonneeCapteur()">Ajouter</button>
+                </div>
+
+                <div class="col-6">
+                    <ajouter-donnee-capteur *ngIf="AfficherFrom" [idCapteur]="idCapteur"></ajouter-donnee-capteur>
                 </div>
             </div>
 
@@ -69,6 +77,7 @@ export class GraphPannelComponent implements OnInit {
     duree:string = "12h"
     @Input() valeurActuel?:string|null|number|undefined;
     @Input() symbole:string|undefined;
+    @Input() ajouterDonneeDepuisInterface:boolean = false;
 
     constructor(private _api:ErabliereApi) { this.chart = undefined; }
 
@@ -165,5 +174,11 @@ export class GraphPannelComponent implements OnInit {
         var twelve_hour = 1000 * 60 * 60 * 12;
 
         return new Date(Date.now() - twelve_hour);
+      }
+
+      AfficherFrom:boolean = false;
+
+      afficherFormAjouterDonneeCapteur() {
+        this.AfficherFrom = true;
       }
 }

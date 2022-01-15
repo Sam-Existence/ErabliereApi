@@ -24,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
 import { NoteComponent } from 'src/note/note.component';
 import { AjouterNoteComponent } from 'src/note/ajouter-note.component';
+import { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -49,6 +50,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     DocumentationComponent,
     NoteComponent,
     AjouterNoteComponent,
+    AjouterDonneeCapteurComponent,
     SigninRedirectCallbackComponent,
     SignoutRedirectCallbackComponent
   ],
