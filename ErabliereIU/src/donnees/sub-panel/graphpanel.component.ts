@@ -19,12 +19,10 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                         <a class="dropdown-item" href="#">12h</a>
                     </div>
-
-                    <button *ngIf="ajouterDonneeDepuisInterface" class="btn btn-primary" (click)="afficherFormAjouterDonneeCapteur()">Ajouter</button>
                 </div>
 
-                <div class="col-6">
-                    <ajouter-donnee-capteur *ngIf="AfficherFrom" [idCapteur]="idCapteur"></ajouter-donnee-capteur>
+                <div class="col-12">
+                    <ajouter-donnee-capteur *ngIf="ajouterDonneeDepuisInterface" [idCapteur]="idCapteur" (needToUpdate)="updateDonneesCapteur($event)"></ajouter-donnee-capteur>
                 </div>
             </div>
 
@@ -97,6 +95,10 @@ export class GraphPannelComponent implements OnInit {
 
     ngOnDestroy() {
         clearInterval(this.interval);
+    }
+
+    updateDonneesCapteur(event:any) {
+        this.doHttpCall();
     }
 
     dernierDonneeRecu?:string = undefined;
@@ -174,11 +176,5 @@ export class GraphPannelComponent implements OnInit {
         var twelve_hour = 1000 * 60 * 60 * 12;
 
         return new Date(Date.now() - twelve_hour);
-      }
-
-      AfficherFrom:boolean = false;
-
-      afficherFormAjouterDonneeCapteur() {
-        this.AfficherFrom = true;
       }
 }

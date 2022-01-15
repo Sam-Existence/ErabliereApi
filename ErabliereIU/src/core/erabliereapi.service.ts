@@ -8,7 +8,7 @@ import { Baril } from 'src/model/baril';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
-import { DonneeCapteur } from 'src/model/donneeCapteur';
+import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
 
@@ -122,7 +122,7 @@ export class ErabliereApi {
         return await this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes", note, { headers: headers }).toPromise();
     }
 
-    async postDonneeCapteur(idCapteur: any, donneeCapteur: DonneeCapteur): Promise<any> {
+    async postDonneeCapteur(idCapteur: any, donneeCapteur: PostDonneeCapteur): Promise<any> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();

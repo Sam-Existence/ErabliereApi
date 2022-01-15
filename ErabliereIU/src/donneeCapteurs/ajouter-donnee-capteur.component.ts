@@ -1,24 +1,26 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { FormBuilder, FormGroup } from "@angular/forms";
 import { ErabliereApi } from "src/core/erabliereapi.service";
-import { DonneeCapteur } from "src/model/donneeCapteur";
+import { PostDonneeCapteur } from "src/model/donneeCapteur";
 
 @Component({
     selector: 'ajouter-donnee-capteur',
     template: `
-        <div class="border-top">
+        <button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()">Ajouter</button>
+        <div *ngIf="display" class="border-top">
             <h3>Ajouter une donnée</h3>
-            <div class="form">
+            <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">
                     <label for="valeur">Valeur</label>
-                    <input type="number" class="form-control" id="valeur" placeholder="Valeur">
+                    <input type="number" class="form-control" id="valeur" placeholder="Valeur" formControlName="valeur">
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input type="date" class="form-control" id="date" placeholder="Date">
+                    <input type="datetime-local" class="form-control" id="date" placeholder="Date" formControlName="date">
                 </div>
                 <button type="button" class="btn btn-primary" (click)="ajouterDonnee()">Ajouter</button>
                 <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
-            </div>
+            </form>
         </div>
     `,
     styles: [`
@@ -29,28 +31,58 @@ import { DonneeCapteur } from "src/model/donneeCapteur";
 })
 export class AjouterDonneeCapteurComponent implements OnInit {
     @Input() idCapteur: any;
-    valeur?: number;
-    date?: string;
+    donneeCapteurForm: FormGroup;
+    valeurValidationError: string = '';
+    dateValidationError: string = '';
+    display: boolean = false;
 
-    constructor(private api: ErabliereApi) { }
+    @Output() needToUpdate = new EventEmitter();
+
+    constructor(private api: ErabliereApi, private fb: FormBuilder) {
+        this.donneeCapteurForm = this.fb.group({});
+     }
 
     ngOnInit(): void {
-    }
-
-    ajouterDonnee() {
-        var donneeCapteur = new DonneeCapteur();
-        donneeCapteur.valeur = this.valeur;
-        donneeCapteur.d = this.date;
-        donneeCapteur.id = this.idCapteur;
-
-        console.log(JSON.stringify(donneeCapteur));
-
-        this.api.postDonneeCapteur(this.idCapteur, donneeCapteur).then(() => {
-            console.log("Donnée ajoutée");
+        this.donneeCapteurForm = this.fb.group({
+            valeur: '',
+            date: ''
         });
     }
 
-    annuler() {
+    onSubmit() {
 
+    }
+
+    ajouterDonnee() {
+        var donneeCapteur = new PostDonneeCapteur();
+        var validationError = false;
+        try {
+            donneeCapteur.v = parseInt(this.donneeCapteurForm.controls['valeur'].value);
+        } catch (error) {
+            validationError = true;
+        }
+        try {
+            donneeCapteur.d = new Date(this.donneeCapteurForm.controls['date'].value).toISOString();
+        } catch (error) {
+            validationError = true;
+        }
+        
+        if (validationError == false) {
+            donneeCapteur.idCapteur = this.idCapteur;
+
+            this.api.postDonneeCapteur(this.idCapteur, donneeCapteur).then(() => {
+                this.donneeCapteurForm.reset();
+                this.needToUpdate.emit();
+            });
+        }
+    }
+
+    annuler() {
+        this.donneeCapteurForm.reset();
+        this.display = false;
+    }
+
+    afficherForm() {
+        this.display = true;
     }
 }
