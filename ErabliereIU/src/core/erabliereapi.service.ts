@@ -4,7 +4,9 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Alerte } from 'src/model/alerte';
+import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
+import { Capteur } from 'src/model/capteur';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
@@ -45,6 +47,12 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", { headers: headers }).toPromise();
+    }
+
+    async getCapteurs(idErabliereSelectionnee:any): Promise<Capteur[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Capteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", { headers: headers }).toPromise();
     }
 
     async postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
@@ -126,5 +134,11 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();
+    }
+
+    async postAlerteCapteur(idCapteur: any, alerteCapteur: AlerteCapteur): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs", alerteCapteur, { headers: headers }).toPromise();
     }
 }

@@ -2,22 +2,25 @@ import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
 import { FormGroup, FormBuilder } from "@angular/forms";
+import { AlerteCapteur } from "src/model/alerteCapteur";
+import { Capteur } from "src/model/capteur";
 
 @Component({
     selector: 'ajouter-alerte-modal',
     templateUrl: 'ajouter-alerte.component.html'
 })
 export class AjouterAlerteComponent implements OnInit {
-    constructor(private _api: ErabliereApi, private fb: FormBuilder) 
-    {
+    
+    constructor(private _api: ErabliereApi, private fb: FormBuilder) {
         this.alerteForm = this.fb.group({});
+        this.alerteCapteurForm = this.fb.group({});
     }
     
     ngOnInit(): void {
-        this.initializeForm();
+        this.initializeForms();
     }
 
-    initializeForm() {
+    initializeForms() {
         this.alerteForm = this.fb.group({
             destinataire: '',
             temperatureMin: '',
@@ -27,17 +30,28 @@ export class AjouterAlerteComponent implements OnInit {
             niveauBassinMin: '',
             niveauBassinMax: ''
         });
+        this.alerteCapteurForm = this.fb.group({
+            destinataire: '',
+            min: '',
+            max: '',
+        });
     }
     
     display:boolean = false;
 
     alerte:Alerte = new Alerte();
+    alerteCapteur:AlerteCapteur = new AlerteCapteur();
 
     @Input() alertes?: Array<Alerte>;
+    @Input() alertesCapteur?: Array<AlerteCapteur>;
 
     @Input() idErabliereSelectionee:any
+    capteurs: Array<Capteur> = [];
 
     alerteForm: FormGroup;
+    alerteCapteurForm: FormGroup;
+
+    typeAlerte:number = 1;
 
     onSubmit() {
 
@@ -49,6 +63,16 @@ export class AjouterAlerteComponent implements OnInit {
 
     onButtonAnnuleClick() {
         this.display = false;
+    }
+
+    onChangeAlerteType(event:any) {
+        this.typeAlerte = event.target.value;
+
+        if (this.typeAlerte == 2) {
+            this._api.getCapteurs(this.idErabliereSelectionee).then(r => {
+                this.capteurs = r;
+            });
+        }
     }
 
     onButtonCreerClick() {
@@ -69,6 +93,23 @@ export class AjouterAlerteComponent implements OnInit {
         }
         else {
             console.log("this.alerte is undefined");
+        }
+    }
+
+    onButtonCreerAlerteCapteurClick() {
+        if (this.alerteCapteur != undefined) {
+            this.alerteCapteur.idCapteur = this.alerteCapteurForm.controls['idCapteur'].value;
+            this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
+            this.alerteCapteur.minValue = this.alerteCapteurForm.controls['min'].value;
+            this.alerteCapteur.maxValue = this.alerteCapteurForm.controls['max'].value;
+            this._api.postAlerteCapteur(this.idErabliereSelectionee, this.alerteCapteur)
+                     .then(r => {
+                         this.display = false;
+                         this.alertesCapteur?.push(r);
+                     });
+        }
+        else {
+            console.log("this.alerteCapteur is undefined");
         }
     }
 }

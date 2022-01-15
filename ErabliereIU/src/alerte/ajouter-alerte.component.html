@@ -2,29 +2,60 @@
     <button class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
-    <form [formGroup]="alerteForm">
-        <div class="form-group">
-          Destinataires: <input class="form-control" type="text" formControlName="destinataire">
-        </div>
-        <div class="form-group">
-          Temperature Min.: <input class="form-control" type="text" formControlName="temperatureMin">
-        </div>
-        <div class="form-group">
-          Temperature Max.: <input class="form-control" type="text" formControlName="temperatureMax">
-        </div>
-        <div class="form-group">
-          Vaccium Min.: <input class="form-control" type="text" formControlName="vacciumMin">
-        </div>
-        <div class="form-group">
-          Vaccium Max.: <input class="form-control" type="text" formControlName="vacciumMax">
-        </div>
-        <div class="form-group">
-          Niveau Bassin Min.: <input class="form-control" type="text" formControlName="niveauBassinMin">
-        </div>
-        <div class="form-group">
-          Niveau Bassin Max.: <input class="form-control" type="text" formControlName="niveauBassinMax">
-        </div>
-      <button class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
-      <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
-    </form>
+    <div>
+      <h4>Choisir le type d'alerte</h4>
+      <div>
+        <select (change)="onChangeAlerteType($event)">
+          <option value="1">Alerte sur le trio de données</option>
+          <option value="2">Alerte sur un capteur</option>
+        </select>
+      </div>
+    </div>
+    <div *ngIf="typeAlerte == 1">
+      <form [formGroup]="alerteForm">
+          <div class="form-group">
+            Destinataires: <input class="form-control" type="text" formControlName="destinataire">
+          </div>
+          <div class="form-group">
+            Temperature Min.: <input class="form-control" type="text" formControlName="temperatureMin">
+          </div>
+          <div class="form-group">
+            Temperature Max.: <input class="form-control" type="text" formControlName="temperatureMax">
+          </div>
+          <div class="form-group">
+            Vaccium Min.: <input class="form-control" type="text" formControlName="vacciumMin">
+          </div>
+          <div class="form-group">
+            Vaccium Max.: <input class="form-control" type="text" formControlName="vacciumMax">
+          </div>
+          <div class="form-group">
+            Niveau Bassin Min.: <input class="form-control" type="text" formControlName="niveauBassinMin">
+          </div>
+          <div class="form-group">
+            Niveau Bassin Max.: <input class="form-control" type="text" formControlName="niveauBassinMax">
+          </div>
+        <button class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
+        <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      </form>
+    </div>
+    <div *ngIf="typeAlerte == 2">
+      <form [formGroup]="alerteCapteurForm">
+          <div class="form-group">
+            Capteur: <select>
+              <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            Destinataires: <input class="form-control" type="text" formControlName="destinataire">
+          </div>
+          <div class="form-group">
+            Min.: <input class="form-control" type="text" formControlName="min">
+          </div>
+          <div class="form-group">
+            Max.: <input class="form-control" type="text" formControlName="max">
+          </div>
+        <button class="btn btn-primary" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
+        <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      </form>
+    </div>
 </div>

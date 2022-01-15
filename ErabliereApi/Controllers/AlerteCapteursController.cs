@@ -39,6 +39,20 @@ public class AlerteCapteursController : ControllerBase
     }
 
     /// <summary>
+    /// Lister les alertes des capteurs d'une erablière
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <returns></returns>
+    [Route("/erablieres/{id}/alertesCapteur")]
+    [HttpGet]
+    public IAsyncEnumerable<AlerteCapteur> ListerAlerteCapteurErabliere(Guid id)
+    {
+#pragma warning disable CS8602 // Déréférencement d'une éventuelle référence null. La fonction est évaluer pour être transformer en requête sql.
+        return _depot.AlerteCapteurs.AsNoTracking().Where(b => b.Capteur.IdErabliere == id).AsAsyncEnumerable();
+#pragma warning restore CS8602 // Déréférencement d'une éventuelle référence null.
+    }
+
+    /// <summary>
     /// Ajouter une Alerte
     /// </summary>
     /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
