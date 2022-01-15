@@ -22,7 +22,6 @@ public class UnitTest1 : IClassFixture<AzureADApplicationFactory<Startup>>
         var client = _factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = true,
-            BaseAddress = new Uri("https://erabliereapi.freddycoder.com"),
             HandleCookies = true,
             MaxAutomaticRedirections = 7
         });

@@ -222,7 +222,10 @@ public class Startup
 
         app.UseSpa(spa =>
         {
-
+            if (env.IsDevelopment())
+            {
+                spa.UseProxyToSpaDevelopmentServer("https://localhost:4200");
+            }
         });
     }
 }
