@@ -27,7 +27,7 @@
     </form>
 </div>
 <div *ngIf="editAlerteCapteur">
-  <p>Id: {{ alerte?.id }}</p>
+  <p>Id: {{ alerteCapteur?.id }}</p>
   <form [formGroup]="alerteCapteurForm">
       <div class="form-group">
         Destinataires: <input class="form-control" type="text" formControlName="destinataire">

@@ -2,6 +2,7 @@
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using System;
+using ErabliereApi.Donnees.Action.Put;
 
 namespace ErabliereApi.Donnees.AutoMapper;
 
@@ -42,5 +43,7 @@ public static class RegisterExtension
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.FromBase64String(p.File) : null))
                   .ReverseMap()
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
+
+            config.CreateMap<PutAlerteCapteur, AlerteCapteur>();
         });
 }

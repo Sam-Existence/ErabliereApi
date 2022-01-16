@@ -1,5 +1,7 @@
-﻿using ErabliereApi.Depot.Sql;
+﻿using AutoMapper;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -15,14 +17,15 @@ namespace ErabliereApi.Controllers;
 public class AlerteCapteursController : ControllerBase
 {
     private readonly ErabliereDbContext _depot;
+    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructeur par initialisation
     /// </summary>
-    /// <param name="depot"></param>
-    public AlerteCapteursController(ErabliereDbContext depot)
+    public AlerteCapteursController(ErabliereDbContext depot, IMapper mapper)
     {
         _depot = depot;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -96,14 +99,14 @@ public class AlerteCapteursController : ControllerBase
     /// <response code="200">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
-    public async Task<IActionResult> Modifier(Guid id, AlerteCapteur alerte, CancellationToken token)
+    public async Task<IActionResult> Modifier(Guid id, PutAlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
         {
             return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à modifier.");
         }
 
-        var entity = _depot.Update(alerte);
+        var entity = _depot.Update(_mapper.Map<AlerteCapteur>(alerte));
 
         await _depot.SaveChangesAsync(token);
 

@@ -76,7 +76,7 @@ export class ErabliereApi {
     async putAlerteCapteur(idCapteur:any, alerte:AlerteCapteur): Promise<any> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/alertesCapteur", alerte, { headers: headers }).toPromise();
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/alerteCapteurs", alerte, { headers: headers }).toPromise();
     }
 
     async deleteAlerte(idErabliereSelectionnee:any, alerteId:any): Promise<any> {

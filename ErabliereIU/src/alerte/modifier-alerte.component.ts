@@ -22,8 +22,6 @@ export class ModifierAlerteComponent implements OnInit {
             niveauBassinMax: ''
         });
         this.alerteCapteurForm = this.fb.group({
-            id: '',
-            idCapteur: '',
             destinataire: '',
             min: '',
             max: ''
@@ -50,8 +48,6 @@ export class ModifierAlerteComponent implements OnInit {
 
         if (alerteCapteur != undefined) {
             this.alerteCapteurForm.setValue({
-                id: alerteCapteur.id,
-                idCapteur: alerteCapteur.idCapteur,
                 destinataire: alerteCapteur.envoyerA,
                 min: alerteCapteur.minVaue,
                 max: alerteCapteur.maxValue
@@ -103,9 +99,9 @@ export class ModifierAlerteComponent implements OnInit {
     onButtonModifierAlerteCapteurClick() {
         let alerte = new AlerteCapteur();
 
-        alerte.id = this.alerteForm.controls['id'].value;
-        alerte.idCapteur = this.alerteForm.controls['idCapteur'].value;
-        alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
+        alerte.id = this.alerteCapteur?.id;
+        alerte.idCapteur = this.alerteCapteur?.idCapteur;
+        alerte.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
         if (this.alerteCapteurForm.controls['min'].value != "") {
             alerte.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);
         } else {
@@ -116,7 +112,7 @@ export class ModifierAlerteComponent implements OnInit {
         } else {
             alerte.maxValue = undefined;
         }
-        this._api.putAlerteCapteur(this.idErabliereSelectionee, alerte)
+        this._api.putAlerteCapteur(alerte.idCapteur, alerte)
                  .then(r => {
                      this.displayEditFormSubject.next("");
                      this.alerteCapteurEditFormSubject.next(r);

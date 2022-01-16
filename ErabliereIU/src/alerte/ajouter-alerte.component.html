@@ -3,12 +3,15 @@
 </div>
 <div *ngIf="display">
     <div>
-      <h4>Choisir le type d'alerte</h4>
       <div>
-        <select (change)="onChangeAlerteType($event)">
-          <option value="1">Alerte sur le trio de données</option>
-          <option value="2">Alerte sur un capteur</option>
-        </select>
+        <form [formGroup]="typeAlerteSelectListForm">
+          <div class="form-group">
+            <label for="typeAlerteSelect">Type d'alerte</label>
+            <select class="form-control" id="typeAlerteSelect" formControlName="state" (change)="onChangeAlerteType($event)">
+              <option *ngFor="let typeAlerte of typeAlerteList" [value]="typeAlerte.id">{{typeAlerte.name}}</option>
+            </select>
+          </div>
+        </form>
       </div>
     </div>
     <div *ngIf="typeAlerte == 1">
@@ -41,7 +44,7 @@
     <div *ngIf="typeAlerte == 2">
       <form [formGroup]="alerteCapteurForm">
           <div class="form-group">
-            Capteur: <select formControlName="idCapteur">
+            Capteur: <select class="form-control" formControlName="idCapteur">
               <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
             </select>
           </div>

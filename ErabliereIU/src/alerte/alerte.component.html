@@ -58,8 +58,8 @@
                         {{alerte.idCapteur}}
                     </td>
                     <td>
-                        <button (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
-                        <button (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
+                        <button class="btn btn-secondary" (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
+                        <button class="btn btn-danger" (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
                     </td>
                 <tr>
             </tbody>
@@ -126,8 +126,8 @@
                         {{alerte.niveauBassinThresholdLow}}
                     </td>
                     <td>
-                        <button (click)="onButtonModifierClick(alerte.id)">modifier</button>
-                        <button (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
+                        <button class="btn btn-secondary" (click)="onButtonModifierClick(alerte.id)">modifier</button>
+                        <button class="btn btn-danger" (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
                     </td>
                 <tr>
             </tbody>

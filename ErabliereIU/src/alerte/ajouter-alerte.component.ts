@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { FormGroup, FormBuilder, FormControl } from "@angular/forms";
 import { AlerteCapteur } from "src/model/alerteCapteur";
 import { Capteur } from "src/model/capteur";
 
@@ -10,6 +10,15 @@ import { Capteur } from "src/model/capteur";
     templateUrl: 'ajouter-alerte.component.html'
 })
 export class AjouterAlerteComponent implements OnInit {
+
+    typeAlerteList = [
+        { id: 1, name: 'Alerte trio de donnée' },
+        { id: 2, name: 'Alerte de capteur' }
+    ];
+
+    typeAlerteSelectListForm = new FormGroup({
+        state: new FormControl(this.typeAlerteList[0].id)
+    });
     
     constructor(private _api: ErabliereApi, private fb: FormBuilder) {
         this.alerteForm = this.fb.group({});
