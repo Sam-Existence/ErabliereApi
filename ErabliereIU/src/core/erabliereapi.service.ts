@@ -49,10 +49,10 @@ export class ErabliereApi {
         return await this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", { headers: headers }).toPromise();
     }
 
-    async getAlertesCapteur(idErabliereSelectionnee:any): Promise<Alerte[]> {
+    async getAlertesCapteur(idErabliereSelectionnee:any): Promise<AlerteCapteur[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur", { headers: headers }).toPromise();
+        return await this._httpClient.get<AlerteCapteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur", { headers: headers }).toPromise();
     }
 
     async getCapteurs(idErabliereSelectionnee:any): Promise<Capteur[]> {
@@ -71,6 +71,12 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.put<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, { headers: headers }).toPromise();
+    }
+
+    async putAlerteCapteur(idCapteur:any, alerte:AlerteCapteur): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/alertesCapteur", alerte, { headers: headers }).toPromise();
     }
 
     async deleteAlerte(idErabliereSelectionnee:any, alerteId:any): Promise<any> {
@@ -136,21 +142,21 @@ export class ErabliereApi {
         return await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", { headers: headers }).toPromise();
     }
 
-    async postNote(idErabliereSelectionnee:any, note:Note): Promise<any> {
+    async postNote(idErabliereSelectionnee:any, note:Note): Promise<Note> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes", note, { headers: headers }).toPromise();
+        return await this._httpClient.post<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes", note, { headers: headers }).toPromise();
     }
 
-    async postDonneeCapteur(idCapteur: any, donneeCapteur: PostDonneeCapteur): Promise<any> {
+    async postDonneeCapteur(idCapteur: any, donneeCapteur: PostDonneeCapteur): Promise<DonneeCapteur> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();
     }
 
-    async postAlerteCapteur(idCapteur: any, alerteCapteur: AlerteCapteur): Promise<any> {
+    async postAlerteCapteur(idCapteur: any, alerteCapteur: AlerteCapteur): Promise<AlerteCapteur> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs", alerteCapteur, { headers: headers }).toPromise();
+        return await this._httpClient.post<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs", alerteCapteur, { headers: headers }).toPromise();
     }
 }

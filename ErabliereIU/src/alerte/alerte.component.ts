@@ -13,7 +13,7 @@ export class AlerteComponent implements OnInit {
 
     ngOnInit(): void {
         this.displayEditFormSubject.subscribe(b => {
-             this.displayEditForm = b.valueOf();
+             this.displayEditForm = b == "alerte" || b == "alerteCapteur";
         });
 
         this.alerteEditFormSubject.subscribe(b => {
@@ -37,7 +37,7 @@ export class AlerteComponent implements OnInit {
     @Input() alertesCapteur?: Array<AlerteCapteur>;
     @Input() idErabliereSelectionee:any
 
-    displayEditFormSubject = new Subject<Boolean>();
+    displayEditFormSubject = new Subject<string>();
     displayEditFormObservable = this.displayEditFormSubject.asObservable();
     displayEditForm: boolean = false;
 
@@ -53,10 +53,23 @@ export class AlerteComponent implements OnInit {
     alerteCapteurEditFormObservable = this.alerteCapteurEditFormSubject.asObservable();
     alerteCapteurEditForm?: AlerteCapteur;
 
+    editAlerte: boolean = false;
+    editAlerteCapteur: boolean = false;
+
     onButtonModifierClick(alerteId:any) {
         this.alerteEditForm = this.alertes?.find(a => a.id == alerteId);
         this.alerteEditFormSubject.next(this.alerteEditForm);
-        this.displayEditFormSubject.next(true);
+        this.displayEditFormSubject.next("alerte");
+        this.editAlerte = true;
+        this.editAlerteCapteur = false;
+    }
+
+    onButtonModifierAlerteCapteurClick(alerteId:any) {
+        this.alerteCapteurEditForm = this.alertesCapteur?.find(a => a.id == alerteId);
+        this.alerteCapteurEditFormSubject.next(this.alerteCapteurEditForm);
+        this.displayEditFormSubject.next("alerteCapteur");
+        this.editAlerte = false;
+        this.editAlerteCapteur = true;
     }
 
     onButtonDeleteClick(alerteId:any) {
@@ -69,12 +82,6 @@ export class AlerteComponent implements OnInit {
                                  });
                      });
         }
-    }
-
-    onButtonModifierAlerteCapteurClick(alerteId:any) {
-        this.alerteCapteurEditForm = this.alertesCapteur?.find(a => a.id == alerteId);
-        this.alerteCapteurEditFormSubject.next(this.alerteEditForm);
-        this.displayEditAlerteCapteurFormSubject.next(true);
     }
 
     onButtonDeleteAlerteCapteurClick(idCapteur:any, alerteId:any) {

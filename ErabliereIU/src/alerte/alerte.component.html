@@ -1,13 +1,18 @@
 <h3>Alertes</h3>
 <ajouter-alerte-modal *ngIf="!displayEditForm"
     [idErabliereSelectionee]="idErabliereSelectionee"
-    [alertes]="alertes">
+    [alertes]="alertes"
+    [alertesCapteur]="alertesCapteur">
 </ajouter-alerte-modal>
-<modifier-alerte-modal *ngIf="displayEditForm"
+<modifier-alerte-modal *ngIf="displayEditForm || displayEditAlerteCapteurForm"
     [idErabliereSelectionee]="idErabliereSelectionee"
     [displayEditFormSubject]="displayEditFormSubject"
     [alerteEditFormSubject]="alerteEditFormSubject"
-    [alerte]="alerteEditForm">
+    [alerte]="alerteEditForm"
+    [alerteCapteurEditFormSubject]="alerteCapteurEditFormSubject"
+    [alerteCapteur]="alerteCapteurEditForm"
+    [editAlerte]="editAlerte"
+    [editAlerteCapteur]="editAlerteCapteur">
 </modifier-alerte-modal>
 <div>
     <p *ngIf="alertes != null && alertes.length == 0 && alertesCapteur != null && alertesCapteur.length == 0">Aucune alerte de configuré</p>
@@ -44,7 +49,7 @@
                         {{alerte.envoyerA}}
                     </td>
                     <td>
-                        {{alerte.minValue}}
+                        {{alerte.minVaue}}
                     </td>
                     <td>
                         {{alerte.maxValue}}

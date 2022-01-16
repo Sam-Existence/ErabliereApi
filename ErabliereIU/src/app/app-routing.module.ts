@@ -10,12 +10,12 @@ import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { NoteComponent } from 'src/note/note.component';
 
 const routes: Routes = [
-    { path: '', component: GraphiqueComponent },
-    { path: 'dashboard', component: GraphiqueComponent },
-    { path: 'alertes', component: AlerteComponent },
-    { path: 'documentations', component: DocumentationComponent },
-    { path: 'notes', component: NoteComponent },
-    { path: 'apropos', component: AProposComponent },
+    { path: '', component: DashboardComponent },
+    { path: 'dashboard', component: DashboardComponent },
+    { path: 'alertes', component: DashboardComponent },
+    { path: 'documentations', component: DashboardComponent },
+    { path: 'notes', component: DashboardComponent },
+    { path: 'apropos', component: DashboardComponent },
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent }
 ]

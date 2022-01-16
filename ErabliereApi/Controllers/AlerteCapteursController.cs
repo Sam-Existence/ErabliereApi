@@ -75,6 +75,11 @@ public class AlerteCapteursController : ControllerBase
             return BadRequest("Le capteur n'existe pas");
         }
 
+        if (!alerte.DC.HasValue)
+        {
+            alerte.DC = DateTime.Now;
+        }
+
         var entity = await _depot.AlerteCapteurs.AddAsync(alerte, token);
 
         await _depot.SaveChangesAsync(token);

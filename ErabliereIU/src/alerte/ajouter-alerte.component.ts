@@ -38,7 +38,7 @@ export class AjouterAlerteComponent implements OnInit {
         });
     }
     
-    display:boolean = false;
+    display:string = "";
 
     alerte:Alerte = new Alerte();
     alerteCapteur:AlerteCapteur = new AlerteCapteur();
@@ -59,11 +59,11 @@ export class AjouterAlerteComponent implements OnInit {
     }
 
     onButtonAjouterClick() {
-        this.display = true;
+        this.display = "alerte";
     }
 
     onButtonAnnuleClick() {
-        this.display = false;
+        this.display = "";
     }
 
     onChangeAlerteType(event:any) {
@@ -88,7 +88,7 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
-                         this.display = false;
+                         this.display = "";
                          this.alertes?.push(r);
                      });
         }
@@ -101,12 +101,21 @@ export class AjouterAlerteComponent implements OnInit {
         if (this.alerteCapteur != undefined) {
             this.alerteCapteur.idCapteur = this.alerteCapteurForm.controls['idCapteur'].value;
             this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
-            this.alerteCapteur.minValue = this.alerteCapteurForm.controls['min'].value;
-            this.alerteCapteur.maxValue = this.alerteCapteurForm.controls['max'].value;
+            if (this.alerteCapteurForm.controls['min'].value != "") {
+                this.alerteCapteur.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);
+            } else {
+                this.alerteCapteur.minVaue = undefined;
+            }
+            if (this.alerteCapteurForm.controls['max'].value != "") {
+                this.alerteCapteur.maxValue = parseInt(this.alerteCapteurForm.controls['max'].value);
+            } else {
+                this.alerteCapteur.maxValue = undefined;
+            }
             this._api.postAlerteCapteur(this.alerteCapteur.idCapteur, this.alerteCapteur)
                      .then(r => {
-                         this.display = false;
+                         this.display = "";
                          this.alertesCapteur?.push(r);
+                         console.log(this.alertesCapteur);
                      });
         }
         else {

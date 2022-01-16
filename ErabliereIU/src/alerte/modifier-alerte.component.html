@@ -1,4 +1,4 @@
-<div>
+<div *ngIf="editAlerte">
     <p>Id: {{ alerte?.id }}</p>
     <form [formGroup]="alerteForm">
         <div class="form-group">
@@ -25,4 +25,20 @@
       <button class="btn btn-primary" (click)="onButtonModifierClick()">Modifier</button>
       <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>
+</div>
+<div *ngIf="editAlerteCapteur">
+  <p>Id: {{ alerte?.id }}</p>
+  <form [formGroup]="alerteCapteurForm">
+      <div class="form-group">
+        Destinataires: <input class="form-control" type="text" formControlName="destinataire">
+      </div>
+      <div class="form-group">
+        Min.: <input class="form-control" type="text" formControlName="min">
+      </div>
+      <div class="form-group">
+        Max.: <input class="form-control" type="text" formControlName="max">
+      </div>
+    <button class="btn btn-primary" (click)="onButtonModifierAlerteCapteurClick()">Modifier</button>
+    <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+  </form>
 </div>

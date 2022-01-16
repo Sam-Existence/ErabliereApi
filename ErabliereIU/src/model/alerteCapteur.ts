@@ -1,8 +1,12 @@
+import { Capteur } from "./capteur";
+
 export class AlerteCapteur {
     id?:any;
     idCapteur?:any;
     envoyerA?:string;
-    minValue?:number;
+    minVaue?:number;
     maxValue?:number;
     dc?:string
+
+    capteur?:Capteur;
 }
