@@ -4,6 +4,7 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Alerte } from 'src/model/alerte';
+import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
@@ -20,6 +21,7 @@ export class ErabliereComponent implements OnInit {
     @Input() cacheMenuErabliere?:boolean;
     @Input() pageSelectionnee?:number = 0;
     alertes?: Array<Alerte>;
+    alertesCapteur?: Array<AlerteCapteur>;
     documentations?: Array<Documentation>;
     notes?: Array<Note>;
     private _authService: IAuthorisationSerivce
@@ -121,6 +123,9 @@ export class ErabliereComponent implements OnInit {
     loadAlertes() {
         this._erabliereApi.getAlertes(this.erabliereSelectionnee?.id).then(alertes => {
             this.alertes = alertes;
+        });
+        this._erabliereApi.getAlertesCapteur(this.erabliereSelectionnee?.id).then(alertesCapteur => {
+            this.alertesCapteur = alertesCapteur;
         });
     }
 

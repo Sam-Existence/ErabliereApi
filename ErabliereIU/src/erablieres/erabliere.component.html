@@ -12,11 +12,13 @@
         </div>
     </div>
 
+    <!-- <router-outlet></router-outlet> -->
+
     <div *ngIf="erabliereSelectionnee !== null" class="col-lg-10 col-md-12" [hidden]="pageSelectionnee !== 0">
         <graphique [erabliere]="erabliereSelectionnee"></graphique>
     </div>
 
-    <alerte-page class="col-lg-10 col-md-12" [alertes]="alertes" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
+    <alerte-page class="col-lg-10 col-md-12" [alertes]="alertes" [alertesCapteur]="alertesCapteur" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
     </alerte-page>
 
     <documentation class="col-lg-10 col-md-12" [documentations]="documentations" [hidden]="pageSelectionnee !== 4" [idErabliereSelectionee]="idSelectionnee">

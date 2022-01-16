@@ -10,69 +10,122 @@
     [alerte]="alerteEditForm">
 </modifier-alerte-modal>
 <div>
-    <p *ngIf="alertes != null && alertes.length == 0">Aucune alerte de configuré</p>
-    <table *ngIf="alertes != null && alertes.length > 0" class="table">
-        <thead>
-            <tr>
-                <th>
-                    Id
-                </th>
-                <th>
-                    Envoyer à
-                </th>
-                <th>
-                    Temperature min.
-                </th>
-                <th>
-                    Temperature max.
-                </th>
-                <th>
-                    Vaccium min.
-                </th>
-                <th>
-                    Vaccium max.
-                </th>
-                <th>
-                    Niveau bassin min.
-                </th>
-                <th>
-                    Niveau bassin max.
-                </th>
-                <th></th>
-            <tr>
-        </thead>
-        <tbody>
-            <tr *ngFor="let alerte of alertes">
-                <td>
-                    {{alerte.id}}
-                </td>
-                <td>
-                    {{alerte.envoyerA}}
-                        
-                </td>
-                <td>
-                    {{alerte.temperatureThresholdHight}}
-                </td>
-                <td>
-                    {{alerte.temperatureThresholdLow}}
-                </td>
-                <td>
-                    {{alerte.vacciumThresholdHight}}
-                </td>
-                <td>
-                    {{alerte.vacciumThresholdLow}}
-                </td>
-                <td>
-                    {{alerte.niveauBassinThresholdHight}}
-                </td>
-                <td>
-                    {{alerte.niveauBassinThresholdLow}}
-                </td>
-                <td>
-                    <button (click)="onButtonModifierClick(alerte.id)">modifier</button>
-                    <button (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
-                </td>
-            <tr>
-        </tbody>
-    </table>
+    <p *ngIf="alertes != null && alertes.length == 0 && alertesCapteur != null && alertesCapteur.length == 0">Aucune alerte de configuré</p>
+
+    <div *ngIf="alertesCapteur != null && alertesCapteur.length > 0">
+        <h4>Alerte capteurs</h4>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Envoyer à
+                    </th>
+                    <th>
+                        Min.
+                    </th>
+                    <th>
+                        Max.
+                    </th>
+                    <th>
+                        Capteur
+                    </th>
+                    <th></th>
+                <tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let alerte of alertesCapteur">
+                    <td>
+                        {{alerte.id}}
+                    </td>
+                    <td>
+                        {{alerte.envoyerA}}
+                    </td>
+                    <td>
+                        {{alerte.minValue}}
+                    </td>
+                    <td>
+                        {{alerte.maxValue}}
+                    </td>
+                    <td>
+                        {{alerte.idCapteur}}
+                    </td>
+                    <td>
+                        <button (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
+                        <button (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
+                    </td>
+                <tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div *ngIf="alertes != null && alertes.length > 0">
+        <h4>Alerte trio données</h4>
+        <table *ngIf="alertes != null && alertes.length > 0" class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Envoyer à
+                    </th>
+                    <th>
+                        Temperature min.
+                    </th>
+                    <th>
+                        Temperature max.
+                    </th>
+                    <th>
+                        Vaccium min.
+                    </th>
+                    <th>
+                        Vaccium max.
+                    </th>
+                    <th>
+                        Niveau bassin min.
+                    </th>
+                    <th>
+                        Niveau bassin max.
+                    </th>
+                    <th></th>
+                <tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let alerte of alertes">
+                    <td>
+                        {{alerte.id}}
+                    </td>
+                    <td>
+                        {{alerte.envoyerA}}
+                            
+                    </td>
+                    <td>
+                        {{alerte.temperatureThresholdHight}}
+                    </td>
+                    <td>
+                        {{alerte.temperatureThresholdLow}}
+                    </td>
+                    <td>
+                        {{alerte.vacciumThresholdHight}}
+                    </td>
+                    <td>
+                        {{alerte.vacciumThresholdLow}}
+                    </td>
+                    <td>
+                        {{alerte.niveauBassinThresholdHight}}
+                    </td>
+                    <td>
+                        {{alerte.niveauBassinThresholdLow}}
+                    </td>
+                    <td>
+                        <button (click)="onButtonModifierClick(alerte.id)">modifier</button>
+                        <button (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
+                    </td>
+                <tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -41,7 +41,7 @@
     <div *ngIf="typeAlerte == 2">
       <form [formGroup]="alerteCapteurForm">
           <div class="form-group">
-            Capteur: <select>
+            Capteur: <select formControlName="idCapteur">
               <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
             </select>
           </div>

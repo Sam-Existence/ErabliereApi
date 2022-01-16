@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-root',
   template: `
     <div>
-        <router-outlet></router-outlet>
+        <dashboard></dashboard>
     </div>
   `
 })

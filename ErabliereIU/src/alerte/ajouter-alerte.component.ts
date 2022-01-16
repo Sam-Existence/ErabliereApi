@@ -34,6 +34,7 @@ export class AjouterAlerteComponent implements OnInit {
             destinataire: '',
             min: '',
             max: '',
+            idCapteur: ''
         });
     }
     
@@ -102,7 +103,7 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
             this.alerteCapteur.minValue = this.alerteCapteurForm.controls['min'].value;
             this.alerteCapteur.maxValue = this.alerteCapteurForm.controls['max'].value;
-            this._api.postAlerteCapteur(this.idErabliereSelectionee, this.alerteCapteur)
+            this._api.postAlerteCapteur(this.alerteCapteur.idCapteur, this.alerteCapteur)
                      .then(r => {
                          this.display = false;
                          this.alertesCapteur?.push(r);

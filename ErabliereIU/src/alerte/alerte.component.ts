@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Subject } from "rxjs";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
+import { AlerteCapteur } from "src/model/alerteCapteur";
 
 @Component({
     selector: 'alerte-page',
@@ -22,10 +23,18 @@ export class AlerteComponent implements OnInit {
                 this.alertes[i] = b;
             }
         });
+
+        this.alerteCapteurEditFormSubject.subscribe(b => {
+            if (this.alertesCapteur != undefined) {
+                var i = this.alertesCapteur.findIndex(a => a.id == this.alerteCapteurEditForm?.id);
+
+                this.alertesCapteur[i] = b;
+            }
+        });
     }
 
     @Input() alertes?: Array<Alerte>;
-
+    @Input() alertesCapteur?: Array<AlerteCapteur>;
     @Input() idErabliereSelectionee:any
 
     displayEditFormSubject = new Subject<Boolean>();
@@ -35,6 +44,14 @@ export class AlerteComponent implements OnInit {
     alerteEditFormSubject = new Subject<Alerte>();
     alerteEditFormObservable = this.displayEditFormSubject.asObservable();
     alerteEditForm?: Alerte;
+
+    displayEditAlerteCapteurFormSubject = new Subject<Boolean>();
+    displayEditAlerteCapteurFormObservable = this.displayEditFormSubject.asObservable();
+    displayEditAlerteCapteurForm: boolean = false;
+
+    alerteCapteurEditFormSubject = new Subject<AlerteCapteur>();
+    alerteCapteurEditFormObservable = this.alerteCapteurEditFormSubject.asObservable();
+    alerteCapteurEditForm?: AlerteCapteur;
 
     onButtonModifierClick(alerteId:any) {
         this.alerteEditForm = this.alertes?.find(a => a.id == alerteId);
@@ -49,6 +66,24 @@ export class AlerteComponent implements OnInit {
                         this._api.getAlertes(this.idErabliereSelectionee)
                                  .then(a => {
                                      this.alertes = a;
+                                 });
+                     });
+        }
+    }
+
+    onButtonModifierAlerteCapteurClick(alerteId:any) {
+        this.alerteCapteurEditForm = this.alertesCapteur?.find(a => a.id == alerteId);
+        this.alerteCapteurEditFormSubject.next(this.alerteEditForm);
+        this.displayEditAlerteCapteurFormSubject.next(true);
+    }
+
+    onButtonDeleteAlerteCapteurClick(idCapteur:any, alerteId:any) {
+        if (confirm("Voulez-vous vraiment supprimer l'alerte capteur " + alerteId + " ? ")) {
+            this._api.deleteAlerteCapteur(idCapteur, alerteId)
+                     .then(a => {
+                        this._api.getAlertesCapteur(this.idErabliereSelectionee)
+                                 .then(a => {
+                                     this.alertesCapteur = a;
                                  });
                      });
         }

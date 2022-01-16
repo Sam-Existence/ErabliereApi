@@ -28,7 +28,7 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Liste les alertes d'un capteur
     /// </summary>
-    /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="id">Identifiant du capteur</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
