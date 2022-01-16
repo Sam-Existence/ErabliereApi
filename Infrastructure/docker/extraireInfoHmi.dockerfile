@@ -1,6 +1,6 @@
 # An docker image containing a python script to extract information from a HMI
 # it is based on ubuntu and posses all teseract-ocr dependencies
-FROM ubuntu:20.04
+FROM ubuntu:impish-20211015
 WORKDIR /app
 ENV TZ=Canada/Eastern
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
