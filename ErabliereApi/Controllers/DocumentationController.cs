@@ -13,7 +13,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler représentant les documentations
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class DocumentationController : ControllerBase
 {

@@ -1,23 +1,20 @@
-using AngleSharp.Html.Dom;
 using ErabliereApi.Integration.Test.ApplicationFactory;
-using ErabliereApi.Integration.Test.Helpers;
-using System;
 using System.Threading.Tasks;
 using Xunit;
 
 namespace ErabliereApi.Integration.Test;
 
-public class UnitTest1 : IClassFixture<AzureADApplicationFactory<Startup>>
+public class IntegrationTest1 : IClassFixture<ErabliereApiApplicationFactory<Startup>>
 {
-    private readonly AzureADApplicationFactory<Startup> _factory;
+    private readonly ErabliereApiApplicationFactory<Startup> _factory;
 
-    public UnitTest1(AzureADApplicationFactory<Startup> factory)
+    public IntegrationTest1(ErabliereApiApplicationFactory<Startup> factory)
     {
         _factory = factory;
     }
 
     [Fact]
-    public async Task UserCanLogin()
+    public async Task GetErablieres_ReturnSuccessStatusCode()
     {
         var client = _factory.CreateClient(new Microsoft.AspNetCore.Mvc.Testing.WebApplicationFactoryClientOptions
         {
@@ -26,15 +23,8 @@ public class UnitTest1 : IClassFixture<AzureADApplicationFactory<Startup>>
             MaxAutomaticRedirections = 7
         });
 
-        var response = await client.GetAsync("/");
+        var response = await client.GetAsync("/Erablieres");
 
         response.EnsureSuccessStatusCode();
-
-        var content = await response.GetDocumentAsync();
-
-        var loginButton = content.QuerySelector("button[id='login-button']") as IHtmlButtonElement;
-
-        Assert.NotNull(loginButton);
-        // ... to be continue
     }
 }

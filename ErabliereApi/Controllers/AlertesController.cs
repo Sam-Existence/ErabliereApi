@@ -10,7 +10,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler pour interagir avec les alertes
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class AlertesController : ControllerBase
 {

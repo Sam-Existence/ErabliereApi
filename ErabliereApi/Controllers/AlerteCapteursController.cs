@@ -46,7 +46,7 @@ public class AlerteCapteursController : ControllerBase
     /// </summary>
     /// <param name="id">L'id de l'érablière</param>
     /// <returns></returns>
-    [Route("/erablieres/{id}/alertesCapteur")]
+    [Route("/Erablieres/{id}/AlertesCapteur")]
     [HttpGet]
     public IAsyncEnumerable<AlerteCapteur> ListerAlerteCapteurErabliere(Guid id)
     {

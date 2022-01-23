@@ -19,7 +19,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler représentant les données reçu par l'automate principale
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class DonneesController : ControllerBase
 {

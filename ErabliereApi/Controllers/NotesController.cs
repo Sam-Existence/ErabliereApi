@@ -13,7 +13,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler représentant les données des notes
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class NotesController : ControllerBase
 {

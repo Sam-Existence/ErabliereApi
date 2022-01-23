@@ -103,6 +103,7 @@ public static class Swagger
             c.RoutePrefix = "api";
             c.DocumentTitle = "ÉrablièreAPI - Swagger";
             c.ConfigObject.DisplayRequestDuration = true;
+            c.InjectStylesheet("/swagger/swagger-custom.css");
 
             if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
             {

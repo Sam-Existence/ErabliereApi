@@ -45,6 +45,11 @@ public class AlerteCapteur : IIdentifiable<Guid?, AlerteCapteur>
     /// </summary>
     public short? MaxValue { get; set; }
 
+    /// <summary>
+    /// Indique si l'alerte est activé
+    /// </summary>
+    public bool IsEnable { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(AlerteCapteur? other)
     {

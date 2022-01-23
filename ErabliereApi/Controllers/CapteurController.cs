@@ -15,7 +15,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler représentant les données des dompeux
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class CapteursController : ControllerBase
 {

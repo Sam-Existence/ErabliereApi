@@ -10,7 +10,7 @@ namespace ErabliereApi.Controllers;
 /// Contrôler représentant les données des barils
 /// </summary>
 [ApiController]
-[Route("erablieres/{id}/[controller]")]
+[Route("Erablieres/{id}/[controller]")]
 [Authorize]
 public class BarilController : ControllerBase
 {

@@ -64,6 +64,11 @@ public class Alerte : IIdentifiable<Guid?, Alerte>
     [MaxLength(50)]
     public string? NiveauBassinThresholdHight { get; set; }
 
+    /// <summary>
+    /// Indique si l'alerte est activé
+    /// </summary>
+    public bool IsEnable { get; set; }
+
     /// <inheritdoc />
     public int CompareTo([AllowNull] Alerte other)
     {
