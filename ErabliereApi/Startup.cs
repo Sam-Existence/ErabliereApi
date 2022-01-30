@@ -17,6 +17,10 @@ using StackExchange.Profiling.SqlFormatters;
 using Microsoft.AspNetCore.OData;
 using System.Text.Json.Serialization;
 using System.Text.Json;
+using Prometheus;
+using ErabliereApi.HealthCheck;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 namespace ErabliereApi;
 
@@ -145,7 +149,12 @@ public class Startup
         }
 
         // HealthCheck
-        services.AddHealthChecks();
+        services.AddHealthChecks()
+                .AddCheck<MemoryUsageCheck>(nameof(MemoryUsageCheck), HealthStatus.Degraded, new[]
+                {
+                    "live",
+                    "memory"
+                });
 
         // MiniProfiler
         if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
@@ -163,6 +172,9 @@ public class Startup
                 profilerBuilder.AddEntityFramework();
             }
         }
+
+        // Prometheus
+        services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
     }
 
     /// <summary>
@@ -214,10 +226,20 @@ public class Startup
         }
         app.UseAuthorization();
 
+        app.UseMetricServer(registry: serviceProvider.GetRequiredService<CollectorRegistry>());
+        app.UseHttpMetrics();
+
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
-            endpoints.MapHealthChecks("/health");
+            endpoints.MapHealthChecks("/health", new HealthCheckOptions
+            {
+                Predicate = r => r.Tags.Contains("live") == false
+            });
+            endpoints.MapHealthChecks("/live", new HealthCheckOptions
+            {
+                Predicate = r => r.Tags.Contains("live")
+            });
         });
 
         app.UseSpa(spa =>
