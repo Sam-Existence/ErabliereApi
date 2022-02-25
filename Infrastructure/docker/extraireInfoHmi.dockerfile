@@ -8,4 +8,4 @@ RUN apt-get update && apt-get install -y python3-pip && apt-get install -y tesse
 COPY PythonScripts/. /app/.
 RUN pip install Pillow
 RUN pip3 install -r requirements.txt
-USER imageextractor:imageextractor
+USER 1000:1000
