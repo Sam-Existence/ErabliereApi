@@ -20,7 +20,7 @@ class ErabliereApiProxy:
     dompeux = {'idErabliere': int(id_erabliere),
                'dd': datedebut,
                'df': datefin}
-    return self.post_request("/erablieres/" + str(id_erablere) + "/dompeux", dompeux)
+    return self.post_request("/erablieres/" + str(id_erabliere) + "/dompeux", dompeux)
 
   def envoyer_donnee_capteur(self, id_capteur, valeur):
     donnee = {'v': valeur, 'idCapteur': id_capteur}
