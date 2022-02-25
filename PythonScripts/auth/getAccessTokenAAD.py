@@ -65,11 +65,14 @@ class AzureADAccessTokenProvider:
 
     print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
-    pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
-    if os.name == 'nt':
-      pathSaveFile = '__pycache__\\aad_oauth_token.json'
-    with open(pathSaveFile, 'w') as outfile:
-      json.dump(accessToken, outfile)
+    try:
+      pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
+      if os.name == 'nt':
+        pathSaveFile = '__pycache__\\aad_oauth_token.json'
+      with open(pathSaveFile, 'w') as outfile:
+        json.dump(accessToken, outfile)
+    except:
+      print("Error saving token to file")
 
     self.in_memory_token = accessToken
 
