@@ -45,7 +45,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         {
             var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TriggerAlertV2Attribute>>();
 
-            logger.LogCritical(92837485, e, $"typeof(PostDonneeCapteur) not found in {Serialize(context.ActionArguments)}");
+            logger.LogCritical(92837485, e, "typeof(PostDonneeCapteur) not found in {0}", Serialize(context.ActionArguments));
 
             throw;
         }
