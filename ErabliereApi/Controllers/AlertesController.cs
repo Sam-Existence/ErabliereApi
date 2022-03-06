@@ -93,6 +93,7 @@ public class AlertesController : ControllerBase
     /// <param name="token">Le jeton d'annulation</param>
     /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
     [HttpPut]
+    [Route("[action]")]
     public async Task<IActionResult> Activer(Guid id, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -122,6 +123,7 @@ public class AlertesController : ControllerBase
     /// <param name="token">Le jeton d'annulation</param>
     /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
     [HttpPut]
+    [Route("[action]")]
     public async Task<IActionResult> Desactiver(Guid id, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)

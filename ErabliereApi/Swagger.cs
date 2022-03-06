@@ -1,6 +1,8 @@
 ﻿using ErabliereApi.OperationFilter;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Text;
 using static System.Boolean;
 using static System.Environment;
 using static System.StringComparison;
@@ -75,7 +77,7 @@ public static class Swagger
 
             c.OperationFilter<ValiderIPRulesOperationFilter>();
 
-            c.OrderActionsBy(description => description.RelativePath);
+            c.OrderActionsBy(description => GetSortKey(description));
 
             // Set the comments path for the Swagger JSON and UI.
             var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -84,6 +86,22 @@ public static class Swagger
         });
 
         return services;
+    }
+
+    private static string GetSortKey(ApiDescription description)
+    {
+        var sb = new StringBuilder();
+
+        sb.Append(description.HttpMethod switch
+        {
+            "GET" => "1",
+            "POST" => "2",
+            "PUT" => "3",
+            "DELETE" => "4",
+            _ => "9"
+        });
+
+        return sb.ToString();
     }
 
     /// <summary>
