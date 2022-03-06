@@ -33,11 +33,22 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
     /// <inheritdoc />
     public override void OnActionExecuting(ActionExecutingContext context)
     {
-        var id = context.ActionArguments["id"]?.ToString() ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'.");
+        var id = context.ActionArguments["id"]?.ToString() ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlertV2'.");
 
-        _idCapteur = Guid.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlert'."));
+        _idCapteur = Guid.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlertV2'."));
 
-        _donnee = context.ActionArguments.Values.Single(a => a?.GetType() == typeof(PostDonneeCapteur)) as PostDonneeCapteur;
+        try
+        {
+            _donnee = context.ActionArguments.Values.Single(a => a?.GetType() == typeof(PostDonneeCapteur)) as PostDonneeCapteur;
+        }
+        catch (InvalidOperationException e)
+        {
+            var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TriggerAlertV2Attribute>>();
+
+            logger.LogCritical(92837485, e, $"typeof(PostDonneeCapteur) not found in {Serialize(context.ActionArguments)}");
+
+            throw;
+        }
     }
 
     /// <inheritdoc />
