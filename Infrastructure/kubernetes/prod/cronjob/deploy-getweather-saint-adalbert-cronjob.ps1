@@ -16,7 +16,7 @@ $yamlContent = Get-Content -Path $yamlContentPath -Encoding UTF8 -Raw
 
 $yamlContent = Replace-UserVariable "Entrer la clé de location acuweather:" "<location>" $yamlContent
 $yamlContent = Replace-UserVariable "Entrer l'addresse de l'api:" "<api-domain>" $yamlContent
-$yamlContent = Replace-UserVariable "Entrer l'id de l'érablière:" "<capteur-guid-id>" $yamlContent
+$yamlContent = Replace-UserVariable "Entrer l'id du capteur:" "<capteur-guid-id>" $yamlContent
 $namespace = Get-UserVariable "Entrer le namespace de la cronjob:"
 
 $yamlContent | kubectl apply -n $namespace -f -
