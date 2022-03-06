@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: extraire-info-hmi
+  name: getweather-saint-adalbert
 spec:
   schedule: "0/30 * * * *"
   jobTemplate:

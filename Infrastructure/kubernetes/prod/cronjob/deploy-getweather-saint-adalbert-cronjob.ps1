@@ -11,7 +11,7 @@ function Replace-UserVariable([string] $message, [string] $variableName, [string
     return $string
 }
 
-$yamlContentPath = $PWD.Path + "\cronjob-getinfo-hmi.yaml"
+$yamlContentPath = $PWD.Path + "\cronjob-getweather-saint-adalbert.yaml"
 $yamlContent = Get-Content -Path $yamlContentPath -Encoding UTF8 -Raw
 
 $yamlContent = Replace-UserVariable "Entrer la clé de location acuweather:" "<location>" $yamlContent
