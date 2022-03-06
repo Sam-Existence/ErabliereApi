@@ -86,6 +86,64 @@ public class AlertesController : ControllerBase
     }
 
     /// <summary>
+    /// Activer une alerte
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="alerte">L'id de l'alerte</param>
+    /// <param name="token">Le jeton d'annulation</param>
+    /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
+    [HttpPut]
+    public async Task<IActionResult> Activer(Guid id, Alerte alerte, CancellationToken token)
+    {
+        if (id != alerte.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à activer.");
+        }
+
+        var entity = await _depot.Alertes.FindAsync(new object?[] { alerte.Id }, cancellationToken: token);
+
+        if (entity is not null)
+        {
+            entity.IsEnable = true;
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok();
+        }
+
+        return NotFound(alerte);
+    }
+
+    /// <summary>
+    /// Désactiver une alerte
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="alerte">L'id de l'alerte</param>
+    /// <param name="token">Le jeton d'annulation</param>
+    /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
+    [HttpPut]
+    public async Task<IActionResult> Desactiver(Guid id, Alerte alerte, CancellationToken token)
+    {
+        if (id != alerte.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à désactiver.");
+        }
+
+        var entity = await _depot.Alertes.FindAsync(new object?[] { alerte.Id }, cancellationToken: token);
+
+        if (entity is not null)
+        {
+            entity.IsEnable = false;
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok();
+        }
+
+        return NotFound(alerte);
+    }
+
+    /// <summary>
     /// Supprimer une alerte
     /// </summary>
     /// <param name="id">Identifiant de l'érablière</param>
