@@ -64,7 +64,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
                 var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-                var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur).ToArrayAsync();
+                var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur && a.IsEnable).ToArrayAsync();
 
                 for (int i = 0; i < alertes.Length; i++)
                 {

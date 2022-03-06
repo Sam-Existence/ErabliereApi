@@ -6,7 +6,8 @@ import { AlerteCapteur } from "src/model/alerteCapteur";
 
 @Component({
     selector: 'alerte-page',
-    templateUrl: './alerte.component.html'
+    templateUrl: './alerte.component.html',
+    styleUrls: ['./alerte.component.css']
 })
 export class AlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi) { }
@@ -94,5 +95,45 @@ export class AlerteComponent implements OnInit {
                                  });
                      });
         }
+    }
+
+    onButtonDesactiverAlerteCapteurClick(capteurId:any, alerteId:any) {
+        this._api.desactiverAlerteCapteur(capteurId, alerteId)
+                 .then(a => {
+                    this._api.getAlertesCapteur(this.idErabliereSelectionee)
+                             .then(a => {
+                                 this.alertesCapteur = a;
+                             });
+                 });
+    }
+
+    onButtonActiverAlerteCapteurClick(capteurId:any, alerteId:any) {
+        this._api.activerAlerteCapteur(capteurId, alerteId)
+                 .then(a => {
+                    this._api.getAlertesCapteur(this.idErabliereSelectionee)
+                             .then(a => {
+                                 this.alertesCapteur = a;
+                             });
+                 });
+    }
+
+    onButtonDesactiverAlerteClick(alerteId:any) {
+        this._api.desactiverAlerte(this.idErabliereSelectionee, alerteId)
+                 .then(a => {
+                    this._api.getAlertes(this.idErabliereSelectionee)
+                             .then(a => {
+                                 this.alertes = a;
+                             });
+                 });
+    }
+
+    onButtonActiverAlerteClick(alerteId:any) {
+        this._api.activerAlerte(this.idErabliereSelectionee, alerteId)
+                 .then(a => {
+                    this._api.getAlertes(this.idErabliereSelectionee)
+                             .then(a => {
+                                 this.alertes = a;
+                             });
+                 });
     }
 }

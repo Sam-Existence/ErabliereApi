@@ -8,4 +8,5 @@ export class Alerte {
     vacciumThresholdHight?: string
     niveauBassinThresholdLow?: string
     niveauBassinThresholdHight?: string
+    isEnable?: boolean;
 }

@@ -38,4 +38,9 @@ public class PutAlerteCapteur
     /// La valeur maximal de ce capteur
     /// </summary>
     public short? MaxValue { get; set; }
+
+    /// <summary>
+    /// Indique si l'alerte est activé
+    /// </summary>
+    public bool IsEnable { get; set; }
 }

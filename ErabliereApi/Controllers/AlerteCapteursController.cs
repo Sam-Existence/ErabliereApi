@@ -114,6 +114,78 @@ public class AlerteCapteursController : ControllerBase
     }
 
     /// <summary>
+    /// Activer une alerte capteur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="idAlerte">L'id de l'alerte</param>
+    /// <param name="alerte">L'alerte a modifier</param>
+    /// <param name="token">Jeton d'annulation de la tâche</param>
+    /// <response code="200">L'alerte a été correctement supprimé.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
+    [HttpPut]
+    [Route("{idAlerte}/[action]")]
+    public async Task<IActionResult> Activer(Guid id, Guid idAlerte, PutAlerteCapteur alerte, CancellationToken token)
+    {
+        if (id != alerte.IdCapteur)
+        {
+            return BadRequest("L'id du capteur de la route ne concorde pas avec l'id du capteur de l'alerte à activer.");
+        }
+        if (idAlerte != alerte.Id)
+        {
+            return BadRequest("L'id de l'alerte ne concorde pas avec l'id de l'alerte à modifier.");
+        }
+
+        var entity = await _depot.AlerteCapteurs.FindAsync(new object?[] { alerte.Id }, cancellationToken: token);
+
+        if (entity is not null && entity.IdCapteur == id)
+        {
+            entity.IsEnable = true;
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok();
+        }
+
+        return NotFound();
+    }
+
+    /// <summary>
+    /// Activer une alerte capteur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="idAlerte">L'id de l'alerte</param>
+    /// <param name="alerte">L'alerte a modifier</param>
+    /// <param name="token">Jeton d'annulation de la tâche</param>
+    /// <response code="200">L'alerte a été correctement supprimé.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
+    [HttpPut]
+    [Route("{idAlerte}/[action]")]
+    public async Task<IActionResult> Desactiver(Guid id, Guid idAlerte, PutAlerteCapteur alerte, CancellationToken token)
+    {
+        if (id != alerte.IdCapteur)
+        {
+            return BadRequest("L'id du capteur de la route ne concorde pas avec l'id du capteur de l'alerte à désactiver.");
+        }
+        if (idAlerte != alerte.Id)
+        {
+            return BadRequest("L'id de l'alerte de la route ne concorde pas avec l'id de l'alerte à désactiver.");
+        }
+
+        var entity = await _depot.AlerteCapteurs.FindAsync(new object?[] { idAlerte }, cancellationToken: token);
+
+        if (entity is not null && entity.IdCapteur == id)
+        {
+            entity.IsEnable = false;
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok();
+        }
+
+        return NotFound();
+    }
+
+    /// <summary>
     /// Supprimer une alerte
     /// </summary>
     /// <param name="id">Identifiant de l'érablière</param>

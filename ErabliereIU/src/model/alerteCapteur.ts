@@ -7,6 +7,7 @@ export class AlerteCapteur {
     minVaue?:number;
     maxValue?:number;
     dc?:string
+    isEnable?: boolean;
 
     capteur?:Capteur;
 }

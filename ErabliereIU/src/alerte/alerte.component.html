@@ -26,6 +26,9 @@
                         Id
                     </th>
                     <th>
+                        État
+                    </th>
+                    <th>
                         Envoyer à
                     </th>
                     <th>
@@ -42,8 +45,14 @@
             </thead>
             <tbody>
                 <tr *ngFor="let alerte of alertesCapteur">
-                    <td>
+                    <td class="shortid">
                         {{alerte.id}}
+                    </td>
+                    <td *ngIf="alerte.isEnable">
+                        Activé
+                    </td>
+                    <td *ngIf="!alerte.isEnable">
+                        Désactivé
                     </td>
                     <td>
                         {{alerte.envoyerA}}
@@ -54,12 +63,14 @@
                     <td>
                         {{alerte.maxValue}}
                     </td>
-                    <td>
+                    <td class="shortid">
                         {{alerte.idCapteur}}
                     </td>
                     <td>
-                        <button class="btn btn-secondary" (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
-                        <button class="btn btn-danger" (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
+                        <button *ngIf="alerte.isEnable" class="btn btn-outline-warning btn-block" (click)="onButtonDesactiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">désactiver</button>
+                        <button *ngIf="!alerte.isEnable" class="btn btn-outline-success btn-block" (click)="onButtonActiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">activer</button>
+                        <button class="btn btn-info btn-block" (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
+                        <button class="btn btn-danger btn-block" (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
                     </td>
                 <tr>
             </tbody>
@@ -73,6 +84,9 @@
                 <tr>
                     <th>
                         Id
+                    </th>
+                    <th>
+                        État
                     </th>
                     <th>
                         Envoyer à
@@ -100,12 +114,17 @@
             </thead>
             <tbody>
                 <tr *ngFor="let alerte of alertes">
-                    <td>
+                    <td class="shortid">
                         {{alerte.id}}
+                    </td>
+                    <td *ngIf="alerte.isEnable">
+                        Activé
+                    </td>
+                    <td *ngIf="!alerte.isEnable">
+                        Désactivé
                     </td>
                     <td>
                         {{alerte.envoyerA}}
-                            
                     </td>
                     <td>
                         {{alerte.temperatureThresholdHight}}
@@ -126,8 +145,10 @@
                         {{alerte.niveauBassinThresholdLow}}
                     </td>
                     <td>
-                        <button class="btn btn-secondary" (click)="onButtonModifierClick(alerte.id)">modifier</button>
-                        <button class="btn btn-danger" (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
+                        <button *ngIf="alerte.isEnable" class="btn btn-outline-warning btn-block" (click)="onButtonDesactiverAlerteClick(alerte.id)">désactiver</button>
+                        <button *ngIf="!alerte.isEnable" class="btn btn-outline-success btn-block" (click)="onButtonActiverAlerteClick(alerte.id)">activer</button>
+                        <button class="btn btn-info btn-block" (click)="onButtonModifierClick(alerte.id)">modifier</button>
+                        <button class="btn btn-danger btn-block" (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
                     </td>
                 <tr>
             </tbody>

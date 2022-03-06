@@ -159,4 +159,28 @@ export class ErabliereApi {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.post<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs", alerteCapteur, { headers: headers }).toPromise();
     }
+
+    async desactiverAlerteCapteur(idCapteur:any, idAlerte:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs/" + idAlerte + "/Desactiver", { idCapteur: idCapteur, id: idAlerte }, { headers: headers }).toPromise();
+    }
+
+    async activerAlerteCapteur(idCapteur:any, idAlerte:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/AlerteCapteurs/" + idAlerte + "/Activer", { idCapteur: idCapteur, id: idAlerte }, { headers: headers }).toPromise();
+    }
+
+    async desactiverAlerte(idErabliere:any, idAlerte:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Desactiver", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
+    }
+
+    async activerAlerte(idErabliere:any, idAlerte:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Activer", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
+    }
 }

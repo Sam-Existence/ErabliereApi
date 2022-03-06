@@ -19,12 +19,14 @@ export class ModifierAlerteComponent implements OnInit {
             vacciumMin: '',
             vacciumMax: '',
             niveauBassinMin: '',
-            niveauBassinMax: ''
+            niveauBassinMax: '',
+            isEnable: ''
         });
         this.alerteCapteurForm = this.fb.group({
             destinataire: '',
             min: '',
-            max: ''
+            max: '',
+            isEnable: ''
         });
     }
     
@@ -40,7 +42,8 @@ export class ModifierAlerteComponent implements OnInit {
                 vacciumMin: alerte.vacciumThresholdHight,
                 vacciumMax: alerte.vacciumThresholdLow,
                 niveauBassinMin: alerte.niveauBassinThresholdHight,
-                niveauBassinMax: alerte.niveauBassinThresholdLow
+                niveauBassinMax: alerte.niveauBassinThresholdLow,
+                isEnable: alerte.isEnable
             });
         }
 
@@ -50,7 +53,8 @@ export class ModifierAlerteComponent implements OnInit {
             this.alerteCapteurForm.setValue({
                 destinataire: alerteCapteur.envoyerA,
                 min: alerteCapteur.minVaue,
-                max: alerteCapteur.maxValue
+                max: alerteCapteur.maxValue,
+                isEnable: alerteCapteur.isEnable
             });
         }
     }
@@ -89,6 +93,7 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
         alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
         alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
+        alerte.isEnable = this.alerteForm.controls['isEnable'].value;
         this._api.putAlerte(this.idErabliereSelectionee, alerte)
                  .then(r => {
                      this.displayEditFormSubject.next("");
@@ -102,6 +107,7 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.id = this.alerteCapteur?.id;
         alerte.idCapteur = this.alerteCapteur?.idCapteur;
         alerte.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
+        alerte.isEnable = this.alerteCapteurForm.controls['isEnable'].value;
         if (this.alerteCapteurForm.controls['min'].value != "") {
             alerte.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);
         } else {
