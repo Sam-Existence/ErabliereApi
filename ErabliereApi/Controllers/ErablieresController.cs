@@ -24,7 +24,7 @@ public class ErablieresController : ControllerBase
 {
     private readonly ErabliereDbContext _context;
     private readonly IMapper _mapper;
-    private readonly Microsoft.Extensions.Configuration.IConfiguration _config;
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// Constructeur par initialisation
@@ -32,7 +32,7 @@ public class ErablieresController : ControllerBase
     /// <param name="context">Classe de contexte pour accéder à la BD</param>
     /// <param name="mapper">mapper de donnée</param>
     /// <param name="config">Permet d'accéder au configuration de l'api</param>
-    public ErablieresController(ErabliereDbContext context, IMapper mapper, Microsoft.Extensions.Configuration.IConfiguration config)
+    public ErablieresController(ErabliereDbContext context, IMapper mapper, IConfiguration config)
     {
         _context = context;
         _mapper = mapper;
@@ -64,13 +64,25 @@ public class ErablieresController : ControllerBase
     /// </summary>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet("[action]")]
-    public async Task<IEnumerable<GetErabliereDashboard>> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token)
+    [ProducesResponseType(200, Type = typeof(IEnumerable<GetErabliereDashboard>))]
+    public async Task<IActionResult> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token, int nbErabliere = 25)
     {
+        if (nbErabliere < 0)
+        {
+            return BadRequest($"Le paramètre {nbErabliere} ne peut pas être négatif.");
+        }
+
+        if (dd == null && df == null)
+        {
+            dd = DateTime.Now - TimeSpan.FromHours(12);
+        }
+
         var dashboardData = await _context.Erabliere.AsNoTracking()
             .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd, df, ddr })
+            .Take(nbErabliere)
             .ToArrayAsync(token);
 
-        return dashboardData;
+        return Ok(dashboardData);
     }
 
     private static readonly AutoMapper.IConfigurationProvider _dashboardMapper = new MapperConfiguration(config =>
