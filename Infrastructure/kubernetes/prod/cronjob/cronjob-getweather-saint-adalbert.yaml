@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: extraire-info-hmi
+spec:
+  schedule: "0/30 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: extraire-info-hmi
+            image: erabliereapi/extraireinfohmi:latest
+            imagePullPolicy: Always
+            command:
+            - /bin/sh
+            - -c
+            - python3 getweather.py /home/ubuntu/.erabliereapi/acuweather-apikey.txt <location> <api-domain> <capteur-guid-id>
+            volumeMounts:
+            - name: extraire-info-hmi-config
+              mountPath: /home/ubuntu/.erabliereapi
+            securityContext:
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+            resources:
+              limits:
+                cpu: "50m"
+                memory: "100Mi"
+          restartPolicy: Never
+          volumes:
+          - name: extraire-info-hmi-config
+            secret:
+              secretName: cronjob-authentification-secret
