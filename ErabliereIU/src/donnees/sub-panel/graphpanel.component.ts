@@ -23,6 +23,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 
                 <div class="col-12">
                     <ajouter-donnee-capteur *ngIf="ajouterDonneeDepuisInterface" [idCapteur]="idCapteur" (needToUpdate)="updateDonneesCapteur($event)"></ajouter-donnee-capteur>
+                    <h6>{{ textActuel }}</h6>
                 </div>
             </div>
 
@@ -75,6 +76,7 @@ export class GraphPannelComponent implements OnInit {
     duree:string = "12h"
     @Input() valeurActuel?:string|null|number|undefined;
     @Input() symbole:string|undefined;
+    @Input() textActuel?:string|undefined|null;
     @Input() ajouterDonneeDepuisInterface:boolean = false;
 
     constructor(private _api:ErabliereApi) { this.chart = undefined; }
@@ -137,8 +139,10 @@ export class GraphPannelComponent implements OnInit {
             let timeaxes = json.map(donneeCapteur => donneeCapteur.d);
 
             if (json.length > 0) {
-                var tva = json[json.length - 1].valeur;
+                var actualData = json[json.length - 1];
+                var tva = actualData.valeur;
                 this.valeurActuel = tva != null ? (tva / 10).toFixed(1) : null;
+                this.textActuel = actualData.text;
             }
 
             if (h.has("x-ddr") && this.ddr != undefined && h.get("x-ddr")?.valueOf() == this.ddr) {

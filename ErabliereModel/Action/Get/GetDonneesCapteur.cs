@@ -1,4 +1,6 @@
 using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace ErabliereApi.Donnees
 {
     /// <summary>
@@ -15,6 +17,12 @@ namespace ErabliereApi.Donnees
         /// La valeur de la donnée
         /// </summary>
         public short? Valeur { get; set; }
+
+        /// <summary>
+        /// Text associé à la donnée
+        /// </summary>
+        [MaxLength(50)]
+        public string? Text { get; set; }
 
         /// <summary>
         /// La date de création

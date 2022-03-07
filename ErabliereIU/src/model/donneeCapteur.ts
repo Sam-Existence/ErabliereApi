@@ -1,6 +1,7 @@
 export class DonneeCapteur {
     id?: any;
     valeur?: number;
+    text?: string;
     d?: string;
 }
 

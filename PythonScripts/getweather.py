@@ -31,7 +31,7 @@ url = sys.argv[3]
 idCapteur = sys.argv[4]
 proxy = ErabliereApiProxy(url, "AzureAD")
 print("Sending temperature to ErabliereAPI")
-response = proxy.envoyer_donnee_capteur(idCapteur, int(data[0]["Temperature"]["Metric"]["Value"] * 10))
+response = proxy.envoyer_donnee_capteur(idCapteur, int(data[0]["Temperature"]["Metric"]["Value"] * 10), data[0]["WeatherText"])
 
 # Print the response
 print(response.status_code)

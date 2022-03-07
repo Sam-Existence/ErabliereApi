@@ -22,8 +22,8 @@ class ErabliereApiProxy:
                'df': datefin}
     return self.post_request("/erablieres/" + str(id_erabliere) + "/dompeux", dompeux)
 
-  def envoyer_donnee_capteur(self, id_capteur, valeur):
-    donnee = {'V': valeur, 'idCapteur': id_capteur}
+  def envoyer_donnee_capteur(self, id_capteur, valeur, text = None):
+    donnee = {'V': valeur, 'idCapteur': id_capteur, 'text': text}
     return self.post_request("/capteurs/" + str(id_capteur) + "/donneesCapteur", donnee)
 
   def creer_capteur(self, id_erabliere, nom, symbole, afficherCapteurDashboard):

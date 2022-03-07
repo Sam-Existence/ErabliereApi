@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees;
 
@@ -16,6 +17,12 @@ public class DonneeCapteur : IIdentifiable<Guid?, DonneeCapteur>
     /// La valeur de la donnée
     /// </summary>
     public short? Valeur { get; set; }
+
+    /// <summary>
+    /// Text associé à la donnée
+    /// </summary>
+    [MaxLength(50)]
+    public string? Text { get; set; }
 
     /// <summary>
     /// La date de création

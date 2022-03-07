@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Post;
 
@@ -11,6 +12,12 @@ public class PostDonneeCapteur
     /// La valeur
     /// </summary>
     public short V { get; set; }
+
+    /// <summary>
+    /// Text associé à la donnée
+    /// </summary>
+    [MaxLength(50)]
+    public string? Text { get; set; }
 
     /// <summary>
     /// La date
