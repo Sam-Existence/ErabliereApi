@@ -5,10 +5,12 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
+import { EnvironmentService } from '../environments/environment.service';
+import { UrlModel } from '../model/urlModel';
 
 @Component({
-    selector: 'dashboard',
-    template: `
+  selector: 'dashboard',
+  template: `
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
             <h2 class="mr-5">{{ title }}</h2>
@@ -20,6 +22,9 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
+                    </li>
+                    <li *ngFor="let url of urls" *ngIf="url.requiredLogin == false || isLoggedIn" class="nav-item">
+                        <a class="nav-link" href="{{ url.href }}" role="button">{{ url.text }}</a>
                     </li>
                     <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
@@ -55,55 +60,54 @@ import { ErabliereComponent } from 'src/erablieres/erabliere.component';
     `
 })
 export class DashboardComponent implements OnInit {
-    pageSelectionnee = 0;
-    cacheMenuErabliere = false;
-    title = 'Érablière IU';
+  pageSelectionnee = 0;
+  cacheMenuErabliere = false;
+  title = 'Érablière IU';
 
-    isLoggedIn: Boolean = false;
-    useAuthentication: Boolean = environment.enableAuth
+  isLoggedIn: Boolean = false;
+  useAuthentication: Boolean = environment.enableAuth;
+  urls: UrlModel[] = [];
 
-    private _authService: IAuthorisationSerivce
+  private _authService: IAuthorisationSerivce
 
-    constructor(authFactoryService: AuthorisationFactoryService) {
-        this._authService = authFactoryService.getAuthorisationService();
-        this._authService.loginChanged.subscribe(loggedIn => {
-            this.isLoggedIn = loggedIn;
-        })
+  constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService) {
+    this._authService = authFactoryService.getAuthorisationService();
+    this._authService.loginChanged.subscribe(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    });
+    this.urls = environmentService.additionnalUrls ?? [];
+  }
+
+  ngOnInit(): void {
+    this._authService.isLoggedIn().then(loggedIn => {
+      this.isLoggedIn = loggedIn;
+    });
+  }
+
+  login() {
+    this._authService.login();
+  }
+
+  logout() {
+    this._authService.logout();
+  }
+
+  @ViewChild('erabliereComponent') erabierePage?: ErabliereComponent
+
+  selectionnerPage(i: number) {
+    this.pageSelectionnee = i;
+    this.cacheMenuErabliere = i == 3;
+
+    if (this.pageSelectionnee == 1) {
+      this.erabierePage?.loadAlertes();
     }
 
-    ngOnInit(): void {
-        this._authService.isLoggedIn().then(loggedIn => {
-            this.isLoggedIn = loggedIn;
-        });
+    if (this.pageSelectionnee == 4) {
+      this.erabierePage?.loadDocumentations();
     }
 
-    login() {
-        this._authService.login();
+    if (this.pageSelectionnee == 5) {
+      this.erabierePage?.loadNotes();
     }
-
-    logout() {
-        this._authService.logout();
-    }
-
-    @ViewChild('erabliereComponent') erabierePage?: ErabliereComponent
-
-    selectionnerPage(i: number) {
-        this.pageSelectionnee = i;
-        this.cacheMenuErabliere = i == 3;
-
-        if (this.pageSelectionnee == 1) {
-            this.erabierePage?.loadAlertes();
-            //this.location.replace('/alertes');
-        }
-
-        if (this.pageSelectionnee == 4) {
-            this.erabierePage?.loadDocumentations();
-            //this.location.replace('/documentations');
-        }
-
-        if (this.pageSelectionnee == 5) {
-            this.erabierePage?.loadNotes();
-            //this.location.replace('/notes');
-        }
-    }
+  }
 }
