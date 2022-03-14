@@ -36,7 +36,7 @@ export class EnvironmentService {
   }
 
   getAdditionnalUrls() {
-    return this._httpClient.get<UrlModel[]>("/asserts/config/additionnalUrls.json").toPromise().then(c => {
+    return this._httpClient.get<UrlModel[]>("/assets/config/additionnalUrls.json").toPromise().then(c => {
       this.additionnalUrls = c;
     })
       .catch((err: any) => {

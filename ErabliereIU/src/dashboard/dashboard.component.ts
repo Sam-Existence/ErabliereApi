@@ -23,8 +23,8 @@ import { UrlModel } from '../model/urlModel';
                     <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
                     </li>
-                    <li *ngFor="let url of urls" *ngIf="url.requiredLogin == false || isLoggedIn" class="nav-item">
-                        <a class="nav-link" href="{{ url.href }}" role="button">{{ url.text }}</a>
+                    <li *ngFor="let url of urls" class="nav-item">
+                        <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>
                     </li>
                     <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
