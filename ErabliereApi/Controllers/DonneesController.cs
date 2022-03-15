@@ -220,7 +220,7 @@ public class DonneesController : ControllerBase
     /// <param name="donnee">Le dompeux à ajouter</param>
     [HttpPut("{idDonnee}")]
     [ValiderIPRules]
-    public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee)
+    public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee, CancellationToken token)
     {
         if (id != donnee.IdErabliere)
         {
@@ -232,7 +232,7 @@ public class DonneesController : ControllerBase
             return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
         }
 
-        var entity = _context.Donnees.Find(donnee.Id);
+        var entity = await _context.Donnees.FindAsync(new object?[] { donnee.Id }, token);
 
         if (entity == null)
         {
@@ -249,6 +249,16 @@ public class DonneesController : ControllerBase
         if (donnee.V.HasValue)
         {
             entity.V = donnee.V;
+        }
+
+        if (donnee.T.HasValue)
+        {
+            entity.T = donnee.T;
+        }
+
+        if (donnee.NB.HasValue)
+        {
+            entity.NB = donnee.NB;
         }
 
         _context.Donnees.Update(entity);
