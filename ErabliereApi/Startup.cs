@@ -2,7 +2,6 @@ using ErabliereApi.Donnees.AutoMapper;
 using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using static System.Boolean;
-using static System.Environment;
 using static System.StringComparison;
 using ErabliereApi.Authorization;
 using Microsoft.AspNetCore.Authorization;
@@ -51,7 +50,7 @@ public class Startup
         // contrôleur
         services.AddControllers(o =>
         {
-            if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(Configuration["MiniProfiler.Enable"], TrueString, OrdinalIgnoreCase))
             {
                 o.Filters.Add<MiniProfilerAsyncLogger>();
             }
@@ -70,19 +69,19 @@ public class Startup
         services.AddErabliereAPIForwardedHeaders(Configuration);
 
         // Authentication
-        if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
         {
-            if (GetEnvironmentVariable("AzureAD__ClientId") != null && GetEnvironmentVariable("AzureAD:ClientId") == null)
+            if (Configuration["AzureAD__ClientId"] != null && Configuration["AzureAD:ClientId"] == null)
             {
-                SetEnvironmentVariable("AzureAD:ClientId", GetEnvironmentVariable("AzureAD__ClientId"));
+                Configuration["AzureAD:ClientId"] = Configuration["AzureAD__ClientId"];
             }
 
-            if (GetEnvironmentVariable("AzureAD__TenantId") != null && GetEnvironmentVariable("AzureAD:TenantId") == null)
+            if (Configuration["AzureAD__TenantId"] != null && Configuration["AzureAD:TenantId"] == null)
             {
-                SetEnvironmentVariable("AzureAD:TenantId", GetEnvironmentVariable("AzureAD__TenantId"));
+                Configuration["AzureAD:TenantId"] = Configuration["AzureAD__TenantId"];
             }
 
-            if (string.IsNullOrWhiteSpace(GetEnvironmentVariable("AzureAD:ClientId")) == false)
+            if (string.IsNullOrWhiteSpace(Configuration["AzureAD:ClientId"]) == false)
             {
                 services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             }
@@ -91,7 +90,7 @@ public class Startup
                 services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                         .AddIdentityServerAuthentication(options =>
                         {
-                            options.Authority = GetEnvironmentVariable("OIDC_AUTHORITY");
+                            options.Authority = Configuration["OIDC_AUTHORITY"];
 
                             options.ApiName = "erabliereapi";
                         });
@@ -103,10 +102,10 @@ public class Startup
         }
 
         // Swagger
-        services.AjouterSwagger();
+        services.AjouterSwagger(Configuration);
 
         // Cors
-        if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
         {
             services.AddCors();
         }
@@ -115,13 +114,13 @@ public class Startup
         services.AjouterAutoMapperErabliereApiDonnee();
 
         // Database
-        if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_SQL"], TrueString, OrdinalIgnoreCase))
         {
             services.AddDbContext<ErabliereDbContext>(options =>
             {
-                var connectionString = GetEnvironmentVariable("SQL_CONNEXION_STRING") ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null.");
+                var connectionString = Configuration["SQL_CONNEXION_STRING"] ?? throw new InvalidOperationException("La variable d'environnement 'SQL_CONNEXION_STRING' à une valeur null.");
 
-                if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+                if (string.Equals(Configuration["MiniProlifer.EntityFramework.Enable"], TrueString, OrdinalIgnoreCase))
                 {
                     DbConnection connection = new SqlConnection(connectionString);
 
@@ -134,7 +133,7 @@ public class Startup
                     options.UseSqlServer(connectionString, o => o.EnableRetryOnFailure());
                 }
 
-                if (string.Equals(GetEnvironmentVariable("LOG_SQL"), "Console", OrdinalIgnoreCase))
+                if (string.Equals(Configuration["LOG_SQL"], "Console", OrdinalIgnoreCase))
                 {
                     options.LogTo(Console.WriteLine, LogLevel.Information);
                 }
@@ -157,17 +156,17 @@ public class Startup
                 });
 
         // MiniProfiler
-        if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["MiniProfiler.Enable"], TrueString, OrdinalIgnoreCase))
         {
             var profilerBuilder = services.AddMiniProfiler(o =>
             {
-                if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+                if (string.Equals(Configuration["MiniProlifer.EntityFramework.Enable"], TrueString, OrdinalIgnoreCase))
                 {
                     o.SqlFormatter = new SqlServerFormatter();
                 }
             });
 
-            if (string.Equals(GetEnvironmentVariable("MiniProlifer.EntityFramework.Enable"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(Configuration["MiniProlifer.EntityFramework.Enable"], TrueString, OrdinalIgnoreCase))
             {
                 profilerBuilder.AddEntityFramework();
             }
@@ -182,8 +181,8 @@ public class Startup
     /// </summary>
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
     {
-        if (string.Equals(GetEnvironmentVariable("USE_SQL"), TrueString, OrdinalIgnoreCase) &&
-            string.Equals(GetEnvironmentVariable("SQL_USE_STARTUP_MIGRATION"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_SQL"], TrueString, OrdinalIgnoreCase) &&
+            string.Equals(Configuration["SQL_USE_STARTUP_MIGRATION"], TrueString, OrdinalIgnoreCase))
         {
             var database = serviceProvider.GetRequiredService<ErabliereDbContext>();
 
@@ -196,7 +195,7 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-        if (string.Equals(GetEnvironmentVariable("MiniProfiler.Enable"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["MiniProfiler.Enable"], TrueString, OrdinalIgnoreCase))
         {
             app.UseMiniProfiler();
         }
@@ -206,21 +205,21 @@ public class Startup
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
-        app.UtiliserSwagger();
+        app.UtiliserSwagger(Configuration);
 
         app.UseRouting();
 
-        if (string.Equals(GetEnvironmentVariable("USE_CORS"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
         {
             app.UseCors(option =>
             {
-                option.WithHeaders(GetEnvironmentVariable("CORS_HEADERS")?.Split(',') ?? new[] { "*" });
-                option.WithMethods(GetEnvironmentVariable("CORS_METHODS")?.Split(',') ?? new[] { "*" });
-                option.WithOrigins(GetEnvironmentVariable("CORS_ORIGINS")?.Split(',') ?? new[] { "*" });
+                option.WithHeaders(Configuration["CORS_HEADERS"]?.Split(',') ?? new[] { "*" });
+                option.WithMethods(Configuration["CORS_METHODS"]?.Split(',') ?? new[] { "*" });
+                option.WithOrigins(Configuration["CORS_ORIGINS"]?.Split(',') ?? new[] { "*" });
             });
         }
 
-        if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
         {
             app.UseAuthentication();
         }

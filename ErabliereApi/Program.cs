@@ -15,8 +15,6 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                 co.ErrorOnUnknownConfiguration = true;
             });
 
-            //o.Limits.MinRequestBodyDataRate = new Microsoft.AspNetCore.Server.Kestrel.Core.MinDataRate()
-
             Console.WriteLine("Kestrel configuration:");
             Console.WriteLine($"AddServerHeader: {o.AddServerHeader}");
             Console.WriteLine($"Limits.MaxRequestHeaderCount: {o.Limits.MaxRequestHeaderCount}");

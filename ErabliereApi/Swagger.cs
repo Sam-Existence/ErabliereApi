@@ -4,7 +4,6 @@ using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
 using static System.Boolean;
-using static System.Environment;
 using static System.StringComparison;
 
 namespace ErabliereApi;
@@ -18,7 +17,7 @@ public static class Swagger
     /// Ajout de swagger
     /// </summary>
     /// <returns></returns>
-    public static IServiceCollection AjouterSwagger(this IServiceCollection services)
+    public static IServiceCollection AjouterSwagger(this IServiceCollection services, IConfiguration config)
     {
         services.AddSwaggerGen(c =>
         {
@@ -40,9 +39,9 @@ public static class Swagger
                 }
             });
 
-            if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(config["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
             {
-                if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW"), TrueString, OrdinalIgnoreCase))
+                if (string.Equals(config["USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW"], TrueString, OrdinalIgnoreCase))
                 {
                     c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                     {
@@ -51,11 +50,11 @@ public static class Swagger
                         {
                             AuthorizationCode = new OpenApiOAuthFlow
                             {
-                                AuthorizationUrl = new Uri(GetEnvironmentVariable("SWAGGER_AUTHORIZATION_URL") ?? throw new ArgumentNullException(paramName: "SWAGGER_AUTHORIZATION_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
-                                TokenUrl = new Uri(GetEnvironmentVariable("SWAGGER_TOKEN_URL") ?? throw new ArgumentNullException(paramName: "SWAGGER_TOKEN_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
+                                AuthorizationUrl = new Uri(config["SWAGGER_AUTHORIZATION_URL"] ?? throw new ArgumentNullException(paramName: "SWAGGER_AUTHORIZATION_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_AUTHORIZATION_URL'.")),
+                                TokenUrl = new Uri(config["SWAGGER_TOKEN_URL"] ?? throw new ArgumentNullException(paramName: "SWAGGER_TOKEN_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                 Scopes = new Dictionary<string, string>
                                 {
-                                        { GetEnvironmentVariable("OIDC_SCOPES") ?? throw new ArgumentNullException("OIDC_SCOPES", "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_SCOPES'."), "Erabliere Api scope" }                                    }
+                                        { config["OIDC_SCOPES"] ?? throw new ArgumentNullException("OIDC_SCOPES", "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_SCOPES'."), "Erabliere Api scope" }                                    }
                             }
                         }
                     });
@@ -68,7 +67,7 @@ public static class Swagger
                             {
                                 Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
                             },
-                            new[] { GetEnvironmentVariable("OIDC_SCOPES") }
+                            new[] { config["OIDC_SCOPES"] }
                         }
                 });
 
@@ -107,8 +106,7 @@ public static class Swagger
     /// <summary>
     /// Utiliser le middleware swagger
     /// </summary>
-    /// <param name="app"></param>
-    public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app)
+    public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app, IConfiguration config)
     {
         app.UseSwagger(c =>
         {
@@ -122,20 +120,20 @@ public static class Swagger
             c.DocumentTitle = "ÉrablièreAPI - Swagger";
             c.ConfigObject.DisplayRequestDuration = true;
 
-            if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_DARK_THEME"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(config["USE_SWAGGER_DARK_THEME"], TrueString, OrdinalIgnoreCase))
             {
                 c.InjectStylesheet("/swagger/swagger-custom.css");
             }
 
-            if (string.Equals(GetEnvironmentVariable("USE_AUTHENTICATION"), TrueString, OrdinalIgnoreCase))
+            if (string.Equals(config["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
             {
                 c.OAuthAppName("ÉrablièreAPI - Swagger");
-                c.OAuthClientId(GetEnvironmentVariable("OIDC_CLIENT_ID"));
-                c.OAuthClientSecret(GetEnvironmentVariable("OIDC_CLIENT_PASSWORD"));
-                c.OAuth2RedirectUrl(GetEnvironmentVariable("OAUTH2_REDIRECT_URL"));
-                c.OAuthScopes(GetEnvironmentVariable("OIDC_SCOPES"));
+                c.OAuthClientId(config["OIDC_CLIENT_ID"]);
+                c.OAuthClientSecret(config["OIDC_CLIENT_PASSWORD"]);
+                c.OAuth2RedirectUrl(config["OAUTH2_REDIRECT_URL"]);
+                c.OAuthScopes(config["OIDC_SCOPES"]);
 
-                if (string.Equals(GetEnvironmentVariable("USE_SWAGGER_PKCE"), TrueString, OrdinalIgnoreCase))
+                if (string.Equals(config["USE_SWAGGER_PKCE"], TrueString, OrdinalIgnoreCase))
                 {
                     c.OAuthUsePkce();
                 }
