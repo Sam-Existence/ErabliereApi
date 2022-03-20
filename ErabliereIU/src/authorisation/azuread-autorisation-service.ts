@@ -103,7 +103,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
      }
 
     completeLogin() {
-        return new Promise<AppUser>((resolve, reject) => {
+      return new Promise<AppUser>((resolve, reject) => {
             const user = this._msalInstance.getActiveAccount();
 
             this._loginChangedSubject.next(!!user);
@@ -145,23 +145,24 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
         }
 
         const requestObj:SilentRequest = {
-            scopes: this._environmentService.scopes?.split(' ') ?? [],
+          scopes: this._environmentService.scopes?.split(' ') ?? [],
+          authority: this._environmentService.stsAuthority
         };
 
         return this._msalInstance.acquireTokenSilent(requestObj).then(user => {
-            if (!!user && !!user.accessToken) {
-                return user.accessToken;
-            }
-            else {
-                return null;
-            }
+          if (!!user && !!user.accessToken) {
+            return user.accessToken;
+          }
+          else {
+            return null;
+          }
         })
-        .catch(reason => {
+          .catch(reason => {
             console.log(reason);
             this._activeHomeAccountId = undefined;
             this._msalInstance.setActiveAccount(null);
             this._loginChangedSubject.next(false);
             return null;
-        });
+          });
     }
 }
