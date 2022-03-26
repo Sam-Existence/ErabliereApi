@@ -2,6 +2,7 @@
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -73,5 +74,44 @@ public class NotesController : ControllerBase
         await _depot.SaveChangesAsync(token);
 
         return Ok(entite.Entity);
+    }
+
+    /// <summary>
+    /// Action permettant de modifier note
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="putNote"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPut("{noteId}")]
+    [ProducesResponseType(200, Type = typeof(Note))]
+    public async Task<IActionResult> Modifier(Guid id, Guid noteId, PutNote putNote, CancellationToken token)
+    {
+        if (id != putNote.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
+        }
+        if (noteId != putNote.Id)
+        {
+            return BadRequest("L'id de la note dans la route ne concorde pas avec l'id de la note dans le corps du message.");
+        }
+
+        var entity = await _depot.Notes.FindAsync(new object?[] { noteId }, token);
+
+        if (entity != null && entity.IdErabliere == id)
+        {
+            if (putNote.FileExtension != null)
+            {
+                entity.FileExtension = putNote.FileExtension;
+            }
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok(entity);
+        }
+        else
+        {
+            return NotFound();
+        }
     }
 }
