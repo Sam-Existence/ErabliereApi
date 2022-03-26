@@ -28,6 +28,7 @@ spec:
       mountPath: /test-results
     securityContext:
       allowPrivilegeEscalation: false
+      runAsNonRoot: true
     resources:
       limits:
         cpu: "100m"
