@@ -1,7 +1,10 @@
-﻿using ErabliereApi.Depot.Sql;
+﻿using AutoMapper;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers;
@@ -15,14 +18,17 @@ namespace ErabliereApi.Controllers;
 public class AlertesController : ControllerBase
 {
     private readonly ErabliereDbContext _depot;
+    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructeur par initialisation
     /// </summary>
     /// <param name="depot"></param>
-    public AlertesController(ErabliereDbContext depot)
+    /// <param name="mapper"></param>
+    public AlertesController(ErabliereDbContext depot, IMapper mapper)
     {
         _depot = depot;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -30,12 +36,21 @@ public class AlertesController : ControllerBase
     /// </summary>
     /// <param name="id">Identifiant de l'érablière</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
+    /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
     /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
     [HttpGet]
-    public async Task<IEnumerable<Alerte>> Lister(Guid id, CancellationToken token)
+    [EnableQuery]
+    public async Task<IEnumerable<Alerte>> Lister(Guid id, CancellationToken token, bool additionalProperties)
     {
-        return await _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id).ToArrayAsync(token);
+        var alertes = await _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id).ToArrayAsync(token);
+
+        if (additionalProperties)
+        {
+            alertes = _mapper.Map<GetAlerte[]>(alertes);
+        }
+
+        return alertes;
     }
 
     /// <summary>

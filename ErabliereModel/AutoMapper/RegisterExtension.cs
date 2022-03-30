@@ -20,6 +20,16 @@ public static class RegisterExtension
     public static IServiceCollection AjouterAutoMapperErabliereApiDonnee(this IServiceCollection services) =>
         services.AddAutoMapper(config =>
         {
+            config.CreateMap<Alerte, GetAlerte>()
+                  .ForMember(g => g.Emails, a => a.MapFrom(a => a.EnvoyerA != null ?
+                                                                a.EnvoyerA.Split(';', StringSplitOptions.RemoveEmptyEntries) : 
+                                                                new string[] { }))
+                  .ReverseMap();
+            config.CreateMap<AlerteCapteur, GetAlerteCapteur>()
+                  .ForMember(g => g.Emails, a => a.MapFrom(a => a.EnvoyerA != null ?
+                                                                a.EnvoyerA.Split(';', StringSplitOptions.RemoveEmptyEntries) :
+                                                                new string[] { }))
+                  .ReverseMap();
             config.CreateMap<Capteur, GetCapteurs>().ReverseMap();
             config.CreateMap<Dompeux, GetDompeux>().ReverseMap();
             config.CreateMap<Donnee, GetDonnee>().ReverseMap();
