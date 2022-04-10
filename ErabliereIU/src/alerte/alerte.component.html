@@ -55,7 +55,7 @@
                         Désactivé
                     </td>
                     <td>
-                        {{alerte.envoyerA}}
+                      <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
                     </td>
                     <td>
                         {{alerte.minVaue}}
@@ -124,7 +124,7 @@
                         Désactivé
                     </td>
                     <td>
-                        {{alerte.envoyerA}}
+                      <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
                     </td>
                     <td>
                         {{alerte.temperatureThresholdHight}}

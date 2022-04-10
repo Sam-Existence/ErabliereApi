@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -36,36 +37,50 @@ public class AlerteCapteursController : ControllerBase
     /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
     [HttpGet]
-    public async Task<IEnumerable<AlerteCapteur>> Lister(Guid id, CancellationToken token)
+    public async Task<IEnumerable<AlerteCapteur>> Lister(Guid id, CancellationToken token, [FromQuery] bool additionnalProperties)
     {
-        return await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.IdCapteur == id).ToArrayAsync(token);
+        var alertes = await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.IdCapteur == id).ToArrayAsync(token);
+
+        if (additionnalProperties)
+        {
+            alertes = _mapper.Map<GetAlerteCapteur[]>(alertes);
+        }
+
+        return alertes;
     }
 
     /// <summary>
     /// Lister les alertes des capteurs d'une erablière
     /// </summary>
     /// <param name="id">L'id de l'érablière</param>
+    /// <param name="additionnalProperties">Propriétés additionnel</param>
     /// <returns></returns>
     [Route("/Erablieres/{id}/AlertesCapteur")]
     [HttpGet]
-    public IAsyncEnumerable<AlerteCapteur> ListerAlerteCapteurErabliere(Guid id)
+    public async Task<IEnumerable<AlerteCapteur>> ListerAlerteCapteurErabliere(Guid id, [FromQuery] bool additionnalProperties)
     {
-#pragma warning disable CS8602 // Déréférencement d'une éventuelle référence null. La fonction est évaluer pour être transformer en requête sql.
-        return _depot.AlerteCapteurs.AsNoTracking().Where(b => b.Capteur.IdErabliere == id).AsAsyncEnumerable();
-#pragma warning restore CS8602 // Déréférencement d'une éventuelle référence null.
-    }
+#nullable disable
+        var alertesCapteurs = await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.Capteur.IdErabliere == id).ToArrayAsync();
+#nullable enable
 
-    /// <summary>
-    /// Ajouter une Alerte
-    /// </summary>
-    /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
-    /// <param name="id">L'identifiant de l'érablière</param>
-    /// <param name="alerte">Les paramètres de l'alerte</param>
-    /// <param name="token">Jeton d'annulation de la tâche</param>
-    /// <response code="200">L'alerte a été correctement ajouter.</response>
-    /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
-    /// <response code="400">Le capteur n'existe pas</response>
-    [HttpPost]
+        if (additionnalProperties)
+        {
+            alertesCapteurs = _mapper.Map<GetAlerteCapteur[]>(alertesCapteurs);
+        }
+
+        return alertesCapteurs;
+    }
+        /// <summary>
+        /// Ajouter une Alerte
+        /// </summary>
+        /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="alerte">Les paramètres de l'alerte</param>
+        /// <param name="token">Jeton d'annulation de la tâche</param>
+        /// <response code="200">L'alerte a été correctement ajouter.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
+        /// <response code="400">Le capteur n'existe pas</response>
+        [HttpPost]
     public async Task<IActionResult> Ajouter(Guid id, AlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)

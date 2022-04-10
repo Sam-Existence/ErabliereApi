@@ -4,3 +4,11 @@
     white-space: nowrap;
     max-width: 25px;
 }
+
+.feature_desc {
+    display: block;
+}
+.feature_desc:before {
+    content: "";
+    display: block;
+}
