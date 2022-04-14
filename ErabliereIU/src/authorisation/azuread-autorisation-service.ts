@@ -1,5 +1,5 @@
 import { Router } from '@angular/router';
-import { BrowserCacheLocation, LogLevel, PopupRequest, PublicClientApplication, SilentRequest } from '@azure/msal-browser';
+import { AuthenticationScheme, BrowserCacheLocation, LogLevel, PopupRequest, PublicClientApplication, SilentRequest } from '@azure/msal-browser';
 import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
