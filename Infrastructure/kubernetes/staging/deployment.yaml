@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: erabliereapi
-        image: erabliereapi/erabliereapi:v2
+        image: erabliereapi/erabliereapi:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
@@ -42,7 +42,7 @@ spec:
           allowPrivilegeEscalation: false
         resources:
           limits:
-            cpu: "75m"
+            cpu: "100m"
             memory: "100Mi"
       volumes:
       - name: erabliereapi-sql-credentials
