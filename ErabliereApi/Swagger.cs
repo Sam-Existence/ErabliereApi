@@ -119,6 +119,7 @@ public static class Swagger
             c.RoutePrefix = "api";
             c.DocumentTitle = "ÉrablièreAPI - Swagger";
             c.ConfigObject.DisplayRequestDuration = true;
+            c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
 
             if (string.Equals(config["USE_SWAGGER_DARK_THEME"], TrueString, OrdinalIgnoreCase))
             {

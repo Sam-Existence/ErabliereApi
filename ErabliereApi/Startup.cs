@@ -20,6 +20,8 @@ using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using Stripe;
+using Microsoft.Extensions.Options;
 
 namespace ErabliereApi;
 
@@ -174,6 +176,12 @@ public class Startup
 
         // Prometheus
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
+
+        // Stripe
+        services.Configure<StripeOptions>(o =>
+        {
+            o.ApiKey = Configuration["Stripe.ApiKey"];
+        });
     }
 
     /// <summary>
