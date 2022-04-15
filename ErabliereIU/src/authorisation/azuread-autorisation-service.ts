@@ -23,8 +23,9 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
       scopes: this._environmentService.scopes?.split(' ') ?? [],
       prompt: "select_account"
     }
-    const response = await this._msalInstance.loginPopup(popupParam);
-    await this.completeLogin();
+    await this._msalInstance.loginPopup(popupParam).toPromise().then(response => {
+      return this.completeLogin();
+    });
   }
 
   isLoggedIn(): Promise<Boolean> {
