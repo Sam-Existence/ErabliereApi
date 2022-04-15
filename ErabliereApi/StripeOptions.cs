@@ -1,6 +1,12 @@
 ﻿namespace ErabliereApi;
 
+/// <summary>
+/// Classe d'option pour l'intégration Stripe
+/// </summary>
 public class StripeOptions
 {
-    public string ApiKey { get; internal set; }
+    /// <summary>
+    /// La clé d'api secret de Stripe
+    /// </summary>
+    public string? ApiKey { get; set; }
 }

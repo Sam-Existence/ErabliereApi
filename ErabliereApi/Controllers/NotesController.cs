@@ -79,7 +79,8 @@ public class NotesController : ControllerBase
     /// <summary>
     /// Action permettant de modifier note
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="noteId">L'id de la note</param>
     /// <param name="putNote"></param>
     /// <param name="token"></param>
     /// <returns></returns>

@@ -14,6 +14,9 @@ public class CheckoutController : ControllerBase
 {
     private readonly IOptions<StripeOptions> _options;
 
+    /// <summary>
+    /// Constructeur par initialisation
+    /// </summary>
     public CheckoutController(IOptions<StripeOptions> options)
     {
         _options = options;
