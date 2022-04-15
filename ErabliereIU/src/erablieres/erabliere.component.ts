@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
@@ -15,7 +15,7 @@ import { Note } from 'src/model/note';
 })
 export class ErabliereComponent implements OnInit {
   erablieres?: Array<Erabliere>;
-  etat: string = "Chargement des erablieres...";
+  etat: string = "";
   erabliereSelectionnee?: Erabliere;
   idSelectionnee?: any
   @Input() cacheMenuErabliere?: boolean;
@@ -47,6 +47,10 @@ export class ErabliereComponent implements OnInit {
   }
 
   private async LoadErablieresPage() {
+    if (this.etat == "Chargement des erablieres...") {
+      return new Promise<void>((resolve, reject) => { });
+    }
+
     this.etat = "Chargement des erablieres...";
 
     const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs().catch(err => {

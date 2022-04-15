@@ -25,9 +25,69 @@ import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
 import { NoteComponent } from 'src/note/note.component';
 import { AjouterNoteComponent } from 'src/note/ajouter-note.component';
 import { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';
+import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
+}
+
+export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClientApplication {
+  if (!appConfig.authEnable) {
+    return new PublicClientApplication({
+      auth: {
+        clientId: "null"
+      }
+    });
+  }
+
+  if (appConfig.clientId == undefined) {
+    throw new Error("/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode");
+  }
+
+  const msalConfig: Configuration = {
+    auth: {
+      clientId: appConfig.clientId,
+      authority: "https://login.microsoftonline.com/" + appConfig.tenantId,
+      redirectUri: "/signin-callback",
+      postLogoutRedirectUri: "/signout-callback",
+      navigateToLoginRequestUrl: true
+    },
+    cache: {
+      cacheLocation: BrowserCacheLocation.LocalStorage,
+      storeAuthStateInCookie: false,
+    },
+    system: {
+      loggerOptions: {
+        loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {
+          if (containsPii) {
+            return;
+          }
+          switch (level) {
+            case LogLevel.Error:
+              console.error(message);
+              return;
+            case LogLevel.Info:
+              console.info(message);
+              return;
+            case LogLevel.Verbose:
+              console.debug(message);
+              return;
+            case LogLevel.Warning:
+              console.warn(message);
+              return;
+          }
+        },
+        piiLoggingEnabled: false
+      },
+      windowHashTimeout: 60000,
+      iframeHashTimeout: 6000,
+      loadFrameTimeout: 0,
+      asyncPopups: false
+    }
+  };
+
+  return new PublicClientApplication(msalConfig);
 }
 
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
@@ -59,14 +119,21 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ChartsModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
   ],
-  providers: [{
-    provide: APP_INITIALIZER,
-    useFactory: initConfig,
-    deps: [EnvironmentService],
-    multi: true,
-  }],
+  providers: [
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initConfig,
+      deps: [EnvironmentService],
+      multi: true,
+    },
+    {
+      provide: MSAL_INSTANCE,
+      useFactory: MSALInstanceFactory,
+      deps: [EnvironmentService]
+    },
+    MsalService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

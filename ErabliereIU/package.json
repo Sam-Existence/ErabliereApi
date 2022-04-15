@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~13.3.0",
     "@angular/platform-browser-dynamic": "~13.3.0",
     "@angular/router": "~13.3.0",
+    "@azure/msal-angular": "^2.2.0",
     "@azure/msal-browser": "^2.23.0",
     "@babel/core": "^7.17.8",
     "ansi-regex": "^6.0.1",

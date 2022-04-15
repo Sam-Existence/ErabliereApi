@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
@@ -59,7 +59,7 @@ import { UrlModel } from '../model/urlModel';
         <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere" #erabliereComponent></erablieres>
     `
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent {
   pageSelectionnee = 0;
   cacheMenuErabliere = false;
   title = 'Érablière IU';
@@ -70,18 +70,13 @@ export class DashboardComponent implements OnInit {
 
   private _authService: IAuthorisationSerivce
 
-  constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService) {
+  constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService, cdr: ChangeDetectorRef) {
     this._authService = authFactoryService.getAuthorisationService();
-    this._authService.loginChanged.subscribe(loggedIn => {
-      this.isLoggedIn = loggedIn;
+    this._authService.loginChanged.subscribe(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+      cdr.detectChanges();
     });
     this.urls = environmentService.additionnalUrls ?? [];
-  }
-
-  ngOnInit(): void {
-    this._authService.isLoggedIn().then(loggedIn => {
-      this.isLoggedIn = loggedIn;
-    });
   }
 
   login() {
