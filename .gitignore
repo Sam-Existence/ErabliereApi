@@ -374,6 +374,7 @@ ErabliereIU/.vscode/settings.json
 !ErabliereIU/.vscode/launch.json
 !ErabliereIU/.vscode/extensions.json
 ErabliereIU/.history/*
+.vscode/
 
 # misc
 ErabliereIU/.sass-cache
