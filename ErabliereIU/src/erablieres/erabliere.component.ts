@@ -31,7 +31,7 @@ export class ErabliereComponent implements OnInit {
     this._authService = authFactory.getAuthorisationService();
     this._authService.loginChanged.subscribe(loggedIn => {
       if (loggedIn) {
-        this.ngOnInit();
+        this.LoadErablieresPage();
       }
       else {
         this.erablieres = undefined;
@@ -43,6 +43,10 @@ export class ErabliereComponent implements OnInit {
   }
 
   async ngOnInit() {
+    await this.LoadErablieresPage();
+  }
+
+  private async LoadErablieresPage() {
     this.etat = "Chargement des erablieres...";
 
     const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs().catch(err => {

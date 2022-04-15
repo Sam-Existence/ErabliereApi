@@ -64,18 +64,15 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     this._msalInstance = new PublicClientApplication(msalConfig);
   }
 
-  login() {
+  async login() {
     const popupParam: PopupRequest = {
       scopes: this._environmentService.scopes?.split(' ') ?? [],
       prompt: "select_account"
     }
-    return this._msalInstance.loginPopup(popupParam).then(async response => {
-      this._msalInstance.setActiveAccount(response.account);
-
-      this._activeHomeAccountId = response.account?.homeAccountId;
-
-      await this.completeLogin();
-    });
+    const response = await this._msalInstance.loginPopup(popupParam);
+    this._msalInstance.setActiveAccount(response.account);
+    this._activeHomeAccountId = response.account?.homeAccountId;
+    await this.completeLogin();
   }
 
   isLoggedIn(): Promise<Boolean> {
