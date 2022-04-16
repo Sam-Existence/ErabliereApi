@@ -38,6 +38,7 @@ export class ErabliereComponent implements OnInit {
         this.erabliereSelectionnee = undefined;
         this.idSelectionnee = undefined;
         this.etat = "Vous n'êtes pas connecté";
+        this.pageSelectionnee = 0;
       }
     });
   }
@@ -47,11 +48,13 @@ export class ErabliereComponent implements OnInit {
   }
 
   private async LoadErablieresPage() {
-    if (this.etat == "Chargement des erablieres...") {
+    const titreChargement = "Chargement des érablières...";
+
+    if (this.etat == titreChargement) {
       return new Promise<void>((resolve, reject) => { });
     }
 
-    this.etat = "Chargement des erablieres...";
+    this.etat = titreChargement;
 
     const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs().catch(err => {
       console.log(err);

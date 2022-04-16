@@ -1,7 +1,5 @@
-import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
-import { BrowserCacheLocation, LogLevel, PopupRequest, PublicClientApplication, SilentRequest } from '@azure/msal-browser';
-import { Configuration } from '@azure/msal-browser/dist/config/Configuration';
+import { AccountInfo, PopupRequest, SilentRequest } from '@azure/msal-browser';
 import { Subject } from 'rxjs';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { AppUser } from 'src/model/appuser';
@@ -9,59 +7,46 @@ import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
 
 export class AzureADAuthorisationService implements IAuthorisationSerivce {
-  private _activeHomeAccountId?: string
+  private _isLoggedIn: Boolean = false;
   private _loginChangedSubject = new Subject<Boolean>();
-
   loginChanged = this._loginChangedSubject.asObservable();
 
-  constructor(private _msalInstance: MsalService, private _environmentService: EnvironmentService) {
-    
-  }
+  constructor(private _msalInstance: MsalService, private _environmentService: EnvironmentService) { }
 
   async login() {
     const popupParam: PopupRequest = {
       scopes: this._environmentService.scopes?.split(' ') ?? [],
       prompt: "select_account"
     }
-    await this._msalInstance.loginPopup(popupParam).toPromise().then(response => {
+    var appUser = await this._msalInstance.loginPopup(popupParam).toPromise().then(response => {
       return this.completeLogin();
     });
+    console.log("AppUser", appUser);
   }
 
   isLoggedIn(): Promise<Boolean> {
     return new Promise(async (resolve, reject) => {
-      let user = this._msalInstance.instance.getActiveAccount();
+      let user = this.getUser();
 
-      if (user == null) {
-        const users = this._msalInstance.instance.getAllAccounts();
+      this._isLoggedIn = user != null;
 
-        if (users.length > 0) {
-          user = users[0];
-          this._activeHomeAccountId = user.homeAccountId
-          this._msalInstance.instance.setActiveAccount(user);
-        }
-      }
-
-      const isLoggedIn = !!user && user.homeAccountId == this._activeHomeAccountId;
-
-      if (this._activeHomeAccountId !== user?.localAccountId) {
-        this._loginChangedSubject.next(isLoggedIn);
-      }
-
-      return resolve(isLoggedIn);
+      return resolve(this._isLoggedIn);
     });
   }
 
   completeLogin() {
     return new Promise<AppUser>((resolve, reject) => {
-      const user = this._msalInstance.instance.getActiveAccount();
-
-      this._loginChangedSubject.next(!!user);
-
+      const user = this.getUser();
       if (user != null) {
-        this._activeHomeAccountId = user.homeAccountId;
+        this._isLoggedIn = true;
+        this._loginChangedSubject.next(true);
+        this._msalInstance.instance.setActiveAccount(user);
+        return resolve(new AppUser());
       }
 
+      this._isLoggedIn = false;
+      this._loginChangedSubject.next(false);
+      this._msalInstance.instance.setActiveAccount(null);
       return resolve(new AppUser());
     });
   }
@@ -74,43 +59,43 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
 
   completeLogout() {
     return new Promise<AuthResponse>((resolve, reject) => {
-      this._activeHomeAccountId = undefined;
+      this._isLoggedIn = false;
+      this._msalInstance.instance.setActiveAccount(null);
       this._loginChangedSubject.next(false);
       return resolve(new AuthResponse());
     })
   }
 
   getAccessToken(): Promise<String | null> {
-    if (this._activeHomeAccountId == null) {
-      const user = this._msalInstance.instance.getActiveAccount();
-
-      this._loginChangedSubject.next(!!user);
-
-      if (user != null) {
-        this._activeHomeAccountId = user.homeAccountId;
-      }
-      else {
-        return new Promise((resolve, reject) => resolve(null));
-      }
-    }
-
-    const accountInfo = this._msalInstance.instance.getAccountByHomeId(this._activeHomeAccountId) ?? undefined;
+    var user = this.getUser();
+    this._msalInstance.instance.setActiveAccount(user);
 
     const requestObj: SilentRequest = {
       scopes: this._environmentService.scopes?.split(' ') ?? [],
       authority: this._environmentService.stsAuthority,
-      account: accountInfo,
+      account: this.getUser() ?? undefined,
       forceRefresh: false
     };
 
     return this._msalInstance.acquireTokenSilent(requestObj).toPromise().then(authResult => {
+      if (this._isLoggedIn == false) {
+        this.completeLogin();
+      }
       return authResult.accessToken;
     }).catch(reason => {
       console.log(reason);
-      this._activeHomeAccountId = undefined;
+      this._isLoggedIn = false;
       this._msalInstance.instance.setActiveAccount(null);
       this._loginChangedSubject.next(false);
       return null;
     });
+  }
+
+  getUser(): AccountInfo | null {
+    var user = null;
+    if (this._msalInstance.instance.getAllAccounts().length > 0) {
+      user = this._msalInstance.instance.getAllAccounts()[0];
+    }
+    return user;
   }
 }

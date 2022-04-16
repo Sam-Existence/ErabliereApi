@@ -108,9 +108,16 @@ export class DonneesComponent implements OnInit {
           this.dernierDompeuxRecu = undefined;
           this.derniereDonneeRecu = undefined;
 
-          this.erabliereAfficherTrioDonnees = response.afficherTrioDonnees;
-          this.erabliereAfficherSectionDompeux = response.afficherSectionDompeux;
-          this.erabliereId = response.id;
+          if (response != undefined) {
+            this.erabliereAfficherTrioDonnees = response.afficherTrioDonnees;
+            this.erabliereAfficherSectionDompeux = response.afficherSectionDompeux;
+            this.erabliereId = response.id;
+          }
+          else {
+            this.erabliereAfficherTrioDonnees = undefined;
+            this.erabliereAfficherSectionDompeux = undefined;
+            this.erabliereId = undefined;
+          }
 
           this.fetchDataAndBuildGraph()
         });
