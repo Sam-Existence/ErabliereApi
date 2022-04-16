@@ -6,7 +6,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 @Component({
     selector: 'graph-panel',
     template: `
-        <div class="border-top">
+        <div id="graph-pannel-{{idCapteur}}" class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
 
             <div class="container">

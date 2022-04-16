@@ -1,6 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { AlerteComponent } from 'src/alerte/alerte.component';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
@@ -27,7 +25,7 @@ import { UrlModel } from '../model/urlModel';
                         <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>
                     </li>
                     <li *ngIf="isLoggedIn" class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
+                        <a id="nav-menu-alerte-button" class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
                     </li>
                     <li *ngIf="isLoggedIn" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
@@ -72,6 +70,9 @@ export class DashboardComponent {
 
   constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService, cdr: ChangeDetectorRef) {
     this._authService = authFactoryService.getAuthorisationService();
+    this._authService.isLoggedIn().then(isLoggedIn => {
+      this.isLoggedIn = isLoggedIn;
+    });
     this._authService.loginChanged.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
       cdr.detectChanges();
