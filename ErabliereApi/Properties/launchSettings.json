@@ -19,7 +19,7 @@
         "LOG_SQL": "-", // Console, -
 
         // Utiliser l'authentification
-        "USE_AUTHENTICATION": "true",
+        "USE_AUTHENTICATION": "false",
 
         // Configuration swagger active avec USE_AUTHENTICATION: true
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",

@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, Component, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
@@ -15,7 +15,7 @@ import { Note } from 'src/model/note';
 })
 export class ErabliereComponent implements OnInit {
   erablieres?: Array<Erabliere>;
-  etat: string = "Chargement des erablieres...";
+  etat: string = "";
   erabliereSelectionnee?: Erabliere;
   idSelectionnee?: any
   @Input() cacheMenuErabliere?: boolean;
@@ -31,19 +31,30 @@ export class ErabliereComponent implements OnInit {
     this._authService = authFactory.getAuthorisationService();
     this._authService.loginChanged.subscribe(loggedIn => {
       if (loggedIn) {
-        this.ngOnInit();
+        this.LoadErablieresPage();
       }
       else {
         this.erablieres = undefined;
         this.erabliereSelectionnee = undefined;
         this.idSelectionnee = undefined;
         this.etat = "Vous n'êtes pas connecté";
+        this.pageSelectionnee = 0;
       }
     });
   }
 
   async ngOnInit() {
-    this.etat = "Chargement des erablieres...";
+    await this.LoadErablieresPage();
+  }
+
+  private async LoadErablieresPage() {
+    const titreChargement = "Chargement des érablières...";
+
+    if (this.etat == titreChargement) {
+      return new Promise<void>((resolve, reject) => { });
+    }
+
+    this.etat = titreChargement;
 
     const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs().catch(err => {
       console.log(err);

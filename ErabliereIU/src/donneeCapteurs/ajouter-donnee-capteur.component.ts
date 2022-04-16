@@ -12,11 +12,11 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
             <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">
                     <label for="valeur">Valeur</label>
-                    <input type="number" class="form-control" id="valeur" placeholder="Valeur" formControlName="valeur">
+                    <input type="number" class="form-control" id="valeur" name="valeur" placeholder="Valeur" formControlName="valeur">
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
-                    <input type="datetime-local" class="form-control" id="date" placeholder="Date" formControlName="date">
+                    <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
                 </div>
                 <button type="button" class="btn btn-primary" (click)="ajouterDonnee()">Ajouter</button>
                 <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>

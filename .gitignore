@@ -393,3 +393,6 @@ ErabliereIU/Thumbs.db
 # Docker
 .env
 certs/
+
+# Cypress
+ErabliereIU/cypress/videos/

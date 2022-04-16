@@ -1,43 +1,41 @@
-// ***********************************************
-// This example namespace declaration will help
-// with Intellisense and code completion in your
-// IDE or Text Editor.
-// ***********************************************
-// declare namespace Cypress {
-//   interface Chainable<Subject = any> {
-//     customCommand(param: any): typeof customCommand;
-//   }
-// }
-//
-// function customCommand(param: any): void {
-//   console.warn(param);
-// }
-//
-// NOTE: You can use it like so:
-// Cypress.Commands.add('customCommand', customCommand);
-//
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add("login", (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add("drag", { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add("dismiss", { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+declare namespace Cypress {
+    interface Chainable {
+        login(): void;
+    }
+}
+
+Cypress.Commands.add('login', () => {
+    cy.request({
+        method: "GET",
+        url: "/assets/config/oauth-oidc.json"
+    }).then(body => {
+        const config = body.body;
+
+        if (config.authEnable) {
+
+            if (config.tenantId != undefined && config.tenantId?.length > 1) {
+                cy.request({
+                    method: "POST",
+                    url: `https://login.microsoftonline.com/${config.tenantId}/oauth2/token`,
+                    form: true,
+                    body: {
+                    grant_type: "client_credentials",
+                    client_id: Cypress.env("clientId"),
+                    client_secret: Cypress.env("clientSecret"),
+                    },
+                }).then(response => {
+                    const ADALToken = response.body.access_token;
+                    const expiresOn = response.body.expires_on;
+            
+                    localStorage.setItem("adal.token.keys", `${Cypress.env("clientId")}|`);
+                    localStorage.setItem(`adal.access.token.key${Cypress.env("clientId")}`, ADALToken);
+                    localStorage.setItem(`adal.expiration.key${Cypress.env("clientId")}`, expiresOn);
+                    localStorage.setItem("adal.idtoken", ADALToken);
+                });
+            }
+            else {
+                // TODO: Authenticate using identity server
+            }
+        }
+    });
+});

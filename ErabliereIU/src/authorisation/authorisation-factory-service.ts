@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
 import { EnvironmentService } from "src/environments/environment.service";
 import { AuthorisationBypassService } from "./authorisation-bypass-service";
 import { AuthorisationService } from "./authorisation-service";
@@ -8,7 +8,7 @@ import { IAuthorisationSerivce } from "./iauthorisation-service";
 
 @Injectable({ providedIn: 'root' })
 export class AuthorisationFactoryService {
-    constructor(private _environment: EnvironmentService) {
+    constructor(private _environment: EnvironmentService, private _msalService: MsalService) {
 
     }
 
@@ -18,7 +18,7 @@ export class AuthorisationFactoryService {
         if (this._cache == null) {
             if (this._environment.authEnable == true) {
                 if (this._environment.tenantId != undefined && this._environment.tenantId?.length > 1) {
-                    this._cache = new AzureADAuthorisationService(this._environment);
+                    this._cache = new AzureADAuthorisationService(this._msalService, this._environment);
                 }
                 else {
                     this._cache = new AuthorisationService(this._environment);
