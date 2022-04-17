@@ -2,6 +2,8 @@ using System.Reflection;
 using ErabliereApi.Controllers;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
+namespace ErabliereApi.StripeIntegration;
+
 /// <summary>
 /// Classe de filtre pour le contrôleur de checkout
 /// </summary>

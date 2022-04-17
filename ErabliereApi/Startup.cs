@@ -20,6 +20,7 @@ using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using ErabliereApi.StripeIntegration;
 
 namespace ErabliereApi;
 
