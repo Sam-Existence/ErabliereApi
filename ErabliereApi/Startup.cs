@@ -20,8 +20,6 @@ using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
-using Stripe;
-using Microsoft.Extensions.Options;
 
 namespace ErabliereApi;
 
@@ -56,6 +54,10 @@ public class Startup
             {
                 o.Filters.Add<MiniProfilerAsyncLogger>();
             }
+        })
+        .ConfigureApplicationPartManager(manager => {
+            manager.FeatureProviders.Clear();
+            manager.FeatureProviders.Add(new StripeIntegrationToggleFiltrer(Configuration));
         })
         .AddOData(o =>
         {
@@ -178,10 +180,16 @@ public class Startup
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
         // Stripe
-        services.Configure<StripeOptions>(o =>
+        if (string.Equals(Configuration["USE_STRIPE"], TrueString, OrdinalIgnoreCase))
         {
-            o.ApiKey = Configuration["Stripe.ApiKey"];
-        });
+            services.Configure<StripeOptions>(o =>
+            {
+                o.ApiKey = Configuration["Stripe.ApiKey"];
+                o.SuccessUrl = Configuration["Stripe.SuccessUrl"];
+                o.CancelUrl = Configuration["Stripe.CancelUrl"];
+                o.BasePlanPriceId = Configuration["Stripe.BasePlanPriceId"];
+            });
+        }
     }
 
     /// <summary>
