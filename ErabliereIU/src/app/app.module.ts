@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
@@ -27,6 +27,16 @@ import { AjouterNoteComponent } from 'src/note/ajouter-note.component';
 import { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
+import { environment } from 'src/environments/environment';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+
+declare global {
+  interface Window { 
+    appRef: ApplicationRef, 
+    Cypress: any,
+    authorisationFactoryService: AuthorisationFactoryService
+   }
+}
 
 export function initConfig(appConfig: EnvironmentService) {
   return () => appConfig.loadConfig();
@@ -133,7 +143,19 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
       useFactory: MSALInstanceFactory,
       deps: [EnvironmentService]
     },
-    MsalService],
-  bootstrap: [AppComponent]
+    MsalService
+  ]
 })
-export class AppModule { }
+export class AppModule implements DoBootstrap { 
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap(appRef: ApplicationRef): void {
+    appRef.bootstrap(AppComponent);
+
+    if (!environment.production) {
+      if (window.Cypress) {
+        window.appRef = appRef;
+      }
+    }
+  }
+}
