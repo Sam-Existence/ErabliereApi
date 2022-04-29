@@ -12,16 +12,30 @@ Cypress.Commands.add('login', () => {
         const config = body.body;
 
         if (config.authEnable) {
+            if (isAzureAD(config)) {
+                // Check if there is already a token in local storage
+                // var token = localStorage.getItem("adal.idtoken");
 
-            if (config.tenantId != undefined && config.tenantId?.length > 1) {
+                // if (token) {
+                //     // Check if the token is still valid
+                //     var expiresOn = localStorage.getItem(`adal.expiration.key${Cypress.env("clientId")}`) ?? "";
+                //     var now = new Date();
+                //     var expiresOnDate = new Date(parseInt(expiresOn));
+                //     if (now < expiresOnDate) {
+                //         cy.log("Token is still valid, expire at " + expiresOnDate);
+                //         return;
+                //     }
+                // }
+
                 cy.request({
                     method: "POST",
                     url: `https://login.microsoftonline.com/${config.tenantId}/oauth2/token`,
                     form: true,
                     body: {
-                    grant_type: "client_credentials",
-                    client_id: Cypress.env("clientId"),
-                    client_secret: Cypress.env("clientSecret"),
+                        grant_type: "client_credentials",
+                        client_id: Cypress.env("clientId"),
+                        client_secret: Cypress.env("clientSecret"),
+                        scope: config.scopes
                     },
                 }).then(response => {
                     const ADALToken = response.body.access_token;
@@ -39,3 +53,8 @@ Cypress.Commands.add('login', () => {
         }
     });
 });
+
+function isAzureAD(config: any) {
+    return config.tenantId != undefined && config.tenantId?.length > 1;
+}
+

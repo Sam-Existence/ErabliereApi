@@ -2,3 +2,4 @@ requests
 azure-identity
 pillow
 pytesseract
+flask-restful

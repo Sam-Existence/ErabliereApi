@@ -1,12 +1,13 @@
+import { HomePage } from '../pages/home.page';
+import { AlertesPage } from '../pages/alertes.page';
+
 describe('Alerte functionnality', () => {
+    const homePage = new HomePage();
+
     it('Visit the alerte page', () => {
-        cy.login()
-        cy.visit('/')
-        // Find the alertes button in the nav menu
-        cy.waitFor('#nav-menu-alerte-button', 5000)
-
-        cy.contains('Alerte').click()
-
-        cy.get('alerte-page.col-lg-10 > h3').should('have.text', 'Alertes')
+        homePage.visit()
+                .clickOnAlerteButtonNavMenu()
+                .getPageTitle()
+                .should('have.text', 'Alertes')
     });
 });

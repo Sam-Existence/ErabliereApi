@@ -1,7 +1,10 @@
+import { HomePage } from "cypress/pages/home.page";
+
 describe('Visits the web app', () => {
+  const homePage = new HomePage();
+
   it('visit the app', () => {
-    cy.login()
-    cy.visit('/')
+    homePage.visit();
     cy.contains('Érablière IU')
   });
 
