@@ -17,7 +17,7 @@ public class StripeToggleTest : IClassFixture<StripeEnabledApplicationFactory<St
     }
 
     [Fact]
-    public async Task ByDefault_ThereIsNoCheckoutControllerEnabled()
+    public async Task CheckoutControllerEnabled()
     {
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
