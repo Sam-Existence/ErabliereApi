@@ -9,7 +9,7 @@ namespace ErabliereApi.StripeIntegration;
 /// </summary>
 public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
 {
-    private readonly bool _stripeEnabled;
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// Build a ControllerFeatureProvider that will filter out Stripe integration controllers
@@ -17,7 +17,7 @@ public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
     /// </summary>
     public StripeIntegrationToggleFiltrer(IConfiguration config)
     {
-        _stripeEnabled = !string.IsNullOrWhiteSpace(config["Stripe.ApiKey"]);
+        _config = config;
     }
     
     /// <inheritdoc />
@@ -25,7 +25,9 @@ public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
     {
         if (typeInfo.Name == nameof(CheckoutController)) 
         {
-            return _stripeEnabled;
+            var stripeEnabled = !string.IsNullOrWhiteSpace(_config["Stripe.ApiKey"]);
+
+            return stripeEnabled;
         }
 
         return base.IsController(typeInfo);

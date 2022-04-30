@@ -5,16 +5,26 @@ using Microsoft.Extensions.Options;
 
 namespace ErabliereApi.StripeIntegration;
 
-
+/// <summary>
+/// Implémentation de ICheckoutService permettan d'initialiser une session avec Stripe
+/// </summary>
 public class StripeCheckoutService : ICheckoutService
 {
     private readonly IOptions<StripeOptions> _options;
 
+    /// <summary>
+    /// Constructeur
+    /// </summary>
+    /// <param name="options"></param>
     public StripeCheckoutService(IOptions<StripeOptions> options)
     {
         _options = options;
     }
 
+    /// <summary>
+    /// Implémentation de ICheckoutService permettan d'initialiser une session avec Stripe
+    /// </summary>
+    /// <returns></returns>
     public async Task<object> CreateSessionAsync()
     {
         StripeConfiguration.ApiKey = _options.Value.ApiKey;
@@ -27,8 +37,7 @@ public class StripeCheckoutService : ICheckoutService
             {
                 new SessionLineItemOptions
                 {
-                    Price = _options.Value.BasePlanPriceId,
-                    Quantity = 1,
+                    Price = _options.Value.BasePlanPriceId
                 }
             },
             Mode = "subscription",

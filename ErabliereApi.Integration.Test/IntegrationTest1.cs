@@ -1,5 +1,7 @@
 using ErabliereApi.Integration.Test.ApplicationFactory;
 using Microsoft.AspNetCore.Mvc.Testing;
+using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,20 +31,29 @@ public class IntegrationTest1 : IClassFixture<ErabliereApiApplicationFactory<Sta
         response.EnsureSuccessStatusCode();
     }
 
-    //[Fact]
-    //public async Task ByDefault_ThereIsNoCheckoutControllerEnabled()
-    //{
-    //    var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-    //    {
-    //        AllowAutoRedirect = true,
-    //        HandleCookies = true,
-    //        MaxAutomaticRedirections = 7
-    //    });
+    [Fact]
+    public async Task ByDefault_ThereIsNoCheckoutControllerEnabled()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true,
+            MaxAutomaticRedirections = 7
+        });
 
-    //    var response = await client.GetAsync("/Checkout");
+        using var content = new StringContent("");
 
-    //    // Assert that we recieved the default index.html page because
-    //    // there was noting found at the endpoint
-    //    response.EnsureSuccessStatusCode();
-    //}
+        InvalidOperationException? e = null;
+
+        try
+        {
+            var response = await client.PostAsync("/Checkout", content);
+        }
+        catch (InvalidOperationException exception)
+        {
+            e = exception;
+        }
+
+        Assert.NotNull(e);
+    }
 }

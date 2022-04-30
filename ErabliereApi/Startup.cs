@@ -21,6 +21,7 @@ using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ErabliereApi.StripeIntegration;
+using ErabliereApi.Services;
 
 namespace ErabliereApi;
 
@@ -181,7 +182,7 @@ public class Startup
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
         // Stripe
-        if (string.Equals(Configuration["USE_STRIPE"], TrueString, OrdinalIgnoreCase))
+        if (!string.IsNullOrWhiteSpace(Configuration["Stripe.ApiKey"]))
         {
             services.Configure<StripeOptions>(o =>
             {
@@ -190,6 +191,8 @@ public class Startup
                 o.CancelUrl = Configuration["Stripe.CancelUrl"];
                 o.BasePlanPriceId = Configuration["Stripe.BasePlanPriceId"];
             });
+
+            services.AddTransient<ICheckoutService, StripeCheckoutService>();
         }
     }
 
