@@ -27,4 +27,44 @@
     <ProjectReference Include="..\ErabliereApi\ErabliereApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="StripeWebhookJson\StripeWebhookTest\NominalFlow\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\checkout.session.completed.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\customer.created.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\customer.subscription.created.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\customer.updated.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\invoice.created.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\invoice.finalized.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\invoice.paid.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\invoice.payment_succeeded.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\payment_method.attached.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\setup_intent.created.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="StripeWebhookJson\StripeWebhookTest\NominalFlow\setup_intent.succeeded.body.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -29,4 +29,6 @@ public class StripeOptions
     /// L'id stripe du plan de base
     /// </summary>
     public string? BasePlanPriceId { get; set; }
+    public string WebhookSecret { get; internal set; }
+    public string WebhookSiginSecret { get; internal set; }
 }

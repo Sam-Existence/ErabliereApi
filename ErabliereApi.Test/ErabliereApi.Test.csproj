@@ -28,4 +28,16 @@
     <ProjectReference Include="..\ErabliereApi\ErabliereApi.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="customer.created.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="customer.updated.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="invoice.finalized.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

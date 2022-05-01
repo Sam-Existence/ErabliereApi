@@ -1,0 +1,53 @@
+{
+  "id": "evt_HGftnAImiDubqI1QCOJiR9qK",
+  "object": "event",
+  "api_version": "2020-08-27",
+  "created": 1651332235,
+  "data": {
+    "object": {
+      "id": "cus_LaVP6tbz29vR6X",
+      "object": "customer",
+      "address": {
+        "city": null,
+        "country": "CA",
+        "line1": null,
+        "line2": null,
+        "postal_code": "G0M 1L0",
+        "state": null
+      },
+      "balance": 0,
+      "created": 1651332233,
+      "currency": "cad",
+      "default_source": null,
+      "delinquent": false,
+      "description": null,
+      "discount": null,
+      "email": "john@doe.com",
+      "invoice_prefix": "1D7AE3C8",
+      "invoice_settings": {
+        "custom_fields": null,
+        "default_payment_method": null,
+        "footer": null
+      },
+      "livemode": false,
+      "metadata": {},
+      "name": "John Doe",
+      "next_invoice_sequence": 2,
+      "phone": null,
+      "preferred_locales": [],
+      "shipping": null,
+      "tax_exempt": "none",
+      "test_clock": null
+    },
+    "previous_attributes": {
+      "currency": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "customer.updated"
+}

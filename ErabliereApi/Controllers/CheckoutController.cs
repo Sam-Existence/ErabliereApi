@@ -1,5 +1,4 @@
 ﻿using ErabliereApi.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ErabliereApi.Controllers;
@@ -9,7 +8,6 @@ namespace ErabliereApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("/[controller]")]
-[Authorize]
 public class CheckoutController : ControllerBase
 {
     private readonly ICheckoutService _checkoutService;
@@ -34,5 +32,20 @@ public class CheckoutController : ControllerBase
         return Ok(session);
     }
 
-    
+    /// <summary>
+    /// Webhook utilisé pour recevoir des appels d'un fournisseur de paiement
+    /// </summary>
+    /// <returns></returns>
+    [HttpPost]
+    [Route("[action]")]
+    public async Task<IActionResult> Webhook()
+    {
+        using var reader = new StreamReader(HttpContext.Request.Body);
+
+        var json = await reader.ReadToEndAsync();
+        
+        await _checkoutService.Webhook(json);
+
+        return Ok();
+    }
 }

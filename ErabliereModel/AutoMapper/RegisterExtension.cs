@@ -3,6 +3,7 @@ using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using System;
 using ErabliereApi.Donnees.Action.Put;
+using AutoMapper;
 
 namespace ErabliereApi.Donnees.AutoMapper;
 
@@ -15,9 +16,10 @@ public static class RegisterExtension
     /// <summary>
     /// Méthode pour ajouter les mapping entre les modèles exposés et les modèles de la base de données.
     /// </summary>
-    /// <param name="services"></param>
+    /// <param name="services">The ServiceCollection instance to add automapper</param>
+    /// <param name="additionnelConfig">An action to add additionnal mapping rule</param>
     /// <returns></returns>
-    public static IServiceCollection AjouterAutoMapperErabliereApiDonnee(this IServiceCollection services) =>
+    public static IServiceCollection AjouterAutoMapperErabliereApiDonnee(this IServiceCollection services, Action<IMapperConfigurationExpression>? additionnelConfig = null) =>
         services.AddAutoMapper(config =>
         {
             config.CreateMap<Alerte, GetAlerte>()
@@ -55,5 +57,7 @@ public static class RegisterExtension
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
 
             config.CreateMap<PutAlerteCapteur, AlerteCapteur>();
+
+            additionnelConfig?.Invoke(config);
         });
 }
