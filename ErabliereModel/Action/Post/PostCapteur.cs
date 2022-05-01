@@ -9,6 +9,11 @@ namespace ErabliereApi.Donnees.Action.Post
     public class PostCapteur
     {
         /// <summary>
+        /// L'id guid si le client désire initialiser l'id
+        /// </summary>
+        public Guid? Id { get; set; }
+
+        /// <summary>
         /// Le nom du capteur
         /// </summary>
         [Required]
@@ -30,6 +35,12 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Indicateur permettant d'afficher ou non le graphique relié au capteur.
         /// </summary>
         public bool? AfficherCapteurDashboard { get; set; }
+
+        /// <summary>
+        /// Indicateur peremettant d'afficher un formulaire quand les données
+        /// peuvent être saisit depuis un interface utilisateur.
+        /// </summary>
+        public bool? AjouterDonneeDepuisInterface { get; set; }
 
         /// <summary>
         /// L'id de l'érablière
