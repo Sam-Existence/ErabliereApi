@@ -23,6 +23,7 @@ WORKDIR /app/ErabliereApi
 RUN dotnet restore
 RUN dotnet build -c Release
 RUN dotnet test ../ErabliereApi.Test/ErabliereApi.Test.csproj -c Release
+RUN dotnet test ../ErabliereApi.Integration.Test/ErabliereApi.Integration.Test.csproj -c Release
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
