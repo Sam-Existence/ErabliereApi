@@ -183,4 +183,8 @@ export class ErabliereApi {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Activer", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
     }
+
+    async startCheckoutSession(): Promise<any> {
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + "/Checkout", {}, {}).toPromise();
+    }
 }

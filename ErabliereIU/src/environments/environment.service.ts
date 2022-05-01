@@ -13,6 +13,7 @@ export class EnvironmentService {
   stsAuthority?: string
   authEnable?: boolean
   additionnalUrls?: UrlModel[]
+  checkoutEnabled: boolean | undefined;
 
   constructor(private _httpClient: HttpClient) {
 
