@@ -24,7 +24,7 @@ jobs:
           cluster-name: 'kerabliereapi'
 
       # Deploy to kubernetes
-      - name: Kubectl test workflow
+      - name: Kubectl newman test workflow
         run: |
           kubectl config current-context
           
@@ -58,9 +58,6 @@ jobs:
           # extract the test results
           kubectl cp securetesting-newman:test-results . -c file-copy -n erabliereapi-staging
 
-          # delete the staging namespace
-          kubectl delete namespace erabliereapi-staging
-
       # Analyse newman results
       - name: Publish Test Report
         uses: mikepenz/action-junit-report@v3.0.2
@@ -69,3 +66,23 @@ jobs:
           report_paths: 'junit-report.xml'
           require_tests: true
           fail_on_failure: true
+
+      # Run the cypress test
+      - name: Kubectl cypress test workflow
+        run: |
+          # create the cypress test configmap
+          kubectl create configmap erabliereiu-cypress-test --from-file=ErabliereIU/cyress -o yaml | kubectl apply -f - -n erabliereapi-staging
+
+          # create the cypress pod
+          kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-pod.yaml -n erabliereapi-staging
+
+          # attach to the newman pod
+          kubectl attach securetesting-newman -c securetesting-newman -n erabliereapi-staging
+
+      # Deploy to kubernetes
+      - name: Kubectl delete namespace
+        if: always()
+        run: |
+
+          # delete the staging namespace
+          kubectl delete namespace erabliereapi-staging

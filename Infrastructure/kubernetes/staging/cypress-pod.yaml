@@ -1,0 +1,36 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: cypress-pod
+  labels:
+    app: cypress-pod
+spec:
+  containers:
+  - name: file-copy
+    image: ubuntu
+    command: ["/bin/bash", "-c", "tail -f /dev/null"]
+    volumeMounts:
+    - name: shared-data
+      mountPath: /test-results
+  - name: cypress-pod
+    image: cypress/included:9.5.4
+    command: ["cypress"]
+    args: ["run", "--spec", "/testing/cypress"]
+    volumeMounts:
+    - name: erabliereiu-test
+      mountPath: /testing/cypress
+      readOnly: true
+    - name: shared-data
+      mountPath: /test-results
+    securityContext:
+      allowPrivilegeEscalation: false
+    resources:
+      limits:
+        cpu: "100m"
+        memory: "100Mi"
+  volumes:
+  - name: erabliereiu-test
+    configMap:
+      name: erabliereiu-cypress-test
+  - name: shared-data
+    emptyDir: {}
