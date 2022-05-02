@@ -39,7 +39,7 @@ public class DonneesCapteurController : ControllerBase
     /// <param name="id">Identifiant du capteur</param>
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
     /// <param name="dd">Date de début</param>
-    /// <param name="df">Date de début</param>
+    /// <param name="df">Date de fin</param>
     /// <response code="200">Une liste de DonneesCapteur.</response>
     [HttpGet]
     public async Task<IEnumerable<GetDonneesCapteur>> Lister(Guid id,
@@ -74,7 +74,7 @@ public class DonneesCapteurController : ControllerBase
     /// <param name="ids">Identifiant des capteurs</param>
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
     /// <param name="dd">Date de début</param>
-    /// <param name="df">Date de début</param>
+    /// <param name="df">Date de fin</param>
     /// <response code="200">Une liste Tupple avec l'id du catpeur et la liste des DonneesCapteur.</response>
     [HttpGet]
     [Route("/DonneesCapteur/Grape")]
