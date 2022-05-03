@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: erabliereapi
-        image: erabliereapi/erabliereapi:v3
+        image: erabliereapi/erabliereapi:v3-dev
         imagePullPolicy: Always
         ports:
         - containerPort: 80
