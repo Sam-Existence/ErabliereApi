@@ -85,6 +85,14 @@ jobs:
           # attach to the newman pod
           kubectl attach securetesting-newman -c securetesting-newman -n $NAMESPACE
 
+      # Logs
+      - name: Get logs
+        if: always()
+        run: |
+
+        # Print the logs of erabliereapi pod
+        kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
+
       # Deploy to kubernetes
       - name: Kubectl delete namespace
         if: always()
