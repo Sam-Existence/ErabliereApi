@@ -38,6 +38,17 @@ spec:
           value: "/app/secret/emailConfig.json"
         - name: Kestrel__Limits__MaxRequestHeaderCount
           value: "70"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: 80
+          initialDelaySeconds: 20
+          periodSeconds: 60
         securityContext:
           allowPrivilegeEscalation: false
         resources:
