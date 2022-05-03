@@ -17,8 +17,17 @@ spec:
     command: ["cypress"]
     args: ["run", "--spec", "/testing/cypress"]
     volumeMounts:
-    - name: erabliereiu-test
-      mountPath: /testing/cypress
+    - name: cypress-fixtures
+      mountPath: /testing/cypress/fixtures
+      readOnly: true
+    - name: cypress-integration
+      mountPath: /testing/cypress/integration
+      readOnly: true
+    - name: cypress-support
+      mountPath: /testing/cypress/support
+      readOnly: true
+    - name: cypress-plugins
+      mountPath: /testing/cypress/plugins
       readOnly: true
     - name: cypress-config
       mountPath: /cypress-config
@@ -32,9 +41,18 @@ spec:
         cpu: "100m"
         memory: "100Mi"
   volumes:
-  - name: erabliereiu-test
+  - name: cypress-fixtures
     configMap:
-      name: erabliereiu-cypress-test
+      name: erabliereiu-cypress-fixtures
+  - name: cypress-integration
+    configMap:
+      name: erabliereiu-cypress-integration
+  - name: cypress-support
+    configMap:
+      name: erabliereiu-cypress-support
+  - name: cypress-plugins
+    configMap:
+      name: erabliereiu-cypress-plugins
   - name: cyress-config
     configMap:
       name: erabliereiu_cypress-config
