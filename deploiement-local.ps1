@@ -7,6 +7,30 @@
 
 $ErrorActionPreference = "Stop"
 
+# Source: https://dev.to/onlyann/user-password-generation-in-powershell-core-1g91
+function GeneratePassword {
+    param(
+        [ValidateRange(12, 256)]
+        [int] 
+        $length = 14
+    )
+
+    $symbols = '!@#$%^&*'.ToCharArray()
+    $characterList = 'a'..'z' + 'A'..'Z' + '0'..'9' + $symbols
+
+    do {
+        $password = -join (0..$length | % { $characterList | Get-Random })
+        [int]$hasLowerChar = $password -cmatch '[a-z]'
+        [int]$hasUpperChar = $password -cmatch '[A-Z]'
+        [int]$hasDigit = $password -match '[0-9]'
+        [int]$hasSymbol = $password.IndexOfAny($symbols) -ne -1
+
+    }
+    until (($hasLowerChar + $hasUpperChar + $hasDigit + $hasSymbol) -ge 3)
+
+    $password | ConvertTo-SecureString -AsPlainText
+}
+
 Write-Output "******************************************************"
 Write-Output "make sure to run the script as administrator"
 Write-Output "******************************************************"
@@ -80,7 +104,7 @@ $store.Close()
 # Generate a .env file
 Add-Type -AssemblyName System.Web
 
-$envPassword = [System.Web.Security.Membership]::GeneratePassword(10,2)
+$envPassword = GeneratePassword
 
 $envPath = $PWD.Path + "\" + ".env"
 

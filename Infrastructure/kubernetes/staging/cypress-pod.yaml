@@ -20,6 +20,9 @@ spec:
     - name: erabliereiu-test
       mountPath: /testing/cypress
       readOnly: true
+    - name: cypress-config
+      mountPath: /cypress-config
+      readOnly: true
     - name: shared-data
       mountPath: /test-results
     securityContext:
@@ -32,5 +35,8 @@ spec:
   - name: erabliereiu-test
     configMap:
       name: erabliereiu-cypress-test
+  - name: cyress-config
+    configMap:
+      name: erabliereiu_cypress-config
   - name: shared-data
     emptyDir: {}

@@ -1,0 +1,21 @@
+# A configmap with the cypress.config file
+# Path: kubernetes\staging\cypress-config.yaml
+# Compare this snippet from kubernetes\staging\cypress-pod.yaml:
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: erabliereiu_cypress-config
+  labels:
+    app: cypress-pod
+data:
+  cypress.json: |
+    {
+      "integrationFolder": "../testing/cypress/integration",
+      "supportFile": "../testing/cypress/support/index.ts",
+      "videosFolder": "/test-results/cypress/videos",
+      "screenshotsFolder": "/test-results/cypress/screenshots",
+      "pluginsFile": "../testing/cypress/plugins/index.ts",
+      "fixturesFolder": "../testing/cypress/fixtures",
+      "baseUrl": "http://erabliere-api-service",
+      "projectId": "7cxkq4"
+    }
