@@ -30,4 +30,10 @@ public class EmailConfig
     /// Port du server Smpt
     /// </summary>
     public int SmtpPort { get; set; }
+
+    /// <summary>
+    /// Indicate if email is configure
+    /// </summary>
+    public bool IsConfigured => Email != null && 
+                                Sender != null;
 }

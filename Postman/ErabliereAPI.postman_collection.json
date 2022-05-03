@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "4cb0fce2-828b-4374-af8c-9cfef3728c4d",
+		"_postman_id": "6eb66a4c-f14b-4f63-9a62-829aaf8d7505",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -73,6 +73,82 @@
 							],
 							"path": [
 								"erablieres"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Erabliere A - Taux sucre capteur",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if (pm.response.code == 200) {\r",
+									"    pm.test(\"Status code is 200\", function () {\r",
+									"        pm.response.to.have.status(200);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Id is as expected\", function () {\r",
+									"        var json = pm.response.json();\r",
+									"\r",
+									"        pm.expect(json.id).to.eq(\"010e708b-a7d0-449e-77e2-08d9d37ca582\");\r",
+									"    });\r",
+									"}\r",
+									"else {\r",
+									"    pm.test(\"Status code is 400\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"        pm.expect(pm.response.text()).to.eq(\"Le capteur avec l'id '010e708b-a7d0-449e-77e2-08d9d37ca582' exite déjà\");\r",
+									"    });\r",
+									"\r",
+									"    const getRequest = {\r",
+									"        url: pm.request.url + \"/010e708b-a7d0-449e-77e2-08d9d37ca582\",\r",
+									"        method: 'GET',\r",
+									"        header: {\r",
+									"            'accept': 'application/json',\r",
+									"            'authorization': request.headers[\"authorization\"]\r",
+									"        }\r",
+									"    };\r",
+									"\r",
+									"    pm.sendRequest(getRequest, (error, response) => {\r",
+									"        if (error) {\r",
+									"            console.log(error);\r",
+									"            pm.expect(error).to.be.null;\r",
+									"        } else {\r",
+									"            pm.test(\"Recherche du capteur taux de sucre à fonctionné\", () => {\r",
+									"                pm.expect(response.code).to.eq(200);\r",
+									"                pm.expect(response.json().nom).to.eq(\"Taux de sucre\");\r",
+									"            });\r",
+									"        }\r",
+									"    });\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": \"010e708b-a7d0-449e-77e2-08d9d37ca582\",\r\n  \"nom\": \"Taux de sucre\",\r\n  \"symbole\": \"\",\r\n  \"dc\": \"2022-05-01T13:10:53.052Z\",\r\n  \"afficherCapteurDashboard\": true,\r\n  \"ajouterDonneeDepuisInterface\": true,\r\n  \"idErabliere\": \"{{ErabliereA_ID}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/erablieres/{{ErabliereA_ID}}/capteurs",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"erablieres",
+								"{{ErabliereA_ID}}",
+								"capteurs"
 							]
 						}
 					},

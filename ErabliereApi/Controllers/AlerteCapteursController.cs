@@ -34,6 +34,7 @@ public class AlerteCapteursController : ControllerBase
     /// </summary>
     /// <param name="id">Identifiant du capteur</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
+    /// <param name="additionnalProperties">Propriétés additionnelles à ajouter à la réponse</param>
     /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
     [HttpGet]

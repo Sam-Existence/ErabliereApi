@@ -27,7 +27,7 @@ on:
 env:
   REGISTRY_HOSTNAME: erabliereapi
   IMAGE_NAME: erabliereapi
-  IMAGE_TAG: latest
+  IMAGE_TAG: v3-dev
 
 jobs:
   build:

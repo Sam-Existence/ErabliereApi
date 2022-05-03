@@ -14,15 +14,18 @@ WORKDIR /app
 COPY ErabliereModel/*.csproj ./ErabliereModel/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
 COPY ErabliereApi.Test/*.csproj ./ErabliereApi.Test/
+COPY ErabliereApi.Integration.Test/*.csproj ./ErabliereApi.Integration.Test/
 
 COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
 COPY ErabliereApi.Test/. ./ErabliereApi.Test/
+COPY ErabliereApi.Integration.Test/. ./ErabliereApi.Integration.Test/
 
 WORKDIR /app/ErabliereApi
 RUN dotnet restore
 RUN dotnet build -c Release
 RUN dotnet test ../ErabliereApi.Test/ErabliereApi.Test.csproj -c Release
+RUN dotnet test ../ErabliereApi.Integration.Test/ErabliereApi.Integration.Test.csproj -c Release
 RUN dotnet publish -c Release -o out
 
 # Build runtime image

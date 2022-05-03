@@ -218,6 +218,7 @@ public class DonneesController : ControllerBase
     /// <param name="id">Identifiant de l'érablière</param>
     /// <param name="idDonnee">L'id de la donnée à modifier</param>
     /// <param name="donnee">Le dompeux à ajouter</param>
+    /// <param name="token">Le token d'annulation</param>
     [HttpPut("{idDonnee}")]
     [ValiderIPRules]
     public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee, CancellationToken token)

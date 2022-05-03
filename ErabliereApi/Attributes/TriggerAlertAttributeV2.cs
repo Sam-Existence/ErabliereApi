@@ -7,9 +7,8 @@ using MimeKit;
 using System.Text;
 using System.Text.Json;
 using static System.Text.Json.JsonSerializer;
-using static System.Environment;
-using static System.IO.File;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace ErabliereApi.Controllers.Attributes;
 
@@ -64,13 +63,15 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
                 var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
+                var emailConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<EmailConfig>>();
+
                 var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur && a.IsEnable).ToArrayAsync();
 
                 for (int i = 0; i < alertes.Length; i++)
                 {
                     var alerte = alertes[i];
 
-                    MaybeTriggerAlerte(alerte, logger);
+                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value);
                 }
             }
             catch (Exception e)
@@ -82,7 +83,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger)
+    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig)
     {
         if (_donnee == null)
         {
@@ -114,48 +115,15 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
         if (validationCount > 0 && validationCount == conditionMet)
         {
-            TriggerAlerte(alerte, logger);
+            TriggerAlerte(alerte, logger, emailConfig);
         }
     }
 
-    private static readonly EmailConfig? _emailConfig = TryDeserializeEmailConfig();
-
-    /// <summary>
-    /// Fonction utilisé pour désérialiser les configurations permettant l'envoie de courriel
-    /// </summary>
-    /// <returns></returns>
-    private static EmailConfig? TryDeserializeEmailConfig()
+    private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig)
     {
-        var path = GetEnvironmentVariable("EMAIL_CONFIG_PATH");
-
-        if (string.IsNullOrWhiteSpace(path))
+        if (!emailConfig.IsConfigured)
         {
-            Console.WriteLine("La variable d'environment 'EMAIL_CONFIG_PATH' ne possédant pas de valeur, les configurations de courriel ne seront pas désérialisé.");
-        }
-        else
-        {
-            try
-            {
-                var v = ReadAllText(path);
-
-                return Deserialize<EmailConfig>(v);
-            }
-            catch (Exception e)
-            {
-                Console.Error.WriteLine("Erreur en désérialisant les configurations de l'email. La fonctionnalité des alertes ne pourra pas être utilisé.");
-                Console.Error.WriteLine(e.Message);
-                Console.Error.WriteLine(e.StackTrace);
-            }
-        }
-
-        return default;
-    }
-
-    private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger)
-    {
-        if (_emailConfig == null)
-        {
-            logger.LogWarning("Les configurations du courriel sont null, la fonctionnalité d'alerte ne peut pas fonctionner.");
+            logger.LogWarning("Les configurations ne courriel ne sont pas initialisé, la fonctionnalité d'alerte ne peut pas fonctionner.");
 
             return;
         }
@@ -165,7 +133,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
             if (alerte.EnvoyerA != null)
             {
                 var mailMessage = new MimeMessage();
-                mailMessage.From.Add(new MailboxAddress("ErabliereAPI - Alerte Service", _emailConfig.Sender));
+                mailMessage.From.Add(new MailboxAddress("ErabliereAPI - Alerte Service", emailConfig.Sender));
                 foreach (var destinataire in alerte.EnvoyerA.Split(';'))
                 {
                     mailMessage.To.Add(MailboxAddress.Parse(destinataire));
@@ -177,8 +145,8 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
                 };
 
                 using var smtpClient = new SmtpClient();
-                await smtpClient.ConnectAsync(_emailConfig.SmtpServer, _emailConfig.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
-                await smtpClient.AuthenticateAsync(_emailConfig.Email, _emailConfig.Password);
+                await smtpClient.ConnectAsync(emailConfig.SmtpServer, emailConfig.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
+                await smtpClient.AuthenticateAsync(emailConfig.Email, emailConfig.Password);
                 await smtpClient.SendAsync(mailMessage);
                 await smtpClient.DisconnectAsync(true);
             }

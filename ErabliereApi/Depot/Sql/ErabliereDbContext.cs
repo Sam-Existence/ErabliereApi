@@ -70,6 +70,16 @@ namespace ErabliereApi.Depot.Sql
         /// </summary>
         public DbSet<Documentation> Documentation { get; private set; }
 
+        /// <summary>
+        /// Table des utilisateurs
+        /// </summary>
+        public DbSet<Customer> Customers { get; set; }
+
+        /// <summary>
+        /// Table des clé d'api
+        /// </summary>
+        public DbSet<ApiKey> ApiKeys { get; set; }
+
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

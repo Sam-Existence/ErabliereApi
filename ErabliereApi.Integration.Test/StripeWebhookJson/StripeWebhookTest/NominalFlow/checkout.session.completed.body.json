@@ -1,0 +1,82 @@
+{
+  "id": "evt_uOIKG4JQMDCjHA1aDntiHHc9",
+  "object": "event",
+  "api_version": "2020-08-27",
+  "created": 1651332235,
+  "data": {
+    "object": {
+      "id": "cs_test_73a7Y5Fw5OK9LKIvUDrSlCWa52DCqYjbuJQQUya2Q8xHlLKwRcqI1bcHKL",
+      "object": "checkout.session",
+      "after_expiration": null,
+      "allow_promotion_codes": null,
+      "amount_subtotal": 0,
+      "amount_total": 0,
+      "automatic_tax": {
+        "enabled": false,
+        "status": null
+      },
+      "billing_address_collection": null,
+      "cancel_url": "http://localhost:5000",
+      "client_reference_id": null,
+      "consent": null,
+      "consent_collection": null,
+      "currency": "cad",
+      "customer": "cus_6V29LtXRPab6vz",
+      "customer_creation": "always",
+      "customer_details": {
+        "address": {
+          "city": null,
+          "country": "CA",
+          "line1": null,
+          "line2": null,
+          "postal_code": "G0M 1L0",
+          "state": null
+        },
+        "email": "john@doe.com",
+        "name": "John Doe",
+        "phone": null,
+        "tax_exempt": "none",
+        "tax_ids": []
+      },
+      "customer_email": null,
+      "expires_at": 1651418576,
+      "livemode": false,
+      "locale": null,
+      "metadata": {},
+      "mode": "subscription",
+      "payment_intent": null,
+      "payment_link": null,
+      "payment_method_options": {},
+      "payment_method_types": [
+        "card"
+      ],
+      "payment_status": "paid",
+      "phone_number_collection": {
+        "enabled": false
+      },
+      "recovered_from": null,
+      "setup_intent": "seti_DGH9u1tALEBQIOXs2JMKBWnC",
+      "shipping": null,
+      "shipping_address_collection": null,
+      "shipping_options": [],
+      "shipping_rate": null,
+      "status": "complete",
+      "submit_type": null,
+      "subscription": "sub_OAIDGtHq1YnKuAYRCyLGJQ9n",
+      "success_url": "http://localhost:5000",
+      "total_details": {
+        "amount_discount": 0,
+        "amount_shipping": 0,
+        "amount_tax": 0
+      },
+      "url": null
+    }
+  },
+  "livemode": false,
+  "pending_webhooks": 2,
+  "request": {
+    "id": null,
+    "idempotency_key": null
+  },
+  "type": "checkout.session.completed"
+}

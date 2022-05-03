@@ -20,6 +20,8 @@ using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using ErabliereApi.StripeIntegration;
+using ErabliereApi.Services;
 
 namespace ErabliereApi;
 
@@ -54,6 +56,10 @@ public class Startup
             {
                 o.Filters.Add<MiniProfilerAsyncLogger>();
             }
+        })
+        .ConfigureApplicationPartManager(manager => {
+            manager.FeatureProviders.Clear();
+            manager.FeatureProviders.Add(new StripeIntegrationToggleFiltrer(Configuration));
         })
         .AddOData(o =>
         {
@@ -111,7 +117,9 @@ public class Startup
         }
 
         // Automapper
-        services.AjouterAutoMapperErabliereApiDonnee();
+        services.AjouterAutoMapperErabliereApiDonnee(
+            StripeIntegration.AutoMapperExtension.AddCustomersApiKeyMappings
+        );
 
         // Database
         if (string.Equals(Configuration["USE_SQL"], TrueString, OrdinalIgnoreCase))
@@ -174,6 +182,61 @@ public class Startup
 
         // Prometheus
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
+
+        // Stripe
+        if (!string.IsNullOrWhiteSpace(Configuration["Stripe.ApiKey"]))
+        {
+            services.Configure<StripeOptions>(o =>
+            {
+                o.ApiKey = Configuration["Stripe.ApiKey"];
+                o.SuccessUrl = Configuration["Stripe.SuccessUrl"];
+                o.CancelUrl = Configuration["Stripe.CancelUrl"];
+                o.BasePlanPriceId = Configuration["Stripe.BasePlanPriceId"];
+                o.WebhookSecret = Configuration["Stripe.WebhookSecret"];
+                o.WebhookSiginSecret = Configuration["Stripe.WebhookSiginSecret"];
+            });
+
+            services.AddTransient<ICheckoutService, StripeCheckoutService>()
+                    .AddTransient<IUserService, ErabliereApiUserService>()
+                    .AddTransient<IApiKeyService, ErabiereApiApiKeyService>()
+                    .AddHttpContextAccessor();
+        }
+
+        // Email
+        services.AddTransient<IEmailService, ErabliereApiEmailService>();
+        services.Configure<EmailConfig>(o =>
+        {
+            var path = Configuration["EMAIL_CONFIG_PATH"];
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                Console.WriteLine("La variable d'environment 'EMAIL_CONFIG_PATH' ne possédant pas de valeur, les configurations de courriel ne seront pas désérialisé.");
+            }
+            else
+            {
+                try
+                {
+                    var v = System.IO.File.ReadAllText(path);
+
+                    var deserializedConfig = JsonSerializer.Deserialize<EmailConfig>(v);
+
+                    if (deserializedConfig != null)
+                    {
+                        o.Sender = deserializedConfig.Sender;
+                        o.Email = deserializedConfig.Email;
+                        o.Password = deserializedConfig.Password;
+                        o.SmtpServer = deserializedConfig.SmtpServer;
+                        o.SmtpPort = deserializedConfig.SmtpPort;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("Erreur en désérialisant les configurations de l'email. La fonctionnalité des alertes ne pourra pas être utilisé.");
+                    Console.Error.WriteLine(e.Message);
+                    Console.Error.WriteLine(e.StackTrace);
+                }
+            }
+        });
     }
 
     /// <summary>

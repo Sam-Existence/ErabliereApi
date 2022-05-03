@@ -8,6 +8,9 @@ on:
         - completed
   workflow_dispatch:
 
+env:
+  NAMESPACE: erabliereapi-staging
+
 jobs:
   run_tests:
     runs-on: ubuntu-latest
@@ -24,7 +27,7 @@ jobs:
           cluster-name: 'kerabliereapi'
 
       # Deploy to kubernetes
-      - name: Kubectl test workflow
+      - name: Kubectl newman test workflow
         run: |
           kubectl config current-context
           
@@ -32,34 +35,31 @@ jobs:
           kubectl apply -f Infrastructure/kubernetes/staging/namespace.yaml
 
           # create a secret for the database
-          kubectl create secret generic erabliereapi-sql-credentials --from-literal=connexionstring='${{ secrets.SQL_STAGING_CONNEXION_STRING }}' -n erabliereapi-staging
+          kubectl create secret generic erabliereapi-sql-credentials --from-literal=connexionstring='${{ secrets.SQL_STAGING_CONNEXION_STRING }}' -n $NAMESPACE
 
           # create the staging deployment
-          kubectl apply -f Infrastructure/kubernetes/staging/deployment.yaml -n erabliereapi-staging
+          kubectl apply -f Infrastructure/kubernetes/staging/deployment.yaml -n $NAMESPACE
 
           # wait for the deployment to be ready
-          kubectl rollout status deployment erabliereapi-deployment -n erabliereapi-staging
+          kubectl rollout status deployment erabliereapi-deployment -n $NAMESPACE
 
           # create the staging service
-          kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n erabliereapi-staging
+          kubectl apply -f Infrastructure/kubernetes/staging/service.yaml -n $NAMESPACE
 
           # create a configmap from the Postman folder
-          kubectl create configmap erabliereapi-postman-test --from-file=Postman/ --dry-run=client -o yaml | kubectl apply -f - -n erabliereapi-staging
+          kubectl create configmap erabliereapi-postman-test --from-file=Postman/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
 
           # create the newman pod
-          kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n erabliereapi-staging
+          kubectl apply -f Infrastructure/kubernetes/staging/newman-pod.yaml -n $NAMESPACE
 
           # wait for the newman pod to be ready
-          kubectl wait --for=condition=Ready -n erabliereapi-staging pod/securetesting-newman --timeout=60s
+          kubectl wait --for=condition=Ready -n $NAMESPACE pod/securetesting-newman --timeout=60s
 
           # attach to the newman pod
-          kubectl attach securetesting-newman -c securetesting-newman -n erabliereapi-staging
+          kubectl attach securetesting-newman -c securetesting-newman -n $NAMESPACE
 
           # extract the test results
-          kubectl cp securetesting-newman:test-results . -c file-copy -n erabliereapi-staging
-
-          # delete the staging namespace
-          kubectl delete namespace erabliereapi-staging
+          kubectl cp securetesting-newman:test-results . -c file-copy -n $NAMESPACE
 
       # Analyse newman results
       - name: Publish Test Report
@@ -69,3 +69,26 @@ jobs:
           report_paths: 'junit-report.xml'
           require_tests: true
           fail_on_failure: true
+
+      # Run the cypress test
+      - name: Kubectl cypress test workflow
+        run: |
+          # create the cypress test configmap
+          kubectl create configmap erabliereiu-cypress-test --from-file=ErabliereIU/cyress -o yaml | kubectl apply -f - -n $NAMESPACE
+
+          # create the cypress pod
+          kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-config.yaml -n $NAMESPACE
+
+          # create the cypress pod
+          kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-pod.yaml -n $NAMESPACE
+
+          # attach to the newman pod
+          kubectl attach securetesting-newman -c securetesting-newman -n $NAMESPACE
+
+      # Deploy to kubernetes
+      - name: Kubectl delete namespace
+        if: always()
+        run: |
+
+          # delete the staging namespace
+          kubectl delete namespace $NAMESPACE
