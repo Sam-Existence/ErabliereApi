@@ -90,8 +90,8 @@ jobs:
         if: always()
         run: |
 
-        # Print the logs of erabliereapi pod
-        kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
+          # Print the logs of erabliereapi pod
+          kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
 
       # Deploy to kubernetes
       - name: Kubectl delete namespace
