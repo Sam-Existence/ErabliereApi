@@ -82,10 +82,10 @@ jobs:
 
 
           # create the cypress pod
-          kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-config.yaml -n $NAMESPACE
+          kubectl apply -f Infrasutrcture/kubernetes/staging/cypress-config.yaml -n $NAMESPACE
 
           # create the cypress pod
-          kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-pod.yaml -n $NAMESPACE
+          kubectl apply -f Infrasutrcture/kubernetes/staging/cypress-pod.yaml -n $NAMESPACE
 
           # attach to the cypress pod
           kubectl attach cypress-pod -c cypress-pod -n $NAMESPACE
