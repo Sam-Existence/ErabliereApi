@@ -4,7 +4,7 @@
 kind: ConfigMap
 apiVersion: v1
 metadata:
-  name: erabliereiu_cypress-config
+  name: erabliereiu-cypress-config
   labels:
     app: cypress-pod
 data:
