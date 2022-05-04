@@ -34,6 +34,12 @@ jobs:
           # create the staging namespace
           kubectl apply -f Infrastructure/kubernetes/staging/namespace.yaml
 
+          # create the cypress test configmap
+          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cyress/fixtures/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cyress/integration/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cyress/support/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cyress/plugins/ -o yaml | kubectl apply -f - -n $NAMESPACE
+
           # create a secret for the database
           kubectl create secret generic erabliereapi-sql-credentials --from-literal=connexionstring='${{ secrets.SQL_STAGING_CONNEXION_STRING }}' -n $NAMESPACE
 
@@ -73,11 +79,6 @@ jobs:
       # Run the cypress test
       - name: Kubectl cypress test workflow
         run: |
-          # create the cypress test configmap
-          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cyress/fixtures/ -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cyress/integration/ -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cyress/support/ -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cyress/plugins/ -o yaml | kubectl apply -f - -n $NAMESPACE
 
           # create the cypress pod
           kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-config.yaml -n $NAMESPACE
@@ -85,14 +86,13 @@ jobs:
           # create the cypress pod
           kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-pod.yaml -n $NAMESPACE
 
-          # attach to the newman pod
-          kubectl attach securetesting-newman -c securetesting-newman -n $NAMESPACE
+          # attach to the cypress pod
+          kubectl attach cypress-pod -c cypress-pod -n $NAMESPACE
 
       # Logs
       - name: Get logs
         if: always()
         run: |
-
           # Print the logs of erabliereapi pod
           kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
 
