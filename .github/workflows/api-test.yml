@@ -74,10 +74,10 @@ jobs:
       - name: Kubectl cypress test workflow
         run: |
           # create the cypress test configmap
-          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cyress/fixtures -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cyress/integration -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cyress/support -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cyress/plugins -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cyress/fixtures/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cyress/integration/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cyress/support/ -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cyress/plugins/ -o yaml | kubectl apply -f - -n $NAMESPACE
 
           # create the cypress pod
           kubectl apply -f Infrasutrcture/kuberenetes/staging/cypress-config.yaml -n $NAMESPACE
