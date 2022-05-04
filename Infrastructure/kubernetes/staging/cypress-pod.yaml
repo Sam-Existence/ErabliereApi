@@ -15,7 +15,7 @@ spec:
   - name: cypress-pod
     image: cypress/included:9.5.4
     command: ["cypress"]
-    args: ["run", "--spec", "/testing/cypress"]
+    args: ["run", "--spec", "/cypress-config"]
     volumeMounts:
     - name: cypress-fixtures
       mountPath: /testing/cypress/fixtures
@@ -55,6 +55,6 @@ spec:
       name: erabliereiu-cypress-plugins
   - name: cyress-config
     configMap:
-      name: erabliereiu_cypress-config
+      name: erabliereiu-cypress-config
   - name: shared-data
     emptyDir: {}

@@ -80,7 +80,6 @@ jobs:
           kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cypress/support/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
           kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cypress/plugins/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
 
-
           # create the cypress pod
           kubectl apply -f Infrastructure/kubernetes/staging/cypress-config.yaml -n $NAMESPACE
 
