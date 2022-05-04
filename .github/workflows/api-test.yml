@@ -75,7 +75,7 @@ jobs:
         run: |
 
           # create the cypress test configmap
-          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cpyress/fixtures/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
+          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cypress/fixtures/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
           kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cypress/integration/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
           kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cypress/support/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
           kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cypress/plugins/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
