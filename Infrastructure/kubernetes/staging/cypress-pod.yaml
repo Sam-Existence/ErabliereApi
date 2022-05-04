@@ -53,7 +53,7 @@ spec:
   - name: cypress-plugins
     configMap:
       name: erabliereiu-cypress-plugins
-  - name: cyress-config
+  - name: cypress-config
     configMap:
       name: erabliereiu-cypress-config
   - name: shared-data
