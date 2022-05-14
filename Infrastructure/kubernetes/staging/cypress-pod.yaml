@@ -12,10 +12,28 @@ spec:
     volumeMounts:
     - name: shared-data
       mountPath: /test-results
+    securityContext:
+      allowPrivilegeEscalation: false
+    resources:
+      limits:
+        cpu: "20m"
+        memory: "100Mi"
   - name: cypress-pod
     image: cypress/included:9.5.4
-    command: ["cypress"]
-    args: ["run", "--spec", "/cypress-config"]
+    command: 
+      - /bin/sh
+      - -c
+      - |
+        cp /cypress-config/tsconfig.json /testing/cypress/tsconfig.json
+        cp /cypress-config/cypress.json /testing/cypress/cypress.json
+        cd /testing/cypress
+        npm install -g typescript
+        #cypress run
+        #cypress run --config-file /cypress-config/cypress.json --config video=false
+        tail -f /dev/null
+    env:
+    - name: DEBUG
+      value: "cypress:*"
     volumeMounts:
     - name: cypress-fixtures
       mountPath: /testing/cypress/fixtures
@@ -35,10 +53,11 @@ spec:
     - name: shared-data
       mountPath: /test-results
     securityContext:
+      runAsUser: 0
       allowPrivilegeEscalation: false
     resources:
       limits:
-        cpu: "100m"
+        cpu: "200m"
         memory: "100Mi"
   volumes:
   - name: cypress-fixtures
