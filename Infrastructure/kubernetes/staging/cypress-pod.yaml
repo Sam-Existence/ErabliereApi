@@ -34,7 +34,7 @@ spec:
         cp /cypress-config/tsconfig.json /testing/cypress/tsconfig.json
         cp /cypress-config/cypress.json /testing/cypress/cypress.json
         yarn add typescript
-        cypress run --config video=false
+        cypress run --config video=false --reporter junit --reporter-options "mochaFile=/test-results/cypress-test-output-[hash].xml"
     # env:
     # - name: DEBUG
       # value: "cypress:*"
