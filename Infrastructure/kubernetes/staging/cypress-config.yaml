@@ -8,7 +8,7 @@ data:
   cypress.json: |
     {
       "integrationFolder": "/testing/cypress/integration",
-      "supportFile": "/testing/cypress/support/index.ts",
+      "supportFile": "/testing/cypress/support",
       "videosFolder": "/test-results/cypress/videos",
       "screenshotsFolder": "/test-results/cypress/screenshots",
       "pluginsFile": "/testing/cypress/plugins/index.ts",

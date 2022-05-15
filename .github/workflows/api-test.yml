@@ -74,13 +74,11 @@ jobs:
       - name: Kubectl cypress test workflow
         run: |
 
-          # create the cypress test configmap
-          kubectl create configmap erabliereiu-cypress-fixtures --from-file=ErabliereIU/cypress/fixtures/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cypress/integration/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cypress/support/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cypress/plugins/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
+          # create the cypress files zipped configmap
+          tar -cvf erabliereiu-cypress.tar ErabiereIU/cypress
+          kubectl create configmap erabliereiu-cypress-files-zipped --from-file=erabliereiu-cypress.tar -n $NAMESPACE
 
-          # create the cypress pod
+          # create the cypress config file
           kubectl apply -f Infrastructure/kubernetes/staging/cypress-config.yaml -n $NAMESPACE
 
           # create the cypress pod
