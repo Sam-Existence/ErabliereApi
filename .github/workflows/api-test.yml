@@ -109,10 +109,10 @@ jobs:
           # Print the logs of erabliereapi pod
           kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
 
-      # Deploy to kubernetes
-      - name: Kubectl delete namespace
-        if: always()
-        run: |
+      # # Deploy to kubernetes
+      # - name: Kubectl delete namespace
+        # if: always()
+        # run: |
 
-          # delete the staging namespace
-          kubectl delete namespace $NAMESPACE
+          # # delete the staging namespace
+          # kubectl delete namespace $NAMESPACE
