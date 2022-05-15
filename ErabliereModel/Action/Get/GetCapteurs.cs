@@ -28,6 +28,11 @@ namespace ErabliereApi.Donnees.Action.Get
         public bool? AfficherCapteurDashboard { get; set; }
 
         /// <summary>
+        /// Indicateur si les données sont ajouter depuis un interface graphique
+        /// </summary>
+        public bool AjouterDonneeDepuisInterface { get; set; }
+
+        /// <summary>
         /// La date de création de l'entité.
         /// </summary>
         public DateTimeOffset? DC { get; set; }
