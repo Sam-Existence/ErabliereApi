@@ -8,8 +8,16 @@ Projet contenant le projet d'interface graphique de ErabliereAPI.
 
 Il faut avoir node js d'installé sur votre poste. https://nodejs.org
 
+Le cli angular doit aussi être installé.
+
 ```
-npm install
+npm install -g @angular/cli
+```
+
+Une fois les prérequis installé:
+
+```
+npm install --legacy-peer-deps
 ```
 
 ## Executer le projet avec npm

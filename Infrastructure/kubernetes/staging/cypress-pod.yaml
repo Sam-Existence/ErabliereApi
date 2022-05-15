@@ -12,22 +12,35 @@ spec:
     volumeMounts:
     - name: shared-data
       mountPath: /test-results
+    securityContext:
+      allowPrivilegeEscalation: false
+    resources:
+      limits:
+        cpu: "20m"
+        memory: "100Mi"
   - name: cypress-pod
-    image: cypress/included:9.5.4
-    command: ["cypress"]
-    args: ["run", "--spec", "/cypress-config"]
+    image: cypress/included:9.6.0
+    command:
+      - /bin/sh
+      - -c
+      - |
+        mkdir /testing
+        cd /testing
+        mkdir cypress
+        cd cypress
+        tar -xf /cypress-zipped/erabliereiu-cypress.tar -C /testing/cypress
+        mv ErabliereIU/cypress/* .
+        rm -r ErabliereIU/
+        cp /cypress-config/tsconfig.json /testing/cypress/tsconfig.json
+        cp /cypress-config/cypress.json /testing/cypress/cypress.json
+        yarn add typescript
+        cypress run --config video=false --reporter junit --reporter-options "mochaFile=/test-results/cypress-test-output-[hash].xml"
+    # env:
+    # - name: DEBUG
+      # value: "cypress:*"
     volumeMounts:
-    - name: cypress-fixtures
-      mountPath: /testing/cypress/fixtures
-      readOnly: true
-    - name: cypress-integration
-      mountPath: /testing/cypress/integration
-      readOnly: true
-    - name: cypress-support
-      mountPath: /testing/cypress/support
-      readOnly: true
-    - name: cypress-plugins
-      mountPath: /testing/cypress/plugins
+    - name: cypress-file-zipped
+      mountPath: /cypress-zipped
       readOnly: true
     - name: cypress-config
       mountPath: /cypress-config
@@ -35,24 +48,12 @@ spec:
     - name: shared-data
       mountPath: /test-results
     securityContext:
+      runAsUser: 0
       allowPrivilegeEscalation: false
-    resources:
-      limits:
-        cpu: "100m"
-        memory: "100Mi"
   volumes:
-  - name: cypress-fixtures
+  - name: cypress-file-zipped
     configMap:
-      name: erabliereiu-cypress-fixtures
-  - name: cypress-integration
-    configMap:
-      name: erabliereiu-cypress-integration
-  - name: cypress-support
-    configMap:
-      name: erabliereiu-cypress-support
-  - name: cypress-plugins
-    configMap:
-      name: erabliereiu-cypress-plugins
+      name: erabliereiu-cypress-files-zipped
   - name: cypress-config
     configMap:
       name: erabliereiu-cypress-config

@@ -74,20 +74,33 @@ jobs:
       - name: Kubectl cypress test workflow
         run: |
 
-          # create the cypress test configmap
-          kubectl create configmap erabliereiu-cypress-fixture --from-file=ErabliereIU/cypress/fixtures/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-integration --from-file=ErabliereIU/cypress/integration/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-support --from-file=ErabliereIU/cypress/support/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
-          kubectl create configmap erabliereiu-cypress-plugins --from-file=ErabliereIU/cypress/plugins/ --dry-run=client -o yaml | kubectl apply -f - -n $NAMESPACE
+          # create the cypress files zipped configmap
+          tar -cvf erabliereiu-cypress.tar ErabiereIU/cypress
+          kubectl create configmap erabliereiu-cypress-files-zipped --from-file=erabliereiu-cypress.tar -n $NAMESPACE
 
-          # create the cypress pod
+          # create the cypress config file
           kubectl apply -f Infrastructure/kubernetes/staging/cypress-config.yaml -n $NAMESPACE
 
           # create the cypress pod
           kubectl apply -f Infrastructure/kubernetes/staging/cypress-pod.yaml -n $NAMESPACE
+          
+          # wait for the cypress pod to be ready
+          kubectl wait --for=condition=Ready -n $NAMESPACE pod/cypress-pod --timeout=60s
 
           # attach to the cypress pod
           kubectl attach cypress-pod -c cypress-pod -n $NAMESPACE
+          
+          # extract the test results
+          kubectl cp cypress-pod:test-results . -c file-copy -n $NAMESPACE
+          
+      # Analyse cypress results
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3.0.2
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: 'cypress-test-output-*.xml'
+          require_tests: true
+          fail_on_failure: true
 
       # Logs
       - name: Get logs
