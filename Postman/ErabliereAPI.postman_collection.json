@@ -318,7 +318,12 @@
 									"\r",
 									"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
 									"\r",
-									"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
+									"    pm.expect(listeErabliere.length).to.be.lessThan(21);\r",
+									"\r",
+									"    pm.collectionVariables.set(\"nombreErabliere\", parseInt(pm.response.headers.get(\"X-ErabliereTotal\")));\r",
+									"\r",
+									"    console.log(\"/erablieres return \" + listeErabliere.length + \" erablières. With a total of \" + \r",
+									"        pm.response.headers.get(\"X-ErabliereTotal\"));\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -349,6 +354,12 @@
 								"exec": [
 									"pm.test(\"Vérifier status réponse.\", () => {\r",
 									"    pm.expect(pm.response.code).to.eq(200);\r",
+									"\r",
+									"    var responseObj = pm.response.json();\r",
+									"\r",
+									"    pm.collectionVariables.set(\"idErabliere\", responseObj.id);\r",
+									"\r",
+									"    console.log(\"idErabliere \" + pm.collectionVariables.get(\"idErabliere\"));\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -404,7 +415,9 @@
 									"\r",
 									"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
 									"\r",
-									"    pm.expect(listeErabliere.length).to.eq(pm.collectionVariables.get(\"nombreErabliere\") + 1);\r",
+									"    pm.expect(listeErabliere.length).to.eq(1);\r",
+									"\r",
+									"    pm.expect(parseInt(pm.response.headers.get(\"X-ErabliereTotal\"))).to.eq(pm.collectionVariables.get(\"nombreErabliere\") + 1)\r",
 									"\r",
 									"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
 									"\r",
@@ -423,12 +436,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/erablieres",
+							"raw": "{{url}}/erablieres?$filter=nom eq '{{nomErabliere}}'",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"erablieres"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "nom eq '{{nomErabliere}}'"
+								}
 							]
 						}
 					},
@@ -752,12 +771,18 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/erablieres",
+							"raw": "{{url}}/erablieres?$filter=nom eq '{{nomErabliere}}'",
 							"host": [
 								"{{url}}"
 							],
 							"path": [
 								"erablieres"
+							],
+							"query": [
+								{
+									"key": "$filter",
+									"value": "nom eq '{{nomErabliere}}'"
+								}
 							]
 						}
 					},
@@ -1216,44 +1241,6 @@
 					"name": "PreRequis",
 					"item": [
 						{
-							"name": "Obtenir la liste des érablières",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Vérifier status réponse.\", () => {\r",
-											"    pm.expect(pm.response.code).to.eq(200);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Vérifier format réponse\", () => {\r",
-											"    const listeErabliere = pm.response.json();\r",
-											"\r",
-											"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
-											"\r",
-											"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
-								"url": {
-									"raw": "{{url}}/erablieres",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"erablieres"
-									]
-								}
-							},
-							"response": []
-						},
-						{
 							"name": "Ajouter une nouvelle érablière",
 							"event": [
 								{
@@ -1262,6 +1249,8 @@
 										"exec": [
 											"pm.test(\"Vérifier status réponse.\", () => {\r",
 											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"\r",
+											"    pm.collectionVariables.set('idErabliere', pm.response.json().id);\r",
 											"});"
 										],
 										"type": "text/javascript"
@@ -1289,52 +1278,6 @@
 										}
 									}
 								},
-								"url": {
-									"raw": "{{url}}/erablieres",
-									"host": [
-										"{{url}}"
-									],
-									"path": [
-										"erablieres"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "Trouver l'érablière dans la liste Copy",
-							"event": [
-								{
-									"listen": "test",
-									"script": {
-										"exec": [
-											"pm.test(\"Vérifier status réponse.\", () => {\r",
-											"    pm.expect(pm.response.code).to.eq(200);\r",
-											"});\r",
-											"\r",
-											"pm.test(\"Vérifier format réponse\", () => {\r",
-											"    const listeErabliere = pm.response.json();\r",
-											"\r",
-											"    pm.expect(listeErabliere).to.ownProperty(\"length\");\r",
-											"\r",
-											"    pm.expect(listeErabliere.length).to.eq(pm.collectionVariables.get(\"nombreErabliere\") + 1);\r",
-											"\r",
-											"    pm.collectionVariables.set(\"nombreErabliere\", listeErabliere.length);\r",
-											"\r",
-											"    const erabliere = listeErabliere.find(e => e.nom == pm.collectionVariables.get(\"nomErabliere\"));\r",
-											"\r",
-											"    pm.collectionVariables.set(\"idErabliere\", erabliere.id);\r",
-											"\r",
-											"    console.log(\"Id de l'érablière : \" + pm.collectionVariables.get(\"idErabliere\"));\r",
-											"});"
-										],
-										"type": "text/javascript"
-									}
-								}
-							],
-							"request": {
-								"method": "GET",
-								"header": [],
 								"url": {
 									"raw": "{{url}}/erablieres",
 									"host": [
@@ -1564,6 +1507,11 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {\r",
 							"    pm.response.to.have.status(200);\r",
+							"\r",
+							"    var responseJson = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseJson).to.haveOwnProperty('length');\r",
+							"    pm.expect(responseJson.length).to.eq(20);\r",
 							"});"
 						],
 						"type": "text/javascript"

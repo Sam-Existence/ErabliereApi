@@ -12,7 +12,7 @@ namespace ErabliereApi.Depot.Sql.EntityConfiguration
         /// <inheritdoc />
         public void Configure(EntityTypeBuilder<Donnee> builder)
         {
-            
+            builder.HasIndex(donnee => donnee.D, "D_index");
         }
     }
 }

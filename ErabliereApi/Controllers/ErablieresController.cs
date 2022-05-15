@@ -39,14 +39,16 @@ public class ErablieresController : ControllerBase
         _config = config;
     }
 
+    private const int TakeErabliereNbMax = 20;
+
     /// <summary>
     /// Liste les érablières
     /// </summary>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet]
-    [EnableQuery]
+    [EnableQuery(MaxTop = TakeErabliereNbMax)]
     [AllowAnonymous]
-    public IQueryable<Erabliere> Lister()
+    public async Task<IQueryable<Erabliere>> ListerAsync(CancellationToken token)
     {
         var query = _context.Erabliere.AsNoTracking();
 
@@ -54,6 +56,23 @@ public class ErablieresController : ControllerBase
             User.Identity?.IsAuthenticated == false)
         {
             query = query.Where(e => e.IsPublic == true);
+        }
+
+        HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
+
+        if (!HttpContext.Request.Query.TryGetValue("$filter", out _))
+        {
+            if (HttpContext.Request.Query.TryGetValue("$top", out var top))
+            {
+                if (int.TryParse(top, out var topApply) && topApply > TakeErabliereNbMax)
+                {
+                    query = query.Take(TakeErabliereNbMax);
+                }
+            }
+            else
+            {
+                query = query.Take(TakeErabliereNbMax);
+            }
         }
 
         return query;
@@ -64,8 +83,8 @@ public class ErablieresController : ControllerBase
     /// </summary>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet("[action]")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<GetErabliereDashboard>))]
-    public async Task<IActionResult> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token, int nbErabliere = 25)
+    [ProducesResponseType(200, Type = typeof(GetErabliereDashboard[]))]
+    public async Task<IActionResult> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token, int nbErabliere = TakeErabliereNbMax)
     {
         if (nbErabliere < 0)
         {
@@ -79,6 +98,8 @@ public class ErablieresController : ControllerBase
 
         var dashboardData = await _context.Erabliere.AsNoTracking()
             .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd, df, ddr })
+            .OrderBy(e => e.IndiceOrdre)
+            .ThenBy(e => e.Nom)
             .Take(nbErabliere)
             .ToArrayAsync(token);
 
