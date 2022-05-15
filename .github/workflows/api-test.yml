@@ -60,6 +60,9 @@ jobs:
 
           # extract the test results
           kubectl cp securetesting-newman:test-results . -c file-copy -n $NAMESPACE
+          
+          # delete the newman pod
+          kubectl delete pod securetesting-newman -n $NAMESPACE
 
       # Analyse newman results
       - name: Publish Newman Test Report
@@ -109,10 +112,10 @@ jobs:
           # Print the logs of erabliereapi pod
           kubectl logs deployment/erabliereapi-deployment -n $NAMESPACE
 
-      # # Deploy to kubernetes
-      # - name: Kubectl delete namespace
-        # if: always()
-        # run: |
+      # Deploy to kubernetes
+      - name: Kubectl delete namespace
+        if: always()
+        run: |
 
-          # # delete the staging namespace
-          # kubectl delete namespace $NAMESPACE
+          # delete the staging namespace
+          kubectl delete namespace $NAMESPACE
