@@ -57,7 +57,10 @@ public class Startup
                 o.Filters.Add<MiniProfilerAsyncLogger>();
             }
         })
-        .ConfigureApplicationPartManager(manager => {
+        .ConfigureApplicationPartManager(manager => 
+        {
+            // This code is used to scan for controller using the StripeIntegrationToggleFiltrer
+            // which is going to control if the stripe controller must be enabled or disabled
             manager.FeatureProviders.Clear();
             manager.FeatureProviders.Add(new StripeIntegrationToggleFiltrer(Configuration));
         })

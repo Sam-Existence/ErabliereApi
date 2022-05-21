@@ -61,6 +61,8 @@ public class Startup
             Console.WriteLine(configFile);
             config = JsonConvert.DeserializeObject<Config>(configFile, deserializerOptions);
 
+            AddAdditionnalUris(config);
+
             Console.WriteLine("Deserialize : " + usersFileName);
             var usersFile = File.ReadAllText(usersFileName);
             Console.WriteLine(usersFile);
@@ -80,8 +82,8 @@ public class Startup
                 options.IssuerUri = GetEnvironmentVariable("ISSUER_URI");
             }
 
-                // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
-                options.EmitStaticAudienceClaim = true;
+            // see https://identityserver4.readthedocs.io/en/latest/topics/resources.html
+            options.EmitStaticAudienceClaim = true;
         })
             .AddInMemoryIdentityResources(config.Ids)
             .AddInMemoryApiResources(config.Apis)
@@ -95,6 +97,67 @@ public class Startup
         // add htmlSanitizer
         services.AddTransient<HtmlSanitizer>();
 
+    }
+
+    /// <summary>
+    /// This is used to add additionnal uris to support more deployment scenario
+    /// </summary>
+    /// <param name="config">The config object as deserialized</param>
+    private void AddAdditionnalUris(Config config)
+    {
+        foreach (var client in config.Clients)
+        {
+            // RedirectUris
+            {
+                var redirectUris = GetEnvironmentVariable("ADDITIONNAL_REDIRECT_URIS");
+
+                if (redirectUris != null)
+                {
+                    var separator = GetEnvironmentVariable("ADDITIONNAL_REDIRECT_URIS_SEPARATOR") ?? ";";
+
+                    var uris = redirectUris.Split(separator);
+
+                    foreach (var uri in uris)
+                    {
+                        client.RedirectUris.Add(uri);
+                    }
+                }
+            }
+
+            // PostLogoutRedirectUris
+            {
+                var additionnalAllowCors = GetEnvironmentVariable("ADDITIONNAL_POSTLOGOUT_REDIRECT_URIS");
+
+                if (additionnalAllowCors != null)
+                {
+                    var separator = GetEnvironmentVariable("ADDITIONNAL_POSTLOGOUT_REDIRECT_URIS_SEPARATOR") ?? ";";
+
+                    var uris = additionnalAllowCors.Split(separator);
+
+                    foreach (var uri in uris)
+                    {
+                        client.PostLogoutRedirectUris.Add(uri);
+                    }
+                }
+            }
+
+            // AllowCorsOrigins
+            {
+                var postlogoutredirectUris = GetEnvironmentVariable("ADDITIONNAL_ALLOW_CORS_ORIGINS");
+
+                if (postlogoutredirectUris != null)
+                {
+                    var separator = GetEnvironmentVariable("ADDITIONNAL_ALLOW_CORS_ORIGINS_SEPARATOR") ?? ";";
+
+                    var uris = postlogoutredirectUris.Split(separator);
+
+                    foreach (var uri in uris)
+                    {
+                        client.AllowedCorsOrigins.Add(uri);
+                    }
+                }
+            }
+        }
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment environment)
