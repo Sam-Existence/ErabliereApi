@@ -25,8 +25,9 @@
 		<PackageReference Include="Microsoft.Identity.Web" Version="1.24.1" />
 		<PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.2.22" />
 		<PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.2.22" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="prometheus-net.AspNetCore" Version="6.0.0" />
-		<PackageReference Include="Stripe.net" Version="39.111.0" />
+		<PackageReference Include="Stripe.net" Version="39.112.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.3.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.3.1" />
 		<PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="6.3.1" />
