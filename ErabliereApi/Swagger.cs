@@ -29,13 +29,13 @@ public static class Swagger
                 Contact = new OpenApiContact
                 {
                     Name = "Frédéric Jacques",
-                    Email = string.Empty,
+                    Email = config["SWAGGER_CONTACT_EMAIL"] ?? string.Empty,
                     Url = new Uri("https://github.com/freddycoder"),
                 },
                 License = new OpenApiLicense
                 {
-                    Name = "MIT license",
-                    Url = new Uri("https://opensource.org/licenses/MIT"),
+                    Name = "Apache-2.0",
+                    Url = new Uri("https://opensource.org/licenses/Apache-2.0"),
                 }
             });
 
