@@ -2,13 +2,13 @@
 Solution de monitoring pour érablière. Contient un REST API ainsi qu'un application web pour la gestion des données et d'autre script permettant de connecter divers appareils.
 
 ## But
-Le but de ce projet est d'analyser, lever des alertes et automatiser certaine mecanisme. Basé sur les données receuillis et de façon centralisé.
+Le but de ce projet est d'analyser, lever des alertes et automatiser certain mecanisme. Basé sur les données receuillis et de façon centralisé.
 
 L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine.
 
 ## Structure
 
-### Diagramme de haut niveau de la solution
+### Diagramme de haut niveau de déployer dans AKS
 
 ![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/ErabliereApi.drawio.png?raw=true)
 
@@ -16,7 +16,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 - ErabliereAPI : Projet du web API
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Projet du modèles de données
-- Infrastructure : Fichier yaml pour le déploiement kubernetes
+- Infrastructure : Fichier relié à la configuration de l'infrastructure	kubernetes ou autres
 - PythonScripts : Script python pour alimenter l'API
 - IdentityServer/ErabliereApi.ServeurIdentite : Server de jeton OIDC
 
@@ -70,7 +70,7 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 
 Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-msi-package
 
-Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```.
+Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```. Si vous voulez télécharger les images plus récente, lancer ````docker compose pull``` avant d'executer la commande --force-recreate.
 
 ### Déployer l'interface sur une installation apache2 d'un raspberry pi
 

@@ -6,12 +6,22 @@ using System.Security.Cryptography;
 
 namespace ErabliereApi.Services;
 
+/// <summary>
+/// Implémentation de <see cref="IApiKeyService" /> gérant les clé avec la logique interne 
+/// au projet ErabliereApi
+/// </summary>
 public class ErabiereApiApiKeyService : IApiKeyService
 {
     private readonly ErabliereDbContext _context;
     private readonly IEmailService _emailService;
     private readonly EmailConfig _emailConfig;
 
+    /// <summary>
+    /// Constructeur par initlaisation
+    /// </summary>
+    /// <param name="context"></param>
+    /// <param name="emailService"></param>
+    /// <param name="emailConfig"></param>
     public ErabiereApiApiKeyService(ErabliereDbContext context, IEmailService emailService, IOptions<EmailConfig> emailConfig)
     {
         _context = context;
@@ -19,6 +29,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
         _emailConfig = emailConfig.Value;
     }
 
+    /// <inheritdoc />
     public async Task<ApiKey> CreateApiKey(string email, CancellationToken token)
     {
         var customer = _context.Customers.FirstOrDefault(x => x.Email == email);
@@ -62,6 +73,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
         }
     }
 
+    /// <inheritdoc />
     public string HashApiKey(byte[] key)
     {
         using var sha = SHA256.Create();
@@ -73,6 +85,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
         return hashedContent;
     }
 
+    /// <inheritdoc />
     public string HashApiKey(string key)
     {
         return HashApiKey(Convert.FromBase64String(key));

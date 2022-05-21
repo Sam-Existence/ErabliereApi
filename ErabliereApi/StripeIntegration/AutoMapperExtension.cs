@@ -2,8 +2,15 @@
 
 namespace ErabliereApi.StripeIntegration;
 
-public class AutoMapperExtension
+/// <summary>
+/// Classe contenant les instructions de mapping
+/// </summary>
+public static class AutoMapperExtension
 {
+    /// <summary>
+    /// Ajout des règles de mapping pour la gestion des utilisateurs
+    /// </summary>
+    /// <param name="config"></param>
     public static void AddCustomersApiKeyMappings(IMapperConfigurationExpression config)
     {
         config.CreateMap<Stripe.Customer, ErabliereApi.Donnees.Customer>()

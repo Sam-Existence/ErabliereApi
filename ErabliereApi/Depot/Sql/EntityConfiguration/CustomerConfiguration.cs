@@ -4,8 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ErabliereApi.Depot.Sql.EntityConfiguration;
 
+/// <summary>
+/// Configuration de l'entité Customer
+/// </summary>
 public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
 {
+    /// <inheritdoc />
     public void Configure(EntityTypeBuilder<Customer> builder)
     {
         builder.HasIndex(e => e.Email)

@@ -15,6 +15,7 @@ namespace Depot.Sql.Migrations
     [Migration("20220515192652_AddIndexOnD")]
     partial class AddIndexOnD
     {
+        /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

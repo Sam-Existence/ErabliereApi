@@ -5,8 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Migration ajoutant la table Customer, ApiKeys et des index sur les dates créations des entité de type Donnees
+    /// </summary>
     public partial class AddIndexOnD : Migration
     {
+        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -71,6 +75,7 @@ namespace Depot.Sql.Migrations
                 unique: true);
         }
 
+        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
