@@ -7,6 +7,7 @@ services:
       ASPNETCORE_URLS: "https://+;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: password
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp-web-api.pfx
+      KestrelBinder.ErrorOnUnknowConfiguration: false
       USE_CORS: "True"
       CORS_ORIGINS: "*"
       CORS_HEADERS: "*"

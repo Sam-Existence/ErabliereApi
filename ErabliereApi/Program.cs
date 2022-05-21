@@ -12,7 +12,7 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
         {
             c.Configuration.GetSection("Kestrel").Bind(o, co =>
             {
-                co.ErrorOnUnknownConfiguration = true;
+                co.ErrorOnUnknownConfiguration = c.Configuration.GetValue<bool?>("KestrelBinder.ErrorOnUnknowConfiguration") ?? true;
             });
 
             Console.WriteLine("Kestrel configuration:");
