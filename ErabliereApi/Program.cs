@@ -1,3 +1,4 @@
+using System.Collections;
 using ErabliereApi;
 
 Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
@@ -10,15 +11,40 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
         webBuilder.UseStartup<Startup>();
         webBuilder.ConfigureKestrel((c, o) =>
         {
-            c.Configuration.GetSection("Kestrel").Bind(o, co =>
+            try 
             {
-                co.ErrorOnUnknownConfiguration = c.Configuration.GetValue<bool?>("KestrelBinder.ErrorOnUnknowConfiguration") ?? true;
-            });
+                const string kestrelBinderOption = "KestrelBinder_ErrorOnUnknowConfiguration";
 
-            Console.WriteLine("Kestrel configuration:");
-            Console.WriteLine($"AddServerHeader: {o.AddServerHeader}");
-            Console.WriteLine($"Limits.MaxRequestHeaderCount: {o.Limits.MaxRequestHeaderCount}");
-            Console.WriteLine($"Limits.MaxRequestBodySize: {o.Limits.MaxRequestBodySize}");
-            Console.WriteLine($"Limits.MinRequestBodyDataRate.BytesPerSecond: {o.Limits.MinRequestBodyDataRate?.BytesPerSecond}");
+                var binderThrowOnError = c.Configuration.GetValue<bool?>(kestrelBinderOption);
+
+                Console.WriteLine($"{kestrelBinderOption}: {(binderThrowOnError == null ? "null" : binderThrowOnError)}");
+                if (binderThrowOnError == null)
+                {
+                    Console.WriteLine($"When {kestrelBinderOption} is null the default value is true");
+                }
+
+                c.Configuration.GetSection("Kestrel").Bind(o, co =>
+                {
+                    co.ErrorOnUnknownConfiguration = binderThrowOnError ?? true;
+                });
+
+                Console.WriteLine("Kestrel configuration:");
+                Console.WriteLine($"AddServerHeader: {o.AddServerHeader}");
+                Console.WriteLine($"Limits.MaxRequestHeaderCount: {o.Limits.MaxRequestHeaderCount}");
+                Console.WriteLine($"Limits.MaxRequestBodySize: {o.Limits.MaxRequestBodySize}");
+                Console.WriteLine($"Limits.MinRequestBodyDataRate.BytesPerSecond: {o.Limits.MinRequestBodyDataRate?.BytesPerSecond}");
+            }
+            catch
+            {
+                Console.Error.WriteLine("On error occure when configuring Kestrel");
+                Console.Error.WriteLine("It may occure because of a missong environment variable. Here is the list of environment variables:");
+
+                foreach (var env in Environment.GetEnvironmentVariables().Cast<DictionaryEntry>())
+                {
+                    Console.Error.WriteLine($"{env.Key}: {env.Value}");
+                }
+
+                throw;
+            }
         });
     }).Build().Run();

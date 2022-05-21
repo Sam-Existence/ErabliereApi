@@ -62,11 +62,15 @@ crontab -e
 kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabliere | grep -i -v 'param1|param2'
 ```
 
+### Compiler l'image docker
+
+À la racine du repo, executer ```docker build -t erabliereapi:local .```
+
 ### Déployer la solution avec docker desktop
 
 Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-msi-package
 
-Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```
+Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```.
 
 ### Déployer l'interface sur une installation apache2 d'un raspberry pi
 

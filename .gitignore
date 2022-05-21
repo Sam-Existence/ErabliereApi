@@ -393,6 +393,7 @@ ErabliereIU/Thumbs.db
 # Docker
 .env
 certs/
+config/oauth-oidc.json
 
 # Cypress
 ErabliereIU/cypress/videos/

@@ -2,12 +2,13 @@ version: "3.2"
 services:
   erabliere-api:
     image: "erabliereapi/erabliereapi:v3-dev"
+#    image: "erabliereapi:local"
     environment:
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: password
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp-web-api.pfx
-      KestrelBinder.ErrorOnUnknowConfiguration: false
+      KestrelBinder_ErrorOnUnknowConfiguration: "False"
       USE_CORS: "True"
       CORS_ORIGINS: "*"
       CORS_HEADERS: "*"
@@ -20,11 +21,11 @@ services:
       USE_AUTHENTICATION: "true"
       USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW: "true"
       USE_SWAGGER_PKCE: "true"
-      SWAGGER_AUTHORIZATION_URL: "https://localhost:5005/connect/authorize"
-      SWAGGER_TOKEN_URL: "https://localhost:5005/connect/token"
+      SWAGGER_AUTHORIZATION_URL: "https://${IP_ADDRESS}:5005/connect/authorize"
+      SWAGGER_TOKEN_URL: "https://${IP_ADDRESS}:5005/connect/token"
       OIDC_CLIENT_ID: "swagger-dev"
       OIDC_CLIENT_PASSWORD: "D6VDPBGKjmoyKkP~yFnxvMlLqS"
-      OAUTH2_REDIRECT_URL: "https://localhost:5001/api/oauth2-redirect.html"
+      OAUTH2_REDIRECT_URL: "https://${IP_ADDRESS}:5001/api/oauth2-redirect.html"
       OIDC_AUDIENCE: "http://erabliere-api"
       OIDC_SCOPES: "erabliereapi"
       OIDC_AUTHORITY: "https://identite-api"
@@ -53,6 +54,9 @@ services:
       ASPNETCORE_Kestrel__Certificates__Default__Path: /https/aspnetapp-identity-server.pfx
       ISSUER_URI: "https://identite-api:443"
       SECRETS_FOLDER: /app/secrets
+      ADDITIONNAL_REDIRECT_URIS: "https://${IP_ADDRESS}:5001/api/oauth2-redirect.html;https://${IP_ADDRESS}:5001/signin-callback"
+      ADDITIONNAL_POSTLOGOUT_REDIRECT_URIS: "https://${IP_ADDRESS}:5005/signout-callback-oidc"
+      ADDITIONNAL_ALLOW_CORS_ORIGINS: "https://${IP_ADDRESS}:5001"
     ports:
       - "5005:443"
     volumes:
