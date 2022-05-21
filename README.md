@@ -1,5 +1,5 @@
 # ErabliereApi
-API Pour receuillir et centraliser les informations des appareils dans des érablières.
+Solution de monitoring pour érablière. Contient un REST API ainsi qu'un application web pour la gestion des données et d'autre script permettant de connecter divers appareils.
 
 ## But
 Le but de ce projet est d'analyser, lever des alertes et automatiser certaine mecanisme. Basé sur les données receuillis et de façon centralisé.
@@ -61,6 +61,12 @@ crontab -e
 ```bash
 kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabliere | grep -i -v 'param1|param2'
 ```
+
+### Déployer la solution avec docker desktop
+
+Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-msi-package
+
+Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```
 
 ### Déployer l'interface sur une installation apache2 d'un raspberry pi
 

@@ -32,7 +32,12 @@ function GeneratePassword {
 }
 
 Write-Output "******************************************************"
+Write-Output "ErabliereAPI docker desktop setup"
+Write-Output "******************************************************"
+Write-Output ""
+Write-Output "******************************************************"
 Write-Output "make sure to run the script as administrator"
+Write-Output "using powershell core"
 Write-Output "******************************************************"
 
 $rootCN = "ErabliereAPIDockerSSLSetup"
