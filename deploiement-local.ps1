@@ -19,7 +19,7 @@ function GeneratePassword {
     $characterList = 'a'..'z' + 'A'..'Z' + '0'..'9' + $symbols
 
     do {
-        $password = -join (0..$length | % { $characterList | Get-Random })
+        $password = -join (0..$length | ForEach-Object { $characterList | Get-Random })
         [int]$hasLowerChar = $password -cmatch '[a-z]'
         [int]$hasUpperChar = $password -cmatch '[A-Z]'
         [int]$hasDigit = $password -match '[0-9]'
