@@ -32,4 +32,19 @@ public class StripeToggleTest : IClassFixture<StripeEnabledApplicationFactory<St
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }
+
+    [Fact]
+    public async Task OpenApiSpecIsAvailable()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true,
+            MaxAutomaticRedirections = 1
+        });
+
+        var response = await client.GetAsync("/api/v1/swagger.json");
+
+        response.EnsureSuccessStatusCode();
+    }
 }

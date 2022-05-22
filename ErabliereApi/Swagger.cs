@@ -54,7 +54,8 @@ public static class Swagger
                                 TokenUrl = new Uri(config["SWAGGER_TOKEN_URL"] ?? throw new ArgumentNullException(paramName: "SWAGGER_TOKEN_URL", message: "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'SWAGGER_TOKEN_URL'.")),
                                 Scopes = new Dictionary<string, string>
                                 {
-                                        { config["OIDC_SCOPES"] ?? throw new ArgumentNullException("OIDC_SCOPES", "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_SCOPES'."), "Erabliere Api scope" }                                    }
+                                    { config["OIDC_SCOPES"] ?? throw new ArgumentNullException("OIDC_SCOPES", "Si 'USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW' est à 'true', vous devez initialiser la variable 'OIDC_SCOPES'."), "Erabliere Api scope" }                                   
+                                }
                             }
                         }
                     });
@@ -62,13 +63,13 @@ public static class Swagger
 
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
+                    {
+                        new OpenApiSecurityScheme
                         {
-                            new OpenApiSecurityScheme
-                            {
-                                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
-                            },
-                            new[] { config["OIDC_SCOPES"] }
-                        }
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+                        },
+                        new[] { config["OIDC_SCOPES"] }
+                    }
                 });
 
                 c.OperationFilter<AuthorizeCheckOperationFilter>();

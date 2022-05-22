@@ -187,4 +187,8 @@ export class ErabliereApi {
     async startCheckoutSession(): Promise<any> {
         return await this._httpClient.post<any>(this._environmentService.apiUrl + "/Checkout", {}, {}).toPromise();
     }
+
+    async getOpenApiSpec(): Promise<any> {
+        return await this._httpClient.get<any>(this._environmentService.apiUrl + "/api/v1/swagger.json", {}).toPromise();
+    }
 }

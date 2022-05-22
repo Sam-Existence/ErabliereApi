@@ -19,7 +19,7 @@
         "LOG_SQL": "-", // Console, -
 
         // Swagger
-        "SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
+        //"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
 
         // Utiliser l'authentification
         "USE_AUTHENTICATION": "false",

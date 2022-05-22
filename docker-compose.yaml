@@ -68,6 +68,7 @@ services:
       - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
         source: ./IdentityServer/config/ErabliereApi.IdentityServer.Users.json
         target: /app/ErabliereApi.IdentityServer.Users.json
+      - type: bind
         source: ./IdentityServer/config/ErabliereApi.IdentityServer.Config.json
         target: /app/ErabliereApi.IdentityServer.Config.json
     depends_on:

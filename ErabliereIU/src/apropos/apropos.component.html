@@ -7,8 +7,10 @@
     <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
 </div>
 
-<h4 class="mt-4">Obtenir un compte</h4>
-<p>Envoyer un courriel à <a href="mailto:erabliereapi@freddycoder.com">erabliereapi@freddycoder.com</a>.</p>
+<div *ngIf="supportEmail != ''">
+    <h4 class="mt-4">Obtenir un compte</h4>
+    <p>Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+</div>
 
 <h4 class="mt-4">Spécification de l'api</h4>
 <a href="{{urlApi}}/api/index.html" target="_blank" rel="noopener noreferrer">Swagger</a>
@@ -24,8 +26,10 @@
     Pour savoir si un appareil déjà à l'érablière est compatible avec cette technologie, il faut que cet appareil soit en mesure d'effectuer des requêtes HTTP, ou de relayer l'information à un appareil ayant cette capacité.
 </p>
 
-<h4 class="mt-4">Recherche d'érablière à connecter</h4>
-<p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a href="mailto:erabliereapi@freddycoder.com">erabliereapi@freddycoder.com</a>.</p>
+<div *ngIf="supportEmail != ''">
+    <h4 class="mt-4">Recherche d'érablière à connecter</h4>
+    <p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+</div>
 
 <h4 class="mt-4">Recherche des développeurs</h4>
 <p>Vous aimeriez participer au développement de ce projet ? Parcourir le code source du programme sur <a href="https://github.com/freddycoder/ErabliereApi" target="_blank">github</a>.</p>

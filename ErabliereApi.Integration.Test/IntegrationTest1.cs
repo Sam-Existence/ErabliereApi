@@ -56,4 +56,19 @@ public class IntegrationTest1 : IClassFixture<ErabliereApiApplicationFactory<Sta
 
         Assert.NotNull(e);
     }
+
+    [Fact]
+    public async Task OpenApiSpecIsAvailable()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true,
+            MaxAutomaticRedirections = 1
+        });
+
+        var response = await client.GetAsync("/api/v1/swagger.json");
+
+        response.EnsureSuccessStatusCode();
+    }
 }

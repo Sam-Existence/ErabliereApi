@@ -271,8 +271,6 @@ public class Startup
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
-        app.UtiliserSwagger(Configuration);
-
         app.UseRouting();
 
         if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
@@ -306,6 +304,8 @@ public class Startup
                 Predicate = r => r.Tags.Contains("live")
             });
         });
+
+        app.UtiliserSwagger(Configuration);
 
         app.UseSpa(spa =>
         {

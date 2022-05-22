@@ -9,11 +9,18 @@ import { ErabliereApi } from "src/core/erabliereapi.service";
 export class AProposComponent {
     urlApi?: string
     checkoutEnabled?: boolean
+    supportEmail?: string
     
     constructor(private _enviromentService: EnvironmentService, private _erbliereApi: ErabliereApi){}
 
     ngOnInit(): void {
         this.urlApi = this._enviromentService.apiUrl;
+
+        this._erbliereApi.getOpenApiSpec().then(spec => {
+            console.log(spec);
+            this.supportEmail = spec.info.contact.email;
+            this.checkoutEnabled = spec.paths['/Checkout'] !== undefined;
+        });
     }
 
     buyApiKey(): void {
