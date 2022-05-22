@@ -12,6 +12,7 @@ on:
       - .gitignore
       - '*.png'
       - IdentityServer/**
+      - '*.ps1'
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -22,6 +23,7 @@ on:
       - .gitignore
       - '*.png'
       - IdentityServer/**
+      - '*.ps1'
   workflow_dispatch:
 
 env:
