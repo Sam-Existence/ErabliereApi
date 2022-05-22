@@ -17,7 +17,6 @@ export class AProposComponent {
         this.urlApi = this._enviromentService.apiUrl;
 
         this._erbliereApi.getOpenApiSpec().then(spec => {
-            console.log(spec);
             this.supportEmail = spec.info.contact.email;
             this.checkoutEnabled = spec.paths['/Checkout'] !== undefined;
         });

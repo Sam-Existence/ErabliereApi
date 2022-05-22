@@ -2,7 +2,8 @@
 	"info": {
 		"_postman_id": "6eb66a4c-f14b-4f63-9a62-829aaf8d7505",
 		"name": "ErablièreAPI",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "6202256"
 	},
 	"item": [
 		{
@@ -1511,7 +1512,7 @@
 							"    var responseJson = pm.response.json();\r",
 							"\r",
 							"    pm.expect(responseJson).to.haveOwnProperty('length');\r",
-							"    pm.expect(responseJson.length).to.eq(20);\r",
+							"    pm.expect(responseJson.length).to.be.lessThan(21);\r",
 							"});"
 						],
 						"type": "text/javascript"
@@ -1563,13 +1564,13 @@
 				"exec": [
 					"if (pm.environment.get(\"Authentification.Activee\") == \"true\") {",
 					"    const echoPostRequest = {",
-					"    url: 'https://localhost:5005/connect/token',",
-					"    method: 'POST',",
-					"    header: 'Content-Type:application/x-www-form-urlencoded\\nAuthorization:Basic cmFzcGJlcnJ5bG9jYWw6c2VjcmV0',",
-					"    body: {",
-					"        mode: 'application/x-www-form-urlencoded',",
-					"        raw: \"grant_type=client_credentials&scope=erabliereapi\"",
-					"    }",
+					"        url: pm.environment.get(\"Authentification.Url\"),",
+					"        method: 'POST',",
+					"        header: 'Content-Type:application/x-www-form-urlencoded\\nAuthorization:Basic cmFzcGJlcnJ5bG9jYWw6c2VjcmV0',",
+					"        body: {",
+					"            mode: 'application/x-www-form-urlencoded',",
+					"            raw: \"grant_type=client_credentials&scope=erabliereapi\"",
+					"        }",
 					"    };",
 					"",
 					"    var getToken = true;",

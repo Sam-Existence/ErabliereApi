@@ -12,7 +12,7 @@ export class AuthorisationService implements IAuthorisationSerivce {
 
     loginChanged = this._loginChangedSubject.asObservable();
 
-    constructor(private _environmentService: EnvironmentService) {
+    constructor(_environmentService: EnvironmentService) {
         const stsSettings:UserManagerSettings = {
             authority: _environmentService.stsAuthority,
             client_id: _environmentService.clientId,
@@ -29,24 +29,21 @@ export class AuthorisationService implements IAuthorisationSerivce {
          return this._userManager.signinRedirect();
      }
 
-     isLoggedIn(): Promise<Boolean> {
-         return this._userManager.getUser().then(user => {
-            const isLoggedIn = !!user && !user.expired;
-            if (this._user !== user) {
-                this._loginChangedSubject.next(isLoggedIn);
-            }
-            this._user = user;
-
-            return isLoggedIn;
-         });
+     async isLoggedIn(): Promise<Boolean> {
+         const user = await this._userManager.getUser();
+         const isLoggedIn = !!user && !user.expired;
+         if (this._user !== user) {
+             this._loginChangedSubject.next(isLoggedIn);
+         }
+         this._user = user;
+         return isLoggedIn;
      }
 
-    completeLogin(): Promise<AppUser> {
-        return this._userManager.signinRedirectCallback().then(user => {
-            this._user = user;
-            this._loginChangedSubject.next(!!user && !user.expired);
-            return user;
-        });
+    async completeLogin(): Promise<AppUser> {
+        const user = await this._userManager.signinRedirectCallback();
+        this._user = user;
+        this._loginChangedSubject.next(!!user && !user.expired);
+        return user;
     }
 
     logout() {
@@ -61,14 +58,13 @@ export class AuthorisationService implements IAuthorisationSerivce {
         });
     }
 
-    getAccessToken() : Promise<String | null> {
-        return this._userManager.getUser().then(user => {
-            if (!!user && !user.expired) {
-                return user.access_token;
-            }
-            else {
-                return null;
-            }
-        });
+    async getAccessToken() : Promise<String | null> {
+        const user = await this._userManager.getUser();
+        if (!!user && !user.expired) {
+            return user.access_token;
+        }
+        else {
+            return null;
+        }
     }
 }

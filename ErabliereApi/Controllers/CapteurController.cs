@@ -177,9 +177,12 @@ public class CapteursController : ControllerBase
         var capteurEntity = await _depot.Capteurs
             .FirstOrDefaultAsync(x => x.Id == capteur.Id && x.IdErabliere == capteur.IdErabliere, token);
 
-        _depot.Remove(capteurEntity);
+        if (capteurEntity != null)
+        {
+            _depot.Remove(capteurEntity);
 
-        await _depot.SaveChangesAsync(token);
+            await _depot.SaveChangesAsync(token);
+        }
 
         return NoContent();
     }

@@ -48,7 +48,18 @@ Cypress.Commands.add('login', () => {
                 });
             }
             else {
-                // TODO: Authenticate using identity server
+                cy.request({
+                    method: "POST",
+                    url: `${config.stsAuthority}/connect/token`,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                        "Authorization": "Basic cmFzcGJlcnJ5bG9jYWw6c2VjcmV0"
+                    },
+                    form: true,
+                    body: "grant_type=client_credentials&scope=erabliereapi"
+                }).then(res => {
+                    sessionStorage.setItem('oidc.user:https://192.168.0.110:5005:erabliereiu', JSON.stringify(res.body));
+                })
             }
         }
     });
