@@ -11,6 +11,8 @@ $initialLocation = $PWD.Path
 
 Set-Location ErabliereIU
 
+npm install --legacy-peer-deps
+
 npx cypress run --config baseUrl=$frontEndUrl
 
 Set-Location $initialLocation
