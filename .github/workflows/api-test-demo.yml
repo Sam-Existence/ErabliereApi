@@ -27,8 +27,8 @@ jobs:
       - uses: actions/checkout@v2
       - name: Reboot the webapp
         run: |
-          Install-Module -Name Az.Websites -Force
-          Restart-AzWebApp -ResourceGroupName "erabliereapi-demo" -Name "erabliereapi-demo"
+          az webapp restart --name erabliereapi-demo --resource-group erabliereapi-demo
+          sleep 35
         shell: powershell
 
       - uses: actions/checkout@master
@@ -37,7 +37,6 @@ jobs:
           collection: Postman/ErabliereAPI.postman_collection.json
           environment: Postman/ErabliereAPI-Demo.postman_environment.json
           reporters: "cli,junit"
-          reporter-junit-export: "./TestResults/newman-results.xml"
 
       - name: Install node
         uses: actions/setup-node@v2
@@ -49,12 +48,12 @@ jobs:
           cd ErabliereIU
           npm install --legacy-peer-deps
 
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+
       - name: Go back to the root of the repository
         run: |
           cd ..
-
-      - name: Cypress run
-        uses: cypress-io/github-action@v2
 
       # Analyse results
       - name: Publish Test Report
