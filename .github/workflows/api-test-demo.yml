@@ -29,7 +29,6 @@ jobs:
         run: |
           az webapp restart --name erabliereapi-demo --resource-group erabliereapi-demo
           sleep 35
-        shell: powershell
 
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
