@@ -51,4 +51,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: ErabliereIU
-          config: baseUrl=https://erabliereapi-demo.azurewebsites.net
+          config: video=false,baseUrl=https://erabliereapi-demo.azurewebsites.net
