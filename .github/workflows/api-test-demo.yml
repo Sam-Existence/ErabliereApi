@@ -51,17 +51,4 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: ErabliereIU
-          baseUrl: https://erabliereapi-demo.azurewebsites.net
-
-      - name: Go back to the root of the repository
-        run: |
-          cd ..
-
-      # Analyse results
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v3.0.2
-        if: always() # always run even if the previous step fails
-        with:
-          report_paths: './TestResults/*.xml'
-          require_tests: true
-          fail_on_failure: true
+          config: baseUrl=https://erabliereapi-demo.azurewebsites.net
