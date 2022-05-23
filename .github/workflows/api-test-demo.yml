@@ -20,11 +20,8 @@ jobs:
     steps:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
-        with:
-          client-id: ${{ secrets.AZURE_DEMO_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_DEMO_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_DEMO_SUBSCRIPTION_ID }} 
-          enable-AzPSSession: true
+        with: # Set Azure credentials secret as an input
+          credentials: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
 
       - uses: actions/checkout@v2
       - name: Reboot the webapp
