@@ -37,9 +37,7 @@ jobs:
         with:
           collection: Postman/ErabliereAPI.postman_collection.json
           environment: Postman/ErabliereAPI-Demo.postman_environment.json
-          reporters:
-            - "cli"
-            - "junit"
+          reporters: "cli,junit"
           reporter-junit-export: "./TestResults/newman-results.xml"
 
       - name: Install node
