@@ -1,10 +1,16 @@
+[CmdletBinding()]
 param(
+    [Parameter(Mandatory=$false)]
     [string]$newmanEnvironement=".\Postman\ErabliereAPI-Local.postman_environment.json",
+    [Parameter(Mandatory=$false)]
     [string]$frontEndUrl="https://192.168.0.110:5001",
-    $skipInstall=$false
+    [Parameter(Mandatory=$false)]
+    [bool]$skipInstall=$false
 )
 
 $initialLocation = $PWD.Path
+
+Write-Host "Initial location: $initialLocation"
 
 Remove-Item .\TestResults\*.xml
 
@@ -27,8 +33,8 @@ Set-Location $initialLocation
 # Check if there is some errors in the test results
 # Loop through the test results and check if there is any error
 $exitCode = 0
-foreach ($result in (Get-ChildItem -Path ".\TestResults" -Filter "*.xml")) {
-    $xml = [xml](Get-Content $result)
+foreach ($result in (Get-ChildItem -Path "$initialLocation\TestResults" -Filter "*.xml")) {
+    $xml = [xml](Get-Content "$initialLocation\TestResults\$result")
 
     Write-Host $result
     if ($xml.testsuites.failures -gt 0) {
