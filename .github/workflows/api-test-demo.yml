@@ -51,6 +51,7 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           working-directory: ErabliereIU
+          baseUrl: https://erabliereapi-demo.azurewebsites.net
 
       - name: Go back to the root of the repository
         run: |
