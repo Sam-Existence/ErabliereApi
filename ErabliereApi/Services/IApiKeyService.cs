@@ -13,7 +13,7 @@ public interface IApiKeyService
     /// <param name="email"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<ApiKey> CreateApiKey(string email, CancellationToken token);
+    Task<ApiKey> CreateApiKeyAsync(string email, CancellationToken token);
 
     /// <summary>
     /// Hash an api key from a string
@@ -28,4 +28,13 @@ public interface IApiKeyService
     /// <param name="key"></param>
     /// <returns></returns>
     string HashApiKey(byte[] key);
+
+    /// <summary>
+    /// Set the subscription key for a customer
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <param name="id"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task SetSubscriptionKeyAsync(string customerId, string id, CancellationToken token);
 }

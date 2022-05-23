@@ -48,6 +48,20 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         AssertCustomerApiKey();
         await Step("invoice.payment_succeeded", client);
         await Step("customer.subscription.created", client);
+        AssertApiKeySubscriptionKey();
+    }
+
+    private void AssertApiKeySubscriptionKey()
+    {
+        var database = _factory.Services.GetRequiredService<ErabliereDbContext>();
+
+        var customer = database.Customers.Single(c => c.Email == "john@doe.com");
+
+        var apiKeys = database.ApiKeys.Where(a => a.CustomerId == customer.Id).ToArray();
+
+        var apiKey = Assert.Single(apiKeys);
+
+        Assert.Equal("sub_nQGAY1IJGYRuKALqHnDOC9yt", apiKey.SubscriptionId);
     }
 
     private void AssertCustomerApiKey()
@@ -63,6 +77,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         Assert.NotNull(apiKey.Key);
         Assert.Null(apiKey.RevocationTime);
         Assert.Null(apiKey.DeletionTime);
+        Assert.Null(apiKey.SubscriptionId);
 
         var emailService = _factory.Services.GetRequiredService<IEmailService>();
 

@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Security.Cryptography;
@@ -30,7 +31,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
     }
 
     /// <inheritdoc />
-    public async Task<ApiKey> CreateApiKey(string email, CancellationToken token)
+    public async Task<ApiKey> CreateApiKeyAsync(string email, CancellationToken token)
     {
         var customer = _context.Customers.FirstOrDefault(x => x.Email == email);
 
@@ -89,5 +90,28 @@ public class ErabiereApiApiKeyService : IApiKeyService
     public string HashApiKey(string key)
     {
         return HashApiKey(Convert.FromBase64String(key));
+    }
+
+    /// <inheritdoc />
+    public async Task SetSubscriptionKeyAsync(
+        string customerId, string id, CancellationToken token)
+    {
+        var customer = await _context.Customers
+            .SingleAsync(c => c.StripeId == customerId, token);
+
+        var now = DateTimeOffset.Now;
+
+        var apiKey = await _context.ApiKeys
+            .Where(a => a.CustomerId == customer.Id && 
+                        a.CreationTime <= now &&
+                        a.RevocationTime == null &&
+                        a.DeletionTime == null).OrderByDescending(a => a.CreationTime)
+            .FirstAsync(token);
+
+        apiKey.SubscriptionId = id;
+
+        var entity = _context.Update(apiKey);
+
+        await _context.SaveChangesAsync(token);
     }
 }

@@ -155,7 +155,8 @@ public class Startup
             services.AddDbContext<ErabliereDbContext>(options =>
             {
                 options.UseInMemoryDatabase(nameof(ErabliereDbContext));
-            });
+
+            }, contextLifetime: ServiceLifetime.Singleton);
         }
 
         // HealthCheck
@@ -202,6 +203,7 @@ public class Startup
             services.AddTransient<ICheckoutService, StripeCheckoutService>()
                     .AddTransient<IUserService, ErabliereApiUserService>()
                     .AddTransient<IApiKeyService, ErabiereApiApiKeyService>()
+                    .AddTransient<ApiKeyMiddleware>()
                     .AddHttpContextAccessor();
         }
 
@@ -281,6 +283,11 @@ public class Startup
                 option.WithMethods(Configuration["CORS_METHODS"]?.Split(',') ?? new[] { "*" });
                 option.WithOrigins(Configuration["CORS_ORIGINS"]?.Split(',') ?? new[] { "*" });
             });
+        }
+
+        if (!string.IsNullOrWhiteSpace(Configuration["Stripe.ApiKey"]))
+        {
+            app.UseMiddleware<ApiKeyMiddleware>();
         }
 
         if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))

@@ -41,4 +41,9 @@ public class ApiKey
     /// Le <see cref="Customer"/> possédant la clé d'api
     /// </summary>
     public Customer? Customer { get; set; }
+
+    /// <summary>
+    /// The stripe subscription id related to the api key
+    /// </summary>
+    public string? SubscriptionId { get; set; }
 }

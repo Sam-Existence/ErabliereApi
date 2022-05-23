@@ -116,7 +116,19 @@ public class StripeCheckoutService : ICheckoutService
                     throw new ArgumentNullException(nameof(data));
                 }
 
-                await apiKeyService.CreateApiKey(data.CustomerEmail, token);
+                await apiKeyService.CreateApiKeyAsync(data.CustomerEmail, token);
+                break;
+
+            case "customer.subscription.created":
+                var subscription = stripeEvent.Data.Object as Subscription;
+
+                if (subscription is null)
+                {
+                    throw new ArgumentNullException(nameof(subscription));
+                }
+
+                await apiKeyService.SetSubscriptionKeyAsync(subscription.CustomerId, subscription.Id, token);
+
                 break;
 
             default:
