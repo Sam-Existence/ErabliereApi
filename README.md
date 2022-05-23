@@ -1,6 +1,8 @@
 # ErabliereApi
 Solution de monitoring pour érablière. Contient un REST API ainsi qu'un application web pour la gestion des données et d'autre script permettant de connecter divers appareils.
 
+Un démo est accessible à l'url: https://erabliereapi-demo.azurewebsites.net/
+
 ## But
 Le but de ce projet est d'analyser, lever des alertes et automatiser certain mecanisme. Basé sur les données receuillis et de façon centralisé.
 

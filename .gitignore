@@ -398,3 +398,6 @@ config/oauth-oidc.json
 # Cypress
 ErabliereIU/cypress/videos/
 ErabliereIU/cypress/screenshots/
+
+# Test
+TestResults/

@@ -1,4 +1,4 @@
-name: ErabliereAPI-Test
+name: ErabliereAPI-Test-AKS-Staging
 
 on: 
   # workflow_run:

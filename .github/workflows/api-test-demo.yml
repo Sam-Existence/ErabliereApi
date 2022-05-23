@@ -1,0 +1,69 @@
+# this is a github action that reboot an azure webapp
+# and then run the test script locally targeting the webapp
+name: ErabliereAPI-Test-Demo
+
+on: 
+  workflow_run:
+      workflows: ["ErabliereAPI-Image"]
+      branches: [master]
+      types: 
+        - completed
+  workflow_dispatch:
+
+env:
+  EXAMPLE: exemple
+
+jobs:
+  run_tests:
+    runs-on: windows-latest
+
+    steps:
+      - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_DEMO_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_DEMO_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_DEMO_SUBSCRIPTION_ID }} 
+          enable-AzPSSession: true
+
+      - uses: actions/checkout@v2
+      - name: Reboot the webapp
+        run: |
+          Restart-AzWebApp -ResourceGroupName "erabliereapi-demo" -Name "erabliereapi-demo"
+        shell: powershell
+
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: Postman/ErabliereAPI.postman_collection.json
+          environment: Postman/ErabliereAPI-Demo.postman_environment.json
+          reporters:
+            - "cli"
+            - "junit"
+          reporter-junit-export: "./TestResults/newman-results.xml"
+
+      - name: Install node
+        uses: actions/setup-node@v2
+        with:
+            node:version: '16'
+
+      - name: Install dependencies
+        run: |
+          cd ErabliereIU
+          npm install --legacy-peer-deps
+
+      - name: Go back to the root of the repository
+        run: |
+          cd ..
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+
+      # Analyse results
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v3.0.2
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: './TestResults/*.xml'
+          require_tests: true
+          fail_on_failure: true

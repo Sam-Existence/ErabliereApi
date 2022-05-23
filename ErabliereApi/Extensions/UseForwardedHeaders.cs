@@ -22,8 +22,10 @@ public static class UseForwardedHeadersExtension
             {
                 options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 
-                foreach (var network in configuration.GetValue<string>("KNOW_NETWORKS")?.Split(';') ?? Array.Empty<string>())
+                string[] array = configuration.GetValue<string>("KNOW_NETWORKS")?.Split(';') ?? Array.Empty<string>();
+                for (int i = 0; i < array.Length; i++)
                 {
+                    string? network = array[i];
                     var ipInfo = network.Split("/");
 
                     options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(ipInfo[0]), int.Parse(ipInfo[1])));
@@ -72,20 +74,20 @@ public static class UseForwardedHeadersExtension
         {
             app.Use(async (context, next) =>
             {
-                    // Request method, scheme, and path
-                    logger.LogDebug("Request Method: {Method}", context.Request.Method);
+                // Request method, scheme, and path
+                logger.LogDebug("Request Method: {Method}", context.Request.Method);
                 logger.LogDebug("Request Scheme: {Scheme}", context.Request.Scheme);
                 logger.LogDebug("Request Path: {Path}", context.Request.Path);
 
-                    // Headers
-                    foreach (var header in context.Request.Headers)
+                // Headers
+                foreach (var header in context.Request.Headers)
                 {
                     logger.LogDebug("Header: {Key}: {Value}", header.Key, header.Value);
                 }
 
-                    // Connection: RemoteIp
-                    logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
-                    context.Connection.RemoteIpAddress);
+                // Connection: RemoteIp
+                logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
+                context.Connection.RemoteIpAddress);
 
                 await next();
             });
