@@ -21,11 +21,13 @@ jobs:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
         with: # Set Azure credentials secret as an input
-          credentials: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
+          creds: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
+          enable-AzPSSession: true
 
       - uses: actions/checkout@v2
       - name: Reboot the webapp
         run: |
+          Install-Module -Name Az.Websites -Force
           Restart-AzWebApp -ResourceGroupName "erabliereapi-demo" -Name "erabliereapi-demo"
         shell: powershell
 
