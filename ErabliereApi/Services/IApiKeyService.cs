@@ -23,6 +23,14 @@ public interface IApiKeyService
     string HashApiKey(string key);
 
     /// <summary>
+    /// Try hash a given key
+    /// </summary>
+    /// <param name="key"></param>
+    /// <param name="hashApiKey"></param>
+    /// <returns></returns>
+    bool TryHashApiKey(string key, out string? hashApiKey);
+
+    /// <summary>
     /// Hash an api key from a byte array
     /// </summary>
     /// <param name="key"></param>

@@ -26,26 +26,24 @@ public class ApiKeyMiddleware : IMiddleware
 
         if (context.Request.Headers.TryGetValue(XApiKeyHeader, out var apiKey))
         {
+            var apiKeyService = context.RequestServices.GetRequiredService<IApiKeyService>();
+
+            authorizeRequest = apiKeyService.TryHashApiKey(apiKey, out var hashkey);
+
             var dbContext = context.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-            var hashey = context.RequestServices.GetRequiredService<IApiKeyService>().HashApiKey(apiKey);
-
-            var apiKeyEntity = await dbContext.ApiKeys.FirstOrDefaultAsync(k => k.Key == hashey);
+            var apiKeyEntity = await dbContext.ApiKeys.FirstOrDefaultAsync(k => k.Key == hashkey);
 
             var now = DateTimeOffset.Now;
 
             if (apiKeyEntity != null &&
-                now < apiKeyEntity.RevocationTime &&
-                now < apiKeyEntity.CreationTime &&
+                (apiKeyEntity.RevocationTime == null || now < apiKeyEntity.RevocationTime) &&
+                (apiKeyEntity.DeletionTime == null || now < apiKeyEntity.CreationTime) &&
                 apiKeyEntity.DeletionTime == null)
             {
-                var reccord = new UsageRecordService();
+                var checkoutService = context.RequestServices.GetRequiredService<ICheckoutService>();
 
-                var usageReccord = await reccord.CreateAsync(apiKeyEntity.SubscriptionId, new UsageRecordCreateOptions
-                {
-                    Quantity = 1,
-                    Timestamp = DateTimeOffset.Now.UtcDateTime
-                });
+                var usageReccord = await checkoutService.ReccordUsageAsync(apiKeyEntity);
 
                 var logger = context.RequestServices.GetRequiredService<ILogger<ApiKeyMiddleware>>();
 

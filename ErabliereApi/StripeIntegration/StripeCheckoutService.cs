@@ -3,7 +3,7 @@ using Stripe.Checkout;
 using Stripe;
 using Microsoft.Extensions.Options;
 using AutoMapper;
-using System.Text.Json;
+using ErabliereApi.Donnees;
 
 namespace ErabliereApi.StripeIntegration;
 
@@ -135,5 +135,19 @@ public class StripeCheckoutService : ICheckoutService
                 logger.LogWarning("Unknow stripe event: {event}", stripeEvent);
                 break;
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<UsageRecord> ReccordUsageAsync(ApiKey apiKeyEntity)
+    {
+        var reccord = new UsageRecordService();
+
+        var usageReccord = await reccord.CreateAsync(apiKeyEntity.SubscriptionId, new UsageRecordCreateOptions
+        {
+            Quantity = 1,
+            Timestamp = DateTimeOffset.Now.UtcDateTime
+        });
+
+        return usageReccord;
     }
 }

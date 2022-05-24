@@ -1,4 +1,7 @@
-﻿namespace ErabliereApi.Services;
+﻿using ErabliereApi.Donnees;
+using Stripe;
+
+namespace ErabliereApi.Services;
 
 /// <summary>
 /// 
@@ -14,4 +17,11 @@ public interface ICheckoutService
     /// 
     /// </summary>
     Task Webhook(string json);
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="apiKey"></param>
+    /// <returns></returns>
+    Task<UsageRecord> ReccordUsageAsync(ApiKey apiKey);
 }

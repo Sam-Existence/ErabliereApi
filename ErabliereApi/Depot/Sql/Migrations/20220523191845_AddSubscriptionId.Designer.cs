@@ -15,6 +15,9 @@ namespace Depot.Sql.Migrations
     [Migration("20220523191845_AddSubscriptionId")]
     partial class AddSubscriptionId
     {
+        /// <summary>
+        /// Builds the target model for migration.
+        /// </summary>
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

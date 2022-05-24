@@ -23,7 +23,8 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <param name="context"></param>
     /// <param name="emailService"></param>
     /// <param name="emailConfig"></param>
-    public ErabiereApiApiKeyService(ErabliereDbContext context, IEmailService emailService, IOptions<EmailConfig> emailConfig)
+    public ErabiereApiApiKeyService(
+        ErabliereDbContext context, IEmailService emailService, IOptions<EmailConfig> emailConfig)
     {
         _context = context;
         _emailService = emailService;
@@ -113,5 +114,21 @@ public class ErabiereApiApiKeyService : IApiKeyService
         var entity = _context.Update(apiKey);
 
         await _context.SaveChangesAsync(token);
+    }
+
+    /// <inheritdoc />
+    public bool TryHashApiKey(string key, out string? hashApiKey)
+    {
+        try
+        {
+            hashApiKey = HashApiKey(key);
+
+            return true;
+        }
+        catch { }
+
+        hashApiKey = null;
+
+        return false;
     }
 }
