@@ -1,0 +1,7 @@
+{
+    "apiUrl": "https://<ip-address>:5001",
+    "stsAuthority": "",
+    "clientId": "<client-id>",
+    "appRoot": "https://<ip-address>:5001",
+    "authEnable": true
+}

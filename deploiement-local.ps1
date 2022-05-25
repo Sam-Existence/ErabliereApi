@@ -33,6 +33,7 @@ function GeneratePassword {
 
 Write-Output "******************************************************"
 Write-Output "ErabliereAPI docker desktop setup"
+Write-Output "Using IdentityServer as authentication provider"
 Write-Output "******************************************************"
 Write-Output ""
 Write-Output "******************************************************"
