@@ -3,6 +3,7 @@ services:
   erabliere-api:
     image: "erabliereapi/erabliereapi:v3-dev"
     environment:
+      Logging__LogLevel_Default: "Debug"
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: password
@@ -29,8 +30,8 @@ services:
       OIDC_SCOPES: "${SWAGGER_SCOPES}"
       OIDC_AUTHORITY: "https://login.microsoftonline.com/${TENANT_ID}/"
       EMAIL_CONFIG_PATH: "-"
-      AzureAD:ClientId: "${API_CLIENT_ID}"
-      AzureAD:TenantId: "${TENANT_ID}"
+      AzureAD__ClientId: "${API_CLIENT_ID}"
+      AzureAD__TenantId: "${TENANT_ID}"
     ports:
       - "5001:443"
     volumes:
