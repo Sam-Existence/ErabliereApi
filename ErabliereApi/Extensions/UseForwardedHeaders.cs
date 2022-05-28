@@ -64,6 +64,10 @@ public static class UseForwardedHeadersExtension
                 });
             }
         }
+        else if (string.Equals(configuration.GetValue<string>("DEBUG_HEADERS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
+        {
+            DebugHeadersMiddleware(app, logger);
+        }
 
         return app;
     }
@@ -72,25 +76,30 @@ public static class UseForwardedHeadersExtension
     {
         if (string.Equals(configuration.GetValue<string>("Forwarded_headers.Debug_headers"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
         {
-            app.Use(async (context, next) =>
-            {
-                // Request method, scheme, and path
-                logger.LogDebug("Request Method: {Method}", context.Request.Method);
-                logger.LogDebug("Request Scheme: {Scheme}", context.Request.Scheme);
-                logger.LogDebug("Request Path: {Path}", context.Request.Path);
-
-                // Headers
-                foreach (var header in context.Request.Headers)
-                {
-                    logger.LogDebug("Header: {Key}: {Value}", header.Key, header.Value);
-                }
-
-                // Connection: RemoteIp
-                logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
-                context.Connection.RemoteIpAddress);
-
-                await next();
-            });
+            DebugHeadersMiddleware(app, logger);
         }
+    }
+
+    private static void DebugHeadersMiddleware(IApplicationBuilder app, ILogger<Startup> logger)
+    {
+        app.Use(async (context, next) =>
+        {
+            // Request method, scheme, and path
+            logger.LogDebug("Request Method: {Method}", context.Request.Method);
+            logger.LogDebug("Request Scheme: {Scheme}", context.Request.Scheme);
+            logger.LogDebug("Request Path: {Path}", context.Request.Path);
+
+            // Headers
+            foreach (var header in context.Request.Headers)
+            {
+                logger.LogDebug("Header: {Key}: {Value}", header.Key, header.Value);
+            }
+
+            // Connection: RemoteIp
+            logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
+            context.Connection.RemoteIpAddress);
+
+            await next();
+        });
     }
 }
