@@ -27,7 +27,7 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
     }
 
     [Fact]
-    public async Task GoodApiKey_Get403()
+    public async Task GoodApiKey_Get200()
     {
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {

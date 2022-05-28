@@ -11,6 +11,8 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
         webBuilder.UseStartup<Startup>();
         webBuilder.ConfigureKestrel((c, o) =>
         {
+            Console.WriteLine(c.Configuration["ASPNETCORE_ENVIRONMENT"]);
+
             try 
             {
                 const string kestrelBinderOption = "KestrelBinder_ErrorOnUnknowConfiguration";
