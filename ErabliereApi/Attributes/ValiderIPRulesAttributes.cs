@@ -20,11 +20,6 @@ public class ValiderIPRulesAttribute : ActionFilterAttribute
     /// <inheritdoc />
     public override async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
-        if (string.Equals(Environment.GetEnvironmentVariable("DEBUG_HEADERS"), bool.TrueString, StringComparison.OrdinalIgnoreCase))
-        {
-            DebugHeaders(context);
-        }
-
         var id = context.ActionArguments["id"];
 
         var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
