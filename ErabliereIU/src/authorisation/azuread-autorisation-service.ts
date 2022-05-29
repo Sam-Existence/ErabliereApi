@@ -52,12 +52,12 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
   }
 
   logout() {
-    this._msalInstance.loginPopup().subscribe(async response => {
+    this._msalInstance.logoutPopup().subscribe(async response => {
       await this.completeLogout();
     });
   }
 
-  completeLogout() {
+  completeLogout(): Promise<AuthResponse> {
     return new Promise<AuthResponse>((resolve, reject) => {
       this._isLoggedIn = false;
       this._msalInstance.instance.setActiveAccount(null);

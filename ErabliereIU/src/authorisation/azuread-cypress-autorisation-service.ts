@@ -1,4 +1,5 @@
 import { Subject } from 'rxjs';
+import { EnvironmentService } from 'src/environments/environment.service';
 import { AppUser } from 'src/model/appuser';
 import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
@@ -7,6 +8,8 @@ export class AzureADCypressAuthorisationService implements IAuthorisationSerivce
   private _isLoggingIn = Boolean();
   private _loginChangedSubject = new Subject<Boolean>();
   loginChanged = this._loginChangedSubject.asObservable();
+
+  constructor (private _environmentService: EnvironmentService) { }
 
   async login() {
     var appUser = await this.completeLogin();
@@ -49,6 +52,8 @@ export class AzureADCypressAuthorisationService implements IAuthorisationSerivce
   getAccessToken(): Promise<String | null> {
     return new Promise<String | null>((resolve, reject) => {
         var token = localStorage.getItem("adal.idtoken");
+
+        console.log(token);
 
         if (token != null && this._isLoggingIn == false) {
           this._isLoggingIn = true;
