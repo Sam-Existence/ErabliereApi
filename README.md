@@ -72,7 +72,7 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 
 Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-msi-package
 
-Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```. Si vous voulez télécharger les images plus récente, lancer ````docker compose pull``` avant d'executer la commande --force-recreate.
+Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```. Si vous voulez télécharger les images plus récente, lancer ```docker compose pull``` avant d'executer la commande --force-recreate.
 
 ### Déployer l'interface sur une installation apache2 d'un raspberry pi
 

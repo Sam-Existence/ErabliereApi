@@ -14,6 +14,7 @@ on:
       - IdentityServer/**
       - '*.ps1'
       - '*.yaml'
+      - '*.md'
   pull_request:
     types: [opened, synchronize, reopened]
     paths-ignore:
@@ -26,6 +27,7 @@ on:
       - IdentityServer/**
       - '*.ps1'
       - '*.yaml'
+      - '*.md'
   workflow_dispatch:
 
 env:

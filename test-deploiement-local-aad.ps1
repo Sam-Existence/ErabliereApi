@@ -34,7 +34,7 @@ Set-Location $initialLocation
 # Loop through the test results and check if there is any error
 $exitCode = 0
 foreach ($result in (Get-ChildItem -Path "$initialLocation\TestResults" -Filter "*.xml")) {
-    $xml = [xml](Get-Content "$initialLocation\TestResults\$result")
+    $xml = [xml](Get-Content ("$initialLocation\TestResults\" + [System.IO.Path]::GetFileName($result)))
 
     Write-Host $result
     if ($xml.testsuites.failures -gt 0) {
