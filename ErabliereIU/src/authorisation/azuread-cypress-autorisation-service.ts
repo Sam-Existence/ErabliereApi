@@ -1,5 +1,4 @@
 import { Subject } from 'rxjs';
-import { EnvironmentService } from 'src/environments/environment.service';
 import { AppUser } from 'src/model/appuser';
 import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
@@ -8,8 +7,6 @@ export class AzureADCypressAuthorisationService implements IAuthorisationSerivce
   private _isLoggingIn = Boolean();
   private _loginChangedSubject = new Subject<Boolean>();
   loginChanged = this._loginChangedSubject.asObservable();
-
-  constructor (private _environmentService: EnvironmentService) { }
 
   async login() {
     var appUser = await this.completeLogin();
