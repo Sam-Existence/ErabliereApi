@@ -35,10 +35,10 @@ services:
     ports:
       - "5001:443"
     volumes:
-      # - ./config:/app/wwwroot/assets/config
-      # - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
-      #   source: ./config/oauth-oidc.json
-      #   target: /app/wwwroot/assets/config/oauth-oidc.json
+      - ./config:/app/wwwroot/assets/config
+      - type: bind
+        source: ./config/oauth-oidc.json
+        target: /app/wwwroot/assets/config/oauth-oidc.json
       - ./ErabliereApi/certs:/https/
       - type: bind # Using a bind volume as only this single file from `certs` directory should end up in the container.
         source: ./certs/aspnetapp-root-cert.cer

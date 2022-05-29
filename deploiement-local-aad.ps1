@@ -45,10 +45,7 @@ $oidcConfig = Get-Content C:\Configs\ErabliereApi-Local\oidc-info.txt | ConvertF
 $envContent.Append("TENANT_ID=" + $oidcConfig.TenantId + [System.Environment]::NewLine)
 $envContent.Append("API_CLIENT_ID=" + $oidcConfig.ApiClientId + [System.Environment]::NewLine)
 $envContent.Append("SWAGGER_CLIENT_ID=" + $oidcConfig.SwaggerClientId + [System.Environment]::NewLine)
-$envContent.Append("SWAGGER_SCOPES=" + $oidcConfig.SwaggerScopes + [System.Environment]::NewLine)
-
-# TODO: Push the IU ClientId into the oidc-config.json file
-
+$envContent.Append("SWAGGER_SCOPES=" + $oidcConfig.Scopes + [System.Environment]::NewLine)
 
 Write-Output $envContent
 $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
@@ -57,5 +54,5 @@ $Utf8NoBomEncoding = New-Object System.Text.UTF8Encoding $False
 Write-Output "Generate config/oauth-oidc.json"
 $oauthConfigOidcTemplatePath = $PWD.Path + "\config\" + "oauth-oidc.template.aad.json"
 $oauthConfigOidcDestinationPath = $PWD.Path + "\config\" + "oauth-oidc.json"
-$oauthConfigOidcTemplateContent = (Get-Content $oauthConfigOidcTemplatePath -Raw -Encoding utf8).Replace("<ip-address>", $ipAddress)
+$oauthConfigOidcTemplateContent = (Get-Content $oauthConfigOidcTemplatePath -Raw -Encoding utf8).Replace("<ip-address>", $ipAddress).Replace("<client-id>", $oidcConfig.IUClientId).Replace("<tenant-id>", $oidcConfig.TenantId).Replace("<iu-scopes>", $oidcConfig.Scopes)
 [System.IO.File]::WriteAllText($oauthConfigOidcDestinationPath, $oauthConfigOidcTemplateContent, $Utf8NoBomEncoding)
