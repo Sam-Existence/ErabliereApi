@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -12,7 +12,14 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
             <div class="container">
                 <div class="col-6 btn-group">
                     <div class="dropdown show">
-                        <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-secondary 
+                           dropdown-toggle" 
+                           href="#" 
+                           role="button" 
+                           id="dropdownMenuLink" 
+                           data-toggle="dropdown" 
+                           aria-haspopup="true" 
+                           aria-expanded="false">
                             Durée {{ duree }}
                         </a>
 
@@ -101,6 +108,7 @@ export class GraphPannelComponent implements OnInit {
     }
 
     updateDonneesCapteur(event:any) {
+        this.cleanGraphComponentCache();
         this.doHttpCall();
     }
 
@@ -186,6 +194,8 @@ export class GraphPannelComponent implements OnInit {
         return new Date(Date.now() - twelve_hour);
     }
 
+    @Output() updateGraphCallback = new EventEmitter();
+
     updateGraph(days: number, hours: number): void {
         if (this.idCapteur != null) {
             this.duree = "";
@@ -200,15 +210,23 @@ export class GraphPannelComponent implements OnInit {
 
             this.debutEnHeure = hours + (24 * days);
 
-            this.dernierDonneeRecu = undefined;
-            this.ddr = undefined;
-            this.ids = [];
+            this.cleanGraphComponentCache();
 
             this.doHttpCall();
         }
         else {
-            console.log("idCapteur was null");
-            // TODO: implement the logic. idCapteur is null when the component is used by the donnees component (donnees.compoenent.ts).
+            // When this.idCapteur is null, we are in a component such as 'donnees.component.ts'
+            this.updateGraphCallback.emit({days, hours});
         }
+    }
+
+    private cleanGraphComponentCache() {
+        this.dernierDonneeRecu = undefined;
+        this.ddr = undefined;
+        this.ids = [];
+    }
+
+    updateDuree(duree: string) {
+        this.duree = duree;
     }
 }

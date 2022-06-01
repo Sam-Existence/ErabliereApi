@@ -16,6 +16,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
+                           (updateGraphCallback)="updateGraph($event)"
                            [datasets]="temperature" #temperatureGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -23,6 +24,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
+                           (updateGraphCallback)="updateGraph($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -30,6 +32,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
+                           (updateGraphCallback)="updateGraph($event)"
                            [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -307,9 +310,40 @@ export class DonneesComponent implements OnInit {
           });
         }
 
+        duree:string = "12h"
+        debutEnHeure: number = 12;
+
       obtenirDebutFiltre() : Date {
-        var twelve_hour = 1000 * 60 * 60 * 12;
+        var twelve_hour = 1000 * 60 * 60 * this.debutEnHeure;
 
         return new Date(Date.now() - twelve_hour);
       }
+
+      updateGraph($event: any): void {
+        this.duree = "";
+
+        if ($event.days != 0) {
+            this.duree = $event.days + " jours";
+        }
+
+        if ($event.hours != 0) {
+            this.duree = this.duree + " " + $event.hours + "h";
+        }
+
+        this.temperatureGraphPannel?.updateDuree(this.duree);
+        this.vacciumGraphPannel?.updateDuree(this.duree);
+        this.niveaubassinGraphPannel?.updateDuree(this.duree);
+
+        this.debutEnHeure = $event.hours + (24 * $event.days);
+
+        this.cleanGraphComponentCache();
+
+        this.doHttpCall();
+    }
+
+    private cleanGraphComponentCache() {
+        this.derniereDonneeRecu = undefined;
+        this.ddr = undefined;
+        this.ids = [];
+    }
 }
