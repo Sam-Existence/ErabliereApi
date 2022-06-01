@@ -17,7 +17,9 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
                         </a>
 
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <a class="dropdown-item" href="#">12h</a>
+                        <span class="dropdown-item" (click)="updateGraph(0, 12)">12h</span>
+                        <span class="dropdown-item" (click)="updateGraph(0, 24)">24h</span>
+                        <span class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</span>
                     </div>
                 </div>
 
@@ -73,7 +75,6 @@ export class GraphPannelComponent implements OnInit {
     lineChartPlugins = [];
     
     @Input() titre:string|undefined="";
-    duree:string = "12h"
     @Input() valeurActuel?:string|null|number|undefined;
     @Input() symbole:string|undefined;
     @Input() textActuel?:string|undefined|null;
@@ -176,9 +177,38 @@ export class GraphPannelComponent implements OnInit {
         });
     }
 
+    duree:string = "12h"
+    debutEnHeure: number = 12;
+
     obtenirDebutFiltre() : Date {
-        var twelve_hour = 1000 * 60 * 60 * 12;
+        var twelve_hour = 1000 * 60 * 60 * this.debutEnHeure;
 
         return new Date(Date.now() - twelve_hour);
-      }
+    }
+
+    updateGraph(days: number, hours: number): void {
+        if (this.idCapteur != null) {
+            this.duree = "";
+
+            if (days != 0) {
+                this.duree = days + " jours";
+            }
+
+            if (hours != 0) {
+                this.duree = this.duree + " " + hours + "h";
+            }
+
+            this.debutEnHeure = hours + (24 * days);
+
+            this.dernierDonneeRecu = undefined;
+            this.ddr = undefined;
+            this.ids = [];
+
+            this.doHttpCall();
+        }
+        else {
+            console.log("idCapteur was null");
+            // TODO: implement the logic. idCapteur is null when the component is used by the donnees component (donnees.compoenent.ts).
+        }
+    }
 }

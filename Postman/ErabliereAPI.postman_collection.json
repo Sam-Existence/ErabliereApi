@@ -1111,6 +1111,110 @@
 							"response": []
 						},
 						{
+							"name": "Ajouter une nouvelle donnée il y a 11h",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var twelveHours = 1000 * 60 * 60 * 11;\r",
+											"\r",
+											"pm.collectionVariables.set(\"dateDonnee\", new Date(Date.now() - twelveHours).toISOString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": \"{{ErabliereSaintAlfred_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres/{{ErabliereSaintAlfred_ID}}/donnees",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{ErabliereSaintAlfred_ID}}",
+										"donnees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Ajouter une nouvelle donnée il y a 11h Copy",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											"var twentyTwoHours = 1000 * 60 * 60 * 22;\r",
+											"\r",
+											"pm.collectionVariables.set(\"dateDonnee\", new Date(Date.now() - twentyTwoHours).toISOString());"
+										],
+										"type": "text/javascript"
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Vérifier status réponse.\", () => {\r",
+											"    pm.expect(pm.response.code).to.eq(200);\r",
+											"});"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"d\": \"{{dateDonnee}}\",\r\n  \"t\": {{temperature}},\r\n  \"nb\": {{niveauBassin}},\r\n  \"v\": {{vaccium}},\r\n  \"idErabliere\": \"{{ErabliereSaintAlfred_ID}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{url}}/erablieres/{{ErabliereSaintAlfred_ID}}/donnees",
+									"host": [
+										"{{url}}"
+									],
+									"path": [
+										"erablieres",
+										"{{ErabliereSaintAlfred_ID}}",
+										"donnees"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "Ajouter une nouveau dompeux",
 							"event": [
 								{
@@ -1577,9 +1681,9 @@
 					"",
 					"    if (!pm.environment.get('accessTokenExpiry') || ",
 					"        !pm.environment.get('currentAccessToken')) {",
-					"        //console.log('Token or expiry date are missing')",
+					"        console.log('Token or expiry date are missing')",
 					"    } else if (pm.environment.get('accessTokenExpiry') <= (new Date()).getTime()) {",
-					"        //console.log('Token is expired')",
+					"        console.log('Token is expired')",
 					"    } else {",
 					"        getToken = false;",
 					"        //console.log('Token and expiry date are all good');",
