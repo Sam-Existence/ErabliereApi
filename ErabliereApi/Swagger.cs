@@ -76,6 +76,7 @@ public static class Swagger
             }
 
             c.OperationFilter<ValiderIPRulesOperationFilter>();
+            c.OperationFilter<ODataOperationFilter>();
 
             c.OrderActionsBy(description => GetSortKey(description));
 
