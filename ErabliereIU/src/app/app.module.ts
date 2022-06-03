@@ -29,6 +29,7 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+import { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';
 
 declare global {
   interface Window { 
@@ -110,6 +111,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     DonneesComponent,
     DashboardComponent,
     GraphPannelComponent,
+    DateTimeSelector,
     CapteurPannelsComponent,
     BarPannelComponent,
     BarilsComponent,

@@ -15,7 +15,7 @@ public class ODataOperationFilter : IOperationFilter
         var mInfo = context.MethodInfo;
 
         var hasODataAttribute = mInfo.DeclaringType?.GetCustomAttributes(true).OfType<ODataOperationFilter>().Any() == true ||
-                                   mInfo.GetCustomAttributes(true).OfType<EnableQueryAttribute>().Any();
+                                mInfo.GetCustomAttributes(true).OfType<EnableQueryAttribute>().Any();
 
         if (hasODataAttribute)
         {

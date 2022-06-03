@@ -23,7 +23,7 @@ newman run .\Postman\ErabliereAPI.postman_collection.json -e $newmanEnvironement
 Set-Location ErabliereIU
 
 if (-not($skipInstall)) {
-    npm install --legacy-peer-deps
+    npm install
 }
 
 npx cypress run --config baseUrl=$frontEndUrl --reporter junit --reporter-options "mochaFile=..\TestResults\cypress-test-output-[hash].xml"

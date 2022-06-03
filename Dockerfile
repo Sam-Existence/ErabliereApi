@@ -2,7 +2,7 @@
 FROM node:16.15.0-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
-RUN npm install --legacy-peer-deps
+RUN npm install
 RUN npm install -g @angular/cli
 COPY ErabliereIU/ .
 RUN ng build --configuration production

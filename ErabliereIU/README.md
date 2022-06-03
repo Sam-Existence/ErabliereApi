@@ -17,7 +17,7 @@ npm install -g @angular/cli
 Une fois les prérequis installé:
 
 ```
-npm install --legacy-peer-deps
+npm install
 ```
 
 ## Executer le projet avec npm

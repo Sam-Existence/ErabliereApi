@@ -1,0 +1,50 @@
+<div id="graph-pannel-{{idCapteur}}" class="border-top">
+    <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
+
+    <div class="container">
+        <div class="col-6 btn-group">
+            <div class="dropdown show">
+                <a class="btn btn-secondary 
+                   dropdown-toggle" 
+                   href="#" 
+                   role="button" 
+                   id="dropdownMenuLink" 
+                   data-toggle="dropdown" 
+                   aria-haspopup="true" 
+                   aria-expanded="false">
+                    Durée {{ duree }}
+                </a>
+
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <span class="dropdown-item" (click)="updateGraph(0, 12)">12h</span>
+                <span class="dropdown-item" (click)="updateGraph(0, 24)">24h</span>
+                <span class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</span>
+                <span class="dropdown-item disabled" (click)="updateGraphUsingFixRange()">
+                    Choisir interval
+                    <div>
+                        <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
+                        <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
+                    </div>
+                </span>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <ajouter-donnee-capteur *ngIf="ajouterDonneeDepuisInterface" [idCapteur]="idCapteur" (needToUpdate)="updateDonneesCapteur($event)"></ajouter-donnee-capteur>
+            <h6>{{ textActuel }}</h6>
+        </div>
+    </div>
+
+    </div>
+    <div class="chart-wrapper">
+        <canvas baseChart class="chart"
+            [datasets]="datasets" 
+            [labels]="timeaxes" 
+            [options]="lineChartOptions"
+            [colors]="lineChartColors" 
+            [legend]="lineChartLegend" 
+            [chartType]="lineChartType" 
+            [plugins]="lineChartPlugins">
+        </canvas>
+    </div>
+</div>

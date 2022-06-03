@@ -1,55 +1,11 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewChild  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild  } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
     selector: 'graph-panel',
-    template: `
-        <div id="graph-pannel-{{idCapteur}}" class="border-top">
-            <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
-
-            <div class="container">
-                <div class="col-6 btn-group">
-                    <div class="dropdown show">
-                        <a class="btn btn-secondary 
-                           dropdown-toggle" 
-                           href="#" 
-                           role="button" 
-                           id="dropdownMenuLink" 
-                           data-toggle="dropdown" 
-                           aria-haspopup="true" 
-                           aria-expanded="false">
-                            Durée {{ duree }}
-                        </a>
-
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                        <span class="dropdown-item" (click)="updateGraph(0, 12)">12h</span>
-                        <span class="dropdown-item" (click)="updateGraph(0, 24)">24h</span>
-                        <span class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</span>
-                    </div>
-                </div>
-
-                <div class="col-12">
-                    <ajouter-donnee-capteur *ngIf="ajouterDonneeDepuisInterface" [idCapteur]="idCapteur" (needToUpdate)="updateDonneesCapteur($event)"></ajouter-donnee-capteur>
-                    <h6>{{ textActuel }}</h6>
-                </div>
-            </div>
-
-            </div>
-            <div class="chart-wrapper">
-                <canvas baseChart class="chart"
-                    [datasets]="datasets" 
-                    [labels]="timeaxes" 
-                    [options]="lineChartOptions"
-                    [colors]="lineChartColors" 
-                    [legend]="lineChartLegend" 
-                    [chartType]="lineChartType" 
-                    [plugins]="lineChartPlugins">
-                </canvas>
-            </div>
-        </div>
-    `
+    templateUrl: './graphpanel.component.html',
 })
 export class GraphPannelComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
@@ -228,5 +184,21 @@ export class GraphPannelComponent implements OnInit {
 
     updateDuree(duree: string) {
         this.duree = duree;
+    }
+
+    updateGraphUsingFixRange() {
+        this.cleanGraphComponentCache();
+        this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
+    }
+    
+    dateDebutFixRange:any = undefined;
+    dateFinFixRange:any = undefined;
+
+    captureDateDebut($event: SimpleChange) {
+        this.dateDebutFixRange = $event.currentValue;
+    }
+
+    captureDateFin($event: SimpleChange) {
+        this.dateFinFixRange = $event.currentValue;
     }
 }

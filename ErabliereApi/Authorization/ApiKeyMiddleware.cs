@@ -1,7 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Services;
 using Microsoft.EntityFrameworkCore;
-using Stripe;
 using System.Net;
 using System.Text.Json;
 
