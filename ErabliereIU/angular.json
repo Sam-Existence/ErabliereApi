@@ -123,12 +123,22 @@
             "watch": true,
             "headless": false
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
+          }
         }
       }
     }
   },
   "defaultProject": "ErabliereIU",
   "cli": {
-    "analytics": "b3fe315f-ce77-4507-9a31-0465c334daf9"
+    "analytics": "b3fe315f-ce77-4507-9a31-0465c334daf9",
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
