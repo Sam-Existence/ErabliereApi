@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild  } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -13,8 +13,8 @@ export class GraphPannelComponent implements OnInit {
     @Input() timeaxes: Label[] = [];
     @Input() lineChartType = 'line' as ChartType;
     @Input() lineScaleType = 'time'
-    @Input() yScaleOption:any = undefined
-    lineChartOptions:ChartOptions = {
+    @Input() yScaleOption: any = undefined
+    lineChartOptions: ChartOptions = {
         responsive: true,
         scales: {
             xAxes: [{
@@ -36,25 +36,27 @@ export class GraphPannelComponent implements OnInit {
 
     lineChartLegend = true;
     lineChartPlugins = [];
-    
-    @Input() titre:string|undefined="";
-    @Input() valeurActuel?:string|null|number|undefined;
-    @Input() symbole:string|undefined;
-    @Input() textActuel?:string|undefined|null;
-    @Input() ajouterDonneeDepuisInterface:boolean = false;
 
-    constructor(private _api:ErabliereApi) { this.chart = undefined; }
+    @Input() titre: string | undefined = "";
+    @Input() valeurActuel?: string | null | number | undefined;
+    @Input() symbole: string | undefined;
+    @Input() textActuel?: string | undefined | null;
+    @Input() ajouterDonneeDepuisInterface: boolean = false;
+
+    constructor(private _api: ErabliereApi) { this.chart = undefined; }
 
     @Input() idCapteur?: any;
 
-    interval?:any
+    interval?: any
 
     ngOnInit(): void {
         if (this.idCapteur != null) {
             this.doHttpCall();
 
             this.interval = setInterval(() => {
-                this.doHttpCall();
+                if (this.fixRange == false) {
+                    this.doHttpCall();
+                }
             }, 1000 * 60);
         }
     }
@@ -63,23 +65,28 @@ export class GraphPannelComponent implements OnInit {
         clearInterval(this.interval);
     }
 
-    updateDonneesCapteur(event:any) {
+    updateDonneesCapteur(event: any) {
         this.cleanGraphComponentCache();
         this.doHttpCall();
     }
 
-    dernierDonneeRecu?:string = undefined;
-    ddr?:string = undefined;
+    dernierDonneeRecu?: string = undefined;
+    ddr?: string = undefined;
 
-    ids:Array<number> = []
+    ids: Array<number> = []
 
     doHttpCall(): void {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
         let finFiltre = new Date().toISOString();
 
+        if (this.fixRange) {
+            debutFiltre = this.dateDebutFixRange;
+            finFiltre = this.dateFinFixRange;
+        }
+
         var xddr = null;
         if (this.dernierDonneeRecu != undefined) {
-          xddr = this.dernierDonneeRecu.toString();
+            xddr = this.dernierDonneeRecu.toString();
         }
 
         this._api.getDonneesCapteur(this.idCapteur, debutFiltre, finFiltre, xddr).then(resp => {
@@ -111,48 +118,50 @@ export class GraphPannelComponent implements OnInit {
             }
 
             if (h.has("x-ddr") && this.ddr != undefined && h.get("x-ddr")?.valueOf() == this.ddr) {
-              
+
                 if (ids.length > 0 && this.ids[this.ids.length - 1] === ids[0]) {
-                  this.datasets[0].data?.pop();
-                  this.timeaxes.pop();
-  
-                  this.datasets[0].data?.push(donnees[0].data.shift() as any);
-                  this.timeaxes.push(timeaxes.shift() as any);
+                    this.datasets[0].data?.pop();
+                    this.timeaxes.pop();
+
+                    this.datasets[0].data?.push(donnees[0].data.shift() as any);
+                    this.timeaxes.push(timeaxes.shift() as any);
                 }
-                
+
                 donnees[0].data.forEach(t => this.datasets[0].data?.push(t as any));
                 timeaxes.forEach(t => this.timeaxes.push(t as any));
                 ids.forEach((n: number) => this.ids.push(n));
-  
+
                 while (this.timeaxes.length > 0 &&
-                       new Date(this.timeaxes[0].toString()) < new Date(debutFiltre)) {
-                  this.timeaxes.shift();
-                  this.datasets[0].data?.shift();
-                  this.ids.shift();
+                    new Date(this.timeaxes[0].toString()) < new Date(debutFiltre)) {
+                    this.timeaxes.shift();
+                    this.datasets[0].data?.shift();
+                    this.ids.shift();
                 }
-              }
-              else {
+            }
+            else {
                 this.datasets = donnees;
                 this.timeaxes = timeaxes as any[];
                 this.ids = ids;
-              }
+            }
 
-              this.chart?.update();
+            this.chart?.update();
         });
     }
 
-    duree:string = "12h"
+    duree: string = "12h"
     debutEnHeure: number = 12;
 
-    obtenirDebutFiltre() : Date {
+    obtenirDebutFiltre(): Date {
         var twelve_hour = 1000 * 60 * 60 * this.debutEnHeure;
 
         return new Date(Date.now() - twelve_hour);
     }
 
     @Output() updateGraphCallback = new EventEmitter();
+    @Output() updateGraphUsingFixRangeCallback = new EventEmitter();
 
     updateGraph(days: number, hours: number): void {
+        this.fixRange = false;
         if (this.idCapteur != null) {
             this.duree = "";
 
@@ -172,7 +181,7 @@ export class GraphPannelComponent implements OnInit {
         }
         else {
             // When this.idCapteur is null, we are in a component such as 'donnees.component.ts'
-            this.updateGraphCallback.emit({days, hours});
+            this.updateGraphCallback.emit({ days, hours });
         }
     }
 
@@ -186,13 +195,27 @@ export class GraphPannelComponent implements OnInit {
         this.duree = duree;
     }
 
+    fixRange: boolean = false;
+
     updateGraphUsingFixRange() {
-        this.cleanGraphComponentCache();
-        this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
+        this.fixRange = true;
+        if (this.idCapteur != null) {
+            this.cleanGraphComponentCache();
+            this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
+            this.doHttpCall();
+        }
+        else {
+            // When this.idCapteur is null, we are in a component such as 'donnees.component.ts'
+            var obj = {
+                dateDebutFixRange: this.dateDebutFixRange,
+                dateFinFixRange: this.dateFinFixRange
+            }
+            this.updateGraphUsingFixRangeCallback.emit(obj);
+        }
     }
-    
-    dateDebutFixRange:any = undefined;
-    dateFinFixRange:any = undefined;
+
+    dateDebutFixRange: any = undefined;
+    dateFinFixRange: any = undefined;
 
     captureDateDebut($event: SimpleChange) {
         this.dateDebutFixRange = $event.currentValue;

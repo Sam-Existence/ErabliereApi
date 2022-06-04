@@ -17,6 +17,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
+                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="temperature" #temperatureGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -25,6 +26,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
+                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -33,6 +35,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
+                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
             </div>
             <div class="col-md-6">
@@ -141,8 +144,10 @@ export class DonneesComponent implements OnInit {
         }
 
         this.intervalRequetes = setInterval(() => {
-          if (this.erabliereAfficherTrioDonnees == true) {
-            this.doHttpCall();
+          if (this.fixRange == false) {
+            if (this.erabliereAfficherTrioDonnees == true) {
+              this.doHttpCall();
+            }
           }
           if (this.erabliereAfficherSectionDompeux == true) {
             this.doHttpCallDompeux();
@@ -216,6 +221,11 @@ export class DonneesComponent implements OnInit {
       doHttpCall() {
         let debutFiltre = this.obtenirDebutFiltre().toISOString();
         let finFiltre = new Date().toISOString();
+
+        if (this.fixRange) {
+          debutFiltre = this.dateDebutFixRange;
+          finFiltre = this.dateFinFixRange;
+        }
 
         var xddr = null;
         if (this.derniereDonneeRecu != undefined) {
@@ -320,6 +330,7 @@ export class DonneesComponent implements OnInit {
       }
 
       updateGraph($event: any): void {
+        this.fixRange = false;
         this.duree = "";
 
         if ($event.days != 0) {
@@ -330,9 +341,7 @@ export class DonneesComponent implements OnInit {
             this.duree = this.duree + " " + $event.hours + "h";
         }
 
-        this.temperatureGraphPannel?.updateDuree(this.duree);
-        this.vacciumGraphPannel?.updateDuree(this.duree);
-        this.niveaubassinGraphPannel?.updateDuree(this.duree);
+        this.updateDuree(this.duree);
 
         this.debutEnHeure = $event.hours + (24 * $event.days);
 
@@ -341,9 +350,29 @@ export class DonneesComponent implements OnInit {
         this.doHttpCall();
     }
 
+    updateDuree(duree: string) {
+      this.duree = duree;
+      this.temperatureGraphPannel?.updateDuree(this.duree);
+      this.vacciumGraphPannel?.updateDuree(this.duree);
+      this.niveaubassinGraphPannel?.updateDuree(this.duree);
+    }
+
     private cleanGraphComponentCache() {
         this.derniereDonneeRecu = undefined;
         this.ddr = undefined;
         this.ids = [];
+    }
+
+    fixRange: boolean = false;
+    dateDebutFixRange?: any = undefined
+    dateFinFixRange?: any = undefined
+
+    updateGraphUsingFixRangeCallback($event: any): void {
+      this.fixRange = true;
+      this.dateDebutFixRange = $event.dateDebutFixRange;
+      this.dateFinFixRange = $event.dateFinFixRange;
+      this.cleanGraphComponentCache();
+      this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
+      this.doHttpCall();
     }
 }

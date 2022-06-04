@@ -19,12 +19,13 @@
                 <span class="dropdown-item" (click)="updateGraph(0, 12)">12h</span>
                 <span class="dropdown-item" (click)="updateGraph(0, 24)">24h</span>
                 <span class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</span>
-                <span class="dropdown-item disabled" (click)="updateGraphUsingFixRange()">
+                <span class="dropdown-item">
                     Choisir interval
                     <div>
                         <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
                         <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
                     </div>
+                    <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
                 </span>
             </div>
         </div>
