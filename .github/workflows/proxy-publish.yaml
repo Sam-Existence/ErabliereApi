@@ -24,4 +24,4 @@ jobs:
         run: dotnet build ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj -c Release -o bin/Release
 
       - name: Push the package to nuget.org
-        run: dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.1.0.0.nupkg -s https://api.nuget.org/v3/index.json -k {{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
+        run: dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.1.0.0.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
