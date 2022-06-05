@@ -6,10 +6,7 @@ on:
       - master
     paths-include:
       - ErabliereAPI.Proxy/**
-  pull_request:
-    types: [opened, synchronize, reopened]
-    paths-include:
-      - ErabliereAPI.Proxy/**
+      - .github/workflows/proxy-publish.yaml
   workflow_dispatch:
 
 # This a a github action generating a nuget package and pushing it to the nuget.org
@@ -22,11 +19,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: cd into ErabliereAPI.Proxy directory
-        run: cd ErabliereAPI.Proxy
 
       - name: dotnet build
-        run: dotnet build
+        run: dotnet build ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj -c Release -o bin/Release
 
       - name: Push the package to nuget.org
         run: dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.nupkg -s https://api.nuget.org/v3/index.json -k {{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
