@@ -9,6 +9,10 @@ on:
       - .github/workflows/proxy-publish.yaml
   workflow_dispatch:
 
+env:
+  name: PROJECT_PATH
+  value: ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj
+
 # This a a github action generating a nuget package and pushing it to the nuget.org
 # The projet is call ErabliereAPI.Proxy and the process to build the package is
 # 1. Do a dotnet build
@@ -21,7 +25,12 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: dotnet build
-        run: dotnet build ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj -c Release -o bin/Release
+        run: dotnet build $PROJECT_PATH -c Release -o bin/Release
 
       - name: Push the package to nuget.org
-        run: dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.1.0.1.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
+        run: |
+          # Extract the version from the csproj file
+          VERSION=$(grep -Eoi "<version>([[:digit:]\.]+)</version>" ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj | sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p')
+
+          # Publish the package to nuget.org
+          dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.$VERSION.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
