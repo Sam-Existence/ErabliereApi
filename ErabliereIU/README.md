@@ -47,3 +47,13 @@ https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70d
 ```
 ng update
 ```
+
+## Mettre à jour vers angular 14
+
+Cette commande permet de mettre à jour le projet vers angular 14.
+
+```
+ng update @angular/core @angular/cli @angular-eslint/schematics@next
+```
+
+Cepandant, le code dans le projet cypress ne fonctionne plus après la mise à jour. 

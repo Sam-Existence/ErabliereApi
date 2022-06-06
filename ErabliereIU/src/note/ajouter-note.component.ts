@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { Note } from "src/model/note";
 
 @Component({
@@ -8,7 +8,7 @@ import { Note } from "src/model/note";
     templateUrl: 'ajouter-note.component.html'
 })
 export class AjouterNoteComponent implements OnInit {
-    constructor(private _api: ErabliereApi, private fb: FormBuilder) {
+    constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
     
@@ -36,7 +36,7 @@ export class AjouterNoteComponent implements OnInit {
 
     @Output() needToUpdate = new EventEmitter();
 
-    noteForm: FormGroup;
+    noteForm: UntypedFormGroup;
 
     onSubmit() {
 

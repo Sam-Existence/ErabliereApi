@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { PostDonneeCapteur } from "src/model/donneeCapteur";
 
@@ -31,14 +31,14 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
 })
 export class AjouterDonneeCapteurComponent implements OnInit {
     @Input() idCapteur: any;
-    donneeCapteurForm: FormGroup;
+    donneeCapteurForm: UntypedFormGroup;
     valeurValidationError: string = '';
     dateValidationError: string = '';
     display: boolean = false;
 
     @Output() needToUpdate = new EventEmitter();
 
-    constructor(private api: ErabliereApi, private fb: FormBuilder) {
+    constructor(private api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.donneeCapteurForm = this.fb.group({});
      }
 
