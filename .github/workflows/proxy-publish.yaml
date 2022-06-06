@@ -4,9 +4,8 @@ on:
   push:
     branches:
       - master
-    paths-include:
+    paths:
       - ErabliereAPI.Proxy/**
-      - .github/workflows/proxy-publish.yaml
   workflow_dispatch:
 
 env:
