@@ -48,7 +48,7 @@ jobs:
           npm install
 
       - name: Cypress run
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           working-directory: ErabliereIU
           config: video=false,baseUrl=https://erabliereapi-demo.azurewebsites.net
