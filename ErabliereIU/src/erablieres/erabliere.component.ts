@@ -1,5 +1,6 @@
-import { AfterContentChecked, Component, Input, OnInit, Output } from '@angular/core';
+import { AfterContentChecked, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -25,6 +26,7 @@ export class ErabliereComponent implements OnInit {
   documentations?: Array<Documentation>;
   notes?: Array<Note>;
   private _authService: IAuthorisationSerivce
+  @Output() onAfterRecieveingErablieres: EventEmitter<number> = new EventEmitter<number>();
 
   constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
     this.erabliereSelectionnee = undefined;
@@ -77,6 +79,8 @@ export class ErabliereComponent implements OnInit {
       });
 
       if (this.erablieres.length > 0) {
+        console.log("test");
+        this.onAfterRecieveingErablieres.emit(this.erablieres.length);
         this.etat = "Chargement des erablieres terminé";
         this.erabliereSelectionnee = this.erablieres[0];
         this.idSelectionnee = this.erabliereSelectionnee.id;

@@ -1,5 +1,5 @@
 <div *ngIf="!display">
-    <button class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
+    <button id="addNoteButton" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
     <form [formGroup]="noteForm">

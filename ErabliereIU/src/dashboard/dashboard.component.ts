@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { environment } from 'src/environments/environment';
@@ -24,13 +24,13 @@ import { UrlModel } from '../model/urlModel';
                     <li *ngFor="let url of urls" class="nav-item">
                         <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>
                     </li>
-                    <li *ngIf="isLoggedIn" class="nav-item">
+                    <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
                         <a id="nav-menu-alerte-button" class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
                     </li>
-                    <li *ngIf="isLoggedIn" class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
+                    <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
+                        <a id="nav-menu-notes-button" class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
                     </li>
-                    <li *ngIf="isLoggedIn" class="nav-item">
+                    <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
                     </li>
                     <li class="nav-item">
@@ -54,7 +54,10 @@ import { UrlModel } from '../model/urlModel';
                 </div>
             </div>
         </div>
-        <erablieres [pageSelectionnee]="pageSelectionnee" [cacheMenuErabliere]="cacheMenuErabliere" #erabliereComponent></erablieres>
+        <erablieres [pageSelectionnee]="pageSelectionnee" 
+                    [cacheMenuErabliere]="cacheMenuErabliere"
+                    (onAfterRecieveingErablieres)="onAfterRecieveingErablieres($event)"
+                    #erabliereComponent></erablieres>
     `
 })
 export class DashboardComponent {
@@ -63,6 +66,7 @@ export class DashboardComponent {
   title = 'Érablière IU';
 
   isLoggedIn: Boolean = false;
+  thereIsAtLeastOneErabliere: Boolean = false;
   useAuthentication: Boolean = environment.enableAuth;
   urls: UrlModel[] = [];
 
@@ -105,5 +109,10 @@ export class DashboardComponent {
     if (this.pageSelectionnee == 5) {
       this.erabierePage?.loadNotes();
     }
+  }
+
+  onAfterRecieveingErablieres($event: any) {
+    console.log("Hello " + $event);
+    this.thereIsAtLeastOneErabliere = $event;
   }
 }

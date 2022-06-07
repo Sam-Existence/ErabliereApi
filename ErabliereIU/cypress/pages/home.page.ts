@@ -1,4 +1,5 @@
 import { AlertesPage } from "./alertes.page";
+import { NotesPage } from "./notes.page";
 import { GraphPannelCompoenent } from "./component/graphpannel.component";
 
 export class HomePage {
@@ -12,6 +13,12 @@ export class HomePage {
         cy.waitFor('#nav-menu-alerte-button', 10000)
         cy.contains('Alerte').click()
         return new AlertesPage();
+    }
+
+    clickOnNotesButtonNavMenu(): NotesPage {
+        cy.waitFor('#nav-menu-notes-button', 10000)
+        cy.contains('Notes').click()
+        return new NotesPage();
     }
 
     getGraphPannel(guidId: string): GraphPannelCompoenent {
