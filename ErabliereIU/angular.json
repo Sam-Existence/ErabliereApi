@@ -136,9 +136,10 @@
       }
     }
   },
-  "defaultProject": "ErabliereIU",
   "cli": {
     "analytics": "b3fe315f-ce77-4507-9a31-0465c334daf9",
-    "defaultCollection": "@angular-eslint/schematics"
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

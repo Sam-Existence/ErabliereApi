@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
-import { FormGroup, FormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { Subject } from "rxjs";
 import { AlerteCapteur } from "src/model/alerteCapteur";
 
@@ -10,7 +10,7 @@ import { AlerteCapteur } from "src/model/alerteCapteur";
     templateUrl: 'modifier-alerte.component.html'
 })
 export class ModifierAlerteComponent implements OnInit {
-    constructor(private _api: ErabliereApi, private fb: FormBuilder) {
+    constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.alerteForm = this.fb.group({
             id: '',
             destinataire: '',
@@ -67,8 +67,8 @@ export class ModifierAlerteComponent implements OnInit {
     @Input() alerteEditFormSubject = new Subject<Alerte>();
     @Input() alerteCapteurEditFormSubject = new Subject<AlerteCapteur>();
 
-    alerteForm: FormGroup;
-    alerteCapteurForm: FormGroup;
+    alerteForm: UntypedFormGroup;
+    alerteCapteurForm: UntypedFormGroup;
 
     @Input() editAlerte: boolean = false;
     @Input() editAlerteCapteur: boolean = false;

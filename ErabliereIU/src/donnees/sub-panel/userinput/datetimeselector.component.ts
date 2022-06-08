@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { UntypedFormControl } from '@angular/forms';
 
 @Component({
     selector: 'date-time-selector',
@@ -14,7 +14,7 @@ export class DateTimeSelector implements OnInit {
     previousVal: any;
     @Output() onChange: EventEmitter<SimpleChange> = new EventEmitter();
 
-    dateControl = new FormControl('');
+    dateControl = new UntypedFormControl('');
 
     constructor() { }
 

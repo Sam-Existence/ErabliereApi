@@ -5,6 +5,10 @@ declare namespace Cypress {
 }
 
 Cypress.Commands.add('login', () => {
+    function isAzureAD(config: any) {
+        return config.tenantId != undefined && config.tenantId.length > 1;
+    }
+
     cy.request({
         method: "GET",
         url: "/assets/config/oauth-oidc.json"
@@ -64,8 +68,3 @@ Cypress.Commands.add('login', () => {
         }
     });
 });
-
-function isAzureAD(config: any) {
-    return config.tenantId != undefined && config.tenantId?.length > 1;
-}
-
