@@ -11,7 +11,7 @@ export class HomePage {
 
     clickOnAlerteButtonNavMenu(): AlertesPage {
         cy.waitFor('#nav-menu-alerte-button', 10000)
-        cy.contains('Alerte').click()
+        cy.get('#nav-menu-alerte-button', { timeout: 10000 }).click()
         return new AlertesPage();
     }
 
