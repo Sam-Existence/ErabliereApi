@@ -10,7 +10,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 
 ## Structure
 
-### Diagramme de haut niveau de déployer dans AKS
+### Diagramme de haut niveau de la solution déployé dans AKS
 
 ![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/ErabliereApi.drawio.png?raw=true)
 
@@ -39,6 +39,19 @@ Ce projet est utilisable de différente manière :
 2. Déployer sur un PC avec le dotnet core runtime d'installé
 2. Utilisation avec Docker
 3. Utilisation avec Kubernetes
+
+Une image docker est disponible sur dockerhub:
+
+```
+docker pull erabliereapi/erabliereapi
+docker run -d -p 9001:80 erabliereapi/erabliereapi
+```
+
+Une librairie proxy est disponible sur nuget.org:
+
+```
+<PackageReference Include="ErabliereAPI.Proxy" Version="1.0.2" />
+```
 
 ## Persistance des données
 
