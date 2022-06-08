@@ -17,7 +17,7 @@ export class HomePage {
 
     clickOnNotesButtonNavMenu(): NotesPage {
         cy.waitFor('#nav-menu-notes-button', 10000)
-        cy.contains('Notes').click()
+        cy.get('#nav-menu-notes-button', { timeout: 10000 }).click()
         return new NotesPage();
     }
 

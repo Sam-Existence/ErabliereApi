@@ -13,7 +13,7 @@ describe('Graph pannel test', () => {
         homePage.visit()
                 .getGraphPannel(tauxSucreId)
                 .find('h3')
-                .should(($t) => {
+                .should($t => {
                     const text = $t.text()
                 
                     expect(text).to.match(/Taux de sucre/);
