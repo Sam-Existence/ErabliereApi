@@ -36,7 +36,7 @@ Les informations enregistré peuvent être :
 
 Ce projet est utilisable de différente manière :
 1. Rouler directement dans un environnement de développement.
-2. Déployer sur un PC avec le dotnet core runtime d'installé
+2. Déployer sur un PC avec le .net runtime d'installé
 2. Utilisation avec Docker
 3. Utilisation avec Kubernetes
 
