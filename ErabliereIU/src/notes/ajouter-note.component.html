@@ -13,9 +13,9 @@
           Fichier: <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
         </div>
         <div class="form-group">
-          Date de la note: <input class="form-control" type="datetime" formControlName="noteDate">
+          Date de la note: <input class="form-control" type="text" formControlName="noteDate">
         </div>
-      <button class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
-      <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      <button id="creerNote" class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
+      <button id="annulerCreerNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>
 </div>

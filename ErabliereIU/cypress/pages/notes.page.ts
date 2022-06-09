@@ -1,6 +1,7 @@
 export class NotesPage {
+    
     getPageTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get('note.col-lg-10 > h3');
+        return cy.get('notes.col-lg-10 > h3');
     }
 
     getAddButton(): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -8,8 +9,13 @@ export class NotesPage {
         return addButton;
     }
 
+    getCancelButton(): Cypress.Chainable<JQuery<HTMLElement>> {
+        var cancelButton = cy.get("#annulerCreerNote");
+        return cancelButton;
+    }
+
     enterNoteTitle(value: string): void {
-        cy.get("note", { timeout: 10000 }).then(noteComponent => {
+        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
             cy.wrap(noteComponent)
               .find('input[formcontrolname="title"]')
               .type(value);
@@ -17,20 +23,78 @@ export class NotesPage {
     }
 
     enterNoteDescription(value: string): void {
-        cy.get("note", { timeout: 10000 }).then(noteComponent => {
+        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
             cy.wrap(noteComponent)
               .find('input[formcontrolname="text"]')
               .type(value);
         });
     }
 
-    addNote(title: string, content: string): NotesPage {
+    enterNoteDate(date: string) {
+        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
+            cy.wrap(noteComponent)
+              .find('input[formcontrolname="noteDate"]')
+              .type(date);
+        });
+    }
+
+    sendNote(): void {
+        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
+            cy.wrap(noteComponent)
+                .find('button[id="creerNote"]')
+                .click();
+        });
+    }
+
+    addNote(title: string, content: string, date: string | undefined = undefined): NotesPage {
         this.getAddButton()
             .click();
 
         this.enterNoteTitle(title);
         this.enterNoteDescription(content);
 
+        if (date != undefined) {
+            this.enterNoteDate(date);
+        }
+
+        this.sendNote();
+
         return this;
+    }
+
+    getNoteDescription(): Cypress.Chainable<JQuery<HTMLElement>> {
+        // get the first note of the page and check its description
+        return cy.get("note").first().then(noteComponent => {
+            cy.wrap(noteComponent)
+                .find('p[class="noteDescription"]')
+                .then(text => {
+                    return text;
+                }
+            );
+        });
+    }
+
+    getNoteTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
+        // get the first note of the page and check its description
+        return cy.get("note").first().then(noteComponent => {
+            cy.wrap(noteComponent)
+                .find('h4[class="mt-4"]')
+                .then(text => {
+                    return text;
+                }
+            );
+        });
+    }
+
+    getNoteDate(): Cypress.Chainable<JQuery<HTMLElement>> {
+        // get the first note of the page and check its date
+        return cy.get("note").first().then(noteComponent => {
+            cy.wrap(noteComponent)
+                .find('p[class="noteDate"]')
+                .then(text => {
+                    return text;
+                }
+            );
+        });
     }
 }

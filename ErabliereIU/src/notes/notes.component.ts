@@ -2,10 +2,10 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Note } from 'src/model/note';
 
 @Component({
-    selector: 'note',
-    templateUrl: "./note.component.html"
+    selector: 'notes',
+    templateUrl: "./notes.component.html"
 })
-export class NoteComponent implements OnInit {
+export class NotesComponent implements OnInit {
     @Input() idErabliereSelectionee:any
 
     @Input() notes?: Note[];

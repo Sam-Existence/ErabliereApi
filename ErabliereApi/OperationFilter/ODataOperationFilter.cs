@@ -24,6 +24,7 @@ public class ODataOperationFilter : IOperationFilter
             AddODataParameter("$top", format: "int32", type: "integer");
             AddODataParameter("$skip", format: "int32", type: "integer");
             AddODataParameter("$expand");
+            AddODataParameter("$orderby", format: "string", type: "string");
         }
 
         void AddODataParameter(string name, string format = "expression", string type = "string")

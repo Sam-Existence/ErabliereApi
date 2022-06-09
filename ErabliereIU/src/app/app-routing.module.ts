@@ -7,7 +7,6 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { DashboardComponent } from 'src/dashboard/dashboard.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { GraphiqueComponent } from 'src/graphique/graphique.component';
-import { NoteComponent } from 'src/note/note.component';
 
 const routes: Routes = [
     { path: '', component: DashboardComponent },

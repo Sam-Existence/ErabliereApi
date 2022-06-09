@@ -22,14 +22,15 @@ import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
-import { NoteComponent } from 'src/note/note.component';
-import { AjouterNoteComponent } from 'src/note/ajouter-note.component';
+import { NotesComponent } from 'src/notes/notes.component';
+import { AjouterNoteComponent } from 'src/notes/ajouter-note.component';
 import { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';
+import { NoteComponent } from 'src/notes/note.component';
 
 declare global {
   interface Window { 
@@ -120,6 +121,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ModifierAlerteComponent,
     AProposComponent,
     DocumentationComponent,
+    NotesComponent,
     NoteComponent,
     AjouterNoteComponent,
     AjouterDonneeCapteurComponent,

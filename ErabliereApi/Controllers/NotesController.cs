@@ -115,4 +115,31 @@ public class NotesController : ControllerBase
             return NotFound();
         }
     }
+
+    /// <summary>
+    /// Action permettant de supprimer une note
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="noteId">L'id de la note</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpDelete("{noteId}")]
+    [ProducesResponseType(200, Type = typeof(Note))]
+    public async Task<IActionResult> Supprimer(Guid id, Guid noteId, CancellationToken token)
+    {
+        var entity = await _depot.Notes.FindAsync(new object?[] { noteId }, token);
+
+        if (entity != null && entity.IdErabliere == id)
+        {
+            _depot.Notes.Remove(entity);
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok(entity);
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
 }
