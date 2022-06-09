@@ -79,7 +79,6 @@ export class ErabliereComponent implements OnInit {
       });
 
       if (this.erablieres.length > 0) {
-        console.log("test");
         this.onAfterRecieveingErablieres.emit(this.erablieres.length);
         this.etat = "Chargement des erablieres terminé";
         this.erabliereSelectionnee = this.erablieres[0];

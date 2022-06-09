@@ -124,7 +124,7 @@ namespace ErabliereAPI.Proxy
         /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
         /// <returns>Une liste d'alerte potentiellement vide.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, string? orderby);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -134,7 +134,7 @@ namespace ErabliereAPI.Proxy
         /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
         /// <returns>Une liste d'alerte potentiellement vide.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Ajouter une Alerte
@@ -369,7 +369,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -377,7 +377,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Action permettant d'ajouter une documentation
@@ -592,7 +592,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, string? orderby);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -600,7 +600,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Créer une érablière
@@ -639,7 +639,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -647,7 +647,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Action permettant d'ajouter une note
@@ -913,6 +913,25 @@ namespace ErabliereAPI.Proxy
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task<Note> NotesPUTAsync(System.Guid id, System.Guid noteId, PutNote? body, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Action permettant de supprimer une note
+        /// </summary>
+        /// <param name="id">L'id de l'érablière</param>
+        /// <param name="noteId">L'id de la note</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Note> NotesDELETEAsync(System.Guid id, System.Guid noteId);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Action permettant de supprimer une note
+        /// </summary>
+        /// <param name="id">L'id de l'érablière</param>
+        /// <param name="noteId">L'id de la note</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<Note> NotesDELETEAsync(System.Guid id, System.Guid noteId, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Supprimer une alerte

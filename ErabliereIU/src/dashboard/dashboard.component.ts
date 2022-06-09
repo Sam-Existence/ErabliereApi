@@ -112,7 +112,6 @@ export class DashboardComponent {
   }
 
   onAfterRecieveingErablieres($event: any) {
-    console.log("Hello " + $event);
     this.thereIsAtLeastOneErabliere = $event;
   }
 }

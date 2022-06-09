@@ -527,9 +527,9 @@ namespace ErabliereAPI.Proxy
         /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
         /// <returns>Une liste d'alerte potentiellement vide.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, string? orderby)
         {
-            return AlertesAllAsync(id, additionalProperties, select, filter, top, skip, expand, System.Threading.CancellationToken.None);
+            return AlertesAllAsync(id, additionalProperties, select, filter, top, skip, expand, orderby, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -540,7 +540,7 @@ namespace ErabliereAPI.Proxy
         /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
         /// <returns>Une liste d'alerte potentiellement vide.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Alerte>> AlertesAllAsync(System.Guid id, bool? additionalProperties, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -571,6 +571,10 @@ namespace ErabliereAPI.Proxy
             if (expand != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("$expand") + "=").Append(System.Uri.EscapeDataString(ConvertToString(expand, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderby != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -1754,9 +1758,9 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby)
         {
-            return DocumentationAllAsync(id, select, filter, top, skip, expand, System.Threading.CancellationToken.None);
+            return DocumentationAllAsync(id, select, filter, top, skip, expand, orderby, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -1765,7 +1769,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Documentation>> DocumentationAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -1792,6 +1796,10 @@ namespace ErabliereAPI.Proxy
             if (expand != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("$expand") + "=").Append(System.Uri.EscapeDataString(ConvertToString(expand, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderby != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -2844,9 +2852,9 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, string? orderby)
         {
-            return ErablieresAllAsync(select, filter, top, skip, expand, System.Threading.CancellationToken.None);
+            return ErablieresAllAsync(select, filter, top, skip, expand, orderby, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -2855,7 +2863,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Erabliere>> ErablieresAllAsync(string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
             urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Erablieres?");
@@ -2878,6 +2886,10 @@ namespace ErabliereAPI.Proxy
             if (expand != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("$expand") + "=").Append(System.Uri.EscapeDataString(ConvertToString(expand, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderby != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -3127,9 +3139,9 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand)
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby)
         {
-            return NotesAllAsync(id, select, filter, top, skip, expand, System.Threading.CancellationToken.None);
+            return NotesAllAsync(id, select, filter, top, skip, expand, orderby, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -3138,7 +3150,7 @@ namespace ErabliereAPI.Proxy
         /// </summary>
         /// <returns>Success</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<Note>> NotesAllAsync(System.Guid id, string? select, string? filter, int? top, int? skip, string? expand, string? orderby, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -3165,6 +3177,10 @@ namespace ErabliereAPI.Proxy
             if (expand != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("$expand") + "=").Append(System.Uri.EscapeDataString(ConvertToString(expand, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            if (orderby != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("$orderby") + "=").Append(System.Uri.EscapeDataString(ConvertToString(orderby, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
             }
             urlBuilder_.Length--;
 
@@ -4400,6 +4416,98 @@ namespace ErabliereAPI.Proxy
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json;odata.metadata=minimal;odata.streaming=true");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("PUT");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json;odata.metadata=minimal;odata.streaming=true"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<Note>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Action permettant de supprimer une note
+        /// </summary>
+        /// <param name="id">L'id de l'érablière</param>
+        /// <param name="noteId">L'id de la note</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<Note> NotesDELETEAsync(System.Guid id, System.Guid noteId)
+        {
+            return NotesDELETEAsync(id, noteId, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Action permettant de supprimer une note
+        /// </summary>
+        /// <param name="id">L'id de l'érablière</param>
+        /// <param name="noteId">L'id de la note</param>
+        /// <returns>Success</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<Note> NotesDELETEAsync(System.Guid id, System.Guid noteId, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (noteId == null)
+                throw new System.ArgumentNullException("noteId");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/Erablieres/{id}/Notes/{noteId}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{noteId}", System.Uri.EscapeDataString(ConvertToString(noteId, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
                     request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json;odata.metadata=minimal;odata.streaming=true"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
