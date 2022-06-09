@@ -50,7 +50,7 @@ docker run -d -p 9001:80 erabliereapi/erabliereapi
 Une librairie proxy est disponible sur nuget.org:
 
 ```
-<PackageReference Include="ErabliereAPI.Proxy" Version="1.0.2" />
+<PackageReference Include="ErabliereAPI.Proxy" Version="1.1.0" />
 ```
 
 ## Persistance des données
