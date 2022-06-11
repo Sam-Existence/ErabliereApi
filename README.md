@@ -50,7 +50,7 @@ docker run -d -p 9001:80 erabliereapi/erabliereapi
 Une librairie proxy est disponible sur nuget.org:
 
 ```
-<PackageReference Include="ErabliereAPI.Proxy" Version="1.0.2" />
+<PackageReference Include="ErabliereAPI.Proxy" Version="1.1.0" />
 ```
 
 ## Persistance des données
@@ -109,9 +109,9 @@ https://www.powershellgallery.com/packages/ExchangeOnlineManagement/2.0.4
 
 https://docs.microsoft.com/en-us/powershell/exchange/connect-to-exchange-online-powershell?view=exchange-ps
 
-### Utiliser ubuntu server derière une connexion internet limité
+### Utiliser ubuntu server derrière une connexion internet limité
 
-> Utiliser seulement derière des connexion internet limité
+> Utiliser seulement derrière des connexion internet limité
 
 Ubuntu effectue des mises à jour de sécurité en arrière plan et peut avoir un impacte sur le nombre de donnée échangé par le système d'expoitation et l'ordinateur.
 
