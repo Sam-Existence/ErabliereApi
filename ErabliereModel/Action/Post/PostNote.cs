@@ -22,6 +22,7 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Le titre de la note
         /// </summary>
         [MaxLength(200)]
+        [Required]
         public string? Title { get; set; }
 
         /// <summary>

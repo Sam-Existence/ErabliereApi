@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Note } from 'src/model/note';
 
 @Component({
@@ -6,7 +7,13 @@ import { Note } from 'src/model/note';
     template: `
         <div id="note-{{ note.id }}">
             <div class="row">
-                <h4 class="mt-4">{{ note.title }}</h4>
+                <div class="col-md-4">
+                    <h4 class="mt-4">{{ note.title }}</h4>
+                </div>
+
+                <div class="col-md-8">
+                    <button class="btn btn-danger btn-sm" (click)="deleteNote()">Supprimer</button>
+                </div>
             </div>
 
             <div class="row">
@@ -29,11 +36,21 @@ import { Note } from 'src/model/note';
 })
 
 export class NoteComponent implements OnInit {
-    constructor() { 
+    constructor(private _api: ErabliereApi) { 
         this.note = new Note();
     }
 
     ngOnInit() { }
 
     @Input() note: Note;
+
+    deleteNote() {
+        this._api.deleteNote(this.note.idErabliere, this.note.id).then(
+            (data) => {
+                this.needToUpdate.emit();
+            }
+        );
+    }
+
+    @Output() needToUpdate = new EventEmitter();
 }

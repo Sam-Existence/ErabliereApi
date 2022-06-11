@@ -5,6 +5,11 @@
     <form [formGroup]="noteForm">
         <div class="form-group">
           Titre: <input class="form-control" type="text" formControlName="title">
+          <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert">
+            <div *ngIf="name.errors?.['required']">
+              Le titre est requis
+            </div>
+          </div> -->
         </div>
         <div class="form-group">
           Texte: <input class="form-control" type="text" formControlName="text">
