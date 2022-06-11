@@ -69,7 +69,7 @@ describe("Notes page", () => {
         const hours = Math.floor(offset / 60);
         const minutes = offset % 60;
 
-        const offsetString = `${hours < 0 ? "+" : "-"}${pad2(Math.abs(hours))}:${minutes < 10 ? "0" : ""}${minutes}`;
+        const offsetString = `${hours <= 0 ? "+" : "-"}${pad2(Math.abs(hours))}:${minutes < 10 ? "0" : ""}${minutes}`;
 
         // format the date, mounth, date, hours, minutes and seconds should be 2 digits
         const dateString = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
