@@ -47,7 +47,7 @@ public class StripeCheckoutService : ICheckoutService
     /// Implémentation de ICheckoutService permettan d'initialiser une session avec Stripe
     /// </summary>
     /// <returns></returns>
-    public async Task<object> CreateSessionAsync()
+    public async Task<object> CreateSessionAsync(CancellationToken token)
     {
         StripeConfiguration.ApiKey = _options.Value.ApiKey;
 
@@ -67,7 +67,7 @@ public class StripeCheckoutService : ICheckoutService
         };
 
         var service = new SessionService();
-        var session = await service.CreateAsync(options);
+        var session = await service.CreateAsync(options, cancellationToken: token);
 
         return session;
     }

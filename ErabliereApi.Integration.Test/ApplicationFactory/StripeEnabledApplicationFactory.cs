@@ -11,6 +11,7 @@ using NSubstitute;
 using Stripe;
 using System;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ErabliereApi.Integration.Test.ApplicationFactory;
@@ -51,7 +52,7 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
             {
                 var checkoutService = Substitute.For<ICheckoutService>();
 
-                checkoutService.CreateSessionAsync().Returns(session =>
+                checkoutService.CreateSessionAsync(Arg.Any<CancellationToken>()).Returns(session =>
                 {
                     return new Stripe.ReviewSession();
                 });

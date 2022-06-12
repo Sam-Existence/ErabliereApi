@@ -11,7 +11,7 @@ public interface ICheckoutService
     /// <summary>
     /// 
     /// </summary>
-    Task<object> CreateSessionAsync();
+    Task<object> CreateSessionAsync(CancellationToken token);
 
     /// <summary>
     /// 

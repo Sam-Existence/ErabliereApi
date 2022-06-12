@@ -8,6 +8,7 @@ export default defineConfig({
     screenshotsFolder: "cypress/screenshots",
     fixturesFolder: "cypress/fixtures",
     baseUrl: "https://localhost:4200",
-    projectId: "7cxkq4"
+    projectId: "7cxkq4",
+    chromeWebSecurity: false
   }
 })

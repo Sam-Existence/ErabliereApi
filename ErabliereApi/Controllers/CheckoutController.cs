@@ -25,9 +25,9 @@ public class CheckoutController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost]
-    public async Task<IActionResult> Checkout()
+    public async Task<IActionResult> Checkout(CancellationToken token)
     {
-        var session = await _checkoutService.CreateSessionAsync();
+        var session = await _checkoutService.CreateSessionAsync(token);
 
         return Ok(session);
     }

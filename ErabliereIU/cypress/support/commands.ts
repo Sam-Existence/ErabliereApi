@@ -1,6 +1,8 @@
 declare namespace Cypress {
     interface Chainable {
         login(): void;
+        checkoutEnabled(): Cypress.Chainable<boolean>;
+        forceVisit(url: string): void;
     }
 }
 
@@ -44,7 +46,7 @@ Cypress.Commands.add('login', () => {
                 }).then(response => {
                     const ADALToken = response.body.access_token;
                     const expiresOn = response.body.expires_on;
-            
+
                     localStorage.setItem("adal.token.keys", `${Cypress.env("clientId")}|`);
                     localStorage.setItem(`adal.access.token.key${Cypress.env("clientId")}`, ADALToken);
                     localStorage.setItem(`adal.expiration.key${Cypress.env("clientId")}`, expiresOn);
@@ -62,9 +64,32 @@ Cypress.Commands.add('login', () => {
                     form: true,
                     body: "grant_type=client_credentials&scope=erabliereapi"
                 }).then(res => {
-                    sessionStorage.setItem('oidc.user:https://192.168.0.110:5005:erabliereiu', JSON.stringify(res.body));
+                    sessionStorage.setItem('oidc.user:https://192.168.0.110:5005:erabliereiu', JSON.stringify(res.body))
                 })
             }
         }
-    });
-});
+    })
+})
+
+Cypress.Commands.add('checkoutEnabled', () => {
+    return cy.request({
+        method: "GET",
+        url: "/assets/config/oauth-oidc.json"
+    }).then(body => {
+        return body.body;
+    }).then(urlInfo => {
+        return cy.request({
+            method: "GET",
+            url: urlInfo.apiUrl + "/api/v1/swagger.json"
+        }).then(response => {
+            var checkoutEnabled = response.body.paths['/Checkout'] !== undefined;
+            return cy.wrap(checkoutEnabled);
+        })
+    })
+})
+
+Cypress.Commands.add('forceVisit', url => {
+    cy.window().then(win => {
+        return win.open(url, '_self');
+    })
+})
