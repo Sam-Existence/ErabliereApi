@@ -51,7 +51,7 @@
         //"AzureAD:TenantId": "<tenant-id>",
 
         // Alerte fonctonnality
-        "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
+        //"EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
 
         // Profilage
         "MiniProfiler.Enable": "false",

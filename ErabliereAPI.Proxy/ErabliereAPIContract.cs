@@ -2003,9 +2003,10 @@ namespace ErabliereAPI.Proxy
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.ComponentModel.DataAnnotations.StringLength(200)]
-        public string? Title { get; set; } = default!;
+        public string Title { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("text")]
 

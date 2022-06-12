@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>ErabliereAPI.Proxy</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.1.1</Version>
     <Authors>Frédéric Jacques</Authors>
     <Company>ErabliereAPI</Company>
     <PackageTags>ErabliereAPI;Erabliere</PackageTags>
