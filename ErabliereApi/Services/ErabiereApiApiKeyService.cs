@@ -3,6 +3,7 @@ using ErabliereApi.Donnees;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 
 namespace ErabliereApi.Services;
@@ -40,11 +41,16 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <inheritdoc />
     public async Task<ApiKey> CreateApiKeyAsync(string email, CancellationToken token)
     {
-        var customer = _context.Customers.FirstOrDefault(x => x.Email == email);
+        var customer = await TryGetCustomerAsync(x => x.Email == email, token);
 
-        if (customer == null || customer.Id == null)
+        if (customer == null)
         {
-            throw new InvalidOperationException("Customer dosen't exist");
+            throw new InvalidOperationException("A customer instance is required");
+        }
+
+        if (!customer.Id.HasValue)
+        {
+            throw new InvalidOperationException("customer is supposed to have Id");
         }
 
         var apiKeyBytes = Guid.NewGuid().ToByteArray();
@@ -103,15 +109,46 @@ public class ErabiereApiApiKeyService : IApiKeyService
     public async Task SetSubscriptionKeyAsync(
         string customerId, string id, CancellationToken token)
     {
-        var shouldRetry = 10;
+        Customer? customer = await TryGetCustomerAsync(c => c.StripeId == customerId, token);
 
-        Customer? customer = default;
+        if (customer != null)
+        {
+            var now = DateTimeOffset.Now;
+
+            var apiKey = await TryGetApiKeyAsync(a => 
+                                a.CustomerId == customer.Id &&
+                                a.CreationTime <= now &&
+                                a.RevocationTime == null &&
+                                a.DeletionTime == null, token);
+
+            if (apiKey == null)
+            {
+                throw new InvalidOperationException("apiKey is required to continue the process");
+            }
+
+            apiKey.SubscriptionId = id;
+
+            var entity = _context.Update(apiKey);
+
+            await _context.SaveChangesAsync(token);
+        }
+        else
+        {
+            _logger.LogCritical("customer was null inside the SetSubscriptionKeyAsync method");
+        }
+    }
+
+    private async Task<Customer?> TryGetCustomerAsync(Expression<Func<Customer, bool>> predicat, CancellationToken token)
+    {
+        var shouldRetry = 10;
 
         while (shouldRetry > 0)
         {
             try
             {
-                customer = await _context.Customers.SingleAsync(c => c.StripeId == customerId, token);
+                var customer = await _context.Customers.SingleAsync(predicat, token);
+
+                return customer;
             }
             catch (InvalidOperationException)
             {
@@ -126,27 +163,37 @@ public class ErabiereApiApiKeyService : IApiKeyService
             }
         }
 
-        if (customer != null)
+        return null;
+    }
+
+    private async Task<ApiKey?> TryGetApiKeyAsync(Expression<Func<ApiKey, bool>> predicat, CancellationToken token)
+    {
+        var shouldRetry = 10;
+
+        while (shouldRetry > 0)
         {
-            var now = DateTimeOffset.Now;
+            try
+            {
+                var apikey = await _context.ApiKeys
+                    .Where(predicat).OrderByDescending(a => a.CreationTime)
+                    .FirstAsync(token);
 
-            var apiKey = await _context.ApiKeys
-                .Where(a => a.CustomerId == customer.Id &&
-                            a.CreationTime <= now &&
-                            a.RevocationTime == null &&
-                            a.DeletionTime == null).OrderByDescending(a => a.CreationTime)
-                .FirstAsync(token);
+                return apikey;
+            }
+            catch (InvalidOperationException)
+            {
+                if (shouldRetry == 0)
+                {
+                    throw;
+                }
 
-            apiKey.SubscriptionId = id;
-
-            var entity = _context.Update(apiKey);
-
-            await _context.SaveChangesAsync(token);
+                shouldRetry--;
+                _logger.LogInformation("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
+                await Task.Delay(1000, token);
+            }
         }
-        else
-        {
-            _logger.LogCritical("customer was null inside the SetSubscriptionKeyAsync method");
-        }
+
+        return null;
     }
 
     /// <inheritdoc />

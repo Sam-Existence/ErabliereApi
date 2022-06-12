@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using ErabliereApi.Services;
-using ErabliereApi.StripeIntegration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -48,7 +47,7 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
             });
 
             services.RemoveAll<ICheckoutService>();
-            services.TryAddScoped(sp =>
+            services.TryAddTransient(sp =>
             {
                 var checkoutService = Substitute.For<ICheckoutService>();
 
@@ -76,7 +75,7 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
                             sp.GetRequiredService<IMapper>(),
                             sp.GetRequiredService<IUserService>(),
                             sp.GetRequiredService<IApiKeyService>(),
-                            System.Threading.CancellationToken.None);
+                            CancellationToken.None);
                     });
                 });
 

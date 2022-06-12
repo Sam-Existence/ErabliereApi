@@ -1,11 +1,10 @@
-﻿using ErabliereApi.Services;
-using Stripe.Checkout;
+﻿using Stripe.Checkout;
 using Stripe;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using ErabliereApi.Donnees;
 
-namespace ErabliereApi.StripeIntegration;
+namespace ErabliereApi.Services;
 
 /// <summary>
 /// Implémentation de ICheckoutService permettan d'initialiser une session avec Stripe
@@ -28,7 +27,7 @@ public class StripeCheckoutService : ICheckoutService
     /// <param name="userService"></param>
     /// <param name="mapper"></param>
     /// <param name="apiKeyService"></param>
-    public StripeCheckoutService(IOptions<StripeOptions> options, 
+    public StripeCheckoutService(IOptions<StripeOptions> options,
                                  IHttpContextAccessor accessor,
                                  ILogger<StripeCheckoutService> logger,
                                  IUserService userService,
@@ -96,20 +95,20 @@ public class StripeCheckoutService : ICheckoutService
     /// <param name="apiKeyService"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    public static async Task WebHookSwitchCaseLogic(Event stripeEvent, 
+    public static async Task WebHookSwitchCaseLogic(Event stripeEvent,
         ILogger logger, IMapper mapper, IUserService userService, IApiKeyService apiKeyService, CancellationToken token)
     {
         switch (stripeEvent.Type)
         {
             case "customer.created":
-                var customer = mapper.Map<ErabliereApi.Donnees.Customer>
+                var customer = mapper.Map<Donnees.Customer>
                     (stripeEvent.Data.Object as Stripe.Customer);
 
                 await userService.CreateCustomerAsync(customer, token);
                 break;
 
             case "invoice.paid":
-                var data = stripeEvent.Data.Object as Stripe.Invoice;
+                var data = stripeEvent.Data.Object as Invoice;
 
                 if (data is null)
                 {
@@ -140,6 +139,8 @@ public class StripeCheckoutService : ICheckoutService
     /// <inheritdoc />
     public async Task<UsageRecord> ReccordUsageAsync(ApiKey apiKeyEntity)
     {
+        StripeConfiguration.ApiKey = _options.Value.ApiKey;
+
         var reccord = new UsageRecordService();
 
         var usageReccord = await reccord.CreateAsync(apiKeyEntity.SubscriptionId, new UsageRecordCreateOptions

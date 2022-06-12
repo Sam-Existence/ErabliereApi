@@ -26,6 +26,8 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
     [Fact]
     public async Task NominalFlow()
     {
+        await Task.Delay(4000);
+
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = true,
@@ -35,20 +37,35 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         AssertCustomerDoesntExist();
 
-        await Step("setup_intent.succeeded", client);
-        await Step("setup_intent.created", client);
-        await Step("checkout.session.completed", client);
-        await Step("customer.created", client);
-        AssertCustomerExist();
-        await Step("payment_method.attached", client);
-        await Step("customer.updated", client);
-        await Step("invoice.created", client);
-        await Step("invoice.finalized", client);
-        await Step("invoice.paid", client);
-        AssertCustomerApiKey();
-        await Step("invoice.payment_succeeded", client);
-        await Step("customer.subscription.created", client);
-        AssertApiKeySubscriptionKey();
+        await Task.WhenAll(new Task[]
+        {
+            Step("setup_intent.succeeded", client),
+            Step("setup_intent.created", client),
+            Step("checkout.session.completed", client),
+            Step("customer.created", client).ContinueWith(task =>
+            {
+                AssertCustomerExist();
+
+                return Task.CompletedTask;
+            }),
+            Step("payment_method.attached", client),
+            Step("customer.updated", client),
+            Step("invoice.created", client),
+            Step("invoice.finalized", client),
+            Step("invoice.paid", client).ContinueWith(task =>
+            {
+                AssertCustomerApiKey();
+
+                return Task.CompletedTask;
+            }),
+            Step("invoice.payment_succeeded", client),
+            Step("customer.subscription.created", client).ContinueWith(task =>
+            {
+                AssertApiKeySubscriptionKey();
+
+                return Task.CompletedTask;
+            })
+        });
     }
 
     private void AssertApiKeySubscriptionKey()
@@ -66,7 +83,9 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
     private void AssertCustomerApiKey()
     {
-        var database = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        using var scope = _factory.Services.CreateScope();
+
+        var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var customer = database.Customers.Single(c => c.Email == "john@doe.com");
 
@@ -86,7 +105,9 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
     private void AssertCustomerDoesntExist()
     {
-        var database = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        using var scope = _factory.Services.CreateScope();
+
+        var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var customer = database.Customers.SingleOrDefault(c => c.Email == "john@doe.com");
 
@@ -95,7 +116,9 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
     private void AssertCustomerExist()
     {
-        var database = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        using var scope = _factory.Services.CreateScope();
+
+        var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var customer = database.Customers.Single(c => c.Email == "john@doe.com");
 
@@ -109,7 +132,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
     {
         using var content = new StringContent(GetBody(step));
 
-        var response = await client.PostAsync("/Checkout/webhook", content);
+        var response = await client.PostAsync("/Checkout/Webhook", content);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
     }

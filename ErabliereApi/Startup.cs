@@ -156,7 +156,8 @@ public class Startup
             {
                 options.UseInMemoryDatabase(nameof(ErabliereDbContext));
 
-            }, contextLifetime: ServiceLifetime.Singleton);
+            }, contextLifetime: ServiceLifetime.Singleton, 
+               optionsLifetime: ServiceLifetime.Transient);
         }
 
         // HealthCheck

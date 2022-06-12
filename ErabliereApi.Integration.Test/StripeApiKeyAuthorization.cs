@@ -14,7 +14,6 @@ using ErabliereApi.Donnees.Action.Post;
 using Microsoft.Extensions.DependencyInjection;
 using ErabliereApi.Services;
 using ErabliereApi.Depot.Sql;
-using NSubstitute;
 
 namespace ErabliereApi.Integration.Test;
 public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationFactory<Startup>>
