@@ -16,6 +16,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
     private readonly ErabliereDbContext _context;
     private readonly IEmailService _emailService;
     private readonly EmailConfig _emailConfig;
+    private readonly ILogger<ErabiereApiApiKeyService> _logger;
 
     /// <summary>
     /// Constructeur par initlaisation
@@ -23,12 +24,17 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <param name="context"></param>
     /// <param name="emailService"></param>
     /// <param name="emailConfig"></param>
+    /// <param name="logger"></param>
     public ErabiereApiApiKeyService(
-        ErabliereDbContext context, IEmailService emailService, IOptions<EmailConfig> emailConfig)
+        ErabliereDbContext context, 
+        IEmailService emailService, 
+        IOptions<EmailConfig> emailConfig,
+        ILogger<ErabiereApiApiKeyService> logger)
     {
         _context = context;
         _emailService = emailService;
         _emailConfig = emailConfig.Value;
+        _logger = logger;
     }
 
     /// <inheritdoc />
@@ -97,23 +103,50 @@ public class ErabiereApiApiKeyService : IApiKeyService
     public async Task SetSubscriptionKeyAsync(
         string customerId, string id, CancellationToken token)
     {
-        var customer = await _context.Customers
-            .SingleAsync(c => c.StripeId == customerId, token);
+        var shouldRetry = 10;
 
-        var now = DateTimeOffset.Now;
+        Customer? customer = default;
 
-        var apiKey = await _context.ApiKeys
-            .Where(a => a.CustomerId == customer.Id && 
-                        a.CreationTime <= now &&
-                        a.RevocationTime == null &&
-                        a.DeletionTime == null).OrderByDescending(a => a.CreationTime)
-            .FirstAsync(token);
+        while (shouldRetry > 0)
+        {
+            try
+            {
+                customer = await _context.Customers.SingleAsync(c => c.StripeId == customerId, token);
+            }
+            catch (InvalidOperationException)
+            {
+                if (shouldRetry == 0)
+                {
+                    throw;
+                }
 
-        apiKey.SubscriptionId = id;
+                shouldRetry--;
+                _logger.LogInformation("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
+                await Task.Delay(1000, token);
+            }
+        }
 
-        var entity = _context.Update(apiKey);
+        if (customer != null)
+        {
+            var now = DateTimeOffset.Now;
 
-        await _context.SaveChangesAsync(token);
+            var apiKey = await _context.ApiKeys
+                .Where(a => a.CustomerId == customer.Id &&
+                            a.CreationTime <= now &&
+                            a.RevocationTime == null &&
+                            a.DeletionTime == null).OrderByDescending(a => a.CreationTime)
+                .FirstAsync(token);
+
+            apiKey.SubscriptionId = id;
+
+            var entity = _context.Update(apiKey);
+
+            await _context.SaveChangesAsync(token);
+        }
+        else
+        {
+            _logger.LogCritical("customer was null inside the SetSubscriptionKeyAsync method");
+        }
     }
 
     /// <inheritdoc />

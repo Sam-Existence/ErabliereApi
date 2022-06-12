@@ -87,6 +87,34 @@ Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripti
 
 Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```. Si vous voulez télécharger les images plus récente, lancer ```docker compose pull``` avant d'executer la commande --force-recreate.
 
+### Intégration Stripe
+
+Dans la version 3, qui est en développement, l'api utilise Stripe. Pour utiliser Stripe, il faut initialiser quelque variable d'environnement :
+
+```
+  "Stripe.ApiKey": "sk_test_...",
+  "Stripe.SuccessUrl": "https://...",
+  "Stripe.CancelUrl": "https://...",
+  "Stripe.BasePlanPriceId": "price_...",
+  "Stripe.WebhookSecret": "secure-...",
+  "Stripe.WebhookSiginSecret": "whsec_...",
+```
+
+Et démarrer le stripe CLI dans un terminal :
+
+> Sur windows, il faut télécharger l'executable et s'assurer qu'il soit disponible dans le PATH.
+> Télécharger le CLI de stripe : https://github.com/stripe/stripe-cli/releases/
+
+La première fois, il faut se connecter avec ```stripe login```.
+```
+stripe login
+stripe listen --forward-to localhost:5000/Checkout/Webhook
+```
+
+> Plus d'information: https://stripe.com/docs/webhooks/test
+
+Notez que les configuration courriels doivent être configuré pour que les utilisateurs puissent recevoir leur clé d'api. Les configurations courriel sont documenté ici: https://github.com/freddycoder/ErabliereApi/tree/master/Infrastructure#fonctionnalit%C3%A9-dalerte
+
 ### Déployer l'interface sur une installation apache2 d'un raspberry pi
 
 > Image utilisé Ubuntu server 20.04 32 bits
