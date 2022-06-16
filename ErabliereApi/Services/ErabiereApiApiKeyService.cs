@@ -14,7 +14,7 @@ namespace ErabliereApi.Services;
 /// </summary>
 public class ErabiereApiApiKeyService : IApiKeyService
 {
-    private readonly ErabliereDbContext _context;
+    private readonly IServiceScopeFactory _scopeFactory;
     private readonly IEmailService _emailService;
     private readonly EmailConfig _emailConfig;
     private readonly ILogger<ErabiereApiApiKeyService> _logger;
@@ -22,17 +22,17 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <summary>
     /// Constructeur par initlaisation
     /// </summary>
-    /// <param name="context"></param>
+    /// <param name="scopeFactory"></param>
     /// <param name="emailService"></param>
     /// <param name="emailConfig"></param>
     /// <param name="logger"></param>
     public ErabiereApiApiKeyService(
-        ErabliereDbContext context, 
+        IServiceScopeFactory scopeFactory, 
         IEmailService emailService, 
         IOptions<EmailConfig> emailConfig,
         ILogger<ErabiereApiApiKeyService> logger)
     {
-        _context = context;
+        _scopeFactory = scopeFactory;
         _emailService = emailService;
         _emailConfig = emailConfig.Value;
         _logger = logger;
@@ -61,11 +61,16 @@ public class ErabiereApiApiKeyService : IApiKeyService
             CustomerId = customer.Id.Value
         };
 
-        await _context.ApiKeys.AddAsync(apiKeyObj, token);
+        using (var scope = _scopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
+
+            await context.ApiKeys.AddAsync(apiKeyObj, token);
+
+            await context.SaveChangesAsync(token);
+        }        
 
         await SendEmailAsync(email, Convert.ToBase64String(apiKeyBytes), token);
-
-        await _context.SaveChangesAsync(token);
 
         return apiKeyObj;
     }
@@ -128,9 +133,14 @@ public class ErabiereApiApiKeyService : IApiKeyService
 
             apiKey.SubscriptionId = id;
 
-            var entity = _context.Update(apiKey);
+            using (var scope = _scopeFactory.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-            await _context.SaveChangesAsync(token);
+                var entity = context.Update(apiKey);
+
+                await context.SaveChangesAsync(token);
+            }
         }
         else
         {
@@ -146,9 +156,14 @@ public class ErabiereApiApiKeyService : IApiKeyService
         {
             try
             {
-                var customer = await _context.Customers.SingleAsync(predicat, token);
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-                return customer;
+                    var customer = await context.Customers.SingleAsync(predicat, token);
+
+                    return customer;
+                }
             }
             catch (InvalidOperationException)
             {
@@ -174,11 +189,16 @@ public class ErabiereApiApiKeyService : IApiKeyService
         {
             try
             {
-                var apikey = await _context.ApiKeys
-                    .Where(predicat).OrderByDescending(a => a.CreationTime)
-                    .FirstAsync(token);
+                using (var scope = _scopeFactory.CreateScope())
+                {
+                    var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-                return apikey;
+                    var apikey = await context.ApiKeys
+                        .Where(predicat).OrderByDescending(a => a.CreationTime)
+                        .FirstAsync(token);
+
+                    return apikey;
+                }
             }
             catch (InvalidOperationException)
             {

@@ -127,7 +127,6 @@ public class StripeCheckoutService : ICheckoutService
                 }
 
                 await apiKeyService.SetSubscriptionKeyAsync(subscription.CustomerId, subscription.Id, token);
-
                 break;
 
             default:

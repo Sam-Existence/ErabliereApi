@@ -26,8 +26,6 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
     [Fact]
     public async Task NominalFlow()
     {
-        await Task.Delay(4000);
-
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
             AllowAutoRedirect = true,
@@ -42,30 +40,19 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
             Step("setup_intent.succeeded", client),
             Step("setup_intent.created", client),
             Step("checkout.session.completed", client),
-            Step("customer.created", client).ContinueWith(task =>
-            {
-                AssertCustomerExist();
-
-                return Task.CompletedTask;
-            }),
+            Step("customer.created", client),
             Step("payment_method.attached", client),
             Step("customer.updated", client),
             Step("invoice.created", client),
             Step("invoice.finalized", client),
-            Step("invoice.paid", client).ContinueWith(task =>
-            {
-                AssertCustomerApiKey();
-
-                return Task.CompletedTask;
-            }),
+            Step("invoice.paid", client),
             Step("invoice.payment_succeeded", client),
-            Step("customer.subscription.created", client).ContinueWith(task =>
-            {
-                AssertApiKeySubscriptionKey();
-
-                return Task.CompletedTask;
-            })
+            Step("customer.subscription.created", client)
         });
+
+        AssertCustomerExist();
+        AssertCustomerApiKey();
+        AssertApiKeySubscriptionKey();
     }
 
     private void AssertApiKeySubscriptionKey()
@@ -96,7 +83,6 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         Assert.NotNull(apiKey.Key);
         Assert.Null(apiKey.RevocationTime);
         Assert.Null(apiKey.DeletionTime);
-        Assert.Null(apiKey.SubscriptionId);
 
         var emailService = _factory.Services.GetRequiredService<IEmailService>();
 

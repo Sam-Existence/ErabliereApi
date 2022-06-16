@@ -9,27 +9,31 @@ namespace ErabliereApi.Services;
 /// </summary>
 public class ErabliereApiUserService : IUserService
 {
-    private ErabliereDbContext _context;
+    private readonly IServiceScopeFactory _scopeFactory;
 
     /// <summary>
     /// Constructeur par initialisation
     /// </summary>
-    /// <param name="context"></param>
-    public ErabliereApiUserService(ErabliereDbContext context)
+    /// <param name="scopeFactory"></param>
+    public ErabliereApiUserService(IServiceScopeFactory scopeFactory)
     {
-        _context = context;
+        _scopeFactory = scopeFactory;
     }
 
     /// <inheritdoc />
     public async Task CreateCustomerAsync(Customer customer, CancellationToken token)
     {
-        var customerExist = await _context.Customers.AnyAsync(c => c.Email == customer.Email, token);
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
+
+        var customerExist = await context.Customers.AnyAsync(c => c.Email == customer.Email, token);
 
         if (!customerExist)
         {
-            var entity = await _context.Customers.AddAsync(customer, token);
+            var entity = await context.Customers.AddAsync(customer, token);
 
-            await _context.SaveChangesAsync(token);
+            await context.SaveChangesAsync(token);
         }
     }
 }
