@@ -126,7 +126,8 @@ public class StripeCheckoutService : ICheckoutService
                     throw new ArgumentNullException(nameof(subscription));
                 }
 
-                await apiKeyService.SetSubscriptionKeyAsync(subscription.CustomerId, subscription.Id, token);
+                await apiKeyService.SetSubscriptionKeyAsync(
+                    subscription.CustomerId, subscription.Items.First().Id, token);
                 break;
 
             default:

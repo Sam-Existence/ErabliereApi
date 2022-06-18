@@ -2,6 +2,7 @@
 using ErabliereApi.Integration.Test.ApplicationFactory;
 using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
 using System;
@@ -35,23 +36,19 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         AssertCustomerDoesntExist();
 
-        await Task.WhenAll(new Task[]
-        {
-            Step("setup_intent.succeeded", client),
-            Step("setup_intent.created", client),
-            Step("checkout.session.completed", client),
-            Step("customer.created", client),
-            Step("payment_method.attached", client),
-            Step("customer.updated", client),
-            Step("invoice.created", client),
-            Step("invoice.finalized", client),
-            Step("invoice.paid", client),
-            Step("invoice.payment_succeeded", client),
-            Step("customer.subscription.created", client)
-        });
-
+        await Step("setup_intent.succeeded", client);
+        await Step("setup_intent.created", client);
+        await Step("checkout.session.completed", client);
+        await Step("customer.created", client);
         AssertCustomerExist();
+        await Step("payment_method.attached", client);
+        await Step("customer.updated", client);
+        await Step("invoice.created", client);
+        await Step("invoice.finalized", client);
+        await Step("invoice.paid", client);
         AssertCustomerApiKey();
+        await Step("invoice.payment_succeeded", client);
+        await Step("customer.subscription.created", client);
         AssertApiKeySubscriptionKey();
     }
 
@@ -65,7 +62,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var apiKey = Assert.Single(apiKeys);
 
-        Assert.Equal("sub_nQGAY1IJGYRuKALqHnDOC9yt", apiKey.SubscriptionId);
+        Assert.Equal("si_LbV9RCCXEMpaGQ", apiKey.SubscriptionId);
     }
 
     private void AssertCustomerApiKey()
@@ -74,9 +71,9 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-        var customer = database.Customers.Single(c => c.Email == "john@doe.com");
+        var customer = database.Customers.AsNoTracking().Single(c => c.Email == "john@doe.com");
 
-        var apiKeys = database.ApiKeys.Where(a => a.CustomerId == customer.Id).ToArray();
+        var apiKeys = database.ApiKeys.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToArray();
 
         var apiKey = Assert.Single(apiKeys);
 
@@ -95,7 +92,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-        var customer = database.Customers.SingleOrDefault(c => c.Email == "john@doe.com");
+        var customer = database.Customers.AsNoTracking().SingleOrDefault(c => c.Email == "john@doe.com");
 
         Assert.Null(customer);
     }
@@ -106,7 +103,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-        var customer = database.Customers.Single(c => c.Email == "john@doe.com");
+        var customer = database.Customers.AsNoTracking().Single(c => c.Email == "john@doe.com");
 
         Assert.NotNull(customer.Id);
         Assert.Equal("John Doe", customer.Name);

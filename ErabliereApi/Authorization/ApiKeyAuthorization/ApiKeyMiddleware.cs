@@ -44,6 +44,8 @@ public class ApiKeyMiddleware : IMiddleware
 
                 var usageReccord = await checkoutService.ReccordUsageAsync(apiKeyEntity);
 
+                context.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>().Authorize = true;
+
                 var logger = context.RequestServices.GetRequiredService<ILogger<ApiKeyMiddleware>>();
 
                 if (logger.IsEnabled(LogLevel.Debug))

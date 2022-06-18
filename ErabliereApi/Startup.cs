@@ -206,6 +206,10 @@ public class Startup
                     .AddTransient<IApiKeyService, ErabiereApiApiKeyService>()
                     .AddTransient<ApiKeyMiddleware>()
                     .AddHttpContextAccessor();
+
+            // Authorization
+            services.AddScoped<ApiKeyAuthorizationContext>();
+            services.AddSingleton<IAuthorizationHandler, ApiKeyAuthrizationHandler>();
         }
 
         // Email
