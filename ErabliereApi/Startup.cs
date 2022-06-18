@@ -210,6 +210,9 @@ public class Startup
             // Authorization
             services.AddScoped<ApiKeyAuthorizationContext>();
             services.AddSingleton<IAuthorizationHandler, ApiKeyAuthrizationHandler>();
+
+            // Context and usage reccorder
+            services.AddSingleton<UsageContext>();
         }
 
         // Email

@@ -23,5 +23,5 @@ public interface ICheckoutService
     /// </summary>
     /// <param name="apiKey"></param>
     /// <returns></returns>
-    Task<UsageRecord> ReccordUsageAsync(ApiKey apiKey);
+    Task ReccordUsageAsync(ApiKey apiKey);
 }

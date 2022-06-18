@@ -42,16 +42,9 @@ public class ApiKeyMiddleware : IMiddleware
             {
                 var checkoutService = context.RequestServices.GetRequiredService<ICheckoutService>();
 
-                var usageReccord = await checkoutService.ReccordUsageAsync(apiKeyEntity);
+                await checkoutService.ReccordUsageAsync(apiKeyEntity);
 
                 context.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>().Authorize = true;
-
-                var logger = context.RequestServices.GetRequiredService<ILogger<ApiKeyMiddleware>>();
-
-                if (logger.IsEnabled(LogLevel.Debug))
-                {
-                    logger.LogDebug("{usageReccord}", JsonSerializer.Serialize(usageReccord));
-                }
             }
             else
             {

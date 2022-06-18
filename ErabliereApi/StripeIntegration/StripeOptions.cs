@@ -39,4 +39,9 @@ public class StripeOptions
     /// Le secret sigin webhook
     /// </summary>
     public string? WebhookSiginSecret { get; set; }
+
+    /// <summary>
+    /// L'interval à laquel l'utilisation est envoyer à Stripe
+    /// </summary>
+    public TimeSpan TimeSpanSendUsage { get; set; } = TimeSpan.FromMinutes(10);
 }

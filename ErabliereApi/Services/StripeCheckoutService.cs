@@ -17,6 +17,7 @@ public class StripeCheckoutService : ICheckoutService
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
     private readonly IApiKeyService _apiKeyService;
+    private readonly UsageContext _usageContext;
 
     /// <summary>
     /// Constructeur
@@ -27,12 +28,14 @@ public class StripeCheckoutService : ICheckoutService
     /// <param name="userService"></param>
     /// <param name="mapper"></param>
     /// <param name="apiKeyService"></param>
+    /// <param name="usageContext"></param>
     public StripeCheckoutService(IOptions<StripeOptions> options,
                                  IHttpContextAccessor accessor,
                                  ILogger<StripeCheckoutService> logger,
                                  IUserService userService,
                                  IMapper mapper,
-                                 IApiKeyService apiKeyService)
+                                 IApiKeyService apiKeyService,
+                                 UsageContext usageContext)
     {
         _options = options;
         _accessor = accessor;
@@ -40,6 +43,7 @@ public class StripeCheckoutService : ICheckoutService
         _userService = userService;
         _mapper = mapper;
         _apiKeyService = apiKeyService;
+        _usageContext = usageContext;
     }
 
     /// <summary>
@@ -137,18 +141,19 @@ public class StripeCheckoutService : ICheckoutService
     }
 
     /// <inheritdoc />
-    public async Task<UsageRecord> ReccordUsageAsync(ApiKey apiKeyEntity)
+    public Task ReccordUsageAsync(ApiKey apiKeyEntity)
     {
-        StripeConfiguration.ApiKey = _options.Value.ApiKey;
-
-        var reccord = new UsageRecordService();
-
-        var usageReccord = await reccord.CreateAsync(apiKeyEntity.SubscriptionId, new UsageRecordCreateOptions
+        if (apiKeyEntity.SubscriptionId is null)
         {
-            Quantity = 1,
-            Timestamp = DateTimeOffset.Now.UtcDateTime
+            throw new ArgumentNullException(nameof(apiKeyEntity.SubscriptionId));
+        }
+
+        _usageContext.Usages.Enqueue(new Usage
+        {
+            SubscriptionId = apiKeyEntity.SubscriptionId,
+            Quantite = 1
         });
 
-        return usageReccord;
+        return Task.CompletedTask;
     }
 }

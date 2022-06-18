@@ -1,7 +1,7 @@
 using System.Collections;
 using ErabliereApi;
 
-Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
+await Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
     .ConfigureLogging((hostBuildContext, builder) =>
     {
         builder.AddConsole();
@@ -49,4 +49,7 @@ Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
                 throw;
             }
         });
-    }).Build().Run();
+    })
+    .Build()
+    .UseStripeUsageReccordTask()
+    .RunAsync();
