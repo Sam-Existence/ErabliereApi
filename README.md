@@ -12,7 +12,7 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 
 ### Diagramme de haut niveau de la solution déployé dans AKS
 
-![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/Digrams/ErabliereApi.drawio.png?raw=true)
+![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/Diagrams/ErabliereApi.drawio.png?raw=true)
 
 ### Dossier du repository
 - ErabliereAPI : Projet du web API
