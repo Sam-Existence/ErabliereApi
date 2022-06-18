@@ -12,12 +12,13 @@ L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des
 
 ### Diagramme de haut niveau de la solution déployé dans AKS
 
-![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/ErabliereApi.drawio.png?raw=true)
+![Architecture Diagram](https://github.com/freddycoder/ErabliereApi/blob/master/Digrams/ErabliereApi.drawio.png?raw=true)
 
 ### Dossier du repository
 - ErabliereAPI : Projet du web API
 - ErabliereIU : Application angular pour l'affichage des données
 - ErabliereModel : Projet du modèles de données
+- ErabliereApi.Proxy : Proxy pour le web API disponible soous forme de nuget
 - Infrastructure : Fichier relié à la configuration de l'infrastructure	kubernetes ou autres
 - PythonScripts : Script python pour alimenter l'API
 - IdentityServer/ErabliereApi.ServeurIdentite : Server de jeton OIDC
@@ -89,7 +90,7 @@ Avec powershell core en tant qu'administrateur executer le script ```.\deploieme
 
 ### Intégration Stripe
 
-Dans la version 3, qui est en développement, l'api utilise Stripe. Pour utiliser Stripe, il faut initialiser quelque variable d'environnement :
+Dans la version 3, qui est en développement, l'api offre une intégration avec Stripe. Pour utiliser Stripe, il faut initialiser quelque variable d'environnement :
 
 ```
   "Stripe.ApiKey": "sk_test_...",
