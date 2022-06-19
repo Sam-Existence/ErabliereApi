@@ -71,17 +71,19 @@ public class AlerteCapteursController : ControllerBase
 
         return alertesCapteurs;
     }
-        /// <summary>
-        /// Ajouter une Alerte
-        /// </summary>
-        /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
-        /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="alerte">Les paramètres de l'alerte</param>
-        /// <param name="token">Jeton d'annulation de la tâche</param>
-        /// <response code="200">L'alerte a été correctement ajouter.</response>
-        /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
-        /// <response code="400">Le capteur n'existe pas</response>
-        [HttpPost]
+
+    /// <summary>
+    /// Ajouter une Alerte.
+    /// Séparer les adresse courriel par des ; pour saisir plusieurs adresses.
+    /// </summary>
+    /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="alerte">Les paramètres de l'alerte</param>
+    /// <param name="token">Jeton d'annulation de la tâche</param>
+    /// <response code="200">L'alerte a été correctement ajouter.</response>
+    /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
+    /// <response code="400">Le capteur n'existe pas</response>
+    [HttpPost]
     public async Task<IActionResult> Ajouter(Guid id, AlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)

@@ -55,6 +55,7 @@ public class AlertesController : ControllerBase
 
     /// <summary>
     /// Ajouter une Alerte
+    /// Séparer les adresse courriel par des ; pour saisir plusieurs adresses.
     /// </summary>
     /// <remarks>Chaque valeur numérique est en dixième. Donc pour représenter 1 degré celcius, il faut inscrire 10.</remarks>
     /// <param name="id">L'identifiant de l'érablière</param>
