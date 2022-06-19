@@ -1,5 +1,5 @@
 <div *ngIf="!display">
-    <button class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
+    <button id="ajouter-alerte-btn" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
     <div>
@@ -37,7 +37,7 @@
           <div class="form-group">
             Niveau Bassin Max.: <input class="form-control" type="text" formControlName="niveauBassinMax">
           </div>
-        <button class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
+        <button id="creer-alerte-donnees-btn" class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
         <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
       </form>
     </div>
@@ -57,7 +57,7 @@
           <div class="form-group">
             Max.: <input class="form-control" type="text" formControlName="max">
           </div>
-        <button class="btn btn-primary" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
+        <button id="creer-alerte-capteur-btn" class="btn btn-primary" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
         <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
       </form>
     </div>

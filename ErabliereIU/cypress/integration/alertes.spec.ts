@@ -1,5 +1,5 @@
 import { HomePage } from '../pages/home.page';
-import { AlertesPage } from '../pages/alertes.page';
+import { faker } from '@faker-js/faker';
 
 describe('Alerte functionnality', () => {
     const homePage = new HomePage();
@@ -10,4 +10,16 @@ describe('Alerte functionnality', () => {
                 .getPageTitle()
                 .should('have.text', 'Alertes')
     });
+
+    it("should add an alerte on 'donnees'", () => {
+        let alertePage = homePage.clickOnAlerteButtonNavMenu();
+
+        const email = faker.internet.email().toString();
+
+        alertePage.clickOnAddAlerteButton()
+                  .typeEmail(email)
+                  .clickOnCreateButton();
+
+        cy.wait(4000);
+    })
 });

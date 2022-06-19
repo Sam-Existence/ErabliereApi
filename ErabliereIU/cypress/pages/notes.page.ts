@@ -1,3 +1,5 @@
+import { FormUtil } from "cypress/util/formUtil";
+
 export class NotesPage {
     
     getPageTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
@@ -15,35 +17,19 @@ export class NotesPage {
     }
 
     enterNoteTitle(value: string): void {
-        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
-            cy.wrap(noteComponent)
-              .find('input[formcontrolname="title"]')
-              .type(value);
-        });
+        FormUtil.typeText(value, "notes", "title");
     }
 
     enterNoteDescription(value: string): void {
-        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
-            cy.wrap(noteComponent)
-              .find('input[formcontrolname="text"]')
-              .type(value);
-        });
+        FormUtil.typeText(value, "notes", "text");
     }
 
     enterNoteDate(date: string) {
-        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
-            cy.wrap(noteComponent)
-              .find('input[formcontrolname="noteDate"]')
-              .type(date);
-        });
+        FormUtil.typeText(date, "notes", "noteDate");
     }
 
     sendNote(): void {
-        cy.get("notes", { timeout: 10000 }).then(noteComponent => {
-            cy.wrap(noteComponent)
-                .find('button[id="creerNote"]')
-                .click();
-        });
+        FormUtil.clickButton("notes", "creerNote");
     }
 
     addNote(title: string, content: string, date: string | undefined = undefined): NotesPage {
