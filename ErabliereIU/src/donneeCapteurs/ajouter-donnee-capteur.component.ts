@@ -11,12 +11,21 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
             <h3>Ajouter une donnée</h3>
             <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">
+                    <span *ngIf="generalErrorMessage" class="text-danger">{{ generalErrorMessage }}</span>
+                </div>
+                <div class="form-group">
                     <label for="valeur">Valeur</label>
                     <input type="number" class="form-control" id="valeur" name="valeur" placeholder="Valeur" formControlName="valeur">
+                    <div *ngIf="this.donneeCapteurForm.controls['valeur'].errors">
+                        <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="date">Date</label>
                     <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
+                    <div *ngIf="this.donneeCapteurForm.controls['date'].errors">
+                        <span class="text-danger">{{ this.donneeCapteurForm.controls['date'].errors.message }}</span>
+                    </div>
                 </div>
                 <button type="button" class="btn btn-primary" (click)="ajouterDonnee()">Ajouter</button>
                 <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
@@ -32,9 +41,8 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
 export class AjouterDonneeCapteurComponent implements OnInit {
     @Input() idCapteur: any;
     donneeCapteurForm: UntypedFormGroup;
-    valeurValidationError: string = '';
-    dateValidationError: string = '';
     display: boolean = false;
+    generalErrorMessage: string | null = null;
 
     @Output() needToUpdate = new EventEmitter();
 
@@ -54,16 +62,25 @@ export class AjouterDonneeCapteurComponent implements OnInit {
     }
 
     ajouterDonnee() {
+        this.generalErrorMessage = null;
         var donneeCapteur = new PostDonneeCapteur();
         var validationError = false;
         try {
             donneeCapteur.v = parseInt(this.donneeCapteurForm.controls['valeur'].value);
         } catch (error) {
+            this.donneeCapteurForm.controls['valeur'].setErrors({
+                'incorrect': true,
+                'message': 'Impossible de convertir la valeur en entier'
+            })
             validationError = true;
         }
         try {
             donneeCapteur.d = new Date(this.donneeCapteurForm.controls['date'].value).toISOString();
         } catch (error) {
+            this.donneeCapteurForm.controls['date'].setErrors({
+                'incorrect': true,
+                'message': "Impossible d'interpreter la date"
+            })
             validationError = true;
         }
         
@@ -73,6 +90,24 @@ export class AjouterDonneeCapteurComponent implements OnInit {
             this.api.postDonneeCapteur(this.idCapteur, donneeCapteur).then(() => {
                 this.donneeCapteurForm.reset();
                 this.needToUpdate.emit();
+            }).catch(e => {
+                if (e.status == 400) {
+                    if (e.error.errors.V != undefined) {
+                        this.donneeCapteurForm.controls['valeur'].setErrors({
+                            'incorrect': true,
+                            'message': e.error.errors.V.join(', ')
+                        })
+                    }
+                    if (e.error.errors['$.D'] != undefined) {
+                        this.donneeCapteurForm.controls['date'].setErrors({
+                            'incorrect': true,
+                            'message': e.error.errors['$.D'].join(', ')
+                        })
+                    }
+                }
+                else {
+                    this.generalErrorMessage = "Une erreur est survenue lors de l'ajout de la donnée";
+                }
             });
         }
     }

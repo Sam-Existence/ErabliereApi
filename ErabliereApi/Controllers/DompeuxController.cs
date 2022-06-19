@@ -139,7 +139,7 @@ public class DompeuxController : ControllerBase
     /// <param name="donnee">Le dompeux a supprimer</param>
     [HttpDelete("{idDompeux}")]
     [ValiderIPRules]
-    public IActionResult Supprimer(Guid id, Guid idDompeux, Dompeux donnee)
+    public async Task<IActionResult> Supprimer(Guid id, Guid idDompeux, Dompeux donnee)
     {
         if (id != donnee.IdErabliere)
         {
@@ -152,7 +152,7 @@ public class DompeuxController : ControllerBase
 
         _context.Dompeux.Remove(donnee);
 
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
 
         return NoContent();
     }

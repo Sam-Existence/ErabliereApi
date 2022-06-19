@@ -11,3 +11,6 @@ Set-Location ErabliereIU
 Start-Process npm -ArgumentList "start"
 
 Set-Location ..
+
+code .
+
