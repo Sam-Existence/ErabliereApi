@@ -20,6 +20,6 @@ describe('Alerte functionnality', () => {
                   .typeEmail(email)
                   .clickOnCreateButton();
 
-        cy.wait(4000);
+        alertePage.getLastAlerteDonneesEmail().should('have.text', email);
     })
 });

@@ -16,4 +16,10 @@ export class AlertesPage {
         FormUtil.clickButton("alerte-page", "creer-alerte-donnees-btn");
         return this;
     }
+    getLastAlerteDonneesEmail(): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get('alerte-page').then($obj => {
+            // find the last row of the table and validate the email
+            return $obj.find("table tbody tr td:nth-child(3)").last();
+        });
+    }
 }
