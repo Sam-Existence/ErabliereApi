@@ -2,33 +2,46 @@
 
 $ErrorActionPreference = "Stop"
 
-# Source: https://dev.to/onlyann/user-password-generation-in-powershell-core-1g91
-function GeneratePassword {
+function New-Password {
     param(
         [ValidateRange(12, 256)]
-        [int] 
-        $length = 14
+        [int] $length = 14
     )
 
-    $symbols = '!@#$%^&*'.ToCharArray()
-    $characterList = 'a'..'z' + 'A'..'Z' + '0'..'9' + $symbols
+    $specilChar = '!"/$%?&*()_-'
 
-    do {
-        $password = -join (0..$length | ForEach-Object { $characterList | Get-Random })
-        [int]$hasLowerChar = $password -cmatch '[a-z]'
-        [int]$hasUpperChar = $password -cmatch '[A-Z]'
-        [int]$hasDigit = $password -match '[0-9]'
-        [int]$hasSymbol = $password.IndexOfAny($symbols) -ne -1
+    $builder = New-Object -TypeName System.Text.StringBuilder
 
+    while ($builder.Length -lt $length) {
+        $builder.Append([System.Guid]::NewGuid().ToString().Replace('-', ''))
     }
-    until (($hasLowerChar + $hasUpperChar + $hasDigit + $hasSymbol) -ge 3)
 
-    $password | ConvertTo-SecureString -AsPlainText
+    if ($builer.Length -gt $length) {
+        $builder.Remove($length, $builder.Length - $length);
+    }
+    
+    $changeRandomNumberOfChar = Get-Random -Maximum ($length - 1) -Minimum ($length / 3)
+
+    for ($i = 0; $i -lt $changeRandomNumberOfChar; $i++) {
+        $toUpperOrSpecialChar = Get-Random -Minimum 1 -Maximum 3
+
+        $index = Get-Random -Minimum 0 -Maximum $length
+
+        if ($toUpperOrSpecialChar -ge 2) {
+            $builder[$index] = $builder[$index].ToString().ToUpper()[0]
+        }
+        else {
+            $randomSpecialCharIndex = Get-Random -Minimum 0 -Maximum $specilChar.Length
+            $builder[$index] = $specilChar[$randomSpecialCharIndex]
+        }
+    }
+
+    return $builder
 }
 
 Write-Output "Generate a .env file"
 Add-Type -AssemblyName System.Web
-$envPassword = GeneratePassword
+$envPassword = (New-Password)[0]
 $envPath = $PWD.Path + "\" + ".env"
 $ipAddress = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias Ethernet).IPAddress;
 #$envContent = "SAPASSWORD=" + $envPassword + [System.Environment]::NewLine + "IP_ADDRESS=" + $ipAddress + [System.Environment]::NewLine;
