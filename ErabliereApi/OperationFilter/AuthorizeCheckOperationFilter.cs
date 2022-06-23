@@ -22,21 +22,34 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
             operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
 
             operation.Security = new List<OpenApiSecurityRequirement>
+            {
+                new OpenApiSecurityRequirement
                 {
-                    new OpenApiSecurityRequirement
-                    {
-                        [
-                            new OpenApiSecurityScheme
+                    [
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
                             {
-                                Reference = new OpenApiReference
-                                {
-                                    Id = "oauth2",
-                                    Type = ReferenceType.SecurityScheme
-                                }
+                                Id = "oauth2",
+                                Type = ReferenceType.SecurityScheme
                             }
-                        ] = new[] {"api1"}
-                    }
-                };
+                        }
+                    ] = new[] {"api1"}
+                },
+                new OpenApiSecurityRequirement
+                {
+                    [
+                        new OpenApiSecurityScheme 
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Id="ApiKey",
+                                Type = ReferenceType.SecurityScheme
+                            }
+                        }
+                    ] = new[] {"api1"}
+                }
+            };
         }
     }
 }

@@ -74,6 +74,16 @@ public static class Swagger
 
                 c.OperationFilter<AuthorizeCheckOperationFilter>();
             }
+            
+            if (!string.IsNullOrWhiteSpace(config["Stripe.ApiKey"])) 
+            {
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    Name = "X-ErabliereApi-ApiKey",
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header
+                });
+            }
 
             c.OperationFilter<ValiderIPRulesOperationFilter>();
             c.OperationFilter<ODataOperationFilter>();
