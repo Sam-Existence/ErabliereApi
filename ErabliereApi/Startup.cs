@@ -189,7 +189,7 @@ public class Startup
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
         // Stripe
-        if (!string.IsNullOrWhiteSpace(Configuration["Stripe.ApiKey"]))
+        if (Configuration.StripeIsEnabled())
         {
             services.Configure<StripeOptions>(o =>
             {
@@ -293,7 +293,7 @@ public class Startup
             });
         }
 
-        if (!string.IsNullOrWhiteSpace(Configuration["Stripe.ApiKey"]))
+        if (Configuration.StripeIsEnabled())
         {
             app.UseMiddleware<ApiKeyMiddleware>();
         }

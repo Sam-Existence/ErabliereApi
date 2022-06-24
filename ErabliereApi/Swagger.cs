@@ -1,4 +1,5 @@
-﻿using ErabliereApi.OperationFilter;
+﻿using ErabliereApi.Extensions;
+using ErabliereApi.OperationFilter;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
@@ -71,9 +72,30 @@ public static class Swagger
                         new[] { config["OIDC_SCOPES"] }
                     }
                 });
-
-                c.OperationFilter<AuthorizeCheckOperationFilter>();
             }
+            
+            if (config.StripeIsEnabled()) 
+            {
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
+                {
+                    Name = "X-ErabliereApi-ApiKey",
+                    Type = SecuritySchemeType.ApiKey,
+                    In = ParameterLocation.Header
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "ApiKey" }
+                        },
+                        new string[] { }
+                    }
+                });
+            }
+
+            c.OperationFilter<AuthorizeCheckOperationFilter>(config);
 
             c.OperationFilter<ValiderIPRulesOperationFilter>();
             c.OperationFilter<ODataOperationFilter>();
