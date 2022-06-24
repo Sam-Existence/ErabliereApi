@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using ErabliereApi.Extensions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using static System.Boolean;
+using static System.StringComparison;
 
 namespace ErabliereApi.OperationFilter;
 
@@ -10,20 +13,37 @@ namespace ErabliereApi.OperationFilter;
 /// </summary>
 public class AuthorizeCheckOperationFilter : IOperationFilter
 {
+    private readonly IConfiguration _configuration;
+
+    /// <summary>
+    /// Constructeur
+    /// </summary>
+    /// <param name="configuration"></param>
+    public AuthorizeCheckOperationFilter(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     /// <inheritdoc />
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         var hasAuthorize = context.MethodInfo.DeclaringType?.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any() == true ||
                            context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
 
-        if (hasAuthorize)
+        var oneAuthMethodEnabled =
+            string.Equals(_configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase) ||
+            _configuration.StripeIsEnabled();
+
+        if (hasAuthorize && oneAuthMethodEnabled)
         {
             operation.Responses.Add("401", new OpenApiResponse { Description = "Unauthorized" });
             operation.Responses.Add("403", new OpenApiResponse { Description = "Forbidden" });
 
-            operation.Security = new List<OpenApiSecurityRequirement>
+            operation.Security = new List<OpenApiSecurityRequirement>();
+
+            if (string.Equals(_configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
             {
-                new OpenApiSecurityRequirement
+                operation.Security.Add(new OpenApiSecurityRequirement
                 {
                     [
                         new OpenApiSecurityScheme
@@ -34,22 +54,26 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
                                 Type = ReferenceType.SecurityScheme
                             }
                         }
-                    ] = new[] {"api1"}
-                },
-                new OpenApiSecurityRequirement
+                    ] = new[] { "api1" }
+                });
+            }
+
+            if (_configuration.StripeIsEnabled())
+            {
+                operation.Security.Add(new OpenApiSecurityRequirement
                 {
                     [
-                        new OpenApiSecurityScheme 
+                        new OpenApiSecurityScheme
                         {
                             Reference = new OpenApiReference
                             {
-                                Id="ApiKey",
+                                Id = "ApiKey",
                                 Type = ReferenceType.SecurityScheme
                             }
                         }
-                    ] = new[] {"api1"}
-                }
-            };
+                    ] = new[] { "api1" }
+                });
+            }
         }
     }
 }
