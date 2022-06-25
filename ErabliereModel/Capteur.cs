@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -7,7 +8,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Représente un capteur
 /// </summary>
-public class Capteur : IIdentifiable<Guid?, Capteur>
+public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
 {
     /// <summary>
     /// L'id de l'occurence

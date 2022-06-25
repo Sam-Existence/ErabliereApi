@@ -5,14 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace ErabliereApi.Depot.Sql.EntityConfiguration;
 
 /// <summary>
-/// Configuration de l'entité DonneeCapteur
+/// Configuration de l'entité <see cref="AlerteCapteur"/>
 /// </summary>
-public class DonneeCapteurConfiguration : IEntityTypeConfiguration<DonneeCapteur>
+public class AlerteCapteurEntityConfiguration : IEntityTypeConfiguration<AlerteCapteur>
 {
     /// <inheritdoc />
-    public void Configure(EntityTypeBuilder<DonneeCapteur> builder)
+    public void Configure(EntityTypeBuilder<AlerteCapteur> builder)
     {
-        builder.HasIndex(donnee => donnee.D, "D_Index");
         builder.Ignore(e => e.OwnerId);
         builder.Ignore(e => e.Owner);
     }

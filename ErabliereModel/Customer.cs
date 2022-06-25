@@ -47,9 +47,14 @@ public class Customer
     /// La date de création de l'utilisateur
     /// </summary>
     public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.Now;
-    
+
     /// <summary>
     /// La liste des clés d'api de l'utilisateur
     /// </summary>
     public List<ApiKey>? ApiKeys { get; set; }
+
+    /// <summary>
+    /// Liste de jonction entre l'utilisateurs et ses érablières
+    /// </summary>
+    public List<CustomerErabliere>? CustomerErablieres { get; set; }
 }

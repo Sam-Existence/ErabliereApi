@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.Diagnostics.CodeAnalysis;
 
 namespace ErabliereApi.Donnees;
@@ -6,7 +7,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Représente un dompeux et certaine informations relié
 /// </summary>
-public class Dompeux : IIdentifiable<Guid?, Dompeux>
+public class Dompeux : IIdentifiable<Guid?, Dompeux>, IErabliereOwnable
 {
     /// <summary>
     /// Id du dompeux
