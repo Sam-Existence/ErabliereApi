@@ -15,6 +15,9 @@ namespace Depot.Sql.Migrations
     [Migration("20220625143913_OwnablePhase1")]
     partial class OwnablePhase1
     {
+        /// <summary>
+        /// Build the OwnablePhase1 target model
+        /// </summary>
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618

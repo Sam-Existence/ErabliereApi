@@ -3,6 +3,8 @@ using ErabliereApi.Extensions;
 using Microsoft.Extensions.Options;
 using Stripe;
 
+namespace ErabliereApi.StripeIntegration;
+
 /// <summary>
 /// Une class contenant une méthode d'extension pour décorer l'IHost
 /// </summary>
