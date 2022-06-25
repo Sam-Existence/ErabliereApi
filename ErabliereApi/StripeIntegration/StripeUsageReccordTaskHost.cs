@@ -1,4 +1,5 @@
 using ErabliereApi;
+using ErabliereApi.Extensions;
 using Microsoft.Extensions.Options;
 using Stripe;
 
@@ -17,7 +18,7 @@ public static class StripeUsageReccordTaskHostExtensions
     {
         var config = host.Services.GetRequiredService<IConfiguration>();
 
-        if (!string.IsNullOrWhiteSpace(config["Stripe.ApiKey"]))
+        if (config.StripeIsEnabled())
         {
             return new StripeUsageReccordTaskHost(host);
         }
