@@ -144,26 +144,55 @@ public class ErablieresController : ControllerBase
     /// <summary>
     /// Créer une érablière
     /// </summary>
-    /// <param name="erablieres">L'érablière à créer</param>
+    /// <param name="postErabliere">L'érablière à créer</param>
+    /// <param name="token">Le jeton d'annulation de la requête http</param>
     /// <response code="200">L'érablière a été correctement ajouté</response>
     /// <response code="400">
     /// Le nom de l'érablière dépasse les 50 caractères, est null ou vide ou un érablière avec le nom reçu existe déjà.
     /// </response>
     [HttpPost]
-    public async Task<ActionResult> Ajouter(PostErabliere erablieres)
+    public async Task<ActionResult> Ajouter(PostErabliere postErabliere, CancellationToken token)
     {
-        if (string.IsNullOrWhiteSpace(erablieres.Nom))
+        if (string.IsNullOrWhiteSpace(postErabliere.Nom))
         {
             return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
         }
-        if (await _context.Erabliere.AnyAsync(e => e.Nom == erablieres.Nom))
+        if (await _context.Erabliere.AnyAsync(e => e.Nom == postErabliere.Nom, token))
         {
-            return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
+            return BadRequest($"L'érablière nommé '{postErabliere.Nom}' existe déjà");
         }
 
-        var entity = await _context.Erabliere.AddAsync(_mapper.Map<Erabliere>(erablieres));
+        var erabliere = _mapper.Map<Erabliere>(postErabliere);
 
-        await _context.SaveChangesAsync();
+        var isAuthenticate = User?.Identity?.IsAuthenticated == true;
+
+        if (isAuthenticate)
+        {
+            erabliere.IsPublic = false;
+        }
+        else
+        {
+            erabliere.IsPublic = true;
+        }
+
+        var entity = await _context.Erabliere.AddAsync(erabliere, token);
+
+        if (isAuthenticate && User != null)
+        {
+            var customerId = User.FindFirst("X-ErabliereApi-CustomerId")?.Value;
+
+            if (customerId != null)
+            {
+                var customerErabliere = await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+                {
+                    IdCustomer = Guid.Parse(customerId),
+                    IdErabliere = entity.Entity.Id,
+                    Access = 15
+                });
+            }
+        }
+
+        await _context.SaveChangesAsync(token);
 
         return Ok(new { id = entity.Entity.Id });
     }

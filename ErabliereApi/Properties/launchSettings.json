@@ -22,21 +22,21 @@
         //"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
 
         // Utiliser l'authentification
-        "USE_AUTHENTICATION": "false",
+        "USE_AUTHENTICATION": "true",
 
         // Configuration swagger active avec USE_AUTHENTICATION: true
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
         "USE_SWAGGER_PKCE": "true",
 
         // IdentityServeur config
-        // "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
-        // "SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
-        // "OIDC_CLIENT_ID": "swagger-dev",
-        // "OIDC_CLIENT_PASSWORD": "",
-        // "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
-        // "OIDC_AUDIENCE": "http://erabliere-api",
-        // "OIDC_AUTHORITY": "https://localhost:5005",
-        // "OIDC_SCOPES": "erabliereapi",
+         "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
+         "SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
+         "OIDC_CLIENT_ID": "swagger-dev",
+         "OIDC_CLIENT_PASSWORD": "",
+         "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
+         "OIDC_AUDIENCE": "http://erabliere-api",
+         "OIDC_AUTHORITY": "https://localhost:5005",
+         "OIDC_SCOPES": "erabliereapi",
 
         // AzureAD config
         //"SWAGGER_AUTHORIZATION_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize",

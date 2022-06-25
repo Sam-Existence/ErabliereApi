@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -31,7 +32,7 @@ public class ErabliereControllerTest
     {
         var initialCount = erabliereDbContext.Erabliere.Count();
 
-        await erabliereController.Ajouter(postErabliere);
+        await erabliereController.Ajouter(postErabliere, CancellationToken.None);
 
         erabliereDbContext.Erabliere.Count().ShouldBe(initialCount + 1);
     }
@@ -44,7 +45,7 @@ public class ErabliereControllerTest
     {
         var initialSet = new HashSet<Erabliere>(erabliereDbContext.Erabliere);
 
-        await erabliereController.Ajouter(postErabliere);
+        await erabliereController.Ajouter(postErabliere, CancellationToken.None);
 
         initialSet.ShouldNotContain(mapper.Map<Erabliere>(postErabliere), _ignoreIdsEqualityComparer);
 
@@ -79,7 +80,7 @@ public class ErabliereControllerTest
 
         postErabliere.Nom = bdErabliere.Nom;
 
-        await erabliereController.Ajouter(postErabliere);
+        await erabliereController.Ajouter(postErabliere, CancellationToken.None);
 
         erabliereDbContext.Erabliere.Count().ShouldBe(initialCount);
 

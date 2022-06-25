@@ -229,7 +229,7 @@ public class Startup
             {
                 try
                 {
-                    var v = System.IO.File.ReadAllText(path);
+                    var v = File.ReadAllText(path);
 
                     var deserializedConfig = JsonSerializer.Deserialize<EmailConfig>(v);
 

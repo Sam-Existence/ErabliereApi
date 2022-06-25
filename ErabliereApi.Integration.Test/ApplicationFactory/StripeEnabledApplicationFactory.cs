@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees;
 using ErabliereApi.Services;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -82,5 +84,32 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
                 return checkoutService;
             });
         });
+    }
+
+    /// <summary>
+    /// Fonction utilitaire permettant de ne pas dupliquer la logique d'ajout de clé d'api
+    /// lors de test d'intégration
+    /// </summary>
+    /// <returns>La clé d'api créer pouvant être ajouter en entête lors des appels http</returns>
+    public string CreateValidApiKey()
+    {
+        var apiKeyService = Services.GetRequiredService<IApiKeyService>();
+
+        var context = Services.GetRequiredService<ErabliereDbContext>();
+
+        var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
+
+        var subId = Guid.NewGuid().ToString();
+
+        context.ApiKeys.Add(new ApiKey
+        {
+            CreationTime = DateTimeOffset.Now,
+            Key = apiKeyService.HashApiKey(key),
+            SubscriptionId = subId
+        });
+
+        context.SaveChanges();
+
+        return key;
     }
 }
