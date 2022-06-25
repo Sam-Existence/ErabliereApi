@@ -34,7 +34,8 @@ internal class AutoApiData : AutoDataAttribute
                                            .Without(e => e.Barils)
                                            .Without(e => e.Capteurs)
                                            .Without(e => e.Documentations)
-                                           .Without(e => e.Notes));
+                                           .Without(e => e.Notes)
+                                           .Without(e => e.Alertes));
 
         fixture.Register(() => builder.GetRequiredService<ErabliereDbContext>().PopulatesDbSets(fixture));
         fixture.Register(() => builder.GetRequiredService<IMapper>());
