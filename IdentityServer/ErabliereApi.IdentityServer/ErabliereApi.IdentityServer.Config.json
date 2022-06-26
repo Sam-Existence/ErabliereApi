@@ -71,6 +71,11 @@
       "description": null,
       "showInDiscoveryDocument": true,
       "userClaims": [
+        "family_name",
+        "given_name",
+        "ipaddr",
+        "name",
+        "unique_name"
       ],
       "properties": {
       }

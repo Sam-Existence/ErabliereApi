@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
+using ErabliereApi.Authorization;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Delete;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
+using ErabliereApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -164,7 +166,7 @@ public class ErablieresController : ControllerBase
 
         var erabliere = _mapper.Map<Erabliere>(postErabliere);
 
-        var isAuthenticate = User?.Identity?.IsAuthenticated == true;
+        var (isAuthenticate, authType, customer) = await IsAuthenticatedAsync(token);
 
         if (isAuthenticate)
         {
@@ -177,24 +179,47 @@ public class ErablieresController : ControllerBase
 
         var entity = await _context.Erabliere.AddAsync(erabliere, token);
 
-        if (isAuthenticate && User != null)
+        if (isAuthenticate)
         {
-            var customerId = User.FindFirst("X-ErabliereApi-CustomerId")?.Value;
-
-            if (customerId != null)
+            if (customer != null)
             {
-                var customerErabliere = await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+                await _context.CustomerErablieres.AddAsync(new CustomerErabliere
                 {
-                    IdCustomer = Guid.Parse(customerId),
-                    IdErabliere = entity.Entity.Id,
-                    Access = 15
-                });
+                    Access = 15,
+                    IdCustomer = customer.Id,
+                    IdErabliere = entity.Entity.Id
+                }, token);
+            }
+            else
+            {
+                throw new InvalidOperationException("The user is authenticated, but there is no customer...");
             }
         }
 
         await _context.SaveChangesAsync(token);
 
         return Ok(new { id = entity.Entity.Id });
+    }
+
+    private async Task<(bool, string, Customer?)> IsAuthenticatedAsync(CancellationToken token)
+    {
+        if (User?.Identity?.IsAuthenticated == true)
+        {
+            var unique_name = User.FindFirst("unique_name")?.Value ?? "";
+
+            var customer = await _context.Customers.SingleAsync(c => c.UniqueName == unique_name, token);
+
+            return (true, "Bearer", customer);
+        }
+
+        if (_config.StripeIsEnabled())
+        {
+            var apiKeyAuthContext = HttpContext?.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>();
+
+            return (apiKeyAuthContext?.Authorize == true, "ApiKey", apiKeyAuthContext?.Customer);
+        }
+
+        return (false, "", null);
     }
 
     /// <summary>

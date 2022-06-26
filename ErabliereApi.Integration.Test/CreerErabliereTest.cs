@@ -2,9 +2,11 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Integration.Test.ApplicationFactory;
+using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -50,7 +52,7 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Vérification BD
-        await VerificationBd(response, nomErabliere, isPublic: true);
+        await VerificationBd(response, nomErabliere, isPublic: true, apiKey: null);
     }
 
     [Fact]
@@ -84,12 +86,13 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Vérification BD
-        await VerificationBd(response, nomErabliere, isPublic: false);
+        await VerificationBd(response, nomErabliere, isPublic: false, apiKey: apiKey);
     }
 
     private async Task VerificationBd(HttpResponseMessage response, 
                                       string nomErabliere,
-                                      bool isPublic)
+                                      bool isPublic,
+                                      string? apiKey)
     {
         var context = _factory.Services.GetRequiredService<ErabliereDbContext>();
         var erabliere = await context.Erabliere.FirstOrDefaultAsync(e => e.Nom == nomErabliere);
@@ -111,6 +114,21 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
             else
             {
                 Assert.False(erabliere.IsPublic, "L'erabliere ne doit pas avoir le status publique lorsque créé par un utilisateur authentifié");
+
+                if (apiKey != null)
+                {
+                    var apiKeyService = _factory.Services.GetRequiredService<IApiKeyService>();
+
+                    var hashApiKey = apiKeyService.HashApiKey(apiKey);
+
+                    var customerId = context.ApiKeys.Single(a => a.Key == hashApiKey).CustomerId;
+
+                    var ownership = context.CustomerErablieres.Where(ce => ce.IdErabliere == erabliere.Id &&
+                                                                           ce.IdCustomer == customerId).ToArray();
+
+                    Assert.Single(ownership);
+                    Assert.Equal(15, ownership[0].Access);
+                }
             }
 
             // Déserialiser la réponse et valider l'id

@@ -2,6 +2,7 @@
 using ErabliereApi.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
+using System.Security.Claims;
 
 namespace ErabliereApi.Authorization;
 
@@ -30,7 +31,7 @@ public class ApiKeyMiddleware : IMiddleware
 
             var dbContext = context.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-            var apiKeyEntity = await dbContext.ApiKeys.FirstOrDefaultAsync(k => k.Key == hashkey);
+            var apiKeyEntity = await dbContext.ApiKeys.AsNoTracking().FirstOrDefaultAsync(k => k.Key == hashkey);
 
             var now = DateTimeOffset.Now;
 
@@ -43,7 +44,11 @@ public class ApiKeyMiddleware : IMiddleware
 
                 await checkoutService.ReccordUsageAsync(apiKeyEntity);
 
-                context.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>().Authorize = true;
+                var apiKeyAuthContext = context.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>();
+
+                apiKeyAuthContext.Authorize = true;
+                apiKeyAuthContext.Customer = await dbContext.Customers.FindAsync(new object?[] { apiKeyEntity.CustomerId }, cancellationToken: context.RequestAborted);
+                apiKeyAuthContext.ApiKey = apiKeyEntity;
             }
             else
             {
