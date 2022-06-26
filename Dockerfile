@@ -15,11 +15,13 @@ COPY ErabliereModel/*.csproj ./ErabliereModel/
 COPY ErabliereApi/*.csproj ./ErabliereApi/
 COPY ErabliereApi.Test/*.csproj ./ErabliereApi.Test/
 COPY ErabliereApi.Integration.Test/*.csproj ./ErabliereApi.Integration.Test/
+COPY ErabliereApi.Test.AutoFixture/*.csproj ./ErabliereApi.Test.AutoFixture/
 
 COPY ErabliereModel/. ./ErabliereModel/
 COPY ErabliereApi/. ./ErabliereApi/
 COPY ErabliereApi.Test/. ./ErabliereApi.Test/
 COPY ErabliereApi.Integration.Test/. ./ErabliereApi.Integration.Test/
+COPY ErabliereApi.Test.AutoFixture/. ./ErabliereApi.Test.AutoFixture/
 
 WORKDIR /app/ErabliereApi
 RUN dotnet restore
