@@ -1,7 +1,9 @@
-﻿using AutoMapper;
+﻿using AutoFixture;
+using AutoMapper;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Services;
+using ErabliereApi.Test.Autofixture;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -91,11 +93,20 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
     /// lors de test d'intégration
     /// </summary>
     /// <returns>La clé d'api créer pouvant être ajouter en entête lors des appels http</returns>
-    public string CreateValidApiKey()
+    public async Task<(Donnees.Customer, string)> CreateValidApiKeyAsync()
     {
         var apiKeyService = Services.GetRequiredService<IApiKeyService>();
-
+        var userService = Services.GetRequiredService<IUserService>();
         var context = Services.GetRequiredService<ErabliereDbContext>();
+
+        var customer = ErabliereFixture.CreerFixture().Create<Donnees.Customer>();
+
+        await userService.CreateCustomerAsync(customer, CancellationToken.None);
+
+        if (customer.Id == null)
+        {
+            throw new InvalidOperationException("Customer not created");
+        }
 
         var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
@@ -105,11 +116,12 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
         {
             CreationTime = DateTimeOffset.Now,
             Key = apiKeyService.HashApiKey(key),
-            SubscriptionId = subId
+            SubscriptionId = subId,
+            CustomerId = customer.Id.Value
         });
 
         context.SaveChanges();
 
-        return key;
+        return (customer, key);
     }
 }

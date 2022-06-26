@@ -63,7 +63,7 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
             MaxAutomaticRedirections = 7
         });
 
-        var apiKey = _factory.CreateValidApiKey();
+        var (customer, apiKey) = await _factory.CreateValidApiKeyAsync();
 
         const string nomErabliere = "ErabliereApiKey";
 

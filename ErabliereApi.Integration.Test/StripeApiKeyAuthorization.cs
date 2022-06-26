@@ -33,7 +33,7 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
             MaxAutomaticRedirections = 7
         });
 
-        string key = _factory.CreateValidApiKey();
+        var (customer, key) = await _factory.CreateValidApiKeyAsync();
 
         using var content = new StringContent(JsonSerializer.Serialize(new PostErabliere
         {

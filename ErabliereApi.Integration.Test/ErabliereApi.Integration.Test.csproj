@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ErabliereApi\ErabliereApi.csproj" />
+    <ProjectReference Include="..\ErabliereApi.Test.AutoFixture\ErabliereApi.Test.AutoFixture.csproj" />
   </ItemGroup>
 
   <ItemGroup>
