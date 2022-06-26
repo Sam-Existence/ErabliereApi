@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220626142600_AddUniqueNameOnCustomers")]
+    partial class AddUniqueNameOnCustomers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <summary>
+        /// 
+        /// </summary>
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

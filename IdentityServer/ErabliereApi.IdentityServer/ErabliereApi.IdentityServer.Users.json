@@ -24,6 +24,16 @@
           "properties": {
           },
           "subject": null,
+          "type": "unique_name",
+          "value": "alice",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
           "type": "given_name",
           "value": "Alice",
           "valueType": "http://www.w3.org/2001/XMLSchema#string"
@@ -96,6 +106,16 @@
           "subject": null,
           "type": "name",
           "value": "Bob Smith",
+          "valueType": "http://www.w3.org/2001/XMLSchema#string"
+        },
+        {
+          "issuer": "LOCAL AUTHORITY",
+          "originalIssuer": "LOCAL AUTHORITY",
+          "properties": {
+          },
+          "subject": null,
+          "type": "unique_name",
+          "value": "bob",
           "valueType": "http://www.w3.org/2001/XMLSchema#string"
         },
         {

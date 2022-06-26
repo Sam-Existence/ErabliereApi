@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
+using ErabliereApi.Authorization;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Delete;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
+using ErabliereApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -144,28 +146,80 @@ public class ErablieresController : ControllerBase
     /// <summary>
     /// Créer une érablière
     /// </summary>
-    /// <param name="erablieres">L'érablière à créer</param>
+    /// <param name="postErabliere">L'érablière à créer</param>
+    /// <param name="token">Le jeton d'annulation de la requête http</param>
     /// <response code="200">L'érablière a été correctement ajouté</response>
     /// <response code="400">
     /// Le nom de l'érablière dépasse les 50 caractères, est null ou vide ou un érablière avec le nom reçu existe déjà.
     /// </response>
     [HttpPost]
-    public async Task<ActionResult> Ajouter(PostErabliere erablieres)
+    public async Task<ActionResult> Ajouter(PostErabliere postErabliere, CancellationToken token)
     {
-        if (string.IsNullOrWhiteSpace(erablieres.Nom))
+        if (string.IsNullOrWhiteSpace(postErabliere.Nom))
         {
             return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
         }
-        if (await _context.Erabliere.AnyAsync(e => e.Nom == erablieres.Nom))
+        if (await _context.Erabliere.AnyAsync(e => e.Nom == postErabliere.Nom, token))
         {
-            return BadRequest($"L'érablière nommé '{erablieres.Nom}' existe déjà");
+            return BadRequest($"L'érablière nommé '{postErabliere.Nom}' existe déjà");
         }
 
-        var entity = await _context.Erabliere.AddAsync(_mapper.Map<Erabliere>(erablieres));
+        var erabliere = _mapper.Map<Erabliere>(postErabliere);
 
-        await _context.SaveChangesAsync();
+        var (isAuthenticate, authType, customer) = await IsAuthenticatedAsync(token);
+
+        if (isAuthenticate)
+        {
+            erabliere.IsPublic = false;
+        }
+        else
+        {
+            erabliere.IsPublic = true;
+        }
+
+        var entity = await _context.Erabliere.AddAsync(erabliere, token);
+
+        if (isAuthenticate)
+        {
+            if (customer != null)
+            {
+                await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+                {
+                    Access = 15,
+                    IdCustomer = customer.Id,
+                    IdErabliere = entity.Entity.Id
+                }, token);
+            }
+            else
+            {
+                throw new InvalidOperationException("The user is authenticated, but there is no customer...");
+            }
+        }
+
+        await _context.SaveChangesAsync(token);
 
         return Ok(new { id = entity.Entity.Id });
+    }
+
+    private async Task<(bool, string, Customer?)> IsAuthenticatedAsync(CancellationToken token)
+    {
+        if (User?.Identity?.IsAuthenticated == true)
+        {
+            var unique_name = User.FindFirst("unique_name")?.Value ?? "";
+
+            var customer = await _context.Customers.SingleAsync(c => c.UniqueName == unique_name, token);
+
+            return (true, "Bearer", customer);
+        }
+
+        if (_config.StripeIsEnabled())
+        {
+            var apiKeyAuthContext = HttpContext?.RequestServices.GetRequiredService<ApiKeyAuthorizationContext>();
+
+            return (apiKeyAuthContext?.Authorize == true, "ApiKey", apiKeyAuthContext?.Customer);
+        }
+
+        return (false, "", null);
     }
 
     /// <summary>

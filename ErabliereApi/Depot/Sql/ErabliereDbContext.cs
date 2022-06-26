@@ -80,6 +80,11 @@ namespace ErabliereApi.Depot.Sql
         /// </summary>
         public DbSet<ApiKey> ApiKeys { get; set; }
 
+        /// <summary>
+        /// Table de jonction entre les érablières et les utilisateurs
+        /// </summary>
+        public DbSet<CustomerErabliere> CustomerErablieres { get; set; }
+
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

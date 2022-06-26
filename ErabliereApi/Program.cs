@@ -1,5 +1,6 @@
 using System.Collections;
 using ErabliereApi;
+using ErabliereApi.StripeIntegration;
 
 await Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
     .ConfigureLogging((hostBuildContext, builder) =>

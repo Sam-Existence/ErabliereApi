@@ -19,6 +19,12 @@ public class Customer
     public string Name { get; set; } = "";
 
     /// <summary>
+    /// Nom unique permettant de trouver l'utilisateur basé sur les claims d'un jeton bearer
+    /// possédant un claim 'unique_name'
+    /// </summary>
+    public string UniqueName { get; set; } = "";
+
+    /// <summary>
     /// Un courriel pour identifier l'utilisateur
     /// </summary>
     public string Email { get; set; } = "";
@@ -47,9 +53,14 @@ public class Customer
     /// La date de création de l'utilisateur
     /// </summary>
     public DateTimeOffset CreationTime { get; set; } = DateTimeOffset.Now;
-    
+
     /// <summary>
     /// La liste des clés d'api de l'utilisateur
     /// </summary>
     public List<ApiKey>? ApiKeys { get; set; }
+
+    /// <summary>
+    /// Liste de jonction entre l'utilisateurs et ses érablières
+    /// </summary>
+    public List<CustomerErabliere>? CustomerErablieres { get; set; }
 }

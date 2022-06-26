@@ -23,11 +23,16 @@ public class ErabliereApiUserService : IUserService
     /// <inheritdoc />
     public async Task CreateCustomerAsync(Customer customer, CancellationToken token)
     {
+        if (customer.UniqueName == null)
+        {
+            throw new InvalidOperationException("The customer instance must have a UniqueName");
+        }
+
         using var scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-        var customerExist = await context.Customers.AnyAsync(c => c.Email == customer.Email, token);
+        var customerExist = await context.Customers.AnyAsync(c => c.UniqueName == customer.UniqueName, token);
 
         if (!customerExist)
         {

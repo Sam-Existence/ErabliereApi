@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
@@ -8,7 +9,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Modèle représentant une érablière
 /// </summary>
-public class Erabliere : IIdentifiable<Guid?, Erabliere>
+public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
 {
     /// <summary>
     /// L'id de l'érablière
@@ -82,6 +83,11 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>
     /// La liste des documentations
     /// </summary>
     public List<Documentation> Documentations { get; set; } = new();
+
+    /// <summary>
+    /// Liste des alertes de type trio de données relié à l'érablière
+    /// </summary>
+    public List<Alerte> Alertes { get; set; } = new();
 
     /// <inheritdoc />
     public int CompareTo([AllowNull] Erabliere other)

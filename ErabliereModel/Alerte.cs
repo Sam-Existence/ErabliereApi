@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +8,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Une alerte
 /// </summary>
-public class Alerte : IIdentifiable<Guid?, Alerte>
+public class Alerte : IIdentifiable<Guid?, Alerte>, IErabliereOwnable
 {
     /// <summary>
     /// L'id de l'alerte
@@ -18,6 +19,9 @@ public class Alerte : IIdentifiable<Guid?, Alerte>
     /// L'id de l'érablière
     /// </summary>
     public Guid? IdErabliere { get; set; }
+
+    /// <inheritdoc />
+    public Erabliere? Erabliere { get; set; }
 
     /// <summary>
     /// Une liste d'adresse email séparer par des ';'

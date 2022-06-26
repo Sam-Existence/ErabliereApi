@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees;
@@ -6,7 +7,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Une alerte d'un capteur
 /// </summary>
-public class AlerteCapteur : IIdentifiable<Guid?, AlerteCapteur>
+public class AlerteCapteur : IIdentifiable<Guid?, AlerteCapteur>, ILevelTwoOwnable<Capteur>
 {
     /// <summary>
     /// La clé primaire
@@ -49,6 +50,12 @@ public class AlerteCapteur : IIdentifiable<Guid?, AlerteCapteur>
     /// Indique si l'alerte est activé
     /// </summary>
     public bool IsEnable { get; set; }
+
+    /// <inheritdoc />
+    public Capteur? Owner { get => Capteur; set { Capteur = value; } }
+
+    /// <inheritdoc />
+    public Guid? OwnerId { get => IdCapteur; set { IdCapteur = value; } }
 
     /// <inheritdoc />
     public int CompareTo(AlerteCapteur? other)

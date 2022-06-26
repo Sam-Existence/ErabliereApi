@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="AngleSharp" Version="0.17.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="6.0.6" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
     <PackageReference Include="NSubstitute" Version="4.3.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ErabliereApi\ErabliereApi.csproj" />
+    <ProjectReference Include="..\ErabliereApi.Test.Autofixture\ErabliereApi.Test.Autofixture.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -3,6 +3,7 @@ using Stripe;
 using Microsoft.Extensions.Options;
 using AutoMapper;
 using ErabliereApi.Donnees;
+using ErabliereApi.StripeIntegration;
 
 namespace ErabliereApi.Services;
 

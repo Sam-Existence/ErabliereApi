@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,13 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220625143913_OwnablePhase1")]
+    partial class OwnablePhase1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <summary>
+        /// Build the OwnablePhase1 target model
+        /// </summary>
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -225,16 +230,9 @@ namespace Depot.Sql.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UniqueName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("Email")
-                        .IsUnique();
-
-                    b.HasIndex("UniqueName")
                         .IsUnique();
 
                     b.ToTable("Customers");
@@ -522,7 +520,7 @@ namespace Depot.Sql.Migrations
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
                     b.HasOne("ErabliereApi.Donnees.Customer", "Customer")
-                        .WithMany("CustomerErablieres")
+                        .WithMany()
                         .HasForeignKey("CustomerId");
 
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
@@ -594,8 +592,6 @@ namespace Depot.Sql.Migrations
             modelBuilder.Entity("ErabliereApi.Donnees.Customer", b =>
                 {
                     b.Navigation("ApiKeys");
-
-                    b.Navigation("CustomerErablieres");
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Erabliere", b =>

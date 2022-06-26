@@ -33,22 +33,7 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
             MaxAutomaticRedirections = 7
         });
 
-        var apiKeyService = _factory.Services.GetRequiredService<IApiKeyService>();
-
-        var context = _factory.Services.GetRequiredService<ErabliereDbContext>();
-
-        var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
-
-        var subId = Guid.NewGuid().ToString();
-
-        context.ApiKeys.Add(new ApiKey
-        {
-            CreationTime = DateTimeOffset.Now,
-            Key = apiKeyService.HashApiKey(key),
-            SubscriptionId = subId
-        });
-
-        context.SaveChanges();
+        var (customer, key) = await _factory.CreateValidApiKeyAsync();
 
         using var content = new StringContent(JsonSerializer.Serialize(new PostErabliere
         {
@@ -60,7 +45,7 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
         var response = await client.PostAsync("/Erablieres", content);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-    }
+    }    
 
     [Fact]
     public async Task DeletedApiKey_Get403()

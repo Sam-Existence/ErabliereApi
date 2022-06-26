@@ -15,6 +15,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.HasIndex(e => e.Email)
                .IsUnique();
 
+        builder.HasIndex(e => e.UniqueName)
+               .IsUnique();
+
         builder.HasMany(u => u.ApiKeys)
                .WithOne(a => a.Customer)
                .HasForeignKey(a => a.CustomerId);

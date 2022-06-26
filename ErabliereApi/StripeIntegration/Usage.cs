@@ -1,3 +1,4 @@
+namespace ErabliereApi.StripeIntegration;
 
 /// <summary>
 /// Classe représentant une utilisation avec une clé d'API

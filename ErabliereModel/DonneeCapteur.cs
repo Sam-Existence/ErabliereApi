@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees;
@@ -6,7 +7,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Une données d'un capteur
 /// </summary>
-public class DonneeCapteur : IIdentifiable<Guid?, DonneeCapteur>
+public class DonneeCapteur : IIdentifiable<Guid?, DonneeCapteur>, ILevelTwoOwnable<Capteur>
 {
     /// <summary>
     /// L'id de la donnée du capteur
@@ -38,6 +39,12 @@ public class DonneeCapteur : IIdentifiable<Guid?, DonneeCapteur>
     /// Le capteur de la donnée
     /// </summary>
     public Capteur? Capteur { get; set; }
+
+    /// <inheritdoc />
+    public Capteur? Owner { get => Capteur; set { Capteur = value; } }
+
+    /// <inheritdoc />
+    public Guid? OwnerId { get => IdCapteur; set { IdCapteur = value; } }
 
     /// <inheritdoc />
     public int CompareTo(DonneeCapteur? other)

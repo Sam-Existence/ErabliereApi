@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees;
@@ -6,7 +7,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Une documentation
 /// </summary>
-public class Documentation : IIdentifiable<Guid?, Documentation>
+public class Documentation : IIdentifiable<Guid?, Documentation>, IErabliereOwnable
 {
     /// <summary>
     /// La clé primaire

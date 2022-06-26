@@ -1,4 +1,5 @@
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Ownable;
 using System;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +8,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Modèle donnée représente un trio de donnée. La température, le niveau de vaccium et le niveau d'un bassin
 /// </summary>
-public class Donnee : IIdentifiable<Guid?, Donnee>
+public class Donnee : IIdentifiable<Guid?, Donnee>, IErabliereOwnable
 {
     /// <summary>
     /// L'id de l'occurence

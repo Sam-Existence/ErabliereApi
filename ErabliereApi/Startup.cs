@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ErabliereApi.StripeIntegration;
 using ErabliereApi.Services;
+using ErabliereApi.Authorization.Customers;
 
 namespace ErabliereApi;
 
@@ -104,6 +105,8 @@ public class Startup
                             options.ApiName = "erabliereapi";
                         });
             }
+
+            services.AddTransient<EnsureCustomerExist>();
         }
         else
         {
@@ -229,7 +232,7 @@ public class Startup
             {
                 try
                 {
-                    var v = System.IO.File.ReadAllText(path);
+                    var v = File.ReadAllText(path);
 
                     var deserializedConfig = JsonSerializer.Deserialize<EmailConfig>(v);
 
@@ -306,6 +309,11 @@ public class Startup
 
         app.UseMetricServer(registry: serviceProvider.GetRequiredService<CollectorRegistry>());
         app.UseHttpMetrics();
+
+        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+        {
+            app.UseMiddleware<EnsureCustomerExist>();
+        }
 
         app.UseEndpoints(endpoints =>
         {

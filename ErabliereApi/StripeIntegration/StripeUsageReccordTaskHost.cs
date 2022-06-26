@@ -1,6 +1,9 @@
 using ErabliereApi;
+using ErabliereApi.Extensions;
 using Microsoft.Extensions.Options;
 using Stripe;
+
+namespace ErabliereApi.StripeIntegration;
 
 /// <summary>
 /// Une class contenant une méthode d'extension pour décorer l'IHost
@@ -17,7 +20,7 @@ public static class StripeUsageReccordTaskHostExtensions
     {
         var config = host.Services.GetRequiredService<IConfiguration>();
 
-        if (!string.IsNullOrWhiteSpace(config["Stripe.ApiKey"]))
+        if (config.StripeIsEnabled())
         {
             return new StripeUsageReccordTaskHost(host);
         }

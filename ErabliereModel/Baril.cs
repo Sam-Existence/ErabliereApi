@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Ownable;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
@@ -7,7 +8,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Un baril
 /// </summary>
-public class Baril : IIdentifiable<Guid?, Baril>
+public class Baril : IIdentifiable<Guid?, Baril>, IErabliereOwnable
 {
     /// <summary>
     /// Id du baril
