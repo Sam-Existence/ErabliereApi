@@ -50,6 +50,7 @@ public class DonneesController : ControllerBase
     [ProducesResponseType(200, Type = typeof(GetDonnee))]
     [HttpGet]
     [Produces(MediaTypeNames.Application.Json, MediaTypeNames.Text.Plain, "text/json", "text/csv")]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Lister(Guid id,
                                             [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                             DateTimeOffset? dd,
@@ -115,6 +116,7 @@ public class DonneesController : ControllerBase
     /// <param name="donneeRecu">La donnée à ajouter</param>
     [HttpPost]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     [TriggerAlert]
     public async Task<IActionResult> Ajouter(Guid id, [FromBody] PostDonnee donneeRecu)
     {
@@ -194,6 +196,7 @@ public class DonneesController : ControllerBase
     /// <returns>Le nombre d'entré enregistré dans la base de données</returns>
     [HttpPost]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     [Route("Importer")]
     public async Task<IActionResult> Importer(Guid id, Donnee[] donnees, CancellationToken token)
     {
@@ -221,6 +224,7 @@ public class DonneesController : ControllerBase
     /// <param name="token">Le token d'annulation</param>
     [HttpPut("{idDonnee}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee, CancellationToken token)
     {
         if (id != donnee.IdErabliere)
@@ -277,6 +281,7 @@ public class DonneesController : ControllerBase
     /// <param name="donnee">Le dompeux a supprimer</param>
     [HttpDelete("{idDonnee}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid idDonnee, Donnee donnee)
     {
         if (id != donnee.IdErabliere)

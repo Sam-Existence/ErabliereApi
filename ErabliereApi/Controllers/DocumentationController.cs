@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData.Query;
+using ErabliereApi.Attributes;
 
 namespace ErabliereApi.Controllers;
 
@@ -37,6 +38,7 @@ public class DocumentationController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery]
+    [ValiderOwnership("id")]
     public IQueryable<Documentation> Lister(Guid id)
     {
         return _depot.Documentation.AsNoTracking().Where(d => d.IdErabliere == id);
@@ -51,6 +53,7 @@ public class DocumentationController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(200, Type = typeof(Documentation))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, PostDocumentation postDocumentation, CancellationToken token)
     {
         if (id != postDocumentation.IdErabliere)

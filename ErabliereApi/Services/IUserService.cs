@@ -1,4 +1,5 @@
 ﻿using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.NonHttp;
 
 namespace ErabliereApi.Services;
 
@@ -21,5 +22,5 @@ public interface IUserService
     /// </summary>
     /// <param name="erabliere"></param>
     /// <returns></returns>
-    Task<Customer?> GetCurrentUserWithAccessAsync(Erabliere erabliere);
+    Task<CustomerOwnershipAccess> GetCurrentUserWithAccessAsync(Erabliere erabliere);
 }

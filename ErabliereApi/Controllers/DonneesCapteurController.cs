@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ErabliereApi.Attributes;
 using ErabliereApi.Controllers.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
@@ -42,6 +43,7 @@ public class DonneesCapteurController : ControllerBase
     /// <param name="df">Date de fin</param>
     /// <response code="200">Une liste de DonneesCapteur.</response>
     [HttpGet]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<GetDonneesCapteur>> Lister(Guid id,
                                                              [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                                              DateTimeOffset? dd,

@@ -9,7 +9,7 @@ namespace ErabliereApi.Attributes;
 /// Vérifier si l'utilisateur à les droits d'accès sur la ressource qu'il tente d'accéder ou de modifier
 /// en vérifiant le verbe http et les droits dans la table CustomerErablieres
 /// </summary>
-public class ValiderOwnershipAtributes : ActionFilterAttribute
+public class ValiderOwnershipAttribute : ActionFilterAttribute
 {
     private readonly string _idErabliereParamName;
 
@@ -17,7 +17,7 @@ public class ValiderOwnershipAtributes : ActionFilterAttribute
     /// Valider les droits d'accès
     /// </summary>
     /// <param name="idErabliereParamName">Le nom du paramètre de route pour l'id de l'érablière</param>
-    public ValiderOwnershipAtributes(string idErabliereParamName)
+    public ValiderOwnershipAttribute(string idErabliereParamName)
     {
         _idErabliereParamName = idErabliereParamName;
     }
@@ -35,8 +35,16 @@ public class ValiderOwnershipAtributes : ActionFilterAttribute
 
         var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-        var erabliere = await dbContext.
-            Erabliere.FindAsync(context.HttpContext.Request.RouteValues[_idErabliereParamName]);
+        var strId = context.HttpContext.Request.RouteValues[_idErabliereParamName]?.ToString();
+
+        if (strId == null)
+        {
+            throw new InvalidOperationException($"Route value {_idErabliereParamName} does not exist");
+        }
+
+        var idGuid = Guid.Parse(strId);
+
+        var erabliere = await dbContext.Erabliere.FindAsync(idGuid);
 
         if (erabliere != null)
         {

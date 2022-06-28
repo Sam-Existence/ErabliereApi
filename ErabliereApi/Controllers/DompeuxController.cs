@@ -42,6 +42,7 @@ public class DompeuxController : ControllerBase
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
     /// <response code="200">Une liste avec les dompeux. La liste est potentiellement vide.</response>
     [HttpGet]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<GetDompeux>> Lister(Guid id,
                                           [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                           DateTimeOffset? dd,
@@ -86,6 +87,7 @@ public class DompeuxController : ControllerBase
     /// <param name="dompeux"></param>
     [HttpPost]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, Dompeux dompeux)
     {
         if (id != dompeux.IdErabliere)
@@ -113,6 +115,7 @@ public class DompeuxController : ControllerBase
     /// <param name="donnee">Le dompeux à modifier</param>
     [HttpPut("{idDompeux}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, Guid idDompeux, Dompeux donnee)
     {
         if (id != donnee.IdErabliere)
@@ -139,6 +142,7 @@ public class DompeuxController : ControllerBase
     /// <param name="donnee">Le dompeux a supprimer</param>
     [HttpDelete("{idDompeux}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid idDompeux, Dompeux donnee)
     {
         if (id != donnee.IdErabliere)
