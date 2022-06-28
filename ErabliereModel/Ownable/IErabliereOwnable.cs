@@ -1,7 +1,11 @@
 ﻿using System;
 
 namespace ErabliereApi.Donnees.Ownable;
-internal interface IErabliereOwnable : IOwnable
+
+/// <summary>
+/// Interface indiquant la relation entre une érablière une autre entité
+/// </summary>
+public interface IErabliereOwnable : IOwnable
 {
     /// <summary>
     /// La clé étrangère de l'érablière

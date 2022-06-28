@@ -14,4 +14,12 @@ public interface IUserService
     /// <param name="token"></param>
     /// <returns></returns>
     Task CreateCustomerAsync(Customer customer, CancellationToken token);
+    
+    /// <summary>
+    /// Permet d'obtenir une instance de <see cref="Customer" /> avec les droits
+    /// d'accès concernant l'érablière en paramètre.
+    /// </summary>
+    /// <param name="erabliere"></param>
+    /// <returns></returns>
+    Task<Customer?> GetCurrentUserWithAccessAsync(Erabliere erabliere);
 }

@@ -1,4 +1,8 @@
 ﻿namespace ErabliereApi.Donnees.Ownable;
-internal interface IOwnable 
+
+/// <summary>
+/// Interface de base pour l'ownership
+/// </summary>
+public interface IOwnable 
 { 
 }

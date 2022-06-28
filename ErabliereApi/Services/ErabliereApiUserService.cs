@@ -1,6 +1,9 @@
-﻿using ErabliereApi.Depot.Sql;
+﻿using ErabliereApi.Authorization;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Extensions;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 namespace ErabliereApi.Services;
 
@@ -21,7 +24,7 @@ public class ErabliereApiUserService : IUserService
     }
 
     /// <inheritdoc />
-    public async Task CreateCustomerAsync(Customer customer, CancellationToken token)
+    public async Task CreateCustomerAsync(Donnees.Customer customer, CancellationToken token)
     {
         if (customer.UniqueName == null)
         {
@@ -40,5 +43,44 @@ public class ErabliereApiUserService : IUserService
 
             await context.SaveChangesAsync(token);
         }
+    }
+
+    /// <inheritdoc />
+    public async Task<Donnees.Customer?> GetCurrentUserWithAccessAsync(Erabliere erabliere)
+    {
+        string? uniqueName = default;
+
+        using var scope = _scopeFactory.CreateScope();
+
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
+
+        var user = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User;
+
+        if (user?.Identity?.IsAuthenticated == true)
+        {
+            uniqueName = user.FindFirst("unique_name")?.Value ?? "";
+        }
+
+        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
+
+        if (config.StripeIsEnabled())
+        {
+            var apiKeyAuthContext = scope.ServiceProvider.GetRequiredService<ApiKeyAuthorizationContext>();
+
+            uniqueName = apiKeyAuthContext?.Customer?.UniqueName;
+        }
+
+        if (uniqueName == null)
+        {
+            throw new InvalidOperationException("Customer should not be bul here ...");
+        }
+
+        var query = context.Customers.AsNoTracking()
+#nullable disable
+                         .Include(c => c.CustomerErablieres.Where(ce => ce.IdErabliere == erabliere.Id))
+#nullable enable
+                         .Where(c => c.UniqueName == uniqueName);
+
+        return await query.SingleOrDefaultAsync();
     }
 }
