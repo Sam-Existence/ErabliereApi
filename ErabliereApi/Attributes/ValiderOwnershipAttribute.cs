@@ -11,15 +11,18 @@ namespace ErabliereApi.Attributes;
 /// </summary>
 public class ValiderOwnershipAttribute : ActionFilterAttribute
 {
-    private readonly string _idErabliereParamName;
+    private readonly string _idParamName;
+    private readonly Type? _levelTwoRelationType;
 
     /// <summary>
     /// Valider les droits d'accès
     /// </summary>
-    /// <param name="idErabliereParamName">Le nom du paramètre de route pour l'id de l'érablière</param>
-    public ValiderOwnershipAttribute(string idErabliereParamName)
+    /// <param name="idParamName">Le nom du paramètre de route pour l'id de l'érablière</param>
+    /// <param name="levelTwoRelationType">Type référencé dans l'arboressence des relations</param>
+    public ValiderOwnershipAttribute(string idParamName, Type? levelTwoRelationType = null)
     {
-        _idErabliereParamName = idErabliereParamName;
+        _idParamName = idParamName;
+        _levelTwoRelationType = levelTwoRelationType;
     }
 
     /// <summary>
@@ -35,11 +38,11 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
 
         var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-        var strId = context.HttpContext.Request.RouteValues[_idErabliereParamName]?.ToString();
+        var strId = context.HttpContext.Request.RouteValues[_idParamName]?.ToString();
 
         if (strId == null)
         {
-            throw new InvalidOperationException($"Route value {_idErabliereParamName} does not exist");
+            throw new InvalidOperationException($"Route value {_idParamName} does not exist");
         }
 
         var idGuid = Guid.Parse(strId);

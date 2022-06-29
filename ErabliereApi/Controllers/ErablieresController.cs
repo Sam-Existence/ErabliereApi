@@ -237,6 +237,7 @@ public class ErablieresController : ControllerBase
     /// <returns></returns>
     [HttpPut("{id}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, PutErabliere erabliere)
     {
         if (id != erabliere.Id)
@@ -302,6 +303,7 @@ public class ErablieresController : ControllerBase
     /// <param name="erabliere">L'érablière a supprimer</param>
     [HttpDelete("{id}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Supprimer(Guid id, DeleteErabliere<Guid> erabliere)
     {

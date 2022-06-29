@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
@@ -58,6 +59,7 @@ public class AlerteCapteursController : ControllerBase
     /// <returns></returns>
     [Route("/Erablieres/{id}/AlertesCapteur")]
     [HttpGet]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<AlerteCapteur>> ListerAlerteCapteurErabliere(Guid id, [FromQuery] bool additionnalProperties)
     {
 #nullable disable
