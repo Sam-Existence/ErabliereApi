@@ -22,5 +22,5 @@ public interface IUserService
     /// </summary>
     /// <param name="erabliere"></param>
     /// <returns></returns>
-    Task<CustomerOwnershipAccess> GetCurrentUserWithAccessAsync(Erabliere erabliere);
+    Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere);
 }

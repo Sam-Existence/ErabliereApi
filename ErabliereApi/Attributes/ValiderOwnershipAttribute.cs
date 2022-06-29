@@ -76,7 +76,7 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
                 {
                     var access = customer.CustomerErablieres[i].Access;
 
-                    allowAccess = !((access & type) > 0);
+                    allowAccess = (access & type) > 0;
                 }
             }
         }

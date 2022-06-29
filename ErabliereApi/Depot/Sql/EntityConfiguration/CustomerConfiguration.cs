@@ -21,5 +21,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.HasMany(u => u.ApiKeys)
                .WithOne(a => a.Customer)
                .HasForeignKey(a => a.CustomerId);
+
+        builder.HasMany(u => u.CustomerErablieres)
+               .WithOne(a => a.Customer)
+               .HasForeignKey(a => a.IdCustomer);
     }
 }

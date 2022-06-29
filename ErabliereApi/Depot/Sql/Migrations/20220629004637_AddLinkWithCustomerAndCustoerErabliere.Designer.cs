@@ -4,16 +4,25 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
 namespace Depot.Sql.Migrations
 {
+    /// <summary>
+    /// Context representation
+    /// </summary>
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220629004637_AddLinkWithCustomerAndCustoerErabliere")]
+    partial class AddLinkWithCustomerAndCustoerErabliere
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <summary>
+        /// Build target model for <see cref="AddLinkWithCustomerAndCustoerErabliere"/>
+        /// </summary>
+        /// <param name="modelBuilder"></param>
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
