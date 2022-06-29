@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.NonHttp;
 
+/// <summary>
+/// Classe utilisé pour la projection afin d'obtenir l'information sur les accès
+/// </summary>
 public class CustomerErabliereOwnershipAccess
 {
     /// <summary>

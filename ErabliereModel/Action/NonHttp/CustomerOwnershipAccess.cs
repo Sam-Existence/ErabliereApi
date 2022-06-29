@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.NonHttp;
+
+/// <summary>
+/// Classe utilisé pour la projection de la requête Bd pour obtenir les accès
+/// </summary>
 public class CustomerOwnershipAccess
 {
     /// <summary>
