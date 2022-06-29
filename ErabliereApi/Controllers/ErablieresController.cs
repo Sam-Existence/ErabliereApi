@@ -66,7 +66,19 @@ public class ErablieresController : ControllerBase
         }
         else if (my)
         {
-            
+            var isAuth = await IsAuthenticatedAsync(token);
+
+            if (isAuth.Item1 == true && isAuth.Item3 != null)
+            {
+                Guid?[] erablieresOwned
+                    = await _context.CustomerErablieres
+                    .AsNoTracking()
+                    .Where(c => c.IdCustomer == isAuth.Item3.Id)
+                    .Select(c => c.Id)
+                    .ToArrayAsync(token);
+
+                query = query.Where(e => erablieresOwned.Contains(e.Id));
+            }
         }
 
         HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
