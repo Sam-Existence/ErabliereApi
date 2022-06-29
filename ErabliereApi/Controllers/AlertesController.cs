@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
@@ -41,6 +42,7 @@ public class AlertesController : ControllerBase
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
     [HttpGet]
     [EnableQuery]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<Alerte>> Lister(Guid id, CancellationToken token, bool additionalProperties)
     {
         var alertes = await _depot.Alertes.AsNoTracking().Where(b => b.IdErabliere == id).ToArrayAsync(token);
@@ -64,6 +66,7 @@ public class AlertesController : ControllerBase
     /// <response code="200">L'alerte a été correctement ajouter.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
     [HttpPost]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -87,6 +90,7 @@ public class AlertesController : ControllerBase
     /// <response code="200">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -111,6 +115,7 @@ public class AlertesController : ControllerBase
     /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
     [HttpPut]
     [Route("{idAlerte}/[action]")]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Activer(Guid id, Guid idAlerte, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -146,6 +151,7 @@ public class AlertesController : ControllerBase
     /// <returns>Ok dans le cas d'un succès. NotFound avec l'alerte reçu qui n'a pas été trouvé.</returns>
     [HttpPut]
     [Route("{idAlerte}/[action]")]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Desactiver(Guid id, Guid idAlerte, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -180,6 +186,7 @@ public class AlertesController : ControllerBase
     /// <response code="204">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
     [HttpDelete]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Alerte alerte, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
@@ -203,6 +210,7 @@ public class AlertesController : ControllerBase
     /// <response code="204">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
     [HttpDelete("{idAlerte}")]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid idAlerte, CancellationToken token)
     {
         var alerte = await _depot.Alertes.FindAsync(new object?[] { idAlerte }, cancellationToken: token);

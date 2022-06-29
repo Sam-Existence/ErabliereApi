@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
@@ -38,6 +39,7 @@ public class NotesController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery]
+    [ValiderOwnership("id")]
     public IQueryable<Note> Lister(Guid id)
     {
         return _depot.Notes.AsNoTracking().Where(n => n.IdErabliere == id);
@@ -52,6 +54,7 @@ public class NotesController : ControllerBase
     /// <returns></returns>
     [HttpPost]
     [ProducesResponseType(200, Type = typeof(Note))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, PostNote postNote, CancellationToken token)
     {
         if (id != postNote.IdErabliere)
@@ -86,6 +89,7 @@ public class NotesController : ControllerBase
     /// <returns></returns>
     [HttpPut("{noteId}")]
     [ProducesResponseType(200, Type = typeof(Note))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, Guid noteId, PutNote putNote, CancellationToken token)
     {
         if (id != putNote.IdErabliere)
@@ -125,6 +129,7 @@ public class NotesController : ControllerBase
     /// <returns></returns>
     [HttpDelete("{noteId}")]
     [ProducesResponseType(200, Type = typeof(Note))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid noteId, CancellationToken token)
     {
         var entity = await _depot.Notes.FindAsync(new object?[] { noteId }, token);

@@ -1,4 +1,5 @@
-﻿using ErabliereApi.Depot.Sql;
+﻿using ErabliereApi.Attributes;
+using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ public class BarilController : ControllerBase
     /// <param name="df">Utiliser ce paramètre pour obtenir les barils avec une date plus petite ou égal au paramètre passé.</param>
     /// <response code="200">Une liste de baril potentiellement vide.</response>
     [HttpGet]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<Baril>> Lister(Guid id, DateTimeOffset? dd, DateTimeOffset? df)
     {
         return await _depot.Barils.AsNoTracking()
@@ -50,6 +52,7 @@ public class BarilController : ControllerBase
     /// <response code="200">Le baril a été correctement ajouter.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à ajouter.</response>
     [HttpPost]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, Baril baril)
     {
         if (id != baril.IdErabliere)
@@ -72,6 +75,7 @@ public class BarilController : ControllerBase
     /// <response code="200">Le baril a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, Baril baril)
     {
         if (id != baril.IdErabliere)
@@ -94,6 +98,7 @@ public class BarilController : ControllerBase
     /// <response code="202">Le baril a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à supprimer.</response>
     [HttpDelete]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Baril baril)
     {
         if (id != baril.IdErabliere)

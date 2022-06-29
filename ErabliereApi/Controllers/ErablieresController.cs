@@ -46,11 +46,16 @@ public class ErablieresController : ControllerBase
     /// <summary>
     /// Liste les érablières
     /// </summary>
+    /// <param name="my">
+    /// Indique si les érablière retourné seront ceux aillant un lien 
+    /// d'appartenance à l'usager authentifier. (ApiKey ou Bearer)
+    /// </param>
+    /// <param name="token">Jeton d'annulation de la requête</param>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet]
     [EnableQuery(MaxTop = TakeErabliereNbMax)]
     [AllowAnonymous]
-    public async Task<IQueryable<Erabliere>> ListerAsync(CancellationToken token)
+    public async Task<IQueryable<Erabliere>> ListerAsync([FromQuery] bool my, CancellationToken token)
     {
         var query = _context.Erabliere.AsNoTracking();
 
@@ -58,6 +63,22 @@ public class ErablieresController : ControllerBase
             User.Identity?.IsAuthenticated == false)
         {
             query = query.Where(e => e.IsPublic == true);
+        }
+        else if (my)
+        {
+            var isAuth = await IsAuthenticatedAsync(token);
+
+            if (isAuth.Item1 == true && isAuth.Item3 != null)
+            {
+                Guid?[] erablieresOwned
+                    = await _context.CustomerErablieres
+                    .AsNoTracking()
+                    .Where(c => c.IdCustomer == isAuth.Item3.Id)
+                    .Select(c => c.Id)
+                    .ToArrayAsync(token);
+
+                query = query.Where(e => erablieresOwned.Contains(e.Id));
+            }
         }
 
         HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
@@ -237,6 +258,7 @@ public class ErablieresController : ControllerBase
     /// <returns></returns>
     [HttpPut("{id}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, PutErabliere erabliere)
     {
         if (id != erabliere.Id)
@@ -302,6 +324,7 @@ public class ErablieresController : ControllerBase
     /// <param name="erabliere">L'érablière a supprimer</param>
     [HttpDelete("{id}")]
     [ValiderIPRules]
+    [ValiderOwnership("id")]
     [ProducesResponseType(204)]
     public async Task<IActionResult> Supprimer(Guid id, DeleteErabliere<Guid> erabliere)
     {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
+using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Delete;
@@ -42,6 +43,7 @@ public class CapteursController : ControllerBase
     /// <param name="token">Le jeton d'annulation</param>
     /// <response code="200">Une liste de capteurs.</response>
     [HttpGet]
+    [ValiderOwnership("id")]
     public async Task<IEnumerable<GetCapteurs>> Lister(Guid id, string? filtreNom, CancellationToken token)
     {
         return await _depot.Capteurs.AsNoTracking()
@@ -60,6 +62,7 @@ public class CapteursController : ControllerBase
     /// <response code="200">Une liste de capteurs.</response>
     [HttpGet("{idCapteur}")]
     [ProducesResponseType(200, Type = typeof(GetCapteurs))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Lister(Guid id, Guid idCapteur, CancellationToken token)
     {
         var capteur = await _depot.Capteurs.AsNoTracking()
@@ -84,6 +87,7 @@ public class CapteursController : ControllerBase
     /// <response code="200">Le capteur a été correctement ajouté.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
     [HttpPost]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, PostCapteur capteur, CancellationToken token)
     {
         if (id != capteur.IdErabliere)
@@ -117,6 +121,7 @@ public class CapteursController : ControllerBase
     /// <response code="200">Le capteur a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
     [HttpPut]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Modifier(Guid id, PutCapteur capteur, CancellationToken token)
     {
         if (id != capteur.IdErabliere)
@@ -167,6 +172,7 @@ public class CapteursController : ControllerBase
     /// <response code="202">Le capteur a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
     [HttpDelete]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, DeleteCapteur capteur, CancellationToken token)
     {
         if (id != capteur.IdErabliere)

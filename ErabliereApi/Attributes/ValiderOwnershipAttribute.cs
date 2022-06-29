@@ -1,4 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Ownable;
 using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -9,17 +11,26 @@ namespace ErabliereApi.Attributes;
 /// Vérifier si l'utilisateur à les droits d'accès sur la ressource qu'il tente d'accéder ou de modifier
 /// en vérifiant le verbe http et les droits dans la table CustomerErablieres
 /// </summary>
-public class ValiderOwnershipAtributes : ActionFilterAttribute
+public class ValiderOwnershipAttribute : ActionFilterAttribute
 {
-    private readonly string _idErabliereParamName;
+    private readonly string _idParamName;
+    private readonly Type? _levelTwoRelationType;
 
     /// <summary>
     /// Valider les droits d'accès
     /// </summary>
-    /// <param name="idErabliereParamName">Le nom du paramètre de route pour l'id de l'érablière</param>
-    public ValiderOwnershipAtributes(string idErabliereParamName)
+    /// <param name="idParamName">Le nom du paramètre de route pour l'id de l'érablière</param>
+    /// <param name="levelTwoRelationType">Type référencé dans l'arboressence des relations</param>
+    public ValiderOwnershipAttribute(string idParamName, Type? levelTwoRelationType = null)
     {
-        _idErabliereParamName = idErabliereParamName;
+        if (levelTwoRelationType != null &&
+            !levelTwoRelationType.GetInterfaces().Any(i => i == typeof(IErabliereOwnable)))
+        {
+            throw new ArgumentException($"The type of arg {nameof(levelTwoRelationType)} must implement {nameof(ILevelTwoOwnable<IErabliereOwnable>)}");
+        }
+
+        _idParamName = idParamName;
+        _levelTwoRelationType = levelTwoRelationType;
     }
 
     /// <summary>
@@ -35,8 +46,14 @@ public class ValiderOwnershipAtributes : ActionFilterAttribute
 
         var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-        var erabliere = await dbContext.
-            Erabliere.FindAsync(context.HttpContext.Request.RouteValues[_idErabliereParamName]);
+        var strId = context.HttpContext.Request.RouteValues[_idParamName]?.ToString();
+
+        if (strId == null)
+        {
+            throw new InvalidOperationException($"Route value {_idParamName} does not exist");
+        }
+
+        Erabliere? erabliere = await GetErabliere(dbContext, strId);
 
         if (erabliere != null)
         {
@@ -68,7 +85,7 @@ public class ValiderOwnershipAtributes : ActionFilterAttribute
                 {
                     var access = customer.CustomerErablieres[i].Access;
 
-                    allowAccess = !((access & type) > 0);
+                    allowAccess = (access & type) > 0;
                 }
             }
         }
@@ -81,5 +98,38 @@ public class ValiderOwnershipAtributes : ActionFilterAttribute
         {
             context.Result = new ForbidResult();
         }
+    }
+
+    private async Task<Erabliere?> GetErabliere(ErabliereDbContext dbContext, string strId)
+    {
+        var idGuid = Guid.Parse(strId);
+
+        if (_levelTwoRelationType != null)
+        {
+            var entity = await dbContext.FindAsync(_levelTwoRelationType, idGuid);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var instance = entity as IErabliereOwnable;
+
+            if (instance == null)
+            {
+                throw new InvalidOperationException($"type {entity.GetType().Name} cannot be convert into {nameof(IErabliereOwnable)}");
+            }
+
+            if (instance.IdErabliere.HasValue == false)
+            {
+                return null;
+            }
+
+            idGuid = instance.IdErabliere.Value;
+        }
+
+        var erabliere = await dbContext.Erabliere.FindAsync(idGuid);
+
+        return erabliere;
     }
 }

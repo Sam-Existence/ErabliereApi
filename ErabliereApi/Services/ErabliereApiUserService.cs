@@ -1,9 +1,13 @@
-﻿using ErabliereApi.Authorization;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ErabliereApi.Authorization;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.NonHttp;
 using ErabliereApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
+using System.Security.Claims;
 
 namespace ErabliereApi.Services;
 
@@ -46,19 +50,33 @@ public class ErabliereApiUserService : IUserService
     }
 
     /// <inheritdoc />
-    public async Task<Donnees.Customer?> GetCurrentUserWithAccessAsync(Erabliere erabliere)
+    public async Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere)
     {
-        string? uniqueName = default;
-
         using var scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var user = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User;
+        
+        string? uniqueName = GetUniqueName(scope, user);
 
+        if (uniqueName == null)
+        {
+            throw new InvalidOperationException("Customer should not be null here ...");
+        }
+
+        var query = context.Customers.AsNoTracking()
+                                     .Where(c => c.UniqueName == uniqueName)
+                                     .ProjectTo<CustomerOwnershipAccess>(_fetchCustomerOwnershipAccessMap);
+
+        return await query.SingleOrDefaultAsync();
+    }
+
+    private static string? GetUniqueName(IServiceScope scope, ClaimsPrincipal? user)
+    {
         if (user?.Identity?.IsAuthenticated == true)
         {
-            uniqueName = user.FindFirst("unique_name")?.Value ?? "";
+            return user.FindFirst("unique_name")?.Value ?? "";
         }
 
         var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
@@ -67,20 +85,16 @@ public class ErabliereApiUserService : IUserService
         {
             var apiKeyAuthContext = scope.ServiceProvider.GetRequiredService<ApiKeyAuthorizationContext>();
 
-            uniqueName = apiKeyAuthContext?.Customer?.UniqueName;
+            return apiKeyAuthContext?.Customer?.UniqueName;
         }
 
-        if (uniqueName == null)
-        {
-            throw new InvalidOperationException("Customer should not be bul here ...");
-        }
-
-        var query = context.Customers.AsNoTracking()
-#nullable disable
-                         .Include(c => c.CustomerErablieres.Where(ce => ce.IdErabliere == erabliere.Id))
-#nullable enable
-                         .Where(c => c.UniqueName == uniqueName);
-
-        return await query.SingleOrDefaultAsync();
+        return null;
     }
+
+    private static readonly AutoMapper.IConfigurationProvider _fetchCustomerOwnershipAccessMap = new MapperConfiguration(config =>
+    {
+        config.CreateMap<Donnees.Customer, CustomerOwnershipAccess>();
+
+        config.CreateMap<CustomerErabliere, CustomerErabliereOwnershipAccess>();
+    });
 }

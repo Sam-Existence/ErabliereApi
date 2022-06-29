@@ -1,5 +1,4 @@
 ﻿using AutoFixture;
-using System.Linq;
 using System.Net;
 
 namespace ErabliereApi.Test.Autofixture;

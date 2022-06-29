@@ -15,9 +15,9 @@ public class EnsureCustomerExist : IMiddleware
     {
         if (context.User?.Identity?.IsAuthenticated == true)
         {
-            var dbContext = context.RequestServices.GetRequiredService<ErabliereDbContext>();
-
             var uniqueName = context.User.FindFirst("unique_name")?.Value ?? "";
+
+            var dbContext = context.RequestServices.GetRequiredService<ErabliereDbContext>();
 
             if (!(await dbContext.Customers.AnyAsync(c => c.UniqueName == uniqueName)))
             {
