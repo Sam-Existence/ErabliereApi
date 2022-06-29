@@ -43,6 +43,7 @@ public class DonneesCapteurController : ControllerBase
     /// <param name="df">Date de fin</param>
     /// <response code="200">Une liste de DonneesCapteur.</response>
     [HttpGet]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IEnumerable<GetDonneesCapteur>> Lister(Guid id,
                                                              [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
                                                              DateTimeOffset? dd,
@@ -79,6 +80,7 @@ public class DonneesCapteurController : ControllerBase
     /// <response code="200">Une liste Tupple avec l'id du catpeur et la liste des DonneesCapteur.</response>
     [HttpGet]
     [Route("/DonneesCapteur/Grape")]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async IAsyncEnumerable<Pair<Guid, IEnumerable<GetDonneesCapteur>>> ListerPlusieurs(
                                                 [FromQuery] string ids,
                                                 [FromHeader(Name = "x-ddr")] DateTimeOffset? ddr,
@@ -102,6 +104,7 @@ public class DonneesCapteurController : ControllerBase
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à ajouter.</response>
     [HttpPost]
     [TriggerAlertV2]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Ajouter(Guid id, PostDonneeCapteur donneeCapteur)
     {
         if (id != donneeCapteur.IdCapteur)
@@ -129,6 +132,7 @@ public class DonneesCapteurController : ControllerBase
     /// <response code="200">Le capteur a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
     [HttpPut]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Modifier(Guid id, DonneeCapteur capteur)
     {
         if (id != capteur.IdCapteur)
@@ -151,6 +155,7 @@ public class DonneesCapteurController : ControllerBase
     /// <response code="202">Le capteur a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
     [HttpDelete]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Supprimer(Guid id, DonneeCapteur capteur)
     {
         if (id != capteur.IdCapteur)

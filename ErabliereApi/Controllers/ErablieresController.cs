@@ -46,11 +46,16 @@ public class ErablieresController : ControllerBase
     /// <summary>
     /// Liste les érablières
     /// </summary>
+    /// <param name="my">
+    /// Indique si les érablière retourné seront ceux aillant un lien 
+    /// d'appartenance à l'usager authentifier. (ApiKey ou Bearer)
+    /// </param>
+    /// <param name="token">Jeton d'annulation de la requête</param>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet]
     [EnableQuery(MaxTop = TakeErabliereNbMax)]
     [AllowAnonymous]
-    public async Task<IQueryable<Erabliere>> ListerAsync(CancellationToken token)
+    public async Task<IQueryable<Erabliere>> ListerAsync([FromQuery] bool my, CancellationToken token)
     {
         var query = _context.Erabliere.AsNoTracking();
 
@@ -58,6 +63,10 @@ public class ErablieresController : ControllerBase
             User.Identity?.IsAuthenticated == false)
         {
             query = query.Where(e => e.IsPublic == true);
+        }
+        else if (my)
+        {
+            
         }
 
         HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());

@@ -39,6 +39,7 @@ public class AlerteCapteursController : ControllerBase
     /// <remarks>Les valeurs numérique sont en dixième de leurs unitées respective.</remarks>
     /// <response code="200">Une liste d'alerte potentiellement vide.</response>
     [HttpGet]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IEnumerable<AlerteCapteur>> Lister(Guid id, CancellationToken token, [FromQuery] bool additionnalProperties)
     {
         var alertes = await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.IdCapteur == id).ToArrayAsync(token);
@@ -86,6 +87,7 @@ public class AlerteCapteursController : ControllerBase
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à ajouter.</response>
     /// <response code="400">Le capteur n'existe pas</response>
     [HttpPost]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Ajouter(Guid id, AlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
@@ -113,12 +115,13 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Modifier une alerte
     /// </summary>
-    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="id">L'identifiant du capteur</param>
     /// <param name="alerte">L'alerte a modifier</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <response code="200">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Modifier(Guid id, PutAlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
@@ -136,7 +139,7 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Activer une alerte capteur
     /// </summary>
-    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="id">L'identifiant du capteur</param>
     /// <param name="idAlerte">L'id de l'alerte</param>
     /// <param name="alerte">L'alerte a modifier</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
@@ -144,6 +147,7 @@ public class AlerteCapteursController : ControllerBase
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
     [Route("{idAlerte}/[action]")]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Activer(Guid id, Guid idAlerte, PutAlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
@@ -172,7 +176,7 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Activer une alerte capteur
     /// </summary>
-    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="id">L'identifiant du capteur</param>
     /// <param name="idAlerte">L'id de l'alerte</param>
     /// <param name="alerte">L'alerte a modifier</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
@@ -180,6 +184,7 @@ public class AlerteCapteursController : ControllerBase
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
     [Route("{idAlerte}/[action]")]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Desactiver(Guid id, Guid idAlerte, PutAlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
@@ -208,12 +213,13 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Supprimer une alerte
     /// </summary>
-    /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="id">Identifiant du capteur</param>
     /// <param name="alerte">L'alerte à supprimer</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <response code="204">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
     [HttpDelete]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Supprimer(Guid id, AlerteCapteur alerte, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
@@ -231,12 +237,13 @@ public class AlerteCapteursController : ControllerBase
     /// <summary>
     /// Supprimer une alerte
     /// </summary>
-    /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="id">Identifiant du capteur</param>
     /// <param name="idAlerte">L'id de l'alerte à supprimer</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <response code="204">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id de l'alerte à supprimer.</response>
     [HttpDelete("{idAlerte}")]
+    [ValiderOwnership("id", typeof(Capteur))]
     public async Task<IActionResult> Supprimer(Guid id, Guid idAlerte, CancellationToken token)
     {
         var alerte = await _depot.AlerteCapteurs.FindAsync(new object?[] { idAlerte }, cancellationToken: token);

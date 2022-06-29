@@ -1,4 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Ownable;
 using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -21,6 +23,12 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
     /// <param name="levelTwoRelationType">Type référencé dans l'arboressence des relations</param>
     public ValiderOwnershipAttribute(string idParamName, Type? levelTwoRelationType = null)
     {
+        if (levelTwoRelationType != null &&
+            !levelTwoRelationType.GetInterfaces().Any(i => i == typeof(IErabliereOwnable)))
+        {
+            throw new ArgumentException($"The type of arg {nameof(levelTwoRelationType)} must implement {nameof(ILevelTwoOwnable<IErabliereOwnable>)}");
+        }
+
         _idParamName = idParamName;
         _levelTwoRelationType = levelTwoRelationType;
     }
@@ -45,9 +53,7 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
             throw new InvalidOperationException($"Route value {_idParamName} does not exist");
         }
 
-        var idGuid = Guid.Parse(strId);
-
-        var erabliere = await dbContext.Erabliere.FindAsync(idGuid);
+        Erabliere? erabliere = await GetErabliere(dbContext, strId);
 
         if (erabliere != null)
         {
@@ -92,5 +98,38 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
         {
             context.Result = new ForbidResult();
         }
+    }
+
+    private async Task<Erabliere?> GetErabliere(ErabliereDbContext dbContext, string strId)
+    {
+        var idGuid = Guid.Parse(strId);
+
+        if (_levelTwoRelationType != null)
+        {
+            var entity = await dbContext.FindAsync(_levelTwoRelationType, idGuid);
+
+            if (entity == null)
+            {
+                return null;
+            }
+
+            var instance = entity as IErabliereOwnable;
+
+            if (instance == null)
+            {
+                throw new InvalidOperationException($"type {entity.GetType().Name} cannot be convert into {nameof(IErabliereOwnable)}");
+            }
+
+            if (instance.IdErabliere.HasValue == false)
+            {
+                return null;
+            }
+
+            idGuid = instance.IdErabliere.Value;
+        }
+
+        var erabliere = await dbContext.Erabliere.FindAsync(idGuid);
+
+        return erabliere;
     }
 }
