@@ -79,7 +79,7 @@ public class Startup
         services.AddErabliereAPIForwardedHeaders(Configuration);
 
         // Authentication
-        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+        if (Configuration.IsAuthEnabled())
         {
             if (Configuration["AzureAD__ClientId"] != null && Configuration["AzureAD:ClientId"] == null)
             {
@@ -301,7 +301,7 @@ public class Startup
             app.UseMiddleware<ApiKeyMiddleware>();
         }
 
-        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+        if (Configuration.IsAuthEnabled())
         {
             app.UseAuthentication();
         }
@@ -310,7 +310,7 @@ public class Startup
         app.UseMetricServer(registry: serviceProvider.GetRequiredService<CollectorRegistry>());
         app.UseHttpMetrics();
 
-        if (string.Equals(Configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+        if (Configuration.IsAuthEnabled())
         {
             app.UseMiddleware<EnsureCustomerExist>();
         }

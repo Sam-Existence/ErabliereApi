@@ -1,6 +1,7 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Ownable;
+using ErabliereApi.Extensions;
 using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -53,9 +54,11 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
             throw new InvalidOperationException($"Route value {_idParamName} does not exist");
         }
 
+        var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
+
         Erabliere? erabliere = await GetErabliere(dbContext, strId);
 
-        if (erabliere != null)
+        if (erabliere != null && config.IsAuthEnabled())
         {
             var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
 

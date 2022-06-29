@@ -40,7 +40,7 @@ public static class Swagger
                 }
             });
 
-            if (string.Equals(config["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+            if (config.IsAuthEnabled())
             {
                 if (string.Equals(config["USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW"], TrueString, OrdinalIgnoreCase))
                 {
@@ -150,7 +150,7 @@ public static class Swagger
                 c.InjectStylesheet("/swagger/swagger-custom.css");
             }
 
-            if (string.Equals(config["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+            if (config.IsAuthEnabled())
             {
                 c.OAuthAppName("ÉrablièreAPI - Swagger");
                 c.OAuthClientId(config["OIDC_CLIENT_ID"]);

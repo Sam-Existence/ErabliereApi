@@ -59,7 +59,7 @@ public class ErablieresController : ControllerBase
     {
         var query = _context.Erabliere.AsNoTracking();
 
-        if (string.Equals(_config["USE_AUTHENTICATION"], bool.TrueString, StringComparison.OrdinalIgnoreCase) &&
+        if (_config.IsAuthEnabled() &&
             User.Identity?.IsAuthenticated == false)
         {
             query = query.Where(e => e.IsPublic == true);

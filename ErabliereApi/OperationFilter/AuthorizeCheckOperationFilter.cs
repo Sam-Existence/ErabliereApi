@@ -31,7 +31,7 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
                            context.MethodInfo.GetCustomAttributes(true).OfType<AuthorizeAttribute>().Any();
 
         var oneAuthMethodEnabled =
-            string.Equals(_configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase) ||
+            _configuration.IsAuthEnabled() ||
             _configuration.StripeIsEnabled();
 
         if (hasAuthorize && oneAuthMethodEnabled)
@@ -41,7 +41,7 @@ public class AuthorizeCheckOperationFilter : IOperationFilter
 
             operation.Security = new List<OpenApiSecurityRequirement>();
 
-            if (string.Equals(_configuration["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase))
+            if (_configuration.IsAuthEnabled())
             {
                 operation.Security.Add(new OpenApiSecurityRequirement
                 {
