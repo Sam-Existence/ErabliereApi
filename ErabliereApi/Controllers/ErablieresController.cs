@@ -74,7 +74,7 @@ public class ErablieresController : ControllerBase
                     = await _context.CustomerErablieres
                     .AsNoTracking()
                     .Where(c => c.IdCustomer == isAuth.Item3.Id)
-                    .Select(c => c.Id)
+                    .Select(c => c.IdErabliere)
                     .ToArrayAsync(token);
 
                 query = query.Where(e => erablieresOwned.Contains(e.Id));
