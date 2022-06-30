@@ -1,0 +1,58 @@
+<!-- This is a modal use to display a form so the user can create a new erabliere -->
+<div class="modal fade" 
+     id="ajouterErabliereModal" 
+     tabindex="-1" 
+     role="dialog" 
+     aria-labelledby="ajouterErabliereModalLabel" 
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ajouterErabliereModalLabel">Ajouter une erablière</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="nomErabliere">Nom de l'erablière</label>
+                        <input type="text" class="form-control" id="nomErabliere" placeholder="Nom de l'erablière">
+                    </div>
+                    <div [hidden]="!plusdOptions">
+                        <div class="form-group">
+                            <label for="ipRules">Règle IP</label>
+                            <input type="text" class="form-control" id="ipRules" rows="3" placeholder="Règle IP" value="-">
+                        </div>
+                        <div class="form-group">
+                            <label for="numeroOrdre">Numéro ordre</label>
+                            <input type="text" class="form-control" id="numeroOrdre" placeholder="0" value="0">
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
+                            <label for="utiliserSectionBaril" class="form-check-label">Afficher section barils</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
+                            <label for="utiliserSectionBaril" class="form-check-label">Afficher trio données</label>
+                        </div>
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
+                            <label for="utiliserSectionBaril" class="form-check-label">Afficher section dompeux</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" 
+                                class="btn btn-sm mt-3"
+                                [ngClass]="plusdOptions ? 'btn-secondary' : 'btn-sm btn-success'"
+                                (click)="afficherPlusOptions()">{{ plusOptionsButtonText }}</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" (click)="ajouterErabliere()">Ajouter</button>
+            </div>
+        </div>
+    </div>
+</div>
