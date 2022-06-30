@@ -79,7 +79,8 @@ public class Startup
         services.AddErabliereAPIForwardedHeaders(Configuration);
 
         // Authentication
-        services.AddTransient<IUserService, ErabliereApiUserService>();
+        services.AddTransient<IUserService, ErabliereApiUserService>()
+                .AddHttpContextAccessor();
         if (Configuration.IsAuthEnabled())
         {
             if (Configuration["AzureAD__ClientId"] != null && Configuration["AzureAD:ClientId"] == null)
@@ -207,8 +208,7 @@ public class Startup
 
             services.AddTransient<ICheckoutService, StripeCheckoutService>()
                     .AddTransient<IApiKeyService, ErabiereApiApiKeyService>()
-                    .AddTransient<ApiKeyMiddleware>()
-                    .AddHttpContextAccessor();
+                    .AddTransient<ApiKeyMiddleware>();
 
             // Authorization
             services.AddScoped<ApiKeyAuthorizationContext>();
