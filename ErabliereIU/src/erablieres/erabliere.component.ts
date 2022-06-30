@@ -33,7 +33,7 @@ export class ErabliereComponent implements OnInit {
     this._authService = authFactory.getAuthorisationService();
     this._authService.loginChanged.subscribe(loggedIn => {
       if (loggedIn) {
-        this.LoadErablieresPage();
+        this.loadErablieresPage();
       }
       else {
         this.erablieres = undefined;
@@ -46,10 +46,10 @@ export class ErabliereComponent implements OnInit {
   }
 
   async ngOnInit() {
-    await this.LoadErablieresPage();
+    await this.loadErablieresPage();
   }
 
-  private async LoadErablieresPage() {
+  async loadErablieresPage() {
     const titreChargement = "Chargement des érablières...";
 
     if (this.etat == titreChargement) {

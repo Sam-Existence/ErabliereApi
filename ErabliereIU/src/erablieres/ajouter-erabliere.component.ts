@@ -20,6 +20,7 @@ export class AjouterErabliereComponent implements OnInit {
     erabliere: Erabliere = this.getDefaultErabliere();
     plusdOptions: boolean = false;
     plusOptionsButtonText: string = "Plus d'options";
+    @Output() shouldReloadErablieres = new EventEmitter();
 
     constructor(private _api: ErabliereApi) { }
 
@@ -30,6 +31,7 @@ export class AjouterErabliereComponent implements OnInit {
         if (this.erabliere != undefined) {
             this._api.postErabliere(this.erabliere).then(() => {
                 this.erabliere = this.getDefaultErabliere();
+                this.shouldReloadErablieres.emit();
             });
         }
     }
