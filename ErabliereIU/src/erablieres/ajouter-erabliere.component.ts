@@ -8,7 +8,16 @@ import { Erabliere } from 'src/model/erabliere';
     templateUrl: './ajouter-erabliere.component.html',
 })
 export class AjouterErabliereComponent implements OnInit {
-    erabliere?: Erabliere;
+    getDefaultErabliere() {
+        let e = new Erabliere();
+        e.afficherSectionBaril = true;
+        e.afficherSectionDompeux = true;
+        e.afficherTrioDonnees = true;
+        e.ipRule = "-";
+        return e;
+    }
+
+    erabliere: Erabliere = this.getDefaultErabliere();
     plusdOptions: boolean = false;
     plusOptionsButtonText: string = "Plus d'options";
 
@@ -20,7 +29,7 @@ export class AjouterErabliereComponent implements OnInit {
     ajouterErabliere() {
         if (this.erabliere != undefined) {
             this._api.postErabliere(this.erabliere).then(() => {
-                this.erabliere = undefined;
+                this.erabliere = this.getDefaultErabliere();
             });
         }
     }

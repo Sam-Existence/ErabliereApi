@@ -20,7 +20,7 @@ import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.co
 import { EnvironmentService } from 'src/environments/environment.service';
 import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
 import { NotesComponent } from 'src/notes/notes.component';
 import { AjouterNoteComponent } from 'src/notes/ajouter-note.component';
@@ -136,6 +136,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule
   ],
   providers: [
     {

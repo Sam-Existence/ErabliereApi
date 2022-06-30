@@ -11,6 +11,7 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Le nom de l'érablière
         /// </summary>
         [MaxLength(50)]
+        [Required(ErrorMessage = "Le nom de l'érablière ne peut pas être vide.")]
         public string? Nom { get; set; }
 
         /// <summary>

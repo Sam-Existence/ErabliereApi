@@ -1,4 +1,3 @@
-<!-- This is a modal use to display a form so the user can create a new erabliere -->
 <div class="modal fade" 
      id="ajouterErabliereModal" 
      tabindex="-1" 
@@ -14,31 +13,37 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form #erabliereForm="ngForm">
                     <div class="form-group">
                         <label for="nomErabliere">Nom de l'erablière</label>
-                        <input type="text" class="form-control" id="nomErabliere" placeholder="Nom de l'erablière">
+                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de l'erablière"
+                               [(ngModel)]="erabliere.nom">
                     </div>
                     <div [hidden]="!plusdOptions">
                         <div class="form-group">
                             <label for="ipRules">Règle IP</label>
-                            <input type="text" class="form-control" id="ipRules" rows="3" placeholder="Règle IP" value="-">
+                            <input type="text" class="form-control" id="ipRule" name="ipRule" rows="3" placeholder="Règle IP"
+                                   [(ngModel)]="erabliere.ipRule">
                         </div>
                         <div class="form-group">
                             <label for="numeroOrdre">Numéro ordre</label>
-                            <input type="text" class="form-control" id="numeroOrdre" placeholder="0" value="0">
+                            <input type="text" class="form-control" id="indiceOrdre" name="indiceOrdre" placeholder="0"
+                            [(ngModel)]="erabliere.indiceOrdre">
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
+                            <input type="checkbox" class="form-check-input" id="afficherSectionBaril" name="afficherSectionBaril"
+                            [(ngModel)]="erabliere.afficherSectionBaril">
                             <label for="utiliserSectionBaril" class="form-check-label">Afficher section barils</label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
-                            <label for="utiliserSectionBaril" class="form-check-label">Afficher trio données</label>
+                            <input type="checkbox" class="form-check-input" id="afficherTrioDonnees" name="afficherTrioDonnees"
+                            [(ngModel)]="erabliere.afficherTrioDonnees">
+                            <label for="utiliserSectionTrioDonnees" class="form-check-label">Afficher trio données</label>
                         </div>
                         <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="utiliserSectionBaril" checked>
-                            <label for="utiliserSectionBaril" class="form-check-label">Afficher section dompeux</label>
+                            <input type="checkbox" class="form-check-input" id="afficherSectionDompeux" name="afficherSectionDompeux"
+                            [(ngModel)]="erabliere.afficherSectionDompeux">
+                            <label for="utiliserSectionDompeux" class="form-check-label">Afficher section dompeux</label>
                         </div>
                     </div>
                     <div class="form-group">

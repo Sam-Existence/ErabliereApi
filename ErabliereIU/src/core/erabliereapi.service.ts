@@ -31,16 +31,17 @@ export class ErabliereApi {
         return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
     }
 
-    async getErablieres(): Promise<Erabliere[]> {
+    async getErablieres(my:boolean): Promise<Erabliere[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres', { headers: headers }).toPromise();
+        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?my=' + my, { headers: headers }).toPromise();
     }
 
-    async getErablieresExpandCapteurs(): Promise<Erabliere[]> {
+    async getErablieresExpandCapteurs(my:boolean): Promise<Erabliere[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
-        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?$expand=Capteurs($filter=afficherCapteurDashboard eq true)', { headers: headers }).toPromise();
+        return await this._httpClient.get<Erabliere[]>(
+            this._environmentService.apiUrl + '/erablieres?my=' + my + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true)', { headers: headers }).toPromise();
     }
 
     async getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {
