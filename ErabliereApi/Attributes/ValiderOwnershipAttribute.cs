@@ -45,8 +45,6 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
     {
         var allowAccess = true;
 
-        var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
-
         var strId = context.HttpContext.Request.RouteValues[_idParamName]?.ToString();
 
         if (strId == null)
@@ -56,39 +54,48 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
 
         var config = context.HttpContext.RequestServices.GetRequiredService<IConfiguration>();
 
-        Erabliere? erabliere = await GetErabliere(dbContext, strId);
-
-        if (erabliere != null && config.IsAuthEnabled())
+        if (config.IsAuthEnabled()) 
         {
-            var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
+            var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
 
-            var customer = await userService.GetCurrentUserWithAccessAsync(erabliere);
+            Erabliere? erabliere = await GetErabliere(dbContext, strId);
 
-            if (customer == null)
+            // Valider les droits d'accès sur l'érablière
+            // Si l'érablière a été trouvé
+            // Si l'érablière est publique et que l'accès est en lecture, l'accès est autorisé
+            if (erabliere != null && 
+                (erabliere.IsPublic == true && context.HttpContext.Request.Method == "GET") == false)
             {
-                throw new InvalidOperationException("Customer should exist at this point...");
-            }
+                var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
 
-            if (customer.CustomerErablieres == null || customer.CustomerErablieres.Count == 0)
-            {
-                allowAccess = false;
-            }
-            else
-            {
-                var type = context.HttpContext.Request.Method switch
+                var customer = await userService.GetCurrentUserWithAccessAsync(erabliere);
+
+                if (customer == null)
                 {
-                    "GET" => 1,
-                    "POST" => 2,
-                    "PUT" => 4,
-                    "DELETE" => 8,
-                    _ => throw new InvalidOperationException($"Ownership not implement for HTTP Verb {context.HttpContext.Request.Method}"),
-                };
+                    throw new InvalidOperationException("Customer should exist at this point...");
+                }
 
-                for (int i = 0; i < customer.CustomerErablieres.Count && allowAccess; i++)
+                if (customer.CustomerErablieres == null || customer.CustomerErablieres.Count == 0)
                 {
-                    var access = customer.CustomerErablieres[i].Access;
+                    allowAccess = false;
+                }
+                else
+                {
+                    var type = context.HttpContext.Request.Method switch
+                    {
+                        "GET" => 1,
+                        "POST" => 2,
+                        "PUT" => 4,
+                        "DELETE" => 8,
+                        _ => throw new InvalidOperationException($"Ownership not implement for HTTP Verb {context.HttpContext.Request.Method}"),
+                    };
 
-                    allowAccess = (access & type) > 0;
+                    for (int i = 0; i < customer.CustomerErablieres.Count && allowAccess; i++)
+                    {
+                        var access = customer.CustomerErablieres[i].Access;
+
+                        allowAccess = (access & type) > 0;
+                    }
                 }
             }
         }

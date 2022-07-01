@@ -27,11 +27,13 @@ export class ErabliereComponent implements OnInit {
   notes?: Array<Note>;
   private _authService: IAuthorisationSerivce
   @Output() onAfterRecieveingErablieres: EventEmitter<number> = new EventEmitter<number>();
+  loggedIn: Boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
     this.erabliereSelectionnee = undefined;
     this._authService = authFactory.getAuthorisationService();
     this._authService.loginChanged.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
       if (loggedIn) {
         this.loadErablieresPage();
       }
@@ -46,6 +48,7 @@ export class ErabliereComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loggedIn = await this._authService.isLoggedIn();
     await this.loadErablieresPage();
   }
 
