@@ -165,6 +165,29 @@ public class ErablieresController : ControllerBase
     });
 
     /// <summary>
+    /// Obtenir les accès des utilisateurs à une érablière
+    /// </summary>
+    [HttpGet("{id}/[action]")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> CustomersAccess(Guid id, CancellationToken token)
+    {
+        var erabliere = await _context.Erabliere.FindAsync(new object?[] { id }, cancellationToken: token);
+
+        if (erabliere == null)
+        {
+            return NotFound();
+        }
+
+        var customers = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdErabliere == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(customers);
+    }
+
+    /// <summary>
     /// Créer une érablière
     /// </summary>
     /// <param name="postErabliere">L'érablière à créer</param>
@@ -313,6 +336,69 @@ public class ErablieresController : ControllerBase
         _context.Erabliere.Update(entity);
 
         await _context.SaveChangesAsync();
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Action permettant de creer/modifier les droits d'accès d'un utilisateur 
+    /// à une érablière.
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="customerErabliere">Les informations sur les droits d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
+    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="404">L'érablière n'existe pas.</response>
+    [HttpPut("{id}/CustomerErabliere")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(200)]
+    public async Task<IActionResult> Modifier(Guid id, PutCustomerErabliere customerErabliere, CancellationToken token)
+    {
+        if (id != customerErabliere.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id dans le corps du message");
+        }
+
+        var erabliere = await _context.Erabliere.FindAsync(new object[] { id }, token);
+
+        if (erabliere == null)
+        {
+            return NotFound();
+        }
+
+        if (customerErabliere.CustomerErablieres != null)
+        {
+            for (int i = 0; i < customerErabliere.CustomerErablieres.Count; i++)
+            {
+                var action = customerErabliere.CustomerErablieres[i];
+
+                switch (action.Action)
+                {
+                    case PutSingleCustomerErabliereAction.Create:
+                        await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+                        {
+                            Access = action.Access,
+                            IdCustomer = action.IdCustomer,
+                            IdErabliere = id
+                        }, token);
+                        break;
+                    case PutSingleCustomerErabliereAction.Edit:
+                        var customerErabliereToEdit = await _context.CustomerErablieres.SingleAsync(c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token);
+                        customerErabliereToEdit.Access = action.Access;
+                        break;
+                    case PutSingleCustomerErabliereAction.Delete:
+                        var customerErabliereToDelete = await _context.CustomerErablieres.SingleAsync(c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token);
+                        _context.CustomerErablieres.Remove(customerErabliereToDelete);
+                        break;
+                    default:
+                        throw new InvalidOperationException($"L'action {action.Action} n'est pas supporté.");
+                }
+
+                await _context.SaveChangesAsync(token);
+            }
+        }
 
         return Ok();
     }

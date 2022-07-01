@@ -7,6 +7,7 @@ import { Alerte } from 'src/model/alerte';
 import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
 import { Capteur } from 'src/model/capteur';
+import { CustomerAccess } from 'src/model/customerAccess';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
@@ -201,6 +202,12 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Activer", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
+    }
+
+    async getCustomersAccess(idErabliere:any): Promise<CustomerAccess[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
     }
 
     async startCheckoutSession(): Promise<any> {

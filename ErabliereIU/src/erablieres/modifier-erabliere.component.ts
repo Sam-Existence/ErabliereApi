@@ -2,6 +2,7 @@
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
+import { ModifierAccesUtilisateursComponent } from './modifier-acces-utilisateurs.component';
 
 @Component({
     selector: 'modifier-erabliere',
@@ -9,6 +10,7 @@ import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 })
 export class ModifierErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
+    @ViewChild(ModifierAccesUtilisateursComponent) modifierAccesUtilisateurs?: ModifierAccesUtilisateursComponent;
     modalTitle: string = "Modifier une erabliere";
     @Output() shouldReloadErablieres = new EventEmitter();
 

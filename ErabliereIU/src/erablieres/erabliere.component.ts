@@ -172,6 +172,7 @@ export class ErabliereComponent implements OnInit {
     if (this.modifierErabliereComponent != undefined) {
       if (this.modifierErabliereComponent.erabliereForm != undefined) {
         this.modifierErabliereComponent.erabliereForm.erabliere = { ...erabliere };
+        this.modifierErabliereComponent.modifierAccesUtilisateurs?.refreashAccess(erabliere.id);
       }
       else {
         console.log("erabliereForm is undefined");

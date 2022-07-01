@@ -1,0 +1,20 @@
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>IdCustomer</th>
+            <th>Acces</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let acces of customersAccess">
+            <td>{{acces.id}}</td>
+            <td>{{acces.idCustomer}}</td>
+            <td>{{acces.access}}</td>
+            <td>
+                <button (click)="supprimer(acces)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
