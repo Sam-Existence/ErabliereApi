@@ -21,9 +21,9 @@ export class ErabliereApi {
     constructor(private _httpClient: HttpClient,
                 authFactoryService: AuthorisationFactoryService,
                 private _environmentService: EnvironmentService) 
-                { 
-                    this._authService = authFactoryService.getAuthorisationService();
-                }
+    { 
+        this._authService = authFactoryService.getAuthorisationService();
+    }
 
     async getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
         const token = await this._authService.getAccessToken();
@@ -42,6 +42,12 @@ export class ErabliereApi {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
         return await this._httpClient.get<Erabliere[]>(
             this._environmentService.apiUrl + '/erablieres?my=' + my + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true)', { headers: headers }).toPromise();
+    }
+
+    async putErabliere(erabliere: Erabliere): Promise<void> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<void>(this._environmentService.apiUrl + '/erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
     }
 
     async getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {

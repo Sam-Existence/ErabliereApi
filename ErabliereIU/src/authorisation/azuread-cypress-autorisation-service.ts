@@ -6,6 +6,7 @@ import { IAuthorisationSerivce } from './iauthorisation-service';
 export class AzureADCypressAuthorisationService implements IAuthorisationSerivce {
   private _isLoggingIn = Boolean();
   private _loginChangedSubject = new Subject<Boolean>();
+  type: string = "AzureADCypress";
   loginChanged = this._loginChangedSubject.asObservable();
 
   async login() {

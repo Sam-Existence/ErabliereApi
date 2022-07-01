@@ -14,8 +14,10 @@ public class ODataOperationFilter : IOperationFilter
     {
         var mInfo = context.MethodInfo;
 
+        var enableQueryAttributes = mInfo.GetCustomAttributes(true).OfType<EnableQueryAttribute>();
+
         var hasODataAttribute = mInfo.DeclaringType?.GetCustomAttributes(true).OfType<ODataOperationFilter>().Any() == true ||
-                                mInfo.GetCustomAttributes(true).OfType<EnableQueryAttribute>().Any();
+                                enableQueryAttributes.Any();
 
         if (hasODataAttribute)
         {
@@ -23,7 +25,12 @@ public class ODataOperationFilter : IOperationFilter
             AddODataParameter("$filter");
             AddODataParameter("$top", format: "int32", type: "integer");
             AddODataParameter("$skip", format: "int32", type: "integer");
-            AddODataParameter("$expand");
+
+            if (ExpandEnabled(enableQueryAttributes))
+            {
+                AddODataParameter("$expand");
+            }
+            
             AddODataParameter("$orderby", format: "string", type: "string");
         }
 
@@ -40,5 +47,12 @@ public class ODataOperationFilter : IOperationFilter
                 }
             });
         }
+    }
+
+    private bool ExpandEnabled(IEnumerable<EnableQueryAttribute> enableQueryAttributes)
+    {
+        var enableQueryAttribute = enableQueryAttributes.Single();
+
+        return enableQueryAttribute.MaxExpansionDepth > 0;
     }
 }

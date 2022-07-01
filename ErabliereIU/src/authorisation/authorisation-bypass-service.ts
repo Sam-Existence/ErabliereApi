@@ -5,6 +5,7 @@ import { IAuthorisationSerivce } from "./iauthorisation-service";
 
 export class AuthorisationBypassService implements IAuthorisationSerivce {
     loginChanged: Observable<Boolean> = new Observable<Boolean>();
+    type: string = "AuthDisabled";
 
     login(): Promise<void> {
         return new Promise<void>((resolve, reject) => { return resolve(); });

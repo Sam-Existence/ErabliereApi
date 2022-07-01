@@ -47,8 +47,8 @@ public class ErablieresController : ControllerBase
     /// Liste les érablières
     /// </summary>
     /// <param name="my">
-    /// Indique si les érablière retourné seront ceux aillant un lien 
-    /// d'appartenance à l'usager authentifier. (ApiKey ou Bearer)
+    /// Indique si les érablière retourné seront ceux ayant un lien 
+    /// d'appartenance à l'usager authentifier.
     /// </param>
     /// <param name="token">Jeton d'annulation de la requête</param>
     /// <returns>Une liste d'érablière</returns>

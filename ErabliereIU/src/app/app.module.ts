@@ -32,6 +32,8 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';
 import { NoteComponent } from 'src/notes/note.component';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
+import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';
+import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
 
 declare global {
   interface Window { 
@@ -110,6 +112,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     AppComponent,
     ErabliereComponent,
     AjouterErabliereComponent,
+    ModifierErabliereComponent,
+    ErabliereFormComponent,
     GraphiqueComponent,
     DonneesComponent,
     DashboardComponent,

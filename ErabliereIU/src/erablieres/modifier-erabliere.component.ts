@@ -4,12 +4,12 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 
 @Component({
-    selector: 'ajouter-erabliere',
-    templateUrl: './ajouter-erabliere.component.html',
+    selector: 'modifier-erabliere',
+    templateUrl: './modifier-erabliere.component.html',
 })
-export class AjouterErabliereComponent implements OnInit {
+export class ModifierErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
-    modalTitle: string = "Ajouter une erabliere";
+    modalTitle: string = "Modifier une erabliere";
     @Output() shouldReloadErablieres = new EventEmitter();
 
     constructor(private _api: ErabliereApi) { }
@@ -17,15 +17,12 @@ export class AjouterErabliereComponent implements OnInit {
     ngOnInit() {
     }
 
-    ajouterErabliere() {
+    modifierErabliere() {
         if (this.erabliereForm != undefined) {
             if (this.erabliereForm.erabliere != undefined) {
                 let erabliere = this.erabliereForm.erabliere;
 
-                this._api.postErabliere(erabliere).then(() => {
-                    if (this.erabliereForm != undefined) {
-                        this.erabliereForm.erabliere = this.erabliereForm.getDefaultErabliere();
-                    }
+                this._api.putErabliere(erabliere).then(() => {
                     this.shouldReloadErablieres.emit();
                 });
             }
