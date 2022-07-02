@@ -63,8 +63,12 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
         this.newCustomerAccess.customerErablieres[0].idCustomer = customer.id;
     }
 
-    modifierAcces(idAccess: any) {
+    showEditForm() {
         this.displayEditAccess = true;
+    }
+
+    hideEditForm() {
+        this.displayEditAccess = false;
     }
 
     supprimer(customerAccess?: CustomerAccess) {
@@ -72,6 +76,13 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
             this._api.deleteCustomerAccess(customerAccess.idErabliere, customerAccess.id).then(() => {
                 this.refreashAccess(customerAccess.idErabliere);
             });
+        }
+    }
+
+    shouldRefreshAccessAfterUpdate(shouldRefreshAccess: Boolean) {
+        this.displayEditAccess = false;
+        if (shouldRefreshAccess) {
+            this.refreashAccess(this.idErabliere);
         }
     }
 }

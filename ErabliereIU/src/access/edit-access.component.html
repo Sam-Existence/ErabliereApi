@@ -2,5 +2,14 @@
     {{acces?.access}}
 </div>
 <div *ngIf="displayEditAccess">
-    <input class="form-control form-control-sm" type="number" value="{{acces?.access}}">
+    <div class="container">
+        <div class="row">
+            <div class="col-10">
+                <input class="form-control form-control-sm" type="number" [(ngModel)]="accessInternal.access">
+            </div>
+            <div class="col-2">
+                <button class="btn btn-primary btn-sm float-right" (click)="updateAccess()">&#9998;</button>
+            </div>
+        </div>        
+    </div>
 </div>

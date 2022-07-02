@@ -23,16 +23,12 @@
                     <td>{{acces.customer?.email}}</td>
                     <td>{{acces.customer?.uniqueName}}</td>
                     <td>
-                        <div *ngIf="!displayEditAccess">
-                            {{acces.access}}
-                        </div>
-                        <div *ngIf="displayEditAccess">
-                            <input class="form-control form-control-sm" type="number" value="{{acces.access}}">
-                        </div>
+                        <edit-access [acces]="acces" [displayEditAccess]="displayEditAccess" (shouldUpdateAccess)="shouldRefreshAccessAfterUpdate($event)"></edit-access>
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm float-right" (click)="supprimer(acces)">&#10683;</button>
-                        <button class="btn btn-outline-info btn-sm mr-3 float-right" (click)="modifierAcces(acces.id)">&#9998;</button>
+                        <button *ngIf="!displayEditAccess" class="btn btn-outline-info btn-sm mr-3 float-right" (click)="showEditForm()">&#9998;</button>
+                        <button *ngIf="displayEditAccess" class="btn btn-outline-secondary btn-sm mr-3 float-right" (click)="hideEditForm()">&#8854;</button>
                     </td>
                 </tr>
                 <tr *ngIf="displayNewLine">
