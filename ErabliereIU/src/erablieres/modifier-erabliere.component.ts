@@ -45,9 +45,13 @@ export class ModifierErabliereComponent implements OnInit {
             if (erabliere != undefined) {
                 this._api.deleteErabliere(this.idErabliere, erabliere).then(() => {
                     this.afficherSectionDeleteErabliere = true;
-                    this.shouldReloadErablieres.emit();
+                    this.shouldReloadErablieres.emit({event: 'delete'});
                 });
             }
-        }	
+        }
+    }
+
+    onHideModal() {
+        this.afficherSectionDeleteErabliere = false;
     }
 }

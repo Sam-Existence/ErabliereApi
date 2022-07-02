@@ -199,6 +199,7 @@ public class ErablieresController : ControllerBase
     /// <response code="400">
     /// Le nom de l'érablière dépasse les 50 caractères, est null ou vide ou un érablière avec le nom reçu existe déjà.
     /// </response>
+    /// <response code="409">La clé primaire de l'érablière existe déjà</response>
     [HttpPost]
     public async Task<ActionResult> Ajouter(PostErabliere postErabliere, CancellationToken token)
     {
@@ -209,6 +210,11 @@ public class ErablieresController : ControllerBase
         if (await _context.Erabliere.AnyAsync(e => e.Nom == postErabliere.Nom, token))
         {
             return BadRequest($"L'érablière nommé '{postErabliere.Nom}' existe déjà");
+        }
+        if (postErabliere.Id != null &&
+            (await _context.Erabliere.FindAsync(new object? [] { postErabliere.Id }, token)) != null) {
+                
+            return Conflict($"L'érablière avec l'id '{postErabliere.Id}' existe déjà");
         }
 
         var erabliere = _mapper.Map<Erabliere>(postErabliere);
