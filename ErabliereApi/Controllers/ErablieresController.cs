@@ -167,9 +167,12 @@ public class ErablieresController : ControllerBase
     /// <summary>
     /// Obtenir les accès des utilisateurs à une érablière
     /// </summary>
+    /// <response code="200">Les droits d'accès de l'érablère demandé</response>
+    /// <response code="400">L'érablière demandé n'existe pas</response>
     [HttpGet("{id}/[action]")]
     [ValiderIPRules]
     [ValiderOwnership("id")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
     public async Task<IActionResult> CustomersAccess(Guid id, CancellationToken token)
     {
         var erabliere = await _context.Erabliere.FindAsync(new object?[] { id }, cancellationToken: token);
@@ -426,6 +429,40 @@ public class ErablieresController : ControllerBase
             _context.Remove(entity);
 
             await _context.SaveChangesAsync();
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Supprimer les droits d'accès d'un utilisateur à une érablière
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="idCustomerErabliere">L'id du droit d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    [HttpDelete("{id}/CustomersAccess/{idCustomerErabliere}")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomerErabliere, CancellationToken token)
+    {
+        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomerErabliere }, token);
+
+        if (entity != null && entity.IdErabliere == id)
+        {
+            // Valider que l'utilisateur n'est pas en train de supprimer son propre droit d'accès
+            var authInfo = await IsAuthenticatedAsync(token);
+
+            if (entity.IdCustomer != authInfo.Item3?.Id)
+            {
+                _context.Remove(entity);
+
+                await _context.SaveChangesAsync(token);
+            }
+            else 
+            {
+                return BadRequest("Vous ne pouvez pas supprimer votre propre droit d'accès.");
+            }
         }
 
         return NoContent();

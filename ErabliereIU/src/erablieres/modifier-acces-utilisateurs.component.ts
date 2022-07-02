@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { CustomerAccess } from 'src/model/customerAccess';
 
@@ -9,6 +9,7 @@ import { CustomerAccess } from 'src/model/customerAccess';
 
 export class ModifierAccesUtilisateursComponent implements OnInit {
     customersAccess: CustomerAccess[] = [];
+    erreurChargementDroits: Boolean = false;
     constructor(private _api: ErabliereApi) { }
 
     ngOnInit() { 
@@ -16,14 +17,20 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
     }
 
     refreashAccess(idErabliere: any) {
+        this.erreurChargementDroits = false;
         this._api.getCustomersAccess(idErabliere).then(customersAccess => {
             this.customersAccess = customersAccess;
+        })
+        .catch(error => {
+            this.customersAccess = [];
+            this.erreurChargementDroits = true;
+            throw error;
         });
     }
 
-    supprimer(CustomerAccess: CustomerAccess) {
-        // this._api.deleteCustomerAccess(CustomerAccess.id).then(() => {
-        //     this.refreashAccess(CustomerAccess.idErabliere);
-        // });
+    supprimer(customerAccess: CustomerAccess) {
+        this._api.deleteCustomerAccess(customerAccess.idErabliere, customerAccess.id).then(() => {
+            this.refreashAccess(customerAccess.idErabliere);
+        });
     }
 }

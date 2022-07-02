@@ -13,6 +13,7 @@ export class ModifierErabliereComponent implements OnInit {
     @ViewChild(ModifierAccesUtilisateursComponent) modifierAccesUtilisateurs?: ModifierAccesUtilisateursComponent;
     modalTitle: string = "Modifier une erabliere";
     @Output() shouldReloadErablieres = new EventEmitter();
+    @Input() authEnabled: Boolean = false;
 
     constructor(private _api: ErabliereApi) { }
 

@@ -1,20 +1,33 @@
-<table class="table">
-    <thead>
-        <tr>
-            <th>Id</th>
-            <th>IdCustomer</th>
-            <th>Acces</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let acces of customersAccess">
-            <td>{{acces.id}}</td>
-            <td>{{acces.idCustomer}}</td>
-            <td>{{acces.access}}</td>
-            <td>
-                <button (click)="supprimer(acces)">Supprimer</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="container">
+    <h5>Accès</h5>
+    <!-- Si une erreur a eu lieu de du chargement des droits, afficher un message d'erreur -->
+    <div *ngIf="erreurChargementDroits">
+        <div class="alert alert-danger" role="alert">
+            Une erreur est survenue lors du chargement des droits.
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Nom Unique</th>
+                    <th>Accès</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let acces of customersAccess">
+                    <td>{{acces.customer?.name}}</td>
+                    <td>{{acces.customer?.email}}</td>
+                    <td>{{acces.customer?.uniqueName}}</td>
+                    <td>{{acces.access}}</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm" (click)="supprimer(acces)">&#10683;</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
