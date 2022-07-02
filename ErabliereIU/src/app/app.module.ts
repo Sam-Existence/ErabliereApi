@@ -1,6 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';
-
 import { AppComponent } from './app.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { DonneesComponent } from 'src/donnees/donnees.component';
@@ -32,6 +31,11 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';
 import { NoteComponent } from 'src/notes/note.component';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
+import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';
+import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
+import { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';
+import { SelectCustomerComponent } from 'src/customer/select-customer.component';
+import { EditAccessCompoenent } from 'src/access/edit-access.component';
 
 declare global {
   interface Window { 
@@ -110,6 +114,11 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     AppComponent,
     ErabliereComponent,
     AjouterErabliereComponent,
+    ModifierErabliereComponent,
+    ErabliereFormComponent,
+    ModifierAccesUtilisateursComponent,
+    SelectCustomerComponent,
+    EditAccessCompoenent,
     GraphiqueComponent,
     DonneesComponent,
     DashboardComponent,

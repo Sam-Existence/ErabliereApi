@@ -1,0 +1,40 @@
+<div class="modal fade" 
+     id="modifierErabliereFormModal" 
+     tabindex="-1" 
+     role="dialog" 
+     aria-labelledby="modifierErabliereFormModalLabel" 
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modifierErabliereFormModalLabel">{{ modalTitle }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <erabliere-form></erabliere-form>
+                <div *ngIf="authEnabled">
+                    <hr />
+                    <modifier-acces-utilisateurs [idErabliere]="idErabliere"></modifier-acces-utilisateurs>
+                </div>
+                <div class="container">
+                    <div *ngIf="!afficherSectionDeleteErabliere">
+                        <hr />
+                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="showDeleteErabliere()">Supprimer</button>
+                    </div>
+                    <div *ngIf="afficherSectionDeleteErabliere">
+                        <hr />
+                        <h5 class="text-danger">Supprimer l'érablière</h5>
+                        <p class="text-danger">Cette action entrainera la suppression de l'érablère et de tout les données relié à l'érablière. Les données ne pourront pas être récupéré.</p>
+                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteErabliere()">Supprimer</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="onHideModal()">Annuler</button>
+                <button type="button" class="btn btn-primary" (click)="modifierErabliere()">Modifier</button>
+            </div>
+        </div>
+    </div>
+</div>

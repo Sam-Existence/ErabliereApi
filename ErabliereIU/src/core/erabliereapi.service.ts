@@ -7,12 +7,15 @@ import { Alerte } from 'src/model/alerte';
 import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
 import { Capteur } from 'src/model/capteur';
+import { Customer } from 'src/model/customer';
+import { CustomerAccess } from 'src/model/customerAccess';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
+import { PutCustomerAccess } from 'src/model/putCustomerAccess';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -21,9 +24,9 @@ export class ErabliereApi {
     constructor(private _httpClient: HttpClient,
                 authFactoryService: AuthorisationFactoryService,
                 private _environmentService: EnvironmentService) 
-                { 
-                    this._authService = authFactoryService.getAuthorisationService();
-                }
+    { 
+        this._authService = authFactoryService.getAuthorisationService();
+    }
 
     async getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
         const token = await this._authService.getAccessToken();
@@ -42,6 +45,12 @@ export class ErabliereApi {
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
         return await this._httpClient.get<Erabliere[]>(
             this._environmentService.apiUrl + '/erablieres?my=' + my + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true)', { headers: headers }).toPromise();
+    }
+
+    async putErabliere(erabliere: Erabliere): Promise<void> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<void>(this._environmentService.apiUrl + '/erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
     }
 
     async getAlertes(idErabliereSelectionnee:any): Promise<Alerte[]> {
@@ -195,6 +204,36 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Activer", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
+    }
+
+    async getCustomers(): Promise<Customer[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/Customers', { headers: headers }).toPromise();
+    }
+
+    async getCustomersAccess(idErabliere:any): Promise<CustomerAccess[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
+    }
+
+    async putCustomerAccess(idErabliere:any, customerAccess:PutCustomerAccess): Promise<CustomerAccess> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<CustomerAccess>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomerErabliere", customerAccess, { headers: headers }).toPromise();
+    }
+
+    async deleteCustomerAccess(idErabliere:any, idCustomer: any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess/" + idCustomer, { headers: headers }).toPromise();
+    }
+
+    async deleteErabliere(idErabliere:any, erabliere: Erabliere): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere, { headers: headers, body: erabliere }).toPromise();
     }
 
     async startCheckoutSession(): Promise<any> {

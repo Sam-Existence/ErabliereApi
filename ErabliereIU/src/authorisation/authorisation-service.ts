@@ -9,7 +9,7 @@ export class AuthorisationService implements IAuthorisationSerivce {
     private _userManager: UserManager;
     private _user?: User | null;
     private _loginChangedSubject = new Subject<Boolean>();
-
+    type: string = "IdentityServer";
     loginChanged = this._loginChangedSubject.asObservable();
 
     constructor(_environmentService: EnvironmentService) {

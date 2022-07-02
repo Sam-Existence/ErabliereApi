@@ -1,58 +1,19 @@
 <div class="modal fade" 
-     id="ajouterErabliereModal" 
+     id="erabliereFormModal" 
      tabindex="-1" 
      role="dialog" 
-     aria-labelledby="ajouterErabliereModalLabel" 
+     aria-labelledby="erabliereFormModalLabel" 
      aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="ajouterErabliereModalLabel">Ajouter une erablière</h5>
+                <h5 class="modal-title" id="erabliereFormModalLabel">{{ modalTitle }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form #erabliereForm="ngForm">
-                    <div class="form-group">
-                        <label for="nomErabliere">Nom de l'erablière</label>
-                        <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de l'erablière"
-                               [(ngModel)]="erabliere.nom">
-                    </div>
-                    <div [hidden]="!plusdOptions">
-                        <div class="form-group">
-                            <label for="ipRules">Règle IP</label>
-                            <input type="text" class="form-control" id="ipRule" name="ipRule" rows="3" placeholder="Règle IP"
-                                   [(ngModel)]="erabliere.ipRule">
-                        </div>
-                        <div class="form-group">
-                            <label for="numeroOrdre">Numéro ordre</label>
-                            <input type="text" class="form-control" id="indiceOrdre" name="indiceOrdre" placeholder="0"
-                            [(ngModel)]="erabliere.indiceOrdre">
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="afficherSectionBaril" name="afficherSectionBaril"
-                            [(ngModel)]="erabliere.afficherSectionBaril">
-                            <label for="utiliserSectionBaril" class="form-check-label">Afficher section barils</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="afficherTrioDonnees" name="afficherTrioDonnees"
-                            [(ngModel)]="erabliere.afficherTrioDonnees">
-                            <label for="utiliserSectionTrioDonnees" class="form-check-label">Afficher trio données</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="afficherSectionDompeux" name="afficherSectionDompeux"
-                            [(ngModel)]="erabliere.afficherSectionDompeux">
-                            <label for="utiliserSectionDompeux" class="form-check-label">Afficher section dompeux</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <button type="button" 
-                                class="btn btn-sm mt-3"
-                                [ngClass]="plusdOptions ? 'btn-secondary' : 'btn-sm btn-success'"
-                                (click)="afficherPlusOptions()">{{ plusOptionsButtonText }}</button>
-                    </div>
-                </form>
+                <erabliere-form></erabliere-form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>

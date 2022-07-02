@@ -11,7 +11,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
     template: `
         <div class="border-top">
           <div class="row">
-            <div class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
@@ -20,7 +20,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="temperature" #temperatureGraphPannel></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
@@ -29,7 +29,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-panel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
@@ -38,7 +38,7 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
             </div>
-            <div class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherSectionDompeux" class="col-md-6">
               <bar-panel [titre]="titre_dompeux" 
                          [timeaxes]="timeaxes_dompeux" 
                          [datasets]="dompeux"

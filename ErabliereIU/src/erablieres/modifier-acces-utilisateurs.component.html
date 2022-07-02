@@ -1,0 +1,57 @@
+<div class="container">
+    <h5>Accès</h5>
+    <!-- Si une erreur a eu lieu de du chargement des droits, afficher un message d'erreur -->
+    <div *ngIf="erreurChargementDroits">
+        <div class="alert alert-danger" role="alert">
+            Une erreur est survenue lors du chargement des droits.
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Email</th>
+                    <th>Nom Unique</th>
+                    <th>Accès</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let acces of customersAccess">
+                    <td>{{acces.customer?.name}}</td>
+                    <td>{{acces.customer?.email}}</td>
+                    <td>{{acces.customer?.uniqueName}}</td>
+                    <td>
+                        <edit-access [acces]="acces" [displayEditAccess]="displayEditAccess" (shouldUpdateAccess)="shouldRefreshAccessAfterUpdate($event)"></edit-access>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm float-right" (click)="supprimer(acces)">&#10683;</button>
+                        <button *ngIf="!displayEditAccess" class="btn btn-outline-info btn-sm mr-3 float-right" (click)="showEditForm()">&#9998;</button>
+                        <button *ngIf="displayEditAccess" class="btn btn-outline-secondary btn-sm mr-3 float-right" (click)="hideEditForm()">&#8854;</button>
+                    </td>
+                </tr>
+                <tr *ngIf="displayNewLine">
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select-customer (customerSelected)="customerSelected($event)"></select-customer>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="newCustomerAccess.customerErablieres[0].access" placeholder="Accès">
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm float-right" (click)="creerAcces()">&#43;</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div *ngIf="erreurAjoutAcces">
+            <div class="alert alert-danger" role="alert">
+                Une erreur est survenue lors de l'ajout d'un accès.
+            </div>
+        </div>
+        <button *ngIf="!erreurChargementDroits && !displayNewLine" class="btn btn-outline-success" (click)="addUserAccess()">&#43;</button>
+        <button *ngIf="!erreurChargementDroits && displayNewLine" class="btn btn-outline-secondary" (click)="hideAddUserAccess()">&#8854;</button>
+    </div>
+</div>

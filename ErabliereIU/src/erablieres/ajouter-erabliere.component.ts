@@ -1,25 +1,15 @@
 // This a component that allows to add a new erabliere
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { Erabliere } from 'src/model/erabliere';
+import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 
 @Component({
     selector: 'ajouter-erabliere',
     templateUrl: './ajouter-erabliere.component.html',
 })
 export class AjouterErabliereComponent implements OnInit {
-    getDefaultErabliere() {
-        let e = new Erabliere();
-        e.afficherSectionBaril = true;
-        e.afficherSectionDompeux = true;
-        e.afficherTrioDonnees = true;
-        e.ipRule = "-";
-        return e;
-    }
-
-    erabliere: Erabliere = this.getDefaultErabliere();
-    plusdOptions: boolean = false;
-    plusOptionsButtonText: string = "Plus d'options";
+    @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
+    modalTitle: string = "Ajouter une erabliere";
     @Output() shouldReloadErablieres = new EventEmitter();
 
     constructor(private _api: ErabliereApi) { }
@@ -28,20 +18,17 @@ export class AjouterErabliereComponent implements OnInit {
     }
 
     ajouterErabliere() {
-        if (this.erabliere != undefined) {
-            this._api.postErabliere(this.erabliere).then(() => {
-                this.erabliere = this.getDefaultErabliere();
-                this.shouldReloadErablieres.emit();
-            });
-        }
-    }
+        if (this.erabliereForm != undefined) {
+            if (this.erabliereForm.erabliere != undefined) {
+                let erabliere = this.erabliereForm.erabliere;
 
-    afficherPlusOptions() {
-        this.plusdOptions = !this.plusdOptions;
-        if (this.plusdOptions) {
-            this.plusOptionsButtonText = "Moins d'options";
-        } else {
-            this.plusOptionsButtonText = "Plus d'options";
+                this._api.postErabliere(erabliere).then(() => {
+                    if (this.erabliereForm != undefined) {
+                        this.erabliereForm.erabliere = this.erabliereForm.getDefaultErabliere();
+                    }
+                    this.shouldReloadErablieres.emit();
+                });
+            }
         }
     }
 }

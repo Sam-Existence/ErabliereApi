@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Post
 {
@@ -7,6 +8,12 @@ namespace ErabliereApi.Donnees.Action.Post
     /// </summary>
     public class PostErabliere
     {
+        /// <summary>
+        /// La clé primaire de l'érablière. Paramètre optionnel. Si absent
+        /// un Id aléatoire sera généré.
+        /// </summary>
+        public Guid? Id { get; set; }
+
         /// <summary>
         /// Le nom de l'érablière
         /// </summary>

@@ -64,7 +64,7 @@ Cypress.Commands.add('login', () => {
                     form: true,
                     body: "grant_type=client_credentials&scope=erabliereapi"
                 }).then(res => {
-                    sessionStorage.setItem('oidc.user:https://192.168.0.110:5005:erabliereiu', JSON.stringify(res.body))
+                    sessionStorage.setItem(`oidc.user:${config.stsAuthority}:erabliereiu`, JSON.stringify(res.body))
                 })
             }
         }

@@ -6,7 +6,7 @@ import { Erabliere } from "src/model/erabliere";
     selector: 'graphique',
     template: `
         <div>
-            <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true" 
+            <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
                            [initialErabliere]="erabliere"
                            [erabliereSubject]="resetErabliere"></donnees-panel>
             <capteur-panels [capteurs]="erabliere?.capteurs"></capteur-panels>

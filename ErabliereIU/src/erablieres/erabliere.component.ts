@@ -1,4 +1,4 @@
-import { AfterContentChecked, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterContentChecked, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
@@ -9,6 +9,7 @@ import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
+import { ModifierErabliereComponent } from './modifier-erabliere.component';
 
 @Component({
   selector: 'erablieres',
@@ -27,11 +28,17 @@ export class ErabliereComponent implements OnInit {
   notes?: Array<Note>;
   private _authService: IAuthorisationSerivce
   @Output() onAfterRecieveingErablieres: EventEmitter<number> = new EventEmitter<number>();
+  loggedIn: Boolean = false;
+  authDisabled: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
     this.erabliereSelectionnee = undefined;
     this._authService = authFactory.getAuthorisationService();
+    if (this._authService.type == "AuthDisabled") {
+      this.authDisabled = true;
+    }
     this._authService.loginChanged.subscribe(loggedIn => {
+      this.loggedIn = loggedIn;
       if (loggedIn) {
         this.loadErablieresPage();
       }
@@ -46,6 +53,7 @@ export class ErabliereComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loggedIn = await this._authService.isLoggedIn();
     await this.loadErablieresPage();
   }
 
@@ -156,5 +164,22 @@ export class ErabliereComponent implements OnInit {
 
       this.notes = notes;
     });
+  }
+
+  @ViewChild(ModifierErabliereComponent) modifierErabliereComponent?: ModifierErabliereComponent;
+
+  openEditErabliereForm(erabliere: Erabliere) {
+    if (this.modifierErabliereComponent != undefined) {
+      if (this.modifierErabliereComponent.erabliereForm != undefined) {
+        this.modifierErabliereComponent.erabliereForm.erabliere = { ...erabliere };
+        this.modifierErabliereComponent.modifierAccesUtilisateurs?.refreashAccess(erabliere.id);
+      }
+      else {
+        console.log("erabliereForm is undefined");
+      }
+    }
+    else {
+      console.log("modifierErabliereComponent is undefined");
+    }
   }
 }

@@ -10,6 +10,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
   private _isLoggedIn: Boolean = false;
   private _loginChangedSubject = new Subject<Boolean>();
   loginChanged = this._loginChangedSubject.asObservable();
+  type: string = "AzureAD";
 
   constructor(private _msalInstance: MsalService, private _environmentService: EnvironmentService) { }
 
