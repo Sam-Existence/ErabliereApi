@@ -18,6 +18,18 @@
                     <hr />
                     <modifier-acces-utilisateurs [idErabliere]="idErabliere"></modifier-acces-utilisateurs>
                 </div>
+                <div class="container">
+                    <div *ngIf="!afficherSectionDeleteErabliere">
+                        <hr />
+                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="showDeleteErabliere()">Supprimer</button>
+                    </div>
+                    <div *ngIf="afficherSectionDeleteErabliere">
+                        <hr />
+                        <h5 class="text-danger">Supprimer l'érablière</h5>
+                        <p class="text-danger">Cette action entrainera la suppression de l'érablère et de tout les données relié à l'érablière. Les données ne pourront pas être récupéré.</p>
+                        <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteErabliere()">Supprimer</button>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>

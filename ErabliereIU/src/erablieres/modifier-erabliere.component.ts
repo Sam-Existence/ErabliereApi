@@ -15,10 +15,12 @@ export class ModifierErabliereComponent implements OnInit {
     @Output() shouldReloadErablieres = new EventEmitter();
     @Input() authEnabled: Boolean = false;
     @Input() idErabliere?: any;
+    afficherSectionDeleteErabliere: boolean = false;
 
     constructor(private _api: ErabliereApi) { }
 
     ngOnInit() {
+        this.afficherSectionDeleteErabliere = false;
     }
 
     modifierErabliere() {
@@ -31,5 +33,21 @@ export class ModifierErabliereComponent implements OnInit {
                 });
             }
         }
+    }
+
+    showDeleteErabliere() {
+        this.afficherSectionDeleteErabliere = true;
+    }
+
+    deleteErabliere() {
+        if (confirm("Voulez-vous vraiment supprimer cette érablière ? Cette action est irréversible.")) {
+            var erabliere = this.erabliereForm?.erabliere;
+            if (erabliere != undefined) {
+                this._api.deleteErabliere(this.idErabliere, erabliere).then(() => {
+                    this.afficherSectionDeleteErabliere = true;
+                    this.shouldReloadErablieres.emit();
+                });
+            }
+        }	
     }
 }
