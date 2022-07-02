@@ -1,0 +1,6 @@
+<select class="custom-select" (change)="onSelectChange($event)">
+    <option selected>Choisir un utilisateur</option>
+    <option *ngFor="let customer of customers" [value]="customer.id">
+        {{ customer.uniqueName }}
+    </option>
+</select>

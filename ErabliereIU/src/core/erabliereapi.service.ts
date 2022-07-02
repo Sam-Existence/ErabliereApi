@@ -7,6 +7,7 @@ import { Alerte } from 'src/model/alerte';
 import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
 import { Capteur } from 'src/model/capteur';
+import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
@@ -14,6 +15,7 @@ import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
+import { PutCustomerAccess } from 'src/model/putCustomerAccess';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -204,10 +206,22 @@ export class ErabliereApi {
         return await this._httpClient.put<AlerteCapteur>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Alertes/" + idAlerte + "/Activer", { idErabliere: idErabliere, id: idAlerte }, { headers: headers }).toPromise();
     }
 
+    async getCustomers(): Promise<Customer[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/Customers', { headers: headers }).toPromise();
+    }
+
     async getCustomersAccess(idErabliere:any): Promise<CustomerAccess[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
+    }
+
+    async putCustomerAccess(idErabliere:any, customerAccess:PutCustomerAccess): Promise<CustomerAccess> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.put<CustomerAccess>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomerErabliere", customerAccess, { headers: headers }).toPromise();
     }
 
     async deleteCustomerAccess(idErabliere:any, idCustomer: any): Promise<any> {

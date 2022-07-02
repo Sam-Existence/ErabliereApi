@@ -22,12 +22,40 @@
                     <td>{{acces.customer?.name}}</td>
                     <td>{{acces.customer?.email}}</td>
                     <td>{{acces.customer?.uniqueName}}</td>
-                    <td>{{acces.access}}</td>
                     <td>
-                        <button class="btn btn-danger btn-sm" (click)="supprimer(acces)">&#10683;</button>
+                        <div *ngIf="!displayEditAccess">
+                            {{acces.access}}
+                        </div>
+                        <div *ngIf="displayEditAccess">
+                            <input class="form-control form-control-sm" type="number" value="{{acces.access}}">
+                        </div>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm float-right" (click)="supprimer(acces)">&#10683;</button>
+                        <button class="btn btn-outline-info btn-sm mr-3 float-right" (click)="modifierAcces(acces.id)">&#9998;</button>
+                    </td>
+                </tr>
+                <tr *ngIf="displayNewLine">
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <select-customer (customerSelected)="customerSelected($event)"></select-customer>
+                    </td>
+                    <td>
+                        <input type="number" class="form-control form-control-sm" [(ngModel)]="newCustomerAccess.customerErablieres[0].access" placeholder="Accès">
+                    </td>
+                    <td>
+                        <button class="btn btn-primary btn-sm float-right" (click)="creerAcces()">&#43;</button>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div *ngIf="erreurAjoutAcces">
+            <div class="alert alert-danger" role="alert">
+                Une erreur est survenue lors de l'ajout d'un accès.
+            </div>
+        </div>
+        <button *ngIf="!erreurChargementDroits && !displayNewLine" class="btn btn-outline-success" (click)="addUserAccess()">&#43;</button>
+        <button *ngIf="!erreurChargementDroits && displayNewLine" class="btn btn-outline-secondary" (click)="hideAddUserAccess()">&#8854;</button>
     </div>
 </div>

@@ -52,6 +52,11 @@ public class ErabliereApiUserService : IUserService
     /// <inheritdoc />
     public async Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere)
     {
+        if (erabliere.Id.HasValue == false)
+        {
+            throw new InvalidOperationException("Cannot get user acces of an erabliere with Id null");
+        }
+
         using var scope = _scopeFactory.CreateScope();
 
         var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
@@ -65,9 +70,10 @@ public class ErabliereApiUserService : IUserService
             throw new InvalidOperationException("Customer should not be null here ...");
         }
 
+        var idErabliere = erabliere.Id.Value;
         var query = context.Customers.AsNoTracking()
                                      .Where(c => c.UniqueName == uniqueName)
-                                     .ProjectTo<CustomerOwnershipAccess>(_fetchCustomerOwnershipAccessMap);
+                                     .ProjectTo<CustomerOwnershipAccess>(_fetchCustomerOwnershipAccessMap, new { idErabliere });
 
         return await query.SingleOrDefaultAsync();
     }
@@ -93,7 +99,12 @@ public class ErabliereApiUserService : IUserService
 
     private static readonly AutoMapper.IConfigurationProvider _fetchCustomerOwnershipAccessMap = new MapperConfiguration(config =>
     {
-        config.CreateMap<Donnees.Customer, CustomerOwnershipAccess>();
+        Guid idErabliere = Guid.Empty;
+
+#nullable disable
+        config.CreateMap<Donnees.Customer, CustomerOwnershipAccess>()
+              .ForMember(c => c.CustomerErablieres, o => o.MapFrom(cbd => cbd.CustomerErablieres.Where(cbde => cbde.IdErabliere == idErabliere)));
+#nullable enable
 
         config.CreateMap<CustomerErabliere, CustomerErabliereOwnershipAccess>();
     });

@@ -11,9 +11,10 @@ import { ModifierAccesUtilisateursComponent } from './modifier-acces-utilisateur
 export class ModifierErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
     @ViewChild(ModifierAccesUtilisateursComponent) modifierAccesUtilisateurs?: ModifierAccesUtilisateursComponent;
-    modalTitle: string = "Modifier une erabliere";
+    modalTitle: string = "Modifier une érablière";
     @Output() shouldReloadErablieres = new EventEmitter();
     @Input() authEnabled: Boolean = false;
+    @Input() idErabliere?: any;
 
     constructor(private _api: ErabliereApi) { }
 
