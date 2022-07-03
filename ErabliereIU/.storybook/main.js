@@ -7,7 +7,8 @@ module.exports = {
     "@storybook/addon",
     "@storybook/addon-links",
     "@storybook/addon-essentials",
-    "@storybook/addon-interactions"
+    "@storybook/addon-interactions",
+    "storybook-addon-angular-router"
   ],
   "framework": "@storybook/angular",
   "core": {
