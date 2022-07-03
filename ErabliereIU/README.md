@@ -47,3 +47,23 @@ https://medium.com/@richardr39/using-angular-cli-to-serve-over-https-locally-70d
 ```
 ng update
 ```
+
+## Storybook
+
+Le projet utilise storybook pour facilité le développement et la documentation du projet.
+
+Pour lancer storybook
+
+```
+npm run storybook
+```
+
+> Les fichier .stories.ts on été générés automatiquement utilisant le programme https://github.com/ErabliereApi/StorybookGenerator
+
+## Cypress
+
+Le projet possède des tests Cypress. Pour les executer:
+
+```
+npx cypress run
+```
