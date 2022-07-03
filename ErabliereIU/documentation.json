@@ -9997,7 +9997,7 @@
     "miscellaneous": {
         "variables": [
             {
-                "name": "customer",
+                "name": "customerAccess",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/EditAccess.stories.ts",
@@ -10005,6 +10005,26 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditAccess.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/EditAccess.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "environment",
@@ -10035,26 +10055,6 @@
                 "deprecationMessage": "",
                 "type": "",
                 "defaultValue": "window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1"
-            },
-            {
-                "name": "Primary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/EditAccess.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "Secondary",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/EditAccess.stories.ts",
-                "deprecated": false,
-                "deprecationMessage": "",
-                "type": "",
-                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "Template",
@@ -10131,7 +10131,7 @@
         "groupedVariables": {
             "src/stories/EditAccess.stories.ts": [
                 {
-                    "name": "customer",
+                    "name": "customerAccess",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/EditAccess.stories.ts",
@@ -10141,7 +10141,7 @@
                     "defaultValue": "new CustomerAccess()"
                 },
                 {
-                    "name": "Primary",
+                    "name": "Display",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/EditAccess.stories.ts",
@@ -10151,7 +10151,7 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "Secondary",
+                    "name": "Edit",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/EditAccess.stories.ts",
@@ -10936,7 +10936,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "customer",
+                "name": "customerAccess",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -10946,7 +10946,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Primary",
+                "name": "Display",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -10956,7 +10956,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "Secondary",
+                "name": "Edit",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"

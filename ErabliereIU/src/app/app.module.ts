@@ -35,7 +35,7 @@ import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
 import { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';
 import { SelectCustomerComponent } from 'src/customer/select-customer.component';
-import { EditAccessCompoenent } from 'src/access/edit-access.component';
+import { EditAccessComponent } from 'src/access/edit-access.component';
 
 declare global {
   interface Window { 
@@ -118,7 +118,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ErabliereFormComponent,
     ModifierAccesUtilisateursComponent,
     SelectCustomerComponent,
-    EditAccessCompoenent,
+    EditAccessComponent,
     GraphiqueComponent,
     DonneesComponent,
     DashboardComponent,

@@ -1,5 +1,3 @@
-// Button.stories.ts
-
 import { Meta, moduleMetadata, Story } from '@storybook/angular';
 import { HttpClientModule } from '@angular/common/http';
 import { Customer } from 'src/model/customer';
@@ -8,6 +6,7 @@ import { CustomerAccess } from 'src/model/customerAccess';
 import { EditAccessCompoenent } from '../access/edit-access.component';
 import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { PublicClientApplication } from '@azure/msal-browser';
+import faker from '@faker-js/faker';
 
 export default {
   title: 'EditAccessComponent',
@@ -27,16 +26,16 @@ export default {
   ]
 } as Meta;
 
-var customer = new CustomerAccess();
-customer.id = 1;
-customer.idCustomer = 2;
-customer.idErabliere = 3;
-customer.access = 15;
-customer.customer = new Customer();
-customer.customer.id = 2;
-customer.customer.name = 'Test';
-customer.customer.email = 'Test@test.com';
-customer.customer.uniqueName = 'Test@test.com';
+var customerAccess = new CustomerAccess();
+customerAccess.id = faker.datatype.uuid();
+customerAccess.idCustomer = faker.datatype.uuid();
+customerAccess.idErabliere = faker.datatype.uuid();
+customerAccess.access = faker.datatype.number({min: 0, max: 15});
+customerAccess.customer = new Customer();
+customerAccess.customer.id = customerAccess.idCustomer;
+customerAccess.customer.name = faker.name.firstName();
+customerAccess.customer.email = faker.internet.email();
+customerAccess.customer.uniqueName = customerAccess.customer.email;
 
 //👇 We create a “template” of how args map to rendering
 const Template: Story = (args) => ({
@@ -47,13 +46,12 @@ const Template: Story = (args) => ({
 export const Display = Template.bind({});
 
 Display.args = {
-  acces: customer
+  acces: customerAccess
 };
 
 export const Edit = Template.bind({});
 
 Edit.args = {
-  acces: customer,
+  acces: customerAccess,
   displayEditAccess: true
 };
-  

@@ -7,7 +7,7 @@ import { PutCustomerAccess } from 'src/model/putCustomerAccess';
     selector: 'edit-access',
     templateUrl: 'edit-access.component.html'
 })
-export class EditAccessCompoenent implements OnInit {
+export class EditAccessComponent implements OnInit {
     @Input() displayEditAccess: Boolean = false;
     @Input() acces: CustomerAccess = new CustomerAccess();
     accessInternal: CustomerAccess = new CustomerAccess();

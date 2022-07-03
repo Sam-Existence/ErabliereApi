@@ -12,6 +12,8 @@ Set-Location ErabliereIU
 
 Start-Process npm -ArgumentList "start"
 
+Start-Process npm -ArgumentList "run", "storybook"
+
 Set-Location ..
 
 code .
