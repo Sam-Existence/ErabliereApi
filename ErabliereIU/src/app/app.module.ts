@@ -3,19 +3,19 @@ import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from
 import { AppComponent } from './app.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { DonneesComponent } from 'src/donnees/donnees.component';
-import { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';
+import { GraphPannelComponent } from 'src/donnees/sub-panel/graph-pannel.component';
 import { BarilsComponent } from 'src/barils/barils.component';
 import { ChartsModule } from 'ng2-charts';
 import { AlerteComponent } from 'src/alerte/alerte.component';
-import { AProposComponent } from 'src/apropos/apropos.component';
+import { AproposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
-import { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';
+import { BarPannelComponent } from 'src/donnees/sub-panel/bar-pannel.component';
 import { AppRoutingModule } from './app-routing.module';
 import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';
 import { DashboardComponent } from 'src/dashboard/dashboard.component';
 import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';
+import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
@@ -28,14 +28,14 @@ import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
 import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
-import { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';
+import { DateTimeSelectorComponent } from 'src/donnees/sub-panel/userinput/date-time-selector.component';
 import { NoteComponent } from 'src/notes/note.component';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
 import { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';
 import { SelectCustomerComponent } from 'src/customer/select-customer.component';
-import { EditAccessCompoenent } from 'src/access/edit-access.component';
+import { EditAccessComponent } from 'src/access/edit-access.component';
 
 declare global {
   interface Window { 
@@ -118,19 +118,19 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ErabliereFormComponent,
     ModifierAccesUtilisateursComponent,
     SelectCustomerComponent,
-    EditAccessCompoenent,
+    EditAccessComponent,
     GraphiqueComponent,
     DonneesComponent,
     DashboardComponent,
     GraphPannelComponent,
-    DateTimeSelector,
+    DateTimeSelectorComponent,
     CapteurPannelsComponent,
     BarPannelComponent,
     BarilsComponent,
     AlerteComponent,
     AjouterAlerteComponent,
     ModifierAlerteComponent,
-    AProposComponent,
+    AproposComponent,
     DocumentationComponent,
     NotesComponent,
     NoteComponent,

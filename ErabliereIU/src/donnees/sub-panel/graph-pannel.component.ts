@@ -4,8 +4,8 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
-    selector: 'graph-panel',
-    templateUrl: './graphpanel.component.html',
+    selector: 'graph-pannel',
+    templateUrl: './graph-pannel.component.html',
 })
 export class GraphPannelComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;

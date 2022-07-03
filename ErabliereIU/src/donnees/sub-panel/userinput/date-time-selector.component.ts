@@ -8,7 +8,7 @@ import { UntypedFormControl } from '@angular/forms';
         <input class="form-control" type="date" [formControl]="dateControl"/>
     `
 })
-export class DateTimeSelector implements OnInit {
+export class DateTimeSelectorComponent implements OnInit {
     @Input() titre?: string;
     currentVal: any;
     previousVal: any;
