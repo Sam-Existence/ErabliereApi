@@ -1,28 +1,16 @@
-import { Meta, moduleMetadata, Story } from '@storybook/angular';
-import { HttpClientModule } from '@angular/common/http';
+import { Meta, Story } from '@storybook/angular';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 
-import { EditAccessCompoenent } from '../access/edit-access.component';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
-import { PublicClientApplication } from '@azure/msal-browser';
+import { EditAccessComponent } from '../access/edit-access.component';
 import faker from '@faker-js/faker';
+import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 export default {
   title: 'EditAccessComponent',
-  component: EditAccessCompoenent,
+  component: EditAccessComponent,
   decorators: [
-    moduleMetadata({
-      imports: [HttpClientModule],
-      providers: [
-        { provide: MSAL_INSTANCE, useValue: new PublicClientApplication({
-          auth: {
-            clientId: "null"
-          }
-        })},
-        MsalService
-      ]
-    })
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
   ]
 } as Meta;
 

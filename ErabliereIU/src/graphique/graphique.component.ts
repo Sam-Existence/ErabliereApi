@@ -9,7 +9,7 @@ import { Erabliere } from "src/model/erabliere";
             <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
                            [initialErabliere]="erabliere"
                            [erabliereSubject]="resetErabliere"></donnees-panel>
-            <capteur-panels [capteurs]="erabliere?.capteurs"></capteur-panels>
+            <capteur-pannels [capteurs]="erabliere?.capteurs"></capteur-pannels>
             <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
                           [erabliereId]="erabliere?.id"></barils-panel>
         </div>

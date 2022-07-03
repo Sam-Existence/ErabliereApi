@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AlerteComponent } from 'src/alerte/alerte.component';
-import { AProposComponent } from 'src/apropos/apropos.component';
+import { AproposComponent } from 'src/apropos/apropos.component';
 import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';
 import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 import { DashboardComponent } from 'src/dashboard/dashboard.component';

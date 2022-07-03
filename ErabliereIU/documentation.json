@@ -158,12 +158,12 @@
         },
         {
             "name": "Window",
-            "id": "interface-Window-41e0a566f3503f8b2a83729dac65891c771117bbd49ba84932800984b3d972051f6a742c340b93ed6f44f8e89c9249a433e5189eab4c38ba7b4db6b7912c0e0e",
+            "id": "interface-Window-37bc35ca6fc08ce1738992efc4242a1b246057715dafff2f2a77f7d788baf8785e2a7c73fa9e625677955b94ed65b73a7fadc2fe79303f7e4e039d96a8617334",
             "file": "src/app/app.module.ts",
             "deprecated": false,
             "deprecationMessage": "",
             "type": "interface",
-            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';\r\nimport { AppComponent } from './app.component';\r\nimport { ErabliereComponent } from 'src/erablieres/erabliere.component';\r\nimport { DonneesComponent } from 'src/donnees/donnees.component';\r\nimport { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';\r\nimport { BarilsComponent } from 'src/barils/barils.component';\r\nimport { ChartsModule } from 'ng2-charts';\r\nimport { AlerteComponent } from 'src/alerte/alerte.component';\r\nimport { AProposComponent } from 'src/apropos/apropos.component';\r\nimport { DocumentationComponent } from 'src/documentation/documentation.component';\r\nimport { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';\r\nimport { DashboardComponent } from 'src/dashboard/dashboard.component';\r\nimport { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';\r\nimport { EnvironmentService } from 'src/environments/environment.service';\r\nimport { GraphiqueComponent } from 'src/graphique/graphique.component';\r\nimport { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';\r\nimport { NotesComponent } from 'src/notes/notes.component';\r\nimport { AjouterNoteComponent } from 'src/notes/ajouter-note.component';\r\nimport { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';\r\nimport { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';\r\nimport { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';\r\nimport { environment } from 'src/environments/environment';\r\nimport { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';\r\nimport { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';\r\nimport { NoteComponent } from 'src/notes/note.component';\r\nimport { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';\r\nimport { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';\r\nimport { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';\r\nimport { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';\r\nimport { SelectCustomerComponent } from 'src/customer/select-customer.component';\r\nimport { EditAccessCompoenent } from 'src/access/edit-access.component';\r\n\r\ndeclare global {\r\n  interface Window { \r\n    appRef: ApplicationRef, \r\n    Cypress: any,\r\n    authorisationFactoryService: AuthorisationFactoryService\r\n   }\r\n}\r\n\r\nexport function initConfig(appConfig: EnvironmentService) {\r\n  return () => appConfig.loadConfig();\r\n}\r\n\r\nexport function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClientApplication {\r\n  if (!appConfig.authEnable) {\r\n    return new PublicClientApplication({\r\n      auth: {\r\n        clientId: \"null\"\r\n      }\r\n    });\r\n  }\r\n\r\n  if (appConfig.clientId == undefined) {\r\n    throw new Error(\"/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode\");\r\n  }\r\n\r\n  const msalConfig: Configuration = {\r\n    auth: {\r\n      clientId: appConfig.clientId,\r\n      authority: \"https://login.microsoftonline.com/\" + appConfig.tenantId,\r\n      redirectUri: \"/signin-callback\",\r\n      postLogoutRedirectUri: \"/signout-callback\",\r\n      navigateToLoginRequestUrl: true\r\n    },\r\n    cache: {\r\n      cacheLocation: BrowserCacheLocation.LocalStorage,\r\n      storeAuthStateInCookie: false,\r\n    },\r\n    system: {\r\n      loggerOptions: {\r\n        loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {\r\n          if (containsPii) {\r\n            return;\r\n          }\r\n          switch (level) {\r\n            case LogLevel.Error:\r\n              console.error(message);\r\n              return;\r\n            case LogLevel.Info:\r\n              console.info(message);\r\n              return;\r\n            case LogLevel.Verbose:\r\n              console.debug(message);\r\n              return;\r\n            case LogLevel.Warning:\r\n              console.warn(message);\r\n              return;\r\n          }\r\n        },\r\n        piiLoggingEnabled: false\r\n      },\r\n      windowHashTimeout: 60000,\r\n      iframeHashTimeout: 6000,\r\n      loadFrameTimeout: 0,\r\n      asyncPopups: false\r\n    }\r\n  };\r\n\r\n  return new PublicClientApplication(msalConfig);\r\n}\r\n\r\nconst isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ErabliereComponent,\r\n    AjouterErabliereComponent,\r\n    ModifierErabliereComponent,\r\n    ErabliereFormComponent,\r\n    ModifierAccesUtilisateursComponent,\r\n    SelectCustomerComponent,\r\n    EditAccessCompoenent,\r\n    GraphiqueComponent,\r\n    DonneesComponent,\r\n    DashboardComponent,\r\n    GraphPannelComponent,\r\n    DateTimeSelector,\r\n    CapteurPannelsComponent,\r\n    BarPannelComponent,\r\n    BarilsComponent,\r\n    AlerteComponent,\r\n    AjouterAlerteComponent,\r\n    ModifierAlerteComponent,\r\n    AProposComponent,\r\n    DocumentationComponent,\r\n    NotesComponent,\r\n    NoteComponent,\r\n    AjouterNoteComponent,\r\n    AjouterDonneeCapteurComponent,\r\n    SigninRedirectCallbackComponent,\r\n    SignoutRedirectCallbackComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    ChartsModule,\r\n    AppRoutingModule,\r\n    HttpClientModule,\r\n    ReactiveFormsModule,\r\n    FormsModule\r\n  ],\r\n  providers: [\r\n    {\r\n      provide: APP_INITIALIZER,\r\n      useFactory: initConfig,\r\n      deps: [EnvironmentService],\r\n      multi: true,\r\n    },\r\n    {\r\n      provide: MSAL_INSTANCE,\r\n      useFactory: MSALInstanceFactory,\r\n      deps: [EnvironmentService]\r\n    },\r\n    MsalService\r\n  ]\r\n})\r\nexport class AppModule implements DoBootstrap { \r\n  constructor(private injector: Injector) {}\r\n\r\n  ngDoBootstrap(appRef: ApplicationRef): void {\r\n    appRef.bootstrap(AppComponent);\r\n\r\n    if (!environment.production) {\r\n      if (window.Cypress) {\r\n        window.appRef = appRef;\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';\r\nimport { AppComponent } from './app.component';\r\nimport { ErabliereComponent } from 'src/erablieres/erabliere.component';\r\nimport { DonneesComponent } from 'src/donnees/donnees.component';\r\nimport { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';\r\nimport { BarilsComponent } from 'src/barils/barils.component';\r\nimport { ChartsModule } from 'ng2-charts';\r\nimport { AlerteComponent } from 'src/alerte/alerte.component';\r\nimport { AProposComponent } from 'src/apropos/apropos.component';\r\nimport { DocumentationComponent } from 'src/documentation/documentation.component';\r\nimport { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';\r\nimport { DashboardComponent } from 'src/dashboard/dashboard.component';\r\nimport { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';\r\nimport { EnvironmentService } from 'src/environments/environment.service';\r\nimport { GraphiqueComponent } from 'src/graphique/graphique.component';\r\nimport { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';\r\nimport { NotesComponent } from 'src/notes/notes.component';\r\nimport { AjouterNoteComponent } from 'src/notes/ajouter-note.component';\r\nimport { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';\r\nimport { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';\r\nimport { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';\r\nimport { environment } from 'src/environments/environment';\r\nimport { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';\r\nimport { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';\r\nimport { NoteComponent } from 'src/notes/note.component';\r\nimport { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';\r\nimport { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';\r\nimport { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';\r\nimport { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';\r\nimport { SelectCustomerComponent } from 'src/customer/select-customer.component';\r\nimport { EditAccessComponent } from 'src/access/edit-access.component';\r\n\r\ndeclare global {\r\n  interface Window { \r\n    appRef: ApplicationRef, \r\n    Cypress: any,\r\n    authorisationFactoryService: AuthorisationFactoryService\r\n   }\r\n}\r\n\r\nexport function initConfig(appConfig: EnvironmentService) {\r\n  return () => appConfig.loadConfig();\r\n}\r\n\r\nexport function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClientApplication {\r\n  if (!appConfig.authEnable) {\r\n    return new PublicClientApplication({\r\n      auth: {\r\n        clientId: \"null\"\r\n      }\r\n    });\r\n  }\r\n\r\n  if (appConfig.clientId == undefined) {\r\n    throw new Error(\"/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode\");\r\n  }\r\n\r\n  const msalConfig: Configuration = {\r\n    auth: {\r\n      clientId: appConfig.clientId,\r\n      authority: \"https://login.microsoftonline.com/\" + appConfig.tenantId,\r\n      redirectUri: \"/signin-callback\",\r\n      postLogoutRedirectUri: \"/signout-callback\",\r\n      navigateToLoginRequestUrl: true\r\n    },\r\n    cache: {\r\n      cacheLocation: BrowserCacheLocation.LocalStorage,\r\n      storeAuthStateInCookie: false,\r\n    },\r\n    system: {\r\n      loggerOptions: {\r\n        loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {\r\n          if (containsPii) {\r\n            return;\r\n          }\r\n          switch (level) {\r\n            case LogLevel.Error:\r\n              console.error(message);\r\n              return;\r\n            case LogLevel.Info:\r\n              console.info(message);\r\n              return;\r\n            case LogLevel.Verbose:\r\n              console.debug(message);\r\n              return;\r\n            case LogLevel.Warning:\r\n              console.warn(message);\r\n              return;\r\n          }\r\n        },\r\n        piiLoggingEnabled: false\r\n      },\r\n      windowHashTimeout: 60000,\r\n      iframeHashTimeout: 6000,\r\n      loadFrameTimeout: 0,\r\n      asyncPopups: false\r\n    }\r\n  };\r\n\r\n  return new PublicClientApplication(msalConfig);\r\n}\r\n\r\nconst isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ErabliereComponent,\r\n    AjouterErabliereComponent,\r\n    ModifierErabliereComponent,\r\n    ErabliereFormComponent,\r\n    ModifierAccesUtilisateursComponent,\r\n    SelectCustomerComponent,\r\n    EditAccessComponent,\r\n    GraphiqueComponent,\r\n    DonneesComponent,\r\n    DashboardComponent,\r\n    GraphPannelComponent,\r\n    DateTimeSelector,\r\n    CapteurPannelsComponent,\r\n    BarPannelComponent,\r\n    BarilsComponent,\r\n    AlerteComponent,\r\n    AjouterAlerteComponent,\r\n    ModifierAlerteComponent,\r\n    AProposComponent,\r\n    DocumentationComponent,\r\n    NotesComponent,\r\n    NoteComponent,\r\n    AjouterNoteComponent,\r\n    AjouterDonneeCapteurComponent,\r\n    SigninRedirectCallbackComponent,\r\n    SignoutRedirectCallbackComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    ChartsModule,\r\n    AppRoutingModule,\r\n    HttpClientModule,\r\n    ReactiveFormsModule,\r\n    FormsModule\r\n  ],\r\n  providers: [\r\n    {\r\n      provide: APP_INITIALIZER,\r\n      useFactory: initConfig,\r\n      deps: [EnvironmentService],\r\n      multi: true,\r\n    },\r\n    {\r\n      provide: MSAL_INSTANCE,\r\n      useFactory: MSALInstanceFactory,\r\n      deps: [EnvironmentService]\r\n    },\r\n    MsalService\r\n  ]\r\n})\r\nexport class AppModule implements DoBootstrap { \r\n  constructor(private injector: Injector) {}\r\n\r\n  ngDoBootstrap(appRef: ApplicationRef): void {\r\n    appRef.bootstrap(AppComponent);\r\n\r\n    if (!environment.production) {\r\n      if (window.Cypress) {\r\n        window.appRef = appRef;\r\n      }\r\n    }\r\n  }\r\n}\r\n",
             "properties": [
                 {
                     "name": "appRef",
@@ -3888,6 +3888,36 @@
             "hostListeners": []
         },
         {
+            "name": "ModuleStoryHelper",
+            "id": "class-ModuleStoryHelper-6b0a8f877350830e92220152f0bb9f67950840eaba0464533a7150af011a4c27f1e4c438295926583b38829df2af27d916287c8faf80ad569d0123f08a915822",
+            "file": "src/stories/moduleMetadata/moduleStoryHelper.ts",
+            "deprecated": false,
+            "deprecationMessage": "",
+            "type": "class",
+            "sourceCode": "import { HttpClientModule } from \"@angular/common/http\";\r\nimport { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from \"@angular/forms\";\r\nimport { RouterModule } from \"@angular/router\";\r\nimport { MsalService, MSAL_INSTANCE } from \"@azure/msal-angular\";\r\nimport { PublicClientApplication } from \"@azure/msal-browser\";\r\nimport { moduleMetadata } from \"@storybook/angular\";\r\n\r\nexport class ModuleStoryHelper{\r\n    static getErabliereApiStoriesModuleMetadata(){\r\n        return moduleMetadata({\r\n        imports: [\r\n            HttpClientModule, \r\n            RouterModule.forRoot([]),\r\n            ReactiveFormsModule,\r\n            FormsModule\r\n        ],\r\n        providers: [\r\n            { \r\n                provide: MSAL_INSTANCE, useValue: new PublicClientApplication({\r\n                auth: {\r\n                    clientId: \"null\"\r\n                }})\r\n            },\r\n            MsalService\r\n        ]\r\n        });\r\n    }\r\n}",
+            "properties": [],
+            "methods": [
+                {
+                    "name": "getErabliereApiStoriesModuleMetadata",
+                    "args": [],
+                    "optional": false,
+                    "returnType": "any",
+                    "typeParameters": [],
+                    "line": 9,
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "modifierKind": [
+                        124
+                    ]
+                }
+            ],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": []
+        },
+        {
             "name": "Note",
             "id": "class-Note-d26f83657c9a462679c4fd636d66aa25f2a343559cb3bf14756e8295faba194bf96797a4dc1270172dbf007757674381cb8959103742c7ceb432a80ed62f7fc9",
             "file": "src/model/note.ts",
@@ -6197,14 +6227,14 @@
         },
         {
             "name": "CapteurPannelsComponent",
-            "id": "component-CapteurPannelsComponent-f2f7120b77eff6de3b4eee93fe196118d0fa382db613758161f774a58fef68beab0dafac69e21b8205dcebd775000e4df094299fa75b9606699162214f5f8acc",
-            "file": "src/donnees/sub-panel/capteurpannels.component.ts",
+            "id": "component-CapteurPannelsComponent-e86b7737d088b573782078066f807f2e2c3ce397c09cdb6d43413f95b64d300eb864ab77ab6244dea42f55a98b6921df6d36bc42baca12755f70d802639ef59a",
+            "file": "src/donnees/sub-panel/capteur-pannels.component.ts",
             "encapsulation": [],
             "entryComponents": [],
             "inputs": [],
             "outputs": [],
             "providers": [],
-            "selector": "capteur-panels",
+            "selector": "capteur-pannels",
             "styleUrls": [],
             "styles": [],
             "template": "<div class=\"border-top\">\n  <div class=\"row\">\n    <div class=\"col-md-6\" *ngFor=\"let capteur of capteurs\">\n        <graph-panel [titre]=\"capteur.nom\"\n                     [symbole]=\"capteur.symbole\"\n                     [idCapteur]=\"capteur.id\"\n                     [ajouterDonneeDepuisInterface]=\"capteur.ajouterDonneeDepuisInterface\"></graph-panel>\n    </div>\n  </div>\n</div>\n",
@@ -6215,7 +6245,7 @@
                     "name": "capteurs",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "line": 22,
+                    "line": 20,
                     "type": "Capteur[]",
                     "decorators": []
                 }
@@ -6229,7 +6259,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 26,
+                    "line": 22,
                     "deprecated": false,
                     "deprecationMessage": ""
                 }
@@ -6241,7 +6271,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\r\nimport { GraphiqueComponent } from 'src/graphique/graphique.component';\r\nimport { Capteur } from 'src/model/capteur';\r\nimport { GraphPannelComponent } from './graphpanel.component';\r\n\r\n@Component({\r\n    selector: 'capteur-panels',\r\n    template: `\r\n        <div class=\"border-top\">\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6\" *ngFor=\"let capteur of capteurs\">\r\n                <graph-panel [titre]=\"capteur.nom\" \r\n                             [symbole]=\"capteur.symbole\"\r\n                             [idCapteur]=\"capteur.id\"\r\n                             [ajouterDonneeDepuisInterface]=\"capteur.ajouterDonneeDepuisInterface\"></graph-panel>\r\n            </div>\r\n          </div>\r\n        </div>\r\n    `\r\n})\r\nexport class CapteurPannelsComponent implements OnInit {\r\n  @Input() capteurs?: Capteur[];\r\n\r\n  // dataList:Array<GraphPannelComponent> = new Array<GraphPannelComponent>();\r\n\r\n  ngOnInit(): void {\r\n    // this.capteurs?.forEach(capteur => {\r\n\r\n    // });\r\n  }\r\n  \r\n}",
+            "sourceCode": "import { Component, Input, OnInit } from '@angular/core';\r\nimport { Capteur } from 'src/model/capteur';\r\n\r\n@Component({\r\n    selector: 'capteur-pannels',\r\n    template: `\r\n        <div class=\"border-top\">\r\n          <div class=\"row\">\r\n            <div class=\"col-md-6\" *ngFor=\"let capteur of capteurs\">\r\n                <graph-panel [titre]=\"capteur.nom\" \r\n                             [symbole]=\"capteur.symbole\"\r\n                             [idCapteur]=\"capteur.id\"\r\n                             [ajouterDonneeDepuisInterface]=\"capteur.ajouterDonneeDepuisInterface\"></graph-panel>\r\n            </div>\r\n          </div>\r\n        </div>\r\n    `\r\n})\r\nexport class CapteurPannelsComponent implements OnInit {\r\n  @Input() capteurs?: Capteur[];\r\n\r\n  ngOnInit(): void { }\r\n  \r\n}",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -7340,8 +7370,8 @@
             ]
         },
         {
-            "name": "EditAccessCompoenent",
-            "id": "component-EditAccessCompoenent-486917913bd48d1964726bdf386b4ef88dc99a610d1b6964b2105a68852bb7395e0d81bc2d1dd1d1555ab297698eece7c0ab365f06a8c3ac759e3c4a1aad9e12",
+            "name": "EditAccessComponent",
+            "id": "component-EditAccessComponent-2719e347b160f6c7023c4bc6f569a11a345df7bf71ac2ac39b4c09872e8c6e3aba096abb0e30be4d9673fa420289d9834b69c2a677d8862fad101ef0305bbbd9",
             "file": "src/access/edit-access.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -7426,7 +7456,7 @@
             "description": "",
             "rawdescription": "\n",
             "type": "component",
-            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';\r\nimport { ErabliereApi } from 'src/core/erabliereapi.service';\r\nimport { CustomerAccess } from 'src/model/customerAccess';\r\nimport { PutCustomerAccess } from 'src/model/putCustomerAccess';\r\n\r\n@Component({\r\n    selector: 'edit-access',\r\n    templateUrl: 'edit-access.component.html'\r\n})\r\nexport class EditAccessCompoenent implements OnInit {\r\n    @Input() displayEditAccess: Boolean = false;\r\n    @Input() acces: CustomerAccess = new CustomerAccess();\r\n    accessInternal: CustomerAccess = new CustomerAccess();\r\n    @Output() shouldUpdateAccess = new EventEmitter<Boolean>();\r\n\r\n    constructor(private _api: ErabliereApi) { }\r\n\r\n    ngOnInit() { \r\n        this.accessInternal = { ...this.acces };\r\n    }\r\n\r\n    updateAccess() {\r\n        if (this.acces != undefined) {\r\n\r\n            var putModel = new PutCustomerAccess();\r\n            putModel.idErabliere = this.acces.idErabliere;\r\n            putModel.customerErablieres = [];\r\n            putModel.customerErablieres.push({\r\n                idCustomer: this.acces.idCustomer,\r\n                action: 1,\r\n                access: this.accessInternal.access\r\n            });\r\n\r\n            this._api.putCustomerAccess(this.acces.idErabliere, putModel).then(() => {\r\n                this.displayEditAccess = false;\r\n                this.shouldUpdateAccess.emit(true);\r\n            }).catch(error => {\r\n                throw error;\r\n            });\r\n        }\r\n    }\r\n}",
+            "sourceCode": "import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';\r\nimport { ErabliereApi } from 'src/core/erabliereapi.service';\r\nimport { CustomerAccess } from 'src/model/customerAccess';\r\nimport { PutCustomerAccess } from 'src/model/putCustomerAccess';\r\n\r\n@Component({\r\n    selector: 'edit-access',\r\n    templateUrl: 'edit-access.component.html'\r\n})\r\nexport class EditAccessComponent implements OnInit {\r\n    @Input() displayEditAccess: Boolean = false;\r\n    @Input() acces: CustomerAccess = new CustomerAccess();\r\n    accessInternal: CustomerAccess = new CustomerAccess();\r\n    @Output() shouldUpdateAccess = new EventEmitter<Boolean>();\r\n\r\n    constructor(private _api: ErabliereApi) { }\r\n\r\n    ngOnInit() { \r\n        this.accessInternal = { ...this.acces };\r\n    }\r\n\r\n    updateAccess() {\r\n        if (this.acces != undefined) {\r\n\r\n            var putModel = new PutCustomerAccess();\r\n            putModel.idErabliere = this.acces.idErabliere;\r\n            putModel.customerErablieres = [];\r\n            putModel.customerErablieres.push({\r\n                idCustomer: this.acces.idCustomer,\r\n                action: 1,\r\n                access: this.accessInternal.access\r\n            });\r\n\r\n            this._api.putCustomerAccess(this.acces.idErabliere, putModel).then(() => {\r\n                this.displayEditAccess = false;\r\n                this.shouldUpdateAccess.emit(true);\r\n            }).catch(error => {\r\n                throw error;\r\n            });\r\n        }\r\n    }\r\n}",
             "assetsDirs": [],
             "styleUrlsData": "",
             "stylesData": "",
@@ -9808,7 +9838,7 @@
     "modules": [
         {
             "name": "AppModule",
-            "id": "module-AppModule-41e0a566f3503f8b2a83729dac65891c771117bbd49ba84932800984b3d972051f6a742c340b93ed6f44f8e89c9249a433e5189eab4c38ba7b4db6b7912c0e0e",
+            "id": "module-AppModule-37bc35ca6fc08ce1738992efc4242a1b246057715dafff2f2a77f7d788baf8785e2a7c73fa9e625677955b94ed65b73a7fadc2fe79303f7e4e039d96a8617334",
             "description": "",
             "deprecationMessage": "",
             "deprecated": false,
@@ -9843,7 +9873,7 @@
                     ]
                 }
             ],
-            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';\r\nimport { AppComponent } from './app.component';\r\nimport { ErabliereComponent } from 'src/erablieres/erabliere.component';\r\nimport { DonneesComponent } from 'src/donnees/donnees.component';\r\nimport { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';\r\nimport { BarilsComponent } from 'src/barils/barils.component';\r\nimport { ChartsModule } from 'ng2-charts';\r\nimport { AlerteComponent } from 'src/alerte/alerte.component';\r\nimport { AProposComponent } from 'src/apropos/apropos.component';\r\nimport { DocumentationComponent } from 'src/documentation/documentation.component';\r\nimport { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';\r\nimport { DashboardComponent } from 'src/dashboard/dashboard.component';\r\nimport { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';\r\nimport { EnvironmentService } from 'src/environments/environment.service';\r\nimport { GraphiqueComponent } from 'src/graphique/graphique.component';\r\nimport { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';\r\nimport { NotesComponent } from 'src/notes/notes.component';\r\nimport { AjouterNoteComponent } from 'src/notes/ajouter-note.component';\r\nimport { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';\r\nimport { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';\r\nimport { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';\r\nimport { environment } from 'src/environments/environment';\r\nimport { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';\r\nimport { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';\r\nimport { NoteComponent } from 'src/notes/note.component';\r\nimport { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';\r\nimport { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';\r\nimport { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';\r\nimport { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';\r\nimport { SelectCustomerComponent } from 'src/customer/select-customer.component';\r\nimport { EditAccessCompoenent } from 'src/access/edit-access.component';\r\n\r\ndeclare global {\r\n  interface Window { \r\n    appRef: ApplicationRef, \r\n    Cypress: any,\r\n    authorisationFactoryService: AuthorisationFactoryService\r\n   }\r\n}\r\n\r\nexport function initConfig(appConfig: EnvironmentService) {\r\n  return () => appConfig.loadConfig();\r\n}\r\n\r\nexport function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClientApplication {\r\n  if (!appConfig.authEnable) {\r\n    return new PublicClientApplication({\r\n      auth: {\r\n        clientId: \"null\"\r\n      }\r\n    });\r\n  }\r\n\r\n  if (appConfig.clientId == undefined) {\r\n    throw new Error(\"/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode\");\r\n  }\r\n\r\n  const msalConfig: Configuration = {\r\n    auth: {\r\n      clientId: appConfig.clientId,\r\n      authority: \"https://login.microsoftonline.com/\" + appConfig.tenantId,\r\n      redirectUri: \"/signin-callback\",\r\n      postLogoutRedirectUri: \"/signout-callback\",\r\n      navigateToLoginRequestUrl: true\r\n    },\r\n    cache: {\r\n      cacheLocation: BrowserCacheLocation.LocalStorage,\r\n      storeAuthStateInCookie: false,\r\n    },\r\n    system: {\r\n      loggerOptions: {\r\n        loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {\r\n          if (containsPii) {\r\n            return;\r\n          }\r\n          switch (level) {\r\n            case LogLevel.Error:\r\n              console.error(message);\r\n              return;\r\n            case LogLevel.Info:\r\n              console.info(message);\r\n              return;\r\n            case LogLevel.Verbose:\r\n              console.debug(message);\r\n              return;\r\n            case LogLevel.Warning:\r\n              console.warn(message);\r\n              return;\r\n          }\r\n        },\r\n        piiLoggingEnabled: false\r\n      },\r\n      windowHashTimeout: 60000,\r\n      iframeHashTimeout: 6000,\r\n      loadFrameTimeout: 0,\r\n      asyncPopups: false\r\n    }\r\n  };\r\n\r\n  return new PublicClientApplication(msalConfig);\r\n}\r\n\r\nconst isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ErabliereComponent,\r\n    AjouterErabliereComponent,\r\n    ModifierErabliereComponent,\r\n    ErabliereFormComponent,\r\n    ModifierAccesUtilisateursComponent,\r\n    SelectCustomerComponent,\r\n    EditAccessCompoenent,\r\n    GraphiqueComponent,\r\n    DonneesComponent,\r\n    DashboardComponent,\r\n    GraphPannelComponent,\r\n    DateTimeSelector,\r\n    CapteurPannelsComponent,\r\n    BarPannelComponent,\r\n    BarilsComponent,\r\n    AlerteComponent,\r\n    AjouterAlerteComponent,\r\n    ModifierAlerteComponent,\r\n    AProposComponent,\r\n    DocumentationComponent,\r\n    NotesComponent,\r\n    NoteComponent,\r\n    AjouterNoteComponent,\r\n    AjouterDonneeCapteurComponent,\r\n    SigninRedirectCallbackComponent,\r\n    SignoutRedirectCallbackComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    ChartsModule,\r\n    AppRoutingModule,\r\n    HttpClientModule,\r\n    ReactiveFormsModule,\r\n    FormsModule\r\n  ],\r\n  providers: [\r\n    {\r\n      provide: APP_INITIALIZER,\r\n      useFactory: initConfig,\r\n      deps: [EnvironmentService],\r\n      multi: true,\r\n    },\r\n    {\r\n      provide: MSAL_INSTANCE,\r\n      useFactory: MSALInstanceFactory,\r\n      deps: [EnvironmentService]\r\n    },\r\n    MsalService\r\n  ]\r\n})\r\nexport class AppModule implements DoBootstrap { \r\n  constructor(private injector: Injector) {}\r\n\r\n  ngDoBootstrap(appRef: ApplicationRef): void {\r\n    appRef.bootstrap(AppComponent);\r\n\r\n    if (!environment.production) {\r\n      if (window.Cypress) {\r\n        window.appRef = appRef;\r\n      }\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { BrowserModule } from '@angular/platform-browser';\r\nimport { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';\r\nimport { AppComponent } from './app.component';\r\nimport { ErabliereComponent } from 'src/erablieres/erabliere.component';\r\nimport { DonneesComponent } from 'src/donnees/donnees.component';\r\nimport { GraphPannelComponent } from 'src/donnees/sub-panel/graphpanel.component';\r\nimport { BarilsComponent } from 'src/barils/barils.component';\r\nimport { ChartsModule } from 'ng2-charts';\r\nimport { AlerteComponent } from 'src/alerte/alerte.component';\r\nimport { AProposComponent } from 'src/apropos/apropos.component';\r\nimport { DocumentationComponent } from 'src/documentation/documentation.component';\r\nimport { BarPannelComponent } from 'src/donnees/sub-panel/barpannel.component';\r\nimport { AppRoutingModule } from './app-routing.module';\r\nimport { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';\r\nimport { DashboardComponent } from 'src/dashboard/dashboard.component';\r\nimport { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';\r\nimport { HttpClientModule } from '@angular/common/http';\r\nimport { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteurpannels.component';\r\nimport { EnvironmentService } from 'src/environments/environment.service';\r\nimport { GraphiqueComponent } from 'src/graphique/graphique.component';\r\nimport { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';\r\nimport { FormsModule, ReactiveFormsModule } from '@angular/forms';\r\nimport { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';\r\nimport { NotesComponent } from 'src/notes/notes.component';\r\nimport { AjouterNoteComponent } from 'src/notes/ajouter-note.component';\r\nimport { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';\r\nimport { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';\r\nimport { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';\r\nimport { environment } from 'src/environments/environment';\r\nimport { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';\r\nimport { DateTimeSelector } from 'src/donnees/sub-panel/userinput/datetimeselector.component';\r\nimport { NoteComponent } from 'src/notes/note.component';\r\nimport { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';\r\nimport { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component';\r\nimport { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';\r\nimport { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';\r\nimport { SelectCustomerComponent } from 'src/customer/select-customer.component';\r\nimport { EditAccessComponent } from 'src/access/edit-access.component';\r\n\r\ndeclare global {\r\n  interface Window { \r\n    appRef: ApplicationRef, \r\n    Cypress: any,\r\n    authorisationFactoryService: AuthorisationFactoryService\r\n   }\r\n}\r\n\r\nexport function initConfig(appConfig: EnvironmentService) {\r\n  return () => appConfig.loadConfig();\r\n}\r\n\r\nexport function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClientApplication {\r\n  if (!appConfig.authEnable) {\r\n    return new PublicClientApplication({\r\n      auth: {\r\n        clientId: \"null\"\r\n      }\r\n    });\r\n  }\r\n\r\n  if (appConfig.clientId == undefined) {\r\n    throw new Error(\"/assets/config/oauth-oidc.json/clientId cannot be null when using AzureAD authentication mode\");\r\n  }\r\n\r\n  const msalConfig: Configuration = {\r\n    auth: {\r\n      clientId: appConfig.clientId,\r\n      authority: \"https://login.microsoftonline.com/\" + appConfig.tenantId,\r\n      redirectUri: \"/signin-callback\",\r\n      postLogoutRedirectUri: \"/signout-callback\",\r\n      navigateToLoginRequestUrl: true\r\n    },\r\n    cache: {\r\n      cacheLocation: BrowserCacheLocation.LocalStorage,\r\n      storeAuthStateInCookie: false,\r\n    },\r\n    system: {\r\n      loggerOptions: {\r\n        loggerCallback: (level: LogLevel, message: string, containsPii: boolean): void => {\r\n          if (containsPii) {\r\n            return;\r\n          }\r\n          switch (level) {\r\n            case LogLevel.Error:\r\n              console.error(message);\r\n              return;\r\n            case LogLevel.Info:\r\n              console.info(message);\r\n              return;\r\n            case LogLevel.Verbose:\r\n              console.debug(message);\r\n              return;\r\n            case LogLevel.Warning:\r\n              console.warn(message);\r\n              return;\r\n          }\r\n        },\r\n        piiLoggingEnabled: false\r\n      },\r\n      windowHashTimeout: 60000,\r\n      iframeHashTimeout: 6000,\r\n      loadFrameTimeout: 0,\r\n      asyncPopups: false\r\n    }\r\n  };\r\n\r\n  return new PublicClientApplication(msalConfig);\r\n}\r\n\r\nconst isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;\r\n\r\n@NgModule({\r\n  declarations: [\r\n    AppComponent,\r\n    ErabliereComponent,\r\n    AjouterErabliereComponent,\r\n    ModifierErabliereComponent,\r\n    ErabliereFormComponent,\r\n    ModifierAccesUtilisateursComponent,\r\n    SelectCustomerComponent,\r\n    EditAccessComponent,\r\n    GraphiqueComponent,\r\n    DonneesComponent,\r\n    DashboardComponent,\r\n    GraphPannelComponent,\r\n    DateTimeSelector,\r\n    CapteurPannelsComponent,\r\n    BarPannelComponent,\r\n    BarilsComponent,\r\n    AlerteComponent,\r\n    AjouterAlerteComponent,\r\n    ModifierAlerteComponent,\r\n    AProposComponent,\r\n    DocumentationComponent,\r\n    NotesComponent,\r\n    NoteComponent,\r\n    AjouterNoteComponent,\r\n    AjouterDonneeCapteurComponent,\r\n    SigninRedirectCallbackComponent,\r\n    SignoutRedirectCallbackComponent\r\n  ],\r\n  imports: [\r\n    BrowserModule,\r\n    ChartsModule,\r\n    AppRoutingModule,\r\n    HttpClientModule,\r\n    ReactiveFormsModule,\r\n    FormsModule\r\n  ],\r\n  providers: [\r\n    {\r\n      provide: APP_INITIALIZER,\r\n      useFactory: initConfig,\r\n      deps: [EnvironmentService],\r\n      multi: true,\r\n    },\r\n    {\r\n      provide: MSAL_INSTANCE,\r\n      useFactory: MSALInstanceFactory,\r\n      deps: [EnvironmentService]\r\n    },\r\n    MsalService\r\n  ]\r\n})\r\nexport class AppModule implements DoBootstrap { \r\n  constructor(private injector: Injector) {}\r\n\r\n  ngDoBootstrap(appRef: ApplicationRef): void {\r\n    appRef.bootstrap(AppComponent);\r\n\r\n    if (!environment.production) {\r\n      if (window.Cypress) {\r\n        window.appRef = appRef;\r\n      }\r\n    }\r\n  }\r\n}\r\n",
             "children": [
                 {
                     "type": "providers",
@@ -9895,7 +9925,7 @@
                             "name": "DonneesComponent"
                         },
                         {
-                            "name": "EditAccessCompoenent"
+                            "name": "EditAccessComponent"
                         },
                         {
                             "name": "ErabliereComponent"
@@ -10000,7 +10030,267 @@
                 "name": "customerAccess",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/App.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Alerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barpannel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barils.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Capteurpannels.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Apropos.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Datetimeselector.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Documentation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Donnees.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/EditAccess.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Erabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterNote.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErabliereForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Dashboard.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphpanel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphique.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Notes.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SelectCustomer.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SigninRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "new CustomerAccess()"
+            },
+            {
+                "name": "customerAccess",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Note.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -10010,7 +10300,387 @@
                 "name": "Display",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/App.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Alerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barpannel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barils.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Capteurpannels.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Apropos.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Datetimeselector.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Documentation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Donnees.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/EditAccess.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Erabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterNote.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErabliereForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Dashboard.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphpanel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphique.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Notes.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SelectCustomer.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SigninRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Display",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Note.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/App.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Alerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barpannel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barils.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Capteurpannels.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Apropos.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Datetimeselector.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Documentation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Donnees.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "",
@@ -10027,14 +10697,144 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "environment",
+                "name": "Edit",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/environments/environment.prod.ts",
+                "file": "src/stories/Erabliere.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
-                "type": "object",
-                "defaultValue": "{\r\n  production: true,\r\n  enableAuth: true\r\n}"
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterNote.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErabliereForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Dashboard.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphpanel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphique.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Notes.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SelectCustomer.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SigninRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
+            },
+            {
+                "name": "Edit",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Note.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "",
+                "defaultValue": "Template.bind({})"
             },
             {
                 "name": "environment",
@@ -10045,6 +10845,16 @@
                 "deprecationMessage": "",
                 "type": "object",
                 "defaultValue": "{\r\n  production: false,  \r\n  enableAuth: true\r\n}"
+            },
+            {
+                "name": "environment",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/environments/environment.prod.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "object",
+                "defaultValue": "{\r\n  production: true,\r\n  enableAuth: true\r\n}"
             },
             {
                 "name": "isIE",
@@ -10060,7 +10870,267 @@
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
+                "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/App.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Alerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barpannel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Barils.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Capteurpannels.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Apropos.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Datetimeselector.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Documentation.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Donnees.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
                 "file": "src/stories/EditAccess.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Erabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/AjouterNote.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ErabliereForm.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Dashboard.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphpanel.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierAlerte.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Graphique.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Notes.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SelectCustomer.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SigninRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/ModifierErabliere.stories.ts",
+                "deprecated": false,
+                "deprecationMessage": "",
+                "type": "Story",
+                "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Note.stories.ts",
                 "deprecated": false,
                 "deprecationMessage": "",
                 "type": "Story",
@@ -10129,6 +11199,510 @@
         "typealiases": [],
         "enumerations": [],
         "groupedVariables": {
+            "src/stories/AjouterDonneeCapteur.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterDonneeCapteur.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/AjouterAlerte.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/AjouterErabliere.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/App.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/App.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/App.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/App.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/App.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Alerte.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Alerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Alerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Alerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Alerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Barpannel.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barpannel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barpannel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barpannel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barpannel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Barils.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barils.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barils.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barils.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Barils.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Capteurpannels.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Capteurpannels.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Capteurpannels.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Capteurpannels.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Capteurpannels.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Apropos.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Apropos.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Apropos.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Apropos.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Apropos.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Datetimeselector.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Datetimeselector.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Datetimeselector.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Datetimeselector.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Datetimeselector.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Documentation.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Documentation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Documentation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Documentation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Documentation.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Donnees.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Donnees.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Donnees.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Donnees.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Donnees.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
             "src/stories/EditAccess.stories.ts": [
                 {
                     "name": "customerAccess",
@@ -10171,16 +11745,592 @@
                     "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
                 }
             ],
-            "src/environments/environment.prod.ts": [
+            "src/stories/Erabliere.stories.ts": [
                 {
-                    "name": "environment",
+                    "name": "customerAccess",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/environments/environment.prod.ts",
+                    "file": "src/stories/Erabliere.stories.ts",
                     "deprecated": false,
                     "deprecationMessage": "",
-                    "type": "object",
-                    "defaultValue": "{\r\n  production: true,\r\n  enableAuth: true\r\n}"
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Erabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Erabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Erabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/AjouterNote.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterNote.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterNote.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterNote.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/AjouterNote.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/ErabliereForm.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErabliereForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErabliereForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErabliereForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ErabliereForm.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Dashboard.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Dashboard.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Dashboard.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Dashboard.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Dashboard.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Graphpanel.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphpanel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphpanel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphpanel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphpanel.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/ModifierAccesUtilisateurs.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/ModifierAlerte.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierAlerte.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Graphique.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphique.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphique.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphique.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Graphique.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Notes.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Notes.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Notes.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Notes.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Notes.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/SelectCustomer.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SelectCustomer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SelectCustomer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SelectCustomer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SelectCustomer.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/SigninRedirectCallback.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SigninRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SigninRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SigninRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SigninRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/SignoutRedirectCallback.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/SignoutRedirectCallback.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/ModifierErabliere.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/ModifierErabliere.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
+                }
+            ],
+            "src/stories/Note.stories.ts": [
+                {
+                    "name": "customerAccess",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Note.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "new CustomerAccess()"
+                },
+                {
+                    "name": "Display",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Note.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Edit",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Note.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "",
+                    "defaultValue": "Template.bind({})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Note.stories.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "Story",
+                    "defaultValue": "(args) => ({\r\n  props: args,\r\n})"
                 }
             ],
             "src/environments/environment.ts": [
@@ -10193,6 +12343,18 @@
                     "deprecationMessage": "",
                     "type": "object",
                     "defaultValue": "{\r\n  production: false,  \r\n  enableAuth: true\r\n}"
+                }
+            ],
+            "src/environments/environment.prod.ts": [
+                {
+                    "name": "environment",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/environments/environment.prod.ts",
+                    "deprecated": false,
+                    "deprecationMessage": "",
+                    "type": "object",
+                    "defaultValue": "{\r\n  production: true,\r\n  enableAuth: true\r\n}"
                 }
             ],
             "src/app/app.module.ts": [
@@ -10390,7 +12552,7 @@
                 "filePath": "src/access/edit-access.component.ts",
                 "type": "component",
                 "linktype": "component",
-                "name": "EditAccessCompoenent",
+                "name": "EditAccessComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/8",
                 "status": "low"
@@ -10624,7 +12786,7 @@
                 "status": "low"
             },
             {
-                "filePath": "src/donnees/sub-panel/capteurpannels.component.ts",
+                "filePath": "src/donnees/sub-panel/capteur-pannels.component.ts",
                 "type": "component",
                 "linktype": "component",
                 "name": "CapteurPannelsComponent",
@@ -10932,6 +13094,566 @@
                 "status": "low"
             },
             {
+                "filePath": "src/stories/AjouterAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterDonneeCapteur.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterNote.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterNote.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterNote.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/AjouterNote.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Alerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Alerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Alerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Alerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/App.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/App.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/App.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/App.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Apropos.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Apropos.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Apropos.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Apropos.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barils.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barils.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barils.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barils.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barpannel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barpannel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barpannel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Barpannel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Capteurpannels.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Capteurpannels.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Capteurpannels.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Capteurpannels.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Dashboard.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Dashboard.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Dashboard.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Dashboard.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Datetimeselector.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Datetimeselector.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Datetimeselector.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Datetimeselector.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Documentation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Documentation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Documentation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Documentation.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Donnees.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Donnees.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Donnees.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Donnees.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
                 "filePath": "src/stories/EditAccess.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
@@ -10969,6 +13691,495 @@
                 "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Erabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Erabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Erabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Erabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErabliereForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErabliereForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErabliereForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ErabliereForm.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphique.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphique.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphique.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphique.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphpanel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphpanel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphpanel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Graphpanel.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAccesUtilisateurs.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierAlerte.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/ModifierErabliere.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Note.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Note.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Note.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Note.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Notes.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Notes.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Notes.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Notes.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SelectCustomer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SelectCustomer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SelectCustomer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SelectCustomer.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SigninRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SigninRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SigninRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SigninRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SignoutRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "customerAccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SignoutRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Display",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SignoutRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Edit",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/SignoutRedirectCallback.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "Template",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/moduleMetadata/moduleStoryHelper.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "ModuleStoryHelper",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
                 "status": "low"
             }
         ]

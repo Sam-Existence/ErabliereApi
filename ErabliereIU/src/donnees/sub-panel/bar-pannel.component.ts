@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
 @Component({
-    selector: 'bar-panel',
+    selector: 'bar-pannel',
     template: `
         <div class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>

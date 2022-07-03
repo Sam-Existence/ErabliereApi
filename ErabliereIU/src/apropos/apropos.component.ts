@@ -6,7 +6,7 @@ import { ErabliereApi } from "src/core/erabliereapi.service";
     selector: 'apropos',
     templateUrl: "./apropos.component.html"
 })
-export class AProposComponent {
+export class AproposComponent {
     urlApi?: string
     checkoutEnabled?: boolean
     supportEmail?: string
