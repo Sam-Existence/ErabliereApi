@@ -1,4 +1,5 @@
 import { setCompodocJson } from "@storybook/addon-docs/angular";
+import { themes } from '@storybook/theming';
 import docJson from "../documentation.json";
 setCompodocJson(docJson);
 
@@ -10,5 +11,8 @@ export const parameters = {
       date: /Date$/,
     },
   },
-  docs: { inlineStories: true },
+  docs: { 
+    inlineStories: true,
+    theme: themes.light,
+  },
 }

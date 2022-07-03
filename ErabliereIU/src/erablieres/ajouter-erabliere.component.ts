@@ -9,7 +9,7 @@ import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 })
 export class AjouterErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
-    modalTitle: string = "Ajouter une erabliere";
+    modalTitle: string = "Ajouter une érablière";
     @Output() shouldReloadErablieres = new EventEmitter();
 
     constructor(private _api: ErabliereApi) { }
