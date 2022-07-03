@@ -378,7 +378,7 @@ ErabliereIU/.history/*
 
 # Storybook
 ErabliereIU/documentation.json
-
+ErabliereIU/storybook-static
 # misc
 ErabliereIU/.sass-cache
 ErabliereIU/connect.lock

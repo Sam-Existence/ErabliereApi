@@ -6,11 +6,11 @@ name: 'Chromatic Publish'
 # Event for the workflow
 on:
   workflow_dispatch:
-  push:
-    branches: [ master ]
-    paths:
-      - ErabliereIU/**
-      - .github/workflows/chromatic.yml
+  # push:
+  #   branches: [ master ]
+  #   paths:
+  #     - ErabliereIU/**
+  #     - .github/workflows/chromatic.yml
 
 # List of jobs
 jobs:
