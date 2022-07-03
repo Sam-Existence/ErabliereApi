@@ -10,6 +10,7 @@ on:
     branches: [ master ]
     paths:
       - ErabliereIU/**
+      - .github/workflows/chromatic.yml
 
 # List of jobs
 jobs:
@@ -27,5 +28,6 @@ jobs:
         # Options required for Chromatic's GitHub Action
         with:
           #👇 Chromatic projectToken,
+          path: ErabliereIU
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
