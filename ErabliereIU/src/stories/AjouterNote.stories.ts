@@ -22,8 +22,14 @@ const Template: Story = (args) => ({
 });
 
 //👇 Each story then reuses that template
-export const Primary = Template.bind({});
+export const Button = Template.bind({});
 
-Primary.args = {
+Button.args = {
   
+};
+
+export const Form = Template.bind({});
+
+Form.args = {
+  display: true
 };

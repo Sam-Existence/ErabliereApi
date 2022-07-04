@@ -22,8 +22,27 @@ const Template: Story = (args) => ({
 });
 
 //👇 Each story then reuses that template
-export const Primary = Template.bind({});
+export const Default = Template.bind({});
 
-Primary.args = {
+Default.args = {
   
+};
+
+export const WithEmaiSupport = Template.bind({});
+
+WithEmaiSupport.args = {
+  supportEmail: 'exemple@domain.com'
+};
+
+export const StripeEnabled = Template.bind({});
+
+StripeEnabled.args = {
+  checkoutEnabled: true
+};
+
+export const EveryOptions = Template.bind({});
+
+EveryOptions.args = {
+  supportEmail: 'example@domain.com',
+  checkoutEnabled: true
 };

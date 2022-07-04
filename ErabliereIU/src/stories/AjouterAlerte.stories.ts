@@ -18,12 +18,26 @@ var fixture = {};
 
 //👇 We create a “template” of how args map to rendering
 const Template: Story = (args) => ({
-  props: args,
+  props: args
 });
 
 //👇 Each story then reuses that template
-export const Primary = Template.bind({});
+export const Button = Template.bind({});
 
-Primary.args = {
-  
+Button.args = {
+    
+};
+
+export const FormAlerteTrioDonnees = Template.bind({});
+
+FormAlerteTrioDonnees.args = {
+  display: true,
+  typeAlerte: 1
+};
+
+export const FormAlerteCapteur = Template.bind({});
+
+FormAlerteCapteur.args = {
+  display: true,
+  typeAlerte: 2
 };

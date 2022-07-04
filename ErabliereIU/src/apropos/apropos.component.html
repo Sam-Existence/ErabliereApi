@@ -7,7 +7,7 @@
     <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
 </div>
 
-<div *ngIf="supportEmail != ''">
+<div *ngIf="!(supportEmail == '' || supportEmail == null)">
     <h4 class="mt-4">Obtenir un compte</h4>
     <p>Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
 </div>
@@ -26,7 +26,7 @@
     Pour savoir si un appareil déjà à l'érablière est compatible avec cette technologie, il faut que cet appareil soit en mesure d'effectuer des requêtes HTTP, ou de relayer l'information à un appareil ayant cette capacité.
 </p>
 
-<div *ngIf="supportEmail != ''">
+<div *ngIf="!(supportEmail == '' || supportEmail == null)">
     <h4 class="mt-4">Recherche d'érablière à connecter</h4>
     <p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
 </div>
