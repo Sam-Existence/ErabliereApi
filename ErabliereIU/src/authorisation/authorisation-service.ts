@@ -8,7 +8,7 @@ import { IAuthorisationSerivce } from './iauthorisation-service';
 export class AuthorisationService implements IAuthorisationSerivce {
     private _userManager: UserManager;
     private _user?: User | null;
-    private _loginChangedSubject = new Subject<Boolean>();
+    private _loginChangedSubject = new Subject<boolean>();
     type: string = "IdentityServer";
     loginChanged = this._loginChangedSubject.asObservable();
 
@@ -29,7 +29,7 @@ export class AuthorisationService implements IAuthorisationSerivce {
          return this._userManager.signinRedirect();
      }
 
-     async isLoggedIn(): Promise<Boolean> {
+     async isLoggedIn(): Promise<boolean> {
          const user = await this._userManager.getUser();
          const isLoggedIn = !!user && !user.expired;
          if (this._user !== user) {

@@ -61,14 +61,13 @@ import { UrlModel } from '../model/urlModel';
     `
 })
 export class DashboardComponent {
-  pageSelectionnee: number;
-  cacheMenuErabliere: boolean;
   title: string;
-
-  isLoggedIn: Boolean;
-  thereIsAtLeastOneErabliere: Boolean;
-  useAuthentication: Boolean;
+  cacheMenuErabliere: boolean;
+  thereIsAtLeastOneErabliere: boolean;
+  useAuthentication: boolean;
+  isLoggedIn: boolean;
   urls: UrlModel[]
+  pageSelectionnee: number;
 
   private _authService: IAuthorisationSerivce
 

@@ -61,7 +61,7 @@ npm run storybook
 Pour publier le storybook sur chromatic
 
 ```
-npm run cromatic
+npm run chromatic
 ```
 
 Le storybook est accessible à: https://62c1fd30e87ba497a5005cc7-sxibrulzao.chromatic.com
