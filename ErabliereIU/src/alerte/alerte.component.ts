@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { Subject } from "rxjs";
+import { Observable, Subject } from "rxjs";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
 import { AlerteCapteur } from "src/model/alerteCapteur";
@@ -10,7 +10,47 @@ import { AlerteCapteur } from "src/model/alerteCapteur";
   styleUrls: ['./alerte.component.css']
 })
 export class AlerteComponent implements OnInit {
-  constructor(private _api: ErabliereApi) { }
+  @Input() alertes?: Array<Alerte>;
+  @Input() alertesCapteur?: Array<AlerteCapteur>;
+  @Input() idErabliereSelectionee: any
+
+  displayEditFormSubject;
+  displayEditFormObservable;
+  displayEditForm: boolean;
+
+  alerteEditFormSubject;
+  alerteEditFormObservable;
+  alerteEditForm?: Alerte;
+
+  displayEditAlerteCapteurFormSubject: Subject<Boolean>;
+  displayEditAlerteCapteurFormObservable: Observable<string>;
+  displayEditAlerteCapteurForm: boolean;
+
+  alerteCapteurEditFormSubject: Subject<AlerteCapteur>;
+  alerteCapteurEditFormObservable: Observable<AlerteCapteur>;
+  alerteCapteurEditForm?: AlerteCapteur;
+
+  editAlerte: boolean;
+  editAlerteCapteur: boolean;
+
+  constructor(private _api: ErabliereApi) {
+    this.displayEditFormSubject = new Subject<string>();
+    this.displayEditFormObservable = this.displayEditFormSubject.asObservable();
+
+    this.alerteEditFormSubject = new Subject<Alerte>();
+    this.alerteEditFormObservable = this.displayEditFormSubject.asObservable();
+    this.displayEditForm = false;
+
+    this.displayEditAlerteCapteurFormSubject = new Subject<Boolean>();
+    this.displayEditAlerteCapteurFormObservable = this.displayEditFormSubject.asObservable();
+    this.displayEditAlerteCapteurForm = false;
+
+    this.alerteCapteurEditFormSubject = new Subject<AlerteCapteur>()
+    this.alerteCapteurEditFormObservable = this.alerteCapteurEditFormSubject.asObservable();
+
+    this.editAlerte = false;
+    this.editAlerteCapteur = false;
+  }
 
   ngOnInit(): void {
     this.displayEditFormSubject.subscribe(b => {
@@ -33,29 +73,6 @@ export class AlerteComponent implements OnInit {
       }
     });
   }
-
-  @Input() alertes?: Array<Alerte>;
-  @Input() alertesCapteur?: Array<AlerteCapteur>;
-  @Input() idErabliereSelectionee: any
-
-  displayEditFormSubject = new Subject<string>();
-  displayEditFormObservable = this.displayEditFormSubject.asObservable();
-  displayEditForm: boolean = false;
-
-  alerteEditFormSubject = new Subject<Alerte>();
-  alerteEditFormObservable = this.displayEditFormSubject.asObservable();
-  alerteEditForm?: Alerte;
-
-  displayEditAlerteCapteurFormSubject = new Subject<Boolean>();
-  displayEditAlerteCapteurFormObservable = this.displayEditFormSubject.asObservable();
-  displayEditAlerteCapteurForm: boolean = false;
-
-  alerteCapteurEditFormSubject = new Subject<AlerteCapteur>();
-  alerteCapteurEditFormObservable = this.alerteCapteurEditFormSubject.asObservable();
-  alerteCapteurEditForm?: AlerteCapteur;
-
-  editAlerte: boolean = false;
-  editAlerteCapteur: boolean = false;
 
   onButtonModifierClick(alerteId: any) {
     this.alerteEditForm = this.alertes?.find(a => a.id == alerteId);

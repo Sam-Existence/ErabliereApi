@@ -5,12 +5,16 @@ import { CustomerAccess } from 'src/model/customerAccess';
 import { CapteurPannelsComponent } from '../donnees/sub-panel/capteur-pannels.component';
 import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
+import { GraphPannelCompoenent } from 'cypress/pages/component/graphpannel.component';
+import { GraphiqueComponent } from 'src/graphique/graphique.component';
 
 export default {
   title: 'CapteurPannelsComponent',
   component: CapteurPannelsComponent,
   decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata([
+      GraphiqueComponent
+    ])
   ]
 } as Meta;
 

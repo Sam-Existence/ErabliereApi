@@ -1,19 +1,22 @@
 import { HttpClientModule } from "@angular/common/http";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { Router } from "@angular/router";
 import { MsalService, MSAL_INSTANCE } from "@azure/msal-angular";
 import { PublicClientApplication } from "@azure/msal-browser";
 import { moduleMetadata } from "@storybook/angular";
-import { AppRoutingModule } from "src/app/app-routing.module";
 
 export class ModuleStoryHelper{
-    static getErabliereApiStoriesModuleMetadata() {
+    static getErabliereApiStoriesModuleMetadata(declarations: Array<any> = [], additionnalImports: Array<any> = []) {
+        let imports = [
+            HttpClientModule,
+            FormsModule,
+            ReactiveFormsModule,
+        ]
+        for (var i = 0; i < additionnalImports.length; i++) {
+            imports.push(additionnalImports[i])
+        }
         return moduleMetadata({
-            imports: [
-                HttpClientModule,
-                FormsModule,
-                ReactiveFormsModule,
-            ],
+            declarations: declarations,
+            imports: imports,
             providers: [
                 { 
                     provide: MSAL_INSTANCE, 

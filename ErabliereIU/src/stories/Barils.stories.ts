@@ -5,12 +5,16 @@ import { CustomerAccess } from 'src/model/customerAccess';
 import { BarilsComponent } from '../barils/barils.component';
 import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
+import { ChartsModule } from 'ng2-charts';
+import { BrowserModule } from '@angular/platform-browser';
 
 export default {
   title: 'BarilsComponent',
   component: BarilsComponent,
   decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata([], [
+      ChartsModule
+    ])
   ]
 } as Meta;
 

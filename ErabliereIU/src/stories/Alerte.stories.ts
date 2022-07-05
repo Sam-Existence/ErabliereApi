@@ -5,12 +5,15 @@ import { CustomerAccess } from 'src/model/customerAccess';
 import { AlerteComponent } from '../alerte/alerte.component';
 import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
+import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 
 export default {
   title: 'AlerteComponent',
   component: AlerteComponent,
   decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata([
+      AjouterAlerteComponent
+    ])
   ]
 } as Meta;
 

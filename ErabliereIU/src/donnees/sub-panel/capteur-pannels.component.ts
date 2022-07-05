@@ -8,16 +8,16 @@ import { Capteur } from 'src/model/capteur';
           <div class="row">
             <div class="col-md-6" *ngFor="let capteur of capteurs">
                 <graph-pannel [titre]="capteur.nom" 
-                             [symbole]="capteur.symbole"
-                             [idCapteur]="capteur.id"
-                             [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
+                              [symbole]="capteur.symbole"
+                              [idCapteur]="capteur.id"
+                              [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
             </div>
           </div>
         </div>
     `
 })
 export class CapteurPannelsComponent implements OnInit {
-  @Input() capteurs?: Capteur[];
+  @Input() capteurs?: Capteur[]
 
   ngOnInit(): void { }
   

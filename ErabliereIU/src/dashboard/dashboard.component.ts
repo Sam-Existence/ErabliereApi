@@ -61,19 +61,26 @@ import { UrlModel } from '../model/urlModel';
     `
 })
 export class DashboardComponent {
-  pageSelectionnee = 0;
-  cacheMenuErabliere = false;
-  title = 'Érablière IU';
+  pageSelectionnee: number;
+  cacheMenuErabliere: boolean;
+  title: string;
 
-  isLoggedIn: Boolean = false;
-  thereIsAtLeastOneErabliere: Boolean = false;
-  useAuthentication: Boolean = environment.enableAuth;
-  urls: UrlModel[] = [];
+  isLoggedIn: Boolean;
+  thereIsAtLeastOneErabliere: Boolean;
+  useAuthentication: Boolean;
+  urls: UrlModel[]
 
   private _authService: IAuthorisationSerivce
 
   constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService, cdr: ChangeDetectorRef) {
-    this._authService = authFactoryService.getAuthorisationService();
+    this.title = 'Érablière IU'
+    this.pageSelectionnee = 0
+    this.cacheMenuErabliere = false
+    this.useAuthentication = environment.enableAuth
+    this.thereIsAtLeastOneErabliere = false
+    this.isLoggedIn = false
+    this.urls = []
+    this._authService = authFactoryService.getAuthorisationService()
     this._authService.isLoggedIn().then(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });

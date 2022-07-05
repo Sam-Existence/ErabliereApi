@@ -58,6 +58,16 @@ Pour lancer storybook
 npm run storybook
 ```
 
+Pour publier le storybook sur chromatic
+
+```
+npm run cromatic
+```
+
+Le storybook est accessible à: https://62c1fd30e87ba497a5005cc7-sxibrulzao.chromatic.com
+
+Pour joindre le projet: https://www.chromatic.com/library?appId=62c1fd30e87ba497a5005cc7&inviteToken=fff43142d3c848f79f0378c7f29c89d9
+
 > Les fichier .stories.ts on été générés automatiquement utilisant le programme https://github.com/ErabliereApi/StorybookGenerator
 
 ## Cypress
