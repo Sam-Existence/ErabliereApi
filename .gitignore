@@ -401,3 +401,6 @@ ErabliereIU/cypress/screenshots/
 
 # Test
 TestResults/
+
+# GPG keys
+*.deb
