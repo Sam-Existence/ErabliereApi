@@ -4,7 +4,7 @@ import { Label } from 'ng2-charts';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
-import { GraphPannelComponent } from './sub-panel/graphpanel.component';
+import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 
 @Component({
     selector: 'donnees-panel',
@@ -12,37 +12,37 @@ import { GraphPannelComponent } from './sub-panel/graphpanel.component';
         <div class="border-top">
           <div class="row">
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
-              <graph-panel [titre]="titre_temperature" 
+              <graph-pannel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="temperature" #temperatureGraphPannel></graph-panel>
+                           [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
             </div>
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
-              <graph-panel [titre]="titre_vaccium" 
+              <graph-pannel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="vaccium" #vacciumGraphPannel></graph-panel>
+                           [datasets]="vaccium" #vacciumGraphPannel></graph-pannel>
             </div>
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
-              <graph-panel [titre]="titre_niveaubassin" 
+              <graph-pannel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-panel>
+                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
             </div>
             <div *ngIf="initialErabliere?.afficherSectionDompeux" class="col-md-6">
-              <bar-panel [titre]="titre_dompeux" 
+              <bar-pannel [titre]="titre_dompeux" 
                          [timeaxes]="timeaxes_dompeux" 
                          [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-panel>
+                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-pannel>
             <div>
           </div>
         </div>

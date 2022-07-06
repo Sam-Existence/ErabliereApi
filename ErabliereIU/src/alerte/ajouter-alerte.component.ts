@@ -10,17 +10,18 @@ import { Capteur } from "src/model/capteur";
     templateUrl: 'ajouter-alerte.component.html'
 })
 export class AjouterAlerteComponent implements OnInit {
-
-    typeAlerteList = [
-        { id: 1, name: 'Alerte trio de donnée' },
-        { id: 2, name: 'Alerte de capteur' }
-    ];
-
-    typeAlerteSelectListForm = new UntypedFormGroup({
-        state: new UntypedFormControl(this.typeAlerteList[0].id)
-    });
+    typeAlerteSelectListForm: UntypedFormGroup
+    alerte:Alerte
+    alerteCapteur:AlerteCapteur
+    display:boolean
     
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
+        this.alerte = new Alerte();
+        this.alerteCapteur = new AlerteCapteur();
+        this.typeAlerteSelectListForm = new UntypedFormGroup({
+            state: new UntypedFormControl(1) // 1 is the value of the first option in the select list
+        });
+        this.display = false;
         this.alerteForm = this.fb.group({});
         this.alerteCapteurForm = this.fb.group({});
     }
@@ -47,10 +48,7 @@ export class AjouterAlerteComponent implements OnInit {
         });
     }
     
-    display:string = "";
-
-    alerte:Alerte = new Alerte();
-    alerteCapteur:AlerteCapteur = new AlerteCapteur();
+    
 
     @Input() alertes?: Array<Alerte>;
     @Input() alertesCapteur?: Array<AlerteCapteur>;
@@ -68,11 +66,11 @@ export class AjouterAlerteComponent implements OnInit {
     }
 
     onButtonAjouterClick() {
-        this.display = "alerte";
+        this.display = true;
     }
 
     onButtonAnnuleClick() {
-        this.display = "";
+        this.display = false;
     }
 
     onChangeAlerteType(event:any) {
@@ -97,7 +95,7 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
-                         this.display = "";
+                         this.display = false;
                          r.emails = r.envoyerA.split(";");
                          this.alertes?.push(r);
                      });
@@ -123,7 +121,7 @@ export class AjouterAlerteComponent implements OnInit {
             }
             this._api.postAlerteCapteur(this.alerteCapteur.idCapteur, this.alerteCapteur)
                      .then(r => {
-                         this.display = "";
+                         this.display = false;
                          r.emails = r?.envoyerA?.split(";");
                          this.alertesCapteur?.push(r);
                      });

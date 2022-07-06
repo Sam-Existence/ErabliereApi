@@ -4,14 +4,14 @@ import { AuthResponse } from "src/model/authresponse";
 import { IAuthorisationSerivce } from "./iauthorisation-service";
 
 export class AuthorisationBypassService implements IAuthorisationSerivce {
-    loginChanged: Observable<Boolean> = new Observable<Boolean>();
+    loginChanged: Observable<boolean> = new Observable<boolean>();
     type: string = "AuthDisabled";
 
     login(): Promise<void> {
         return new Promise<void>((resolve, reject) => { return resolve(); });
     }
-    isLoggedIn(): Promise<Boolean> {
-        return new Promise<Boolean>((resolve, reject) => resolve(true));
+    isLoggedIn(): Promise<boolean> {
+        return new Promise<boolean>((resolve, reject) => resolve(true));
     }
     completeLogin(): Promise<AppUser> {
         return new Promise<AppUser>((resolve, reject) => resolve(new AppUser()));

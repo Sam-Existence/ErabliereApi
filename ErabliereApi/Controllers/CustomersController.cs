@@ -1,5 +1,7 @@
-﻿using ErabliereApi.Depot.Sql;
-using ErabliereApi.Donnees;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -15,14 +17,17 @@ namespace ErabliereApi.Controllers;
 public class CustomersController : ControllerBase
 {
     private readonly ErabliereDbContext _context;
+    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructeur avec dépendance
     /// </summary>
     /// <param name="context">La base de données</param>
-    public CustomersController(ErabliereDbContext context)
+    /// <param name="mapper">Le mapper</param>
+    public CustomersController(ErabliereDbContext context, IMapper mapper)
     {
         _context = context;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -31,8 +36,8 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery(MaxExpansionDepth = 0)]
-    public IQueryable<Customer> GetCustomers()
+    public IQueryable<GetCustomer> GetCustomers()
     {
-        return _context.Customers;
+        return _context.Customers.ProjectTo<GetCustomer>(_mapper.ConfigurationProvider);
     }
 }

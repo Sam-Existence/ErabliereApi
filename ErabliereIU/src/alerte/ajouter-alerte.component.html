@@ -8,7 +8,8 @@
           <div class="form-group">
             <label for="typeAlerteSelect">Type d'alerte</label>
             <select class="form-control" id="typeAlerteSelect" formControlName="state" (change)="onChangeAlerteType($event)">
-              <option *ngFor="let typeAlerte of typeAlerteList" [value]="typeAlerte.id">{{typeAlerte.name}}</option>
+              <option value="1" [selected]="typeAlerte == 1">Alerte trio de donnée</option>
+              <option value="2" [selected]="typeAlerte == 2">Alerte de capteur</option>
             </select>
           </div>
         </form>

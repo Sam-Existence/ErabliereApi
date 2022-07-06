@@ -376,6 +376,9 @@ ErabliereIU/.vscode/settings.json
 ErabliereIU/.history/*
 .vscode/
 
+# Storybook
+ErabliereIU/documentation.json
+ErabliereIU/storybook-static
 # misc
 ErabliereIU/.sass-cache
 ErabliereIU/connect.lock

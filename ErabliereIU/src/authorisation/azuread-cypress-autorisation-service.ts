@@ -4,8 +4,8 @@ import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
 
 export class AzureADCypressAuthorisationService implements IAuthorisationSerivce {
-  private _isLoggingIn = Boolean();
-  private _loginChangedSubject = new Subject<Boolean>();
+  private _isLoggingIn = false;
+  private _loginChangedSubject = new Subject<boolean>();
   type: string = "AzureADCypress";
   loginChanged = this._loginChangedSubject.asObservable();
 
@@ -14,8 +14,8 @@ export class AzureADCypressAuthorisationService implements IAuthorisationSerivce
     console.log(appUser);
   }
 
-  isLoggedIn(): Promise<Boolean> {
-    return new Promise<Boolean>((resolve, reject) => {
+  isLoggedIn(): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       if (this.getAccessToken() != null && this._isLoggingIn == false) {
         this._isLoggingIn = true;
         this._loginChangedSubject.next(true);

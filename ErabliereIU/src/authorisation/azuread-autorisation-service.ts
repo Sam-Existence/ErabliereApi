@@ -7,8 +7,8 @@ import { AuthResponse } from 'src/model/authresponse';
 import { IAuthorisationSerivce } from './iauthorisation-service';
 
 export class AzureADAuthorisationService implements IAuthorisationSerivce {
-  private _isLoggedIn: Boolean = false;
-  private _loginChangedSubject = new Subject<Boolean>();
+  private _isLoggedIn: boolean = false;
+  private _loginChangedSubject = new Subject<boolean>();
   loginChanged = this._loginChangedSubject.asObservable();
   type: string = "AzureAD";
 
@@ -25,7 +25,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     console.log("AppUser", appUser);
   }
 
-  isLoggedIn(): Promise<Boolean> {
+  isLoggedIn(): Promise<boolean> {
     return new Promise(async (resolve, reject) => {
       let user = this.getUser();
 

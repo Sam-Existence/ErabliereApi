@@ -3,7 +3,7 @@ import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
 @Component({
-    selector: 'bar-panel',
+    selector: 'bar-pannel',
     template: `
         <div class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
@@ -37,37 +37,50 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 export class BarPannelComponent {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-    @Input() datasets: ChartDataSets[] = [];
+    @Input() datasets: ChartDataSets[]
 
-    @Input() timeaxes: Label[] = [];
+    @Input() timeaxes: Label[]
 
-    @Input() barChartType = 'bar' as ChartType;
+    @Input() barChartType: ChartType;
 
-    lineChartOptions: ChartOptions = {
-        responsive: true,
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    offsetGridLines: true
-                }
-            }]
-        }
-    };
+    lineChartOptions: ChartOptions
 
-    lineChartColors: Color[] = [
-        {
-            borderColor: 'black',
-            backgroundColor: 'rgba(33,42,234,0.78)',
-        }
-    ];
+    lineChartColors: Color[]
 
-    lineChartLegend = true;
-    lineChartPlugins = [];
+    lineChartLegend: boolean
+    lineChartPlugins: never[]
     
-    @Input() titre:string = "";
-    duree:string = "12h"
-    @Input() valeurActuel:string = "";
-    @Input() symbole:string = "";
+    @Input() titre:string
+    duree:string
+    @Input() valeurActuel:string
+    @Input() symbole:string
 
-    constructor() { this.chart = undefined; }
+    constructor() {
+        this.datasets = []
+        this.timeaxes = []
+        this.barChartType = 'bar' as ChartType
+        this.lineChartOptions = {
+            responsive: true,
+            scales: {
+                xAxes: [{
+                    gridLines: {
+                        offsetGridLines: true
+                    }
+                }]
+            }
+        }
+        this.lineChartColors  = [
+            {
+                borderColor: 'black',
+                backgroundColor: 'rgba(33,42,234,0.78)',
+            }
+        ]
+        this.lineChartLegend = true
+        this.lineChartPlugins = []
+        this.titre = ""
+        this.duree = "12h"
+        this.valeurActuel = ""
+        this.symbole = ""
+        this.chart = undefined
+    }
 }
