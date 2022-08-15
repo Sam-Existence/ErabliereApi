@@ -111,7 +111,7 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         Assert.Equal("cus_2PXvRa6ztL96bV", customer.StripeId);
     }
 
-    private async Task Step(string step, HttpClient client)
+    private static async Task Step(string step, HttpClient client)
     {
         using var content = new StringContent(GetBody(step));
 
