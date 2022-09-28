@@ -10,6 +10,8 @@ Start-Process dotnet -ArgumentList "watch", "run", "$PWD\ErabliereApi.csproj"
 Set-Location ..
 Set-Location ErabliereIU
 
+npm install
+
 Start-Process npm -ArgumentList "start"
 
 Start-Process npm -ArgumentList "run", "storybook"
