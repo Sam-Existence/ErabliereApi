@@ -4,7 +4,7 @@ function New-Password {
         [int] $length = 14
     )
 
-    $specilChar = '!"/$%?&*()_-'
+    $specilChar = '!"/%?&*()_-'
 
     $builder = New-Object -TypeName System.Text.StringBuilder
 
