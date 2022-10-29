@@ -43,18 +43,11 @@ export class GraphPannelCompoenent {
 
     enterDate(): void {
         cy.get(this.pannelId).then($pannel => {
+            const format = 'ca-FR'
             let dateField = cy.wrap($pannel).find('input[name="date"]');
-            let localDate = new Date().toLocaleString('ca-FR');
-            let dateAndTime = localDate.split(',');
-            let dateInfo = dateAndTime[0].split('/');
-            let timeInfo = []
-            try {
-                timeInfo = dateAndTime[1].split(':');
-            }
-            catch (e) {
-                cy.log("Error spiting time info, value ['00', '00', '00'] will be used", localDate, dateAndTime, e)
-                timeInfo = ['00', '00', '00'];
-            }
+            let localDate = new Date()
+            let dateInfo = localDate.toLocaleDateString(format).split('/');
+            let timeInfo = localDate.toLocaleTimeString(format).split(':');
             dateField.type(dateInfo[2].padStart(2, '0') + '-' + dateInfo[1].padStart(2, '0') + '-' + dateInfo[0].padStart(2, '0') + 'T' + timeInfo[0].trim().padStart(2, '0') + ':' + timeInfo[1].padStart(2, '0'));
         });
     }
