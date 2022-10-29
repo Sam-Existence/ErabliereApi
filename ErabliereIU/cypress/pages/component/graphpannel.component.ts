@@ -47,8 +47,8 @@ export class GraphPannelCompoenent {
             let dateField = cy.wrap($pannel).find('input[name="date"]');
             let localDate = new Date()
             let dateInfo = localDate.toLocaleDateString(format).split('/');
-            let timeInfo = localDate.toLocaleTimeString(format).split(':');
-            dateField.type(dateInfo[2].padStart(2, '0') + '-' + dateInfo[1].padStart(2, '0') + '-' + dateInfo[0].padStart(2, '0') + 'T' + timeInfo[0].trim().padStart(2, '0') + ':' + timeInfo[1].padStart(2, '0'));
+            let timeInfo = localDate.toLocaleTimeString(format)
+            dateField.type(dateInfo[2].padStart(2, '0') + '-' + dateInfo[1].padStart(2, '0') + '-' + dateInfo[0].padStart(2, '0') + 'T' + timeInfo);
         });
     }
 }
