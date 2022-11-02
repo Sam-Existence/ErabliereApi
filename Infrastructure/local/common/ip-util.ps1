@@ -13,3 +13,13 @@ function Get-CrossPlatformIpAddress() {
         return $ipAddress
     }
 }
+
+function Remove-LastIpOctet($ip) {
+    # Split the IP address into an array
+    $ipArray = $ip.Split(".")
+    # Remove the last octet
+    $ipArray = $ipArray[0..($ipArray.Length - 2)]
+    # Join the array back into a string
+    $ip = $ipArray -join "."
+    return $ip
+}
