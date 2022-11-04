@@ -6,11 +6,12 @@ from auth.getAccessTokenAAD import getAccessToken as getAccessTokenAAD
 from auth.getAccessTokenAAD import AzureADAccessTokenProvider
 
 class ErabliereApiProxy:
-  def __init__(self, baseUrl, auth_provider = None):
+  def __init__(self, baseUrl, auth_provider = None, verifySsl = True):
     self.baseUrl = baseUrl
     self.auth_provider = auth_provider
     self.aad_token_provider = AzureADAccessTokenProvider()
     self.authConfig = None
+    self.verifySsl = verifySsl
 
   def envoyer_donnees(self, id_erabliere, temperature, vaccium, niveaubassin):
     donnee = {'t': temperature, 'nb': niveaubassin, 'v': vaccium, 'idErabliere': id_erabliere}
@@ -33,7 +34,7 @@ class ErabliereApiProxy:
   def post_request(self, action, body):
     token = self.get_token()
     h = {"Authorization": "Bearer " + str(token), "Content-Type":"Application/json"}
-    r = requests.post(self.baseUrl + action, json = body, headers = h, timeout = 5)
+    r = requests.post(self.baseUrl + action, json = body, headers = h, timeout = 5, verify=self.verifySsl)
     return r
 
   def get_token(self):
