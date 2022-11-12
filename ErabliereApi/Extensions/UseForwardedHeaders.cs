@@ -57,7 +57,7 @@ public static class UseForwardedHeadersExtension
                 {
                     if (context.Request.Headers.TryGetValue("X-Forwarded-Proto", out var forwardedProto))
                     {
-                        context.Request.Scheme = forwardedProto;
+                        context.Request.Scheme = forwardedProto.ToString();
                     }
 
                     await next();

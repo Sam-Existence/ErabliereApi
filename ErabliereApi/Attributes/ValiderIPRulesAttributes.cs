@@ -59,7 +59,7 @@ public class ValiderIPRulesAttribute : ActionFilterAttribute
 
             if (ips.Count == 1)
             {
-                return ips;
+                return ips.ToString();
             }
 
             else
