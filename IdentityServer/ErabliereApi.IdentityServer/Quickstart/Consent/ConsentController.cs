@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 using IdentityServer4.Validation;
 using System.Collections.Generic;
 using System;
-using Ganss.XSS;
+using Ganss.Xss;
 
 namespace IdentityServerHost.Quickstart.UI;
 
