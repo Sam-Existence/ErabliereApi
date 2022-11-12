@@ -23,7 +23,7 @@ public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
     /// <summary>
     /// Indicateur permettant d'afficher ou non le graphique relié au capteur.
     /// </summary>
-    public bool? AfficherCapteurDashboard { get; set; }
+    public bool AfficherCapteurDashboard { get; set; }
 
     /// <summary>
     /// Indicateur permettant d'indiquer si les données sont entré depuis un interface graphique

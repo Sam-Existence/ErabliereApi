@@ -2,7 +2,6 @@
 using ErabliereApi.Services;
 using Microsoft.EntityFrameworkCore;
 using System.Net;
-using System.Security.Claims;
 
 namespace ErabliereApi.Authorization;
 
@@ -27,7 +26,7 @@ public class ApiKeyMiddleware : IMiddleware
         {
             var apiKeyService = context.RequestServices.GetRequiredService<IApiKeyService>();
 
-            authorizeRequest = apiKeyService.TryHashApiKey(apiKey, out var hashkey);
+            authorizeRequest = apiKeyService.TryHashApiKey(apiKey.ToString(), out var hashkey);
 
             var dbContext = context.RequestServices.GetRequiredService<ErabliereDbContext>();
 

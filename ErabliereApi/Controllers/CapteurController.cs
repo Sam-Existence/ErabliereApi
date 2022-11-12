@@ -138,7 +138,7 @@ public class CapteursController : ControllerBase
 
         if (capteur.AfficherCapteurDashboard.HasValue)
         {
-            capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard;
+            capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard ?? false;
         }
 
         if (capteur.AjouterDonneeDepuisInterface.HasValue)

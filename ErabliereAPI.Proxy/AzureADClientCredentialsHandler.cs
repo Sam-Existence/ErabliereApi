@@ -28,7 +28,7 @@ public class AzureADClientCredentialsHandler : DelegatingHandler
     {
         const string key = "ErabliereAPI-BearerToken";
 
-        if (_cache.TryGetValue(key, out BearerToken bearerToken) && !bearerToken.WillExpireInTwoMinutes)
+        if (_cache.TryGetValue(key, out BearerToken? bearerToken) && bearerToken?.WillExpireInTwoMinutes == false)
         {
             return bearerToken.access_token;
         }
