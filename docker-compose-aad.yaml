@@ -14,7 +14,7 @@ services:
       CORS_HEADERS: "*"
       CORS_METHODS: "*"
       USE_SQL: "true"
-      SQL_CONNEXION_STRING: "Server=tcp:sql,1433;Initial Catalog=ErabliereAPI;Persist Security Info=False;User ID=SA;Password=${SAPASSWORD};MultipleActiveResultSets=False;Connection Timeout=30;"
+      SQL_CONNEXION_STRING: "Server=tcp:sql,1433;Initial Catalog=ErabliereAPI;Persist Security Info=False;User ID=SA;Password=${SAPASSWORD};MultipleActiveResultSets=False;Connection Timeout=30;Encrypt=False"
       SQL_USE_STARTUP_MIGRATION: "true"
       DEBUG_HEADERS: "true"
       LOG_SQL: "Console"
@@ -58,6 +58,6 @@ services:
         timeout: 10s
         retries: 6
     volumes:
-      - erabliereapi-aad-sql-data:/var/opt/mssql
+      - erabliereapi-add-sql-data:/var/opt/mssql
 volumes:
   erabliereapi-add-sql-data:
