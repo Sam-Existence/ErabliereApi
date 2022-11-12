@@ -57,3 +57,7 @@ services:
         interval: 10s
         timeout: 10s
         retries: 6
+    volumes:
+      - erabliereapi-aad-sql-data:/var/opt/mssql
+volumes:
+  erabliereapi-add-sql-data:
