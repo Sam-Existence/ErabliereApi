@@ -25,13 +25,13 @@ jobs:
       with:
         dotnet-version: '7.0'
 
-      - name: dotnet build
-        run: dotnet build $PROJECT_PATH -c Release -o bin/Release
+    - name: dotnet build
+      run: dotnet build $PROJECT_PATH -c Release -o bin/Release
 
-      - name: Push the package to nuget.org
-        run: |
-          # Extract the version from the csproj file
-          VERSION=$(grep -Eoi "<version>([[:digit:]\.]+)</version>" ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj | sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p')
+    - name: Push the package to nuget.org
+      run: |
+        # Extract the version from the csproj file
+        VERSION=$(grep -Eoi "<version>([[:digit:]\.]+)</version>" ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj | sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p')
 
-          # Publish the package to nuget.org
-          dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.$VERSION.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
+        # Publish the package to nuget.org
+        dotnet nuget push ./bin/Release/ErabliereAPI.Proxy.$VERSION.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.ERABLIEREAPIPROXYNUGETAPIKEY }}
