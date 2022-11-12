@@ -12,7 +12,7 @@ using System.IO;
 using static System.Environment;
 using static System.Boolean;
 using static System.StringComparison;
-using Ganss.XSS;
+using Ganss.Xss;
 
 namespace ErabliereApi.IdentityServer;
 
