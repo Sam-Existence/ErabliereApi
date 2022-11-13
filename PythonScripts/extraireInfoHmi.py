@@ -88,7 +88,13 @@ def getDate():
 for url in urls.split(","):
   try:
     print(getDate(), 'POST to', url)
-    proxy = ErabliereApiProxy(url, "AzureAD")
+    
+    sslVerify = True
+    if url.startswith('[noSslVerify]'):
+      url = url.replace('[noSslVerify]', '')
+      sslVerify = False
+    
+    proxy = ErabliereApiProxy(url, "AzureAD", verifySsl=sslVerify)
     reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
     print("réponse", reponse.status_code)
     print(getDate(), "terminé.")
