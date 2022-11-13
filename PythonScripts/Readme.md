@@ -47,6 +47,9 @@ pip install -r requirements.txt
 python .\extraireInfoHmi.py http://<ip-address-hmi>/1.jpg https://erabliereapi.freddycoder.com <guid-erabliere>
 ```
 
-## Work in progress
+Version plus complexe envoyant les données récupéré à deux API une sans vérification ssl et l'autre avec les vérification ssl.
 
-Les autres scripts et la documentation est en cours d'amélioration.
+```
+python3 /home/ubuntu/erabliereapi/PythonScripts/extraireInfoHmi.py http:/<ip-address-hmi>/1.jpg [noSslVerify]https://192.168.1.2:5001,https://erabliereapi.freddycoder.com <guid-erabliere>
+```
+
