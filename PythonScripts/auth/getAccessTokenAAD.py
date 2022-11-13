@@ -4,6 +4,7 @@ import json
 from os import path
 import os
 import time
+from urllib.parse import urlparse
 
 def getAccessToken(config):
   print("Get AAD access token")
@@ -46,9 +47,9 @@ class AzureADAccessTokenProvider:
       print("Access token lifetime: " + str(self.in_memory_token[1] - int(time.time())))
       return self.in_memory_token[0]
 
-    aadTokenFile = '/home/ubuntu/aad_oauth_token.json'
+    aadTokenFile = f'/home/ubuntu/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
     if os.name == 'nt':
-      aadTokenFile = '__pycache__\\aad_oauth_token.json'
+      aadTokenFile = f'__pycache__\\aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
     if path.exists(aadTokenFile):
       f = open(aadTokenFile,)
       self.in_memory_token = json.load(f)
@@ -66,9 +67,9 @@ class AzureADAccessTokenProvider:
     print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
     try:
-      pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
+      pathSaveFile = f'/home/ubuntu/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       if os.name == 'nt':
-        pathSaveFile = '__pycache__\\aad_oauth_token.json'
+        pathSaveFile = f'__pycache__\\aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       with open(pathSaveFile, 'w') as outfile:
         json.dump(accessToken, outfile)
     except:
