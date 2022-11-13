@@ -1,6 +1,7 @@
 import json
 import requests
 import os
+from urllib.parse import urlparse
 from auth.getAccessToken import getAccessToken as getAccessTokenIdentity
 from auth.getAccessTokenAAD import getAccessToken as getAccessTokenAAD
 from auth.getAccessTokenAAD import AzureADAccessTokenProvider
@@ -12,6 +13,7 @@ class ErabliereApiProxy:
     self.aad_token_provider = AzureADAccessTokenProvider()
     self.authConfig = None
     self.verifySsl = verifySsl
+    self.host = urlparse(baseUrl).netloc
 
   def envoyer_donnees(self, id_erabliere, temperature, vaccium, niveaubassin):
     donnee = {'t': temperature, 'nb': niveaubassin, 'v': vaccium, 'idErabliere': id_erabliere}
@@ -44,10 +46,10 @@ class ErabliereApiProxy:
       return getAccessTokenIdentity("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret")
     if (self.auth_provider == "AzureAD"):
       if self.authConfig == None:
-        print("Open config from file")
-        authPath = "/home/ubuntu/.erabliereapi/auth.config"
+        authPath = f"/home/ubuntu/.erabliereapi/auth.{self.host}.config"
         if (os.name == "nt"):
-          authPath = "E:\\config\\python\\aad-client-credentials.json"
+          authPath = f"E:\\config\\python\\aad-client-credentials.{self.host}.json"
+        print("Open config from file", authPath)
         authConfig = open(authPath,)
         self.authConfig = json.load(authConfig)[0]
         authConfig.close()

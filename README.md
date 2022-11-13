@@ -1,7 +1,9 @@
 # ErabliereApi
 Solution de monitoring pour érablière. Contient un REST API ainsi qu'un application web pour la gestion des données et d'autre script permettant de connecter divers appareils.
 
-Un démo est accessible à l'url: https://erabliereapi-demo.azurewebsites.net/
+L'application est accessible à l'url: https://erabliereapi.freddycoder.com/ une authentification est nécessare pour la majorité des fonctionnalités. POur obtenir un compte, veuillez accéder au instruction dans la section À propos.
+
+Un démo est accessible à l'url: https://erabliereapi-demo.azurewebsites.net/ qui ne nécessite pas d'authentification.
 
 ## But
 Le but de ce projet est d'analyser, lever des alertes et automatiser certain mecanisme. Basé sur les données receuillis et de façon centralisé.
@@ -37,7 +39,7 @@ Les informations enregistré peuvent être :
 
 Ce projet est utilisable de différente manière :
 1. Rouler directement dans un environnement de développement.
-2. Déployer sur un PC avec le .net runtime d'installé
+2. Déployer sur un PC avec le .net 7 runtime d'installé
 2. Utilisation avec Docker
 3. Utilisation avec Kubernetes
 
@@ -50,6 +52,12 @@ docker run -d -p 9001:80 erabliereapi/erabliereapi
 
 Une librairie proxy est disponible sur nuget.org:
 
+.NET 7
+```
+<PackageReference Include="ErabliereAPI.Proxy" Version="2.0.1" />
+```
+
+.NET 6
 ```
 <PackageReference Include="ErabliereAPI.Proxy" Version="1.1.1" />
 ```
@@ -84,7 +92,7 @@ kubectl logs --since=24h pods/my-nginx-deployment-5977f4fdff-p7t5r | grep erabli
 
 ### Déployer la solution avec docker desktop
 
-Prerequis: Powershell core : https://docs.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.2#installing-the-msi-package
+Prerequis: Powershell core : https://learn.microsoft.com/fr-fr/powershell/scripting/install/installing-powershell-on-windows?view=powershell-7.3#installing-the-msi-package
 
 Avec powershell core en tant qu'administrateur executer le script ```.\deploiement-local.ps1``` puis ensuite ```docker compose up -d```. Pour mettre à jour un déploiement docker compose, executez ```docker compose up -d --force-recreate```. Si vous voulez télécharger les images plus récente, lancer ```docker compose pull``` avant d'executer la commande --force-recreate.
 

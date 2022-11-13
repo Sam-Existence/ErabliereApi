@@ -65,15 +65,6 @@ r_niveaubassin = re.findall("HG \d+", text)
 
 print("niveau bassin", r_niveaubassin)
 
-# Envoie des données à l'api
-
-import json
-
-print("Envoie des données à l'api", sys.argv[2])
-
-url = sys.argv[2]
-idErabliere = sys.argv[3]
-
 vaccium = 0
 # Cas spéciaux de image_to_string
 if len(r_vaccium) > 0:
@@ -85,9 +76,27 @@ nb = 0
 if len(r_niveaubassin) > 0:
   nb = int(float(r_niveaubassin[0].replace("HG ", "")))
 
-proxy = ErabliereApiProxy(url, "AzureAD")
-reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
+# Envoie des données aux apis
+print("Envoie des données aux adresses suivantes:", sys.argv[2])
 
-print("réponse", reponse.status_code)
+urls = sys.argv[2]
+idErabliere = sys.argv[3]
 
-print("terminé.", (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S"))
+def getDate():
+  return (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S")
+
+for url in urls.split(","):
+  try:
+    print(getDate(), 'POST to', url)
+    
+    sslVerify = True
+    if url.startswith('[noSslVerify]'):
+      url = url.replace('[noSslVerify]', '')
+      sslVerify = False
+    
+    proxy = ErabliereApiProxy(url, "AzureAD", verifySsl=sslVerify)
+    reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
+    print("réponse", reponse.status_code)
+    print(getDate(), "terminé.")
+  except Exception as e:
+    print("erreur", e)
