@@ -79,7 +79,7 @@ if len(r_niveaubassin) > 0:
 # Envoie des données à l'api
 import json
 
-print("Envoie des données à l'api", sys.argv[2])
+print("Envoie des données aux adresses suivantes:", sys.argv[2])
 
 urls = sys.argv[2]
 idErabliere = sys.argv[3]
@@ -88,8 +88,8 @@ def getDate():
   return (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S")
 
 for url in urls.split(","):
-  print('POST to', url, getDate())
+  print(getDate(), 'POST to', url)
   proxy = ErabliereApiProxy(url, "AzureAD")
   reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
   print("réponse", reponse.status_code)
-  print("terminé.", getDate())
+  print(getDate(), "terminé.")

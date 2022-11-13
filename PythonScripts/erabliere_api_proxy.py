@@ -47,9 +47,9 @@ class ErabliereApiProxy:
     if (self.auth_provider == "AzureAD"):
       if self.authConfig == None:
         print("Open config from file")
-        authPath = f"/home/ubuntu/.erabliereapi/auth{self.host}.config"
+        authPath = f"/home/ubuntu/.erabliereapi/auth.{self.host}.config"
         if (os.name == "nt"):
-          authPath = f"E:\\config\\python\\aad-client-credentials{self.host}.json"
+          authPath = f"E:\\config\\python\\aad-client-credentials.{self.host}.json"
         authConfig = open(authPath,)
         self.authConfig = json.load(authConfig)[0]
         authConfig.close()
