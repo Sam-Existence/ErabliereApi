@@ -4,15 +4,15 @@
 
 La solution se déploie en un script. Il faut manuellement aller ajouter les applications dans Azure-AD pour complété la configuration corretement.
 
-Pour modifier le déploiement, avant d'executer la dernière commande, vous pouvez modifier les fichiers dans .\AzureAKS-TLS\erabliereapi.
+Pour modifier le déploiement, avant d'executer la dernière commande, vous pouvez modifier les fichiers dans .\AzureAKS-TLS\erabliereapi-v3.
 
 ```
 git clone https://github.com/freddycoder/AzureAKS-TLS.git
 cd AzureAKS-TLS
-.\azure-aks-cluster-deployment.ps1 -resourceGroup erabliereapi -location canadaeast -aksClusterName kerabliereapi -namespace erabliereapi-prod -appScriptPath .\erabliereapi\application-deployment.ps1 -useLetsEncryptProd true -skipDependenciesInstall true -customDomain erabliereapi.freddycoder.com
+.\azure-aks-cluster-deployment.ps1 -resourceGroup erabliereapiv3 -location canadaeast -aksClusterName kerabliereapiv3 -namespace erabliereapi-prod -appScriptPath .\erabliereapi-v3\application-deployment.ps1 -useLetsEncryptProd true -customDomain erabliereapi.freddycoder.com
 ```
 
-> Les configurations de la BD sont basé sur ce cours : https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers
+> Dans la version 1 et la version 2 du projet Les configurations de la BD sont basé sur ce cours : https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers pour la version 3, la BD est dans Azure SQL avec la version serverless.
 
 ### Fonctionnalité d'alerte
 
