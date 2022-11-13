@@ -76,9 +76,7 @@ nb = 0
 if len(r_niveaubassin) > 0:
   nb = int(float(r_niveaubassin[0].replace("HG ", "")))
 
-# Envoie des données à l'api
-import json
-
+# Envoie des données aux apis
 print("Envoie des données aux adresses suivantes:", sys.argv[2])
 
 urls = sys.argv[2]
@@ -88,8 +86,11 @@ def getDate():
   return (dt.utcnow() - td(hours=5)).strftime("%m/%d/%Y, %H:%M:%S")
 
 for url in urls.split(","):
-  print(getDate(), 'POST to', url)
-  proxy = ErabliereApiProxy(url, "AzureAD")
-  reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
-  print("réponse", reponse.status_code)
-  print(getDate(), "terminé.")
+  try:
+    print(getDate(), 'POST to', url)
+    proxy = ErabliereApiProxy(url, "AzureAD")
+    reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
+    print("réponse", reponse.status_code)
+    print(getDate(), "terminé.")
+  except Exception as e:
+    print("erreur", e)
