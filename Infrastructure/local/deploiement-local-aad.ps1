@@ -8,7 +8,18 @@ $ErrorActionPreference = "Stop"
 
 Write-Output "Generate a .env file"
 Add-Type -AssemblyName System.Web
+
+# Generate a new password for the database, then check if if already exists in the .env file
+# If that is the case, we keep the old password
 $envPassword = (New-Password)[0]
+
+$envFile = ".env"
+$envFileContent = @{}
+if (Test-Path $envFile) {
+    $envFileContent = Get-Content $envFile | ConvertFrom-StringData
+    $envPassword = $envFileContent.SAPASSWORD
+}
+
 $envPath = ConvertTo-CrossPlatformPath($PWD.Path + "\" + ".env")
 $ipAddress = Get-CrossPlatformIpAddress
 
