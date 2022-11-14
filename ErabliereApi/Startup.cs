@@ -19,11 +19,11 @@ using System.Text.Json;
 using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ErabliereApi.StripeIntegration;
 using ErabliereApi.Services;
 using ErabliereApi.Authorization.Customers;
+using ErabliereApi.Services.Users;
 
 namespace ErabliereApi;
 
@@ -81,6 +81,7 @@ public class Startup
 
         // Authentication
         services.AddTransient<IUserService, ErabliereApiUserService>()
+                .Decorate<IUserService, ErabliereApiUserCacheDecorator>()
                 .AddHttpContextAccessor();
         if (Configuration.IsAuthEnabled())
         {

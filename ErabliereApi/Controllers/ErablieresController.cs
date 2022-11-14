@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Controllers;
 
@@ -27,6 +28,7 @@ public class ErablieresController : ControllerBase
     private readonly ErabliereDbContext _context;
     private readonly IMapper _mapper;
     private readonly IConfiguration _config;
+    private readonly IDistributedCache _cache;
 
     /// <summary>
     /// Constructeur par initialisation
@@ -34,11 +36,13 @@ public class ErablieresController : ControllerBase
     /// <param name="context">Classe de contexte pour accéder à la BD</param>
     /// <param name="mapper">mapper de donnée</param>
     /// <param name="config">Permet d'accéder au configuration de l'api</param>
-    public ErablieresController(ErabliereDbContext context, IMapper mapper, IConfiguration config)
+    /// <param name="cache">Cache distribué</param>
+    public ErablieresController(ErabliereDbContext context, IMapper mapper, IConfiguration config, IDistributedCache cache)
     {
         _context = context;
         _mapper = mapper;
         _config = config;
+        _cache = cache;
     }
 
     private const int TakeErabliereNbMax = 20;
@@ -406,6 +410,14 @@ public class ErablieresController : ControllerBase
                 }
 
                 await _context.SaveChangesAsync(token);
+
+                // Get the unique name of the user to delete
+                var userToDelete = await _context.Customers.FindAsync(new object?[] { action.IdCustomer }, token);
+
+                if (userToDelete != null) 
+                {
+                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+                }
             }
         }
 
@@ -461,6 +473,14 @@ public class ErablieresController : ControllerBase
 
             if (entity.IdCustomer != authInfo.Item3?.Id)
             {
+                // Get the unique name of the user to delete
+                var userToDelete = await _context.Customers.FindAsync(new object?[] { entity.IdCustomer }, token);
+
+                if (userToDelete != null) 
+                {
+                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+                }
+
                 _context.Remove(entity);
 
                 await _context.SaveChangesAsync(token);
