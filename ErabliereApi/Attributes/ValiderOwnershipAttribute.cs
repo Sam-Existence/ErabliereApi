@@ -3,6 +3,7 @@ using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Ownable;
 using ErabliereApi.Extensions;
 using ErabliereApi.Services;
+using ErabliereApi.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -68,7 +69,7 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
             {
                 var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
 
-                var customer = await userService.GetCurrentUserWithAccessAsync(erabliere);
+                var customer = await userService.GetCurrentUserWithAccessAsync(erabliere, context.HttpContext.RequestAborted);
 
                 if (customer == null)
                 {

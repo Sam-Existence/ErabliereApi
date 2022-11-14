@@ -3,6 +3,7 @@ using AutoMapper;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Services;
+using ErabliereApi.Services.Users;
 using ErabliereApi.Test.Autofixture;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;

@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using AutoMapper;
 using ErabliereApi.Donnees;
 using ErabliereApi.StripeIntegration;
+using ErabliereApi.Services.Users;
 
 namespace ErabliereApi.Services;
 

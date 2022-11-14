@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Stripe;
 using System.Security.Claims;
 
-namespace ErabliereApi.Services;
+namespace ErabliereApi.Services.Users;
 
 /// <summary>
 /// Implémentation de <see cref="IUserService" /> selon la logique interne du projet ErabliereApi
@@ -50,7 +50,7 @@ public class ErabliereApiUserService : IUserService
     }
 
     /// <inheritdoc />
-    public async Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere)
+    public async Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere, CancellationToken token)
     {
         if (erabliere.Id.HasValue == false)
         {
@@ -63,7 +63,7 @@ public class ErabliereApiUserService : IUserService
 
         var user = scope.ServiceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext?.User;
         
-        string? uniqueName = GetUniqueName(scope, user);
+        string? uniqueName = UsersUtils.GetUniqueName(scope, user);
 
         if (uniqueName == null)
         {
@@ -76,25 +76,6 @@ public class ErabliereApiUserService : IUserService
                                      .ProjectTo<CustomerOwnershipAccess>(_fetchCustomerOwnershipAccessMap, new { idErabliere });
 
         return await query.SingleOrDefaultAsync();
-    }
-
-    private static string? GetUniqueName(IServiceScope scope, ClaimsPrincipal? user)
-    {
-        if (user?.Identity?.IsAuthenticated == true)
-        {
-            return user.FindFirst("unique_name")?.Value ?? "";
-        }
-
-        var config = scope.ServiceProvider.GetRequiredService<IConfiguration>();
-
-        if (config.StripeIsEnabled())
-        {
-            var apiKeyAuthContext = scope.ServiceProvider.GetRequiredService<ApiKeyAuthorizationContext>();
-
-            return apiKeyAuthContext?.Customer?.UniqueName;
-        }
-
-        return null;
     }
 
     private static readonly AutoMapper.IConfigurationProvider _fetchCustomerOwnershipAccessMap = new MapperConfiguration(config =>
