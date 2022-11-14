@@ -19,6 +19,7 @@ using System.Text.Json;
 using Prometheus;
 using ErabliereApi.HealthCheck;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using ErabliereApi.StripeIntegration;
 using ErabliereApi.Services;
@@ -253,6 +254,19 @@ public class Startup
                 }
             }
         });
+
+        // Distributed cache
+        if (string.Equals(Configuration["USE_DISTRIBUTED_CACHE"], TrueString, OrdinalIgnoreCase))
+        {
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration["REDIS_CONNEXION_STRING"];
+            });
+        }
+        else 
+        {
+            services.AddDistributedMemoryCache();
+        }
     }
 
     /// <summary>
