@@ -6,12 +6,18 @@ using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Services.Users;
 
+/// <summary>
+/// Décorateur pour le cache de l'utilisateur
+/// </summary>
 public class ErabliereApiUserCacheDecorator : IUserService
 {
     private readonly IUserService _userService;
     private readonly IDistributedCache _cache;
     private readonly IServiceScopeFactory _scopeFactory;
 
+    /// <summary>
+    /// Constructeur
+    /// </summary>
     public ErabliereApiUserCacheDecorator(IUserService userService, IDistributedCache cache, IServiceScopeFactory scopeFactory)
     {
         _userService = userService;
