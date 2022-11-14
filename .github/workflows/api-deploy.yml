@@ -1,11 +1,11 @@
 name: ErabliereAPI-Deploy
 
 on: 
-  # workflow_run:
-      # workflows: ["ErabliereAPI-Test"]
-      # branches: [master]
-      # types: 
-        # - completed
+  workflow_run:
+      workflows: ["ErabliereAPI-Test"]
+      branches: [master]
+      types: 
+        - completed
   workflow_dispatch:
 
 jobs:
@@ -20,8 +20,8 @@ jobs:
         uses: Azure/aks-set-context@v1
         with:
           creds: '${{ secrets.AZURE_CREDENTIALS }}'
-          resource-group: 'erabliereapi'
-          cluster-name: 'kerabliereapi'
+          resource-group: 'erabliereapiv3'
+          cluster-name: 'kerabliereapiv3'
 
       # Deploy to kubernetes
       - name: Kubectl restart deployment

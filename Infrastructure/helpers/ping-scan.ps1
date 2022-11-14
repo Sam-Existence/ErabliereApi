@@ -1,5 +1,7 @@
 . ..\local\common\ip-util.ps1
 
+Remove-Item *.txt
+
 $ip = Get-CrossPlatformIpAddress
 
 $network = Remove-LastIpOctet $ip
