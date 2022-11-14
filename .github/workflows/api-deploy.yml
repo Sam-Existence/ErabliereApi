@@ -2,7 +2,7 @@ name: ErabliereAPI-Deploy
 
 on: 
   workflow_run:
-      workflows: ["ErabliereAPI-Test"]
+      workflows: ["ErabliereAPI-Test-Demo"]
       branches: [master]
       types: 
         - completed
