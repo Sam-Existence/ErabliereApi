@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Extensions;
@@ -20,7 +21,7 @@ public static class DistributedCacheExtension
             return null;
         }
 
-        return JsonSerializer.Deserialize<T>(value);
+        return JsonSerializer.Deserialize<T>(value, _options);
     }
 
     /// <summary>
@@ -28,6 +29,11 @@ public static class DistributedCacheExtension
     /// </summary>
     public static Task SetAsync<T>(this IDistributedCache cache, string key, T value, CancellationToken token) where T : class 
     {
-        return cache.SetStringAsync(key, JsonSerializer.Serialize(value), token);
+        return cache.SetStringAsync(key, JsonSerializer.Serialize(value, _options), token);
     }
+
+    private static readonly JsonSerializerOptions _options = new JsonSerializerOptions
+    {
+        ReferenceHandler = ReferenceHandler.Preserve
+    };
 }
