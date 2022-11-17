@@ -10,6 +10,7 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees;
 using Microsoft.EntityFrameworkCore;
 using ErabliereApi.Donnees.AutoMapper;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Test.Autofixture;
 public static class ErabliereFixture
@@ -42,6 +43,7 @@ public static class ErabliereFixture
             var builder = GetServicesProvider();
 
             fixture.Register(() => builder.GetRequiredService<ErabliereDbContext>().PopulatesDbSets(fixture));
+            fixture.Register(() => builder.GetRequiredService<IDistributedCache>());
             fixture.Register(() => builder.GetRequiredService<IMapper>());
             fixture.Register(() => fixture.CreateRandomIPAddress());
 
@@ -73,6 +75,8 @@ public static class ErabliereFixture
         });
 
         services.AjouterAutoMapperErabliereApiDonnee();
+
+        services.AddDistributedMemoryCache();
 
         return services.BuildServiceProvider();
     }

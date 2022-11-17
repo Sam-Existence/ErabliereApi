@@ -15,7 +15,8 @@ public static class DistributedCacheExtension
     {
         var value = await cache.GetStringAsync(key, token);
 
-        if (value == null) {
+        if (value == null) 
+        {
             return null;
         }
 
