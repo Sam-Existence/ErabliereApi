@@ -1,5 +1,8 @@
 ﻿using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees;
+using ErabliereApi.Extensions;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Attributes;
 
@@ -22,9 +25,22 @@ public class ValiderIPRulesAttribute : ActionFilterAttribute
     {
         var id = context.ActionArguments["id"];
 
-        var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
+        var cache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
 
-        var erabliere = await depot.Erabliere.FindAsync(id);
+        var erabliere = await cache.GetAsync<Erabliere>($"Erabliere_{id}", context.HttpContext.RequestAborted);
+
+        if (erabliere == null) 
+        {
+            var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
+
+            erabliere = await depot.Erabliere.FindAsync(new object?[] { id }, context.HttpContext.RequestAborted);
+
+            if (erabliere != null) 
+            {
+                await cache.SetAsync($"Erabliere_{id}", erabliere, context.HttpContext.RequestAborted);
+            }
+        }
+        
 
         if (string.IsNullOrWhiteSpace(erabliere?.IpRule) == false && erabliere.IpRule != "-")
         {

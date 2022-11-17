@@ -6,6 +6,7 @@ using ErabliereApi.Services;
 using ErabliereApi.Services.Users;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Attributes;
 
@@ -58,8 +59,9 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
         if (config.IsAuthEnabled()) 
         {
             var dbContext = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
+            var cache = context.HttpContext.RequestServices.GetRequiredService<IDistributedCache>();
 
-            Erabliere? erabliere = await GetErabliere(dbContext, strId);
+            Erabliere? erabliere = await GetErabliere(dbContext, cache, strId, context.HttpContext.RequestAborted);
 
             // Valider les droits d'accès sur l'érablière
             // Si l'érablière a été trouvé
@@ -111,13 +113,13 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
         }
     }
 
-    private async Task<Erabliere?> GetErabliere(ErabliereDbContext dbContext, string strId)
+    private async Task<Erabliere?> GetErabliere(ErabliereDbContext context, IDistributedCache cache, string strId, CancellationToken token)
     {
         var idGuid = Guid.Parse(strId);
 
         if (_levelTwoRelationType != null)
         {
-            var entity = await dbContext.FindAsync(_levelTwoRelationType, idGuid);
+            var entity = await context.FindAsync(_levelTwoRelationType, new object?[] { idGuid }, token);
 
             if (entity == null)
             {
@@ -139,7 +141,17 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
             idGuid = instance.IdErabliere.Value;
         }
 
-        var erabliere = await dbContext.Erabliere.FindAsync(idGuid);
+        var erabliere = await cache.GetAsync<Erabliere>($"Erabliere_{idGuid}", token);
+
+        if (erabliere == null) 
+        {
+            erabliere = await context.Erabliere.FindAsync(new object?[] { idGuid }, token);
+
+            if (erabliere != null) 
+            {
+                await cache.SetAsync($"Erabliere_{idGuid}", erabliere, token);
+            }
+        }
 
         return erabliere;
     }

@@ -350,6 +350,8 @@ public class ErablieresController : ControllerBase
 
         await _context.SaveChangesAsync();
 
+        await _cache.RemoveAsync($"Erabliere_{id}");
+
         return Ok();
     }
 
@@ -447,6 +449,8 @@ public class ErablieresController : ControllerBase
             _context.Remove(entity);
 
             await _context.SaveChangesAsync();
+
+            await _cache.RemoveAsync($"Erabliere_{id}");
         }
 
         return NoContent();
