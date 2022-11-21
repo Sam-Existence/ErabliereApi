@@ -229,7 +229,7 @@ public class DonneesController : ControllerBase
     {
         if (id != donnee.IdErabliere)
         {
-            return BadRequest("L'id de la route ne concorde pas avec l'id du dompeux.");
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière.");
         }
 
         if (idDonnee != donnee.Id)

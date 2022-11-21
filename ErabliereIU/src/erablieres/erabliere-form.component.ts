@@ -1,5 +1,6 @@
 // This a component that allows to add a new erabliere
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { Erabliere } from 'src/model/erabliere';
 
 @Component({
@@ -13,6 +14,7 @@ export class ErabliereFormComponent implements OnInit {
         e.afficherSectionDompeux = true;
         e.afficherTrioDonnees = true;
         e.ipRule = "-";
+        e.isPublic = false;
         return e;
     }
 
@@ -20,7 +22,14 @@ export class ErabliereFormComponent implements OnInit {
     plusdOptions: boolean = false;
     plusOptionsButtonText: string = "Plus d'options";
 
+    constructor(private readonly auth: AuthorisationFactoryService) {
+        
+    }
+
     ngOnInit() {
+        if (this.auth.getAuthorisationService().type == "AuthDisabled") {
+            this.erabliere.isPublic = true;
+        }
     }
 
     afficherPlusOptions() {

@@ -60,7 +60,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"Érablière A\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"raw": "{\r\n  \"nom\": \"Érablière A\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true,\r\n  \"isPublic\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -209,7 +209,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"Érablière B\",\r\n  \"ipRules\": \"192.160.45.45\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"raw": "{\r\n  \"nom\": \"Érablière B\",\r\n  \"ipRules\": \"192.160.45.45\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true,\r\n  \"isPublic\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -279,7 +279,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"Érablière Saint-Alfred\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true\r\n}",
+							"raw": "{\r\n  \"nom\": \"Érablière Saint-Alfred\",\r\n  \"ipRules\": \"-\",\r\n  \"indiceOrdre\": 0,\r\n  \"afficherSectionBaril\": true,\r\n  \"afficherTrioDonnees\": true,\r\n  \"afficherSectionDompeux\": true,\r\n  \"isPublic\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -381,7 +381,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nom\": \"{{nomErabliere}}\"\r\n}",
+							"raw": "{\r\n  \"nom\": \"{{nomErabliere}}\",\r\n  \"isPublic\": true\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1376,7 +1376,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n  \"nom\": \"{{nomErabliere}}\"\r\n}",
+									"raw": "{\r\n  \"nom\": \"{{nomErabliere}}\",\r\n  \"isPublic\": true\r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
