@@ -46,5 +46,10 @@ namespace ErabliereApi.Donnees.Action.Post
         /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
         /// </summary>
         public bool? AfficherSectionDompeux { get; set; }
+
+        /// <summary>
+        /// Indiquateur permettant une accès en lecture à l'érablière sans authentification
+        /// </summary>
+        public bool IsPublic { get; set; }
     }
 }

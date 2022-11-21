@@ -45,4 +45,9 @@ public class PutErabliere
     /// Indicateur permettant de déterminer si la section des donnees sera utiliser par l'érablière
     /// </summary>
     public bool? AfficherSectionDompeux { get; set; }
+
+    /// <summary>
+    /// Indiuateur permettant une accès en lecture à l'érablière sans authentifications
+    /// </summary>
+    public bool? IsPublic { get; set; }
 }

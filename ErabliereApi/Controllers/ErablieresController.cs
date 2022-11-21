@@ -87,6 +87,11 @@ public class ErablieresController : ControllerBase
 
         HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
 
+        if (!HttpContext.Request.Query.TryGetValue("$orderby", out _))
+        {
+            query = query.OrderBy(e => e.IndiceOrdre).ThenBy(e => e.Nom);
+        }
+
         if (!HttpContext.Request.Query.TryGetValue("$filter", out _))
         {
             if (HttpContext.Request.Query.TryGetValue("$top", out var top))
@@ -100,11 +105,6 @@ public class ErablieresController : ControllerBase
             {
                 query = query.Take(TakeErabliereNbMax);
             }
-        }
-
-        if (!HttpContext.Request.Query.TryGetValue("$orderby", out _))
-        {
-            query = query.OrderBy(e => e.IndiceOrdre).ThenBy(e => e.Nom);
         }
 
         return query;
@@ -349,6 +349,11 @@ public class ErablieresController : ControllerBase
         if (erabliere.AfficherTrioDonnees.HasValue)
         {
             entity.AfficherTrioDonnees = erabliere.AfficherTrioDonnees;
+        }
+
+        if (erabliere.IsPublic.HasValue)
+        {
+            entity.IsPublic = erabliere.IsPublic.Value;
         }
 
         _context.Erabliere.Update(entity);
