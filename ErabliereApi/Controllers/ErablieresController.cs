@@ -233,10 +233,20 @@ public class ErablieresController : ControllerBase
         if (isAuthenticate)
         {
             erabliere.IsPublic = false;
+
+            if (postErabliere.IsPublic != erabliere.IsPublic)
+            {
+                erabliere.IsPublic = postErabliere.IsPublic;
+            }
         }
         else
         {
             erabliere.IsPublic = true;
+            
+            if (postErabliere.IsPublic != erabliere.IsPublic)
+            {
+                return BadRequest("Impossible de créer une érablière non pubique sans authentification. Veillez assigner la propriété IsPublic à true.");
+            }
         }
 
         var entity = await _context.Erabliere.AddAsync(erabliere, token);

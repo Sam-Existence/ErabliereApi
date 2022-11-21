@@ -44,7 +44,8 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
             AfficherSectionDompeux = true,
             AfficherTrioDonnees = true,
             IndiceOrdre = 0,
-            IpRules = "-"
+            IpRules = "-",
+            IsPublic= true,
         }), Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync("/Erablieres", content);

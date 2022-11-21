@@ -23,7 +23,8 @@ public static class ErabliereFixture
         fixture.Customize<ControllerContext>(c => c.OmitAutoProperties());
         fixture.Customize(new AutoNSubstituteCustomization());
 
-        fixture.Customize<PostErabliere>(c => c.With(e => e.IpRules, () => fixture.CreateRandomIPAddress().ToString()));
+        fixture.Customize<PostErabliere>(c => c.With(e => e.IpRules, () => fixture.CreateRandomIPAddress().ToString())
+                                               .With(e => e.IsPublic, () => true));
         fixture.Customize<Erabliere>(c => c.With(e => e.IpRule, () => fixture.CreateRandomIPAddress().ToString())
                                            .Without(e => e.Donnees)
                                            .Without(e => e.Dompeux)
