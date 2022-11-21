@@ -102,6 +102,11 @@ public class ErablieresController : ControllerBase
             }
         }
 
+        if (!HttpContext.Request.Query.TryGetValue("$orderby", out _))
+        {
+            query = query.OrderBy(e => e.IndiceOrdre).ThenBy(e => e.Nom);
+        }
+
         return query;
     }
 
