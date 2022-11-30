@@ -29,8 +29,22 @@ export class ModifierErabliereComponent implements OnInit {
                 let erabliere = this.erabliereForm.erabliere;
 
                 this._api.putErabliere(erabliere).then(() => {
+                    if (this.erabliereForm != undefined) {
+                        this.erabliereForm.generalError = undefined;
+                        this.erabliereForm.errorObj = undefined;
+                    }
                     this.shouldReloadErablieres.emit();
-                });
+                }).catch(error => {
+                    if (this.erabliereForm != undefined) {
+                        if (error.status == 400) {
+                            this.erabliereForm.errorObj = error;
+                            this.erabliereForm.generalError = undefined;
+                        } 
+                        else {
+                            this.erabliereForm.generalError = "Une erreur est survenue lors de la modification de l'érablière. Veuillez réessayer plus tard."
+                        }
+                    }
+                })
             }
         }
     }

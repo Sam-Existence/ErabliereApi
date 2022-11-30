@@ -36,6 +36,7 @@ import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.co
 import { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acces-utilisateurs.component';
 import { SelectCustomerComponent } from 'src/customer/select-customer.component';
 import { EditAccessComponent } from 'src/access/edit-access.component';
+import { InputErrorComponent } from "../formsComponents/input-error.component";
 
 declare global {
   interface Window { 
@@ -110,57 +111,58 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
 const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    ErabliereComponent,
-    AjouterErabliereComponent,
-    ModifierErabliereComponent,
-    ErabliereFormComponent,
-    ModifierAccesUtilisateursComponent,
-    SelectCustomerComponent,
-    EditAccessComponent,
-    GraphiqueComponent,
-    DonneesComponent,
-    DashboardComponent,
-    GraphPannelComponent,
-    DateTimeSelectorComponent,
-    CapteurPannelsComponent,
-    BarPannelComponent,
-    BarilsComponent,
-    AlerteComponent,
-    AjouterAlerteComponent,
-    ModifierAlerteComponent,
-    AproposComponent,
-    DocumentationComponent,
-    NotesComponent,
-    NoteComponent,
-    AjouterNoteComponent,
-    AjouterDonneeCapteurComponent,
-    SigninRedirectCallbackComponent,
-    SignoutRedirectCallbackComponent
-  ],
-  imports: [
-    BrowserModule,
-    ChartsModule,
-    AppRoutingModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule
-  ],
-  providers: [
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initConfig,
-      deps: [EnvironmentService],
-      multi: true,
-    },
-    {
-      provide: MSAL_INSTANCE,
-      useFactory: MSALInstanceFactory,
-      deps: [EnvironmentService]
-    },
-    MsalService
-  ]
+    declarations: [
+        AppComponent,
+        ErabliereComponent,
+        AjouterErabliereComponent,
+        ModifierErabliereComponent,
+        ErabliereFormComponent,
+        ModifierAccesUtilisateursComponent,
+        SelectCustomerComponent,
+        EditAccessComponent,
+        GraphiqueComponent,
+        DonneesComponent,
+        DashboardComponent,
+        GraphPannelComponent,
+        DateTimeSelectorComponent,
+        CapteurPannelsComponent,
+        BarPannelComponent,
+        BarilsComponent,
+        AlerteComponent,
+        AjouterAlerteComponent,
+        ModifierAlerteComponent,
+        AproposComponent,
+        DocumentationComponent,
+        NotesComponent,
+        NoteComponent,
+        AjouterNoteComponent,
+        AjouterDonneeCapteurComponent,
+        SigninRedirectCallbackComponent,
+        SignoutRedirectCallbackComponent,
+        InputErrorComponent
+    ],
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initConfig,
+            deps: [EnvironmentService],
+            multi: true,
+        },
+        {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory,
+            deps: [EnvironmentService]
+        },
+        MsalService
+    ],
+    imports: [
+        BrowserModule,
+        ChartsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        FormsModule,
+    ]
 })
 export class AppModule implements DoBootstrap { 
   constructor(private injector: Injector) {}

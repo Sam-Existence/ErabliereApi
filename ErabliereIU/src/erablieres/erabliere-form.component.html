@@ -1,19 +1,25 @@
 <form #erabliereForm="ngForm">
+    <span class="text-danger">
+        {{generalError}}
+    </span>
     <div class="form-group">
         <label for="nomErabliere">Nom de l'érablière</label>
         <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom de l'erablière"
                [(ngModel)]="erabliere.nom">
+        <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
     </div>
     <div [hidden]="!plusdOptions">
         <div class="form-group">
             <label for="ipRules">Règle IP</label>
             <input type="text" class="form-control" id="ipRule" name="ipRule" rows="3" placeholder="Règle IP"
                    [(ngModel)]="erabliere.ipRule">
+            <input-error [errorObj]="errorObj" [controlName]="'ipRule'"></input-error>
         </div>
         <div class="form-group">
             <label for="numeroOrdre">Numéro ordre</label>
             <input type="text" class="form-control" id="indiceOrdre" name="indiceOrdre" placeholder="0"
             [(ngModel)]="erabliere.indiceOrdre">
+            <input-error [errorObj]="errorObj" [controlName]="'indiceOrdre'"></input-error>
         </div>
         <div class="form-check">
             <input type="checkbox" class="form-check-input" id="afficherSectionBaril" name="afficherSectionBaril"

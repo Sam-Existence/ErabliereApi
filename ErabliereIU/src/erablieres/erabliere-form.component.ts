@@ -1,5 +1,5 @@
 // This a component that allows to add a new erabliere
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { Erabliere } from 'src/model/erabliere';
 
@@ -21,6 +21,8 @@ export class ErabliereFormComponent implements OnInit {
     erabliere: Erabliere = this.getDefaultErabliere();
     plusdOptions: boolean = false;
     plusOptionsButtonText: string = "Plus d'options";
+    @Input() errorObj?: any
+    @Input() generalError?: string
 
     constructor(private readonly auth: AuthorisationFactoryService) {
         
