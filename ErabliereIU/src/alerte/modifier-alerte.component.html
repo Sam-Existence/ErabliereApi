@@ -1,4 +1,5 @@
 <div *ngIf="editAlerte">
+    <span class="text-danger">{{generalError}}</span>
     <p>Id: {{ alerte?.id }}</p>
     <form [formGroup]="alerteForm">
         <div class="form-group">
@@ -24,9 +25,13 @@
         </div>
       <button class="btn btn-primary" (click)="onButtonModifierClick()">Modifier</button>
       <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      <div>
+        <span class="text-danger">{{generalError}}</span>
+      </div>
     </form>
 </div>
 <div *ngIf="editAlerteCapteur">
+  <span class="text-danger">{{generalError}}</span>
   <p>Id: {{ alerteCapteur?.id }}</p>
   <form [formGroup]="alerteCapteurForm">
       <div class="form-group">
@@ -40,5 +45,8 @@
       </div>
     <button class="btn btn-primary" (click)="onButtonModifierAlerteCapteurClick()">Modifier</button>
     <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+    <div>
+      <span class="text-danger">{{generalError}}</span>
+    </div>
   </form>
 </div>

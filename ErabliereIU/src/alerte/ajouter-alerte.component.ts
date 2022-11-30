@@ -14,6 +14,7 @@ export class AjouterAlerteComponent implements OnInit {
     alerte:Alerte
     alerteCapteur:AlerteCapteur
     display:boolean
+    generalError?: string
     
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.alerte = new Alerte();
@@ -98,7 +99,10 @@ export class AjouterAlerteComponent implements OnInit {
                          this.display = false;
                          r.emails = r.envoyerA.split(";");
                          this.alertes?.push(r);
-                     });
+                     })
+                     .catch(e => {
+                        this.generalError = "Erreur lors de la modification de l'alerte";
+                    });
         }
         else {
             console.log("this.alerte is undefined");
@@ -124,6 +128,9 @@ export class AjouterAlerteComponent implements OnInit {
                          this.display = false;
                          r.emails = r?.envoyerA?.split(";");
                          this.alertesCapteur?.push(r);
+                     })
+                     .catch(e => {
+                        this.generalError = "Erreur lors de la modification de l'alerte";
                      });
         }
         else {

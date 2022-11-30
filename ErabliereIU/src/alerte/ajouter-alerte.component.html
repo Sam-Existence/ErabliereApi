@@ -2,6 +2,7 @@
     <button id="ajouter-alerte-btn" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
+    <span class="text-danger">{{generalError}}</span>
     <div>
       <div>
         <form [formGroup]="typeAlerteSelectListForm">
@@ -40,6 +41,9 @@
           </div>
         <button id="creer-alerte-donnees-btn" class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
         <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+        <div>
+          <span class="text-danger">{{generalError}}</span>
+        </div>
       </form>
     </div>
     <div *ngIf="typeAlerte == 2">
@@ -60,6 +64,9 @@
           </div>
         <button id="creer-alerte-capteur-btn" class="btn btn-primary" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
         <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+        <div>
+          <span class="text-danger">{{generalError}}</span>
+        </div>
       </form>
     </div>
 </div>

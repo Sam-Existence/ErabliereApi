@@ -73,6 +73,8 @@ export class ModifierAlerteComponent implements OnInit {
     @Input() editAlerte: boolean = false;
     @Input() editAlerteCapteur: boolean = false;
 
+    generalError?: string;
+
     onSubmit() {
 
     }
@@ -98,7 +100,10 @@ export class ModifierAlerteComponent implements OnInit {
                  .then(r => {
                      this.displayEditFormSubject.next("");
                      this.alerteEditFormSubject.next(r);
-                 });
+                 })
+                 .catch(e => {
+                     this.generalError = "Erreur lors de la modification de l'alerte";
+                });
     }
 
     onButtonModifierAlerteCapteurClick() {
@@ -122,6 +127,9 @@ export class ModifierAlerteComponent implements OnInit {
                  .then(r => {
                      this.displayEditFormSubject.next("");
                      this.alerteCapteurEditFormSubject.next(r);
+                 })
+                 .catch(e => {
+                    this.generalError = "Erreur lors de la modification de l'alerte";
                  });
     }
 }
