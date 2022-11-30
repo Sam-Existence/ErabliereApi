@@ -59,10 +59,14 @@
 
         // Kestrel
         "Kestrel:Limits:MaxRequestHeaderCount": "80",
-        "Kestrel:Limits:MinRequestBodyDataRate:BytesPerSecond": "300"
+        "Kestrel:Limits:MinRequestBodyDataRate:BytesPerSecond": "300",
 
         // Stripe
         //"Stripe:ApiKey": ""
+
+        // ChaosEngineering
+        "USE_CHAOS_ENGINEERING": "true",
+        "ChaosEngineeringPercent": "0.1"
       }
     }
   }

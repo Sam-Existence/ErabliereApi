@@ -4,12 +4,12 @@ using static System.StringComparison;
 namespace ErabliereApi.Extensions;
 
 /// <summary>
-/// Méthode d'extension de <see cref="IConfiguration"/>
+/// Mï¿½thode d'extension de <see cref="IConfiguration"/>
 /// </summary>
 public static class ConfigurationExtension
 {
     /// <summary>
-    /// Indique si Stripe est activé
+    /// Indique si Stripe est activÃ©
     /// </summary>
     /// <returns></returns>
     public static bool StripeIsEnabled(this IConfiguration config)
@@ -18,12 +18,22 @@ public static class ConfigurationExtension
     }
 
     /// <summary>
-    /// Indique si l'authentification est activé
+    /// Indique si l'authentification est activÃ©e
     /// </summary>
     /// <param name="config"></param>
     /// <returns></returns>
     public static bool IsAuthEnabled(this IConfiguration config)
     {
         return string.Equals(config["USE_AUTHENTICATION"], TrueString, OrdinalIgnoreCase);
+    }
+
+    /// <summary>
+    /// Indique si le mode ChaosEngineering est activÃ©
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public static bool IsChaosEngineeringEnabled(this IConfiguration config)
+    {
+        return string.Equals(config["USE_CHAOS_ENGINEERING"], TrueString, OrdinalIgnoreCase);
     }
 }

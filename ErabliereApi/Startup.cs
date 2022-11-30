@@ -24,6 +24,7 @@ using ErabliereApi.StripeIntegration;
 using ErabliereApi.Services;
 using ErabliereApi.Authorization.Customers;
 using ErabliereApi.Services.Users;
+using ErabliereApi.Middlewares;
 
 namespace ErabliereApi;
 
@@ -268,6 +269,12 @@ public class Startup
         {
             services.AddDistributedMemoryCache();
         }
+
+        // ChaosEngineering
+        if (Configuration.IsChaosEngineeringEnabled()) 
+        {
+            services.AddSingleton<ChaosEngineeringMiddleware>();
+        }
     }
 
     /// <summary>
@@ -328,6 +335,17 @@ public class Startup
         if (Configuration.IsAuthEnabled())
         {
             app.UseMiddleware<EnsureCustomerExist>();
+        }
+
+        if (Configuration.IsChaosEngineeringEnabled())
+        {
+            if (env.IsProduction()) 
+            {
+                logger.LogWarning("Chaos engineering is enabled in production. This is not recommended.");
+            }
+            logger.LogInformation("Chaos engineering is enabled with a probability of {0}%", Configuration["ChaosEngineeringPercent"]);
+            
+            app.UseMiddleware<ChaosEngineeringMiddleware>();
         }
 
         app.UseEndpoints(endpoints =>
