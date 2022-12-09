@@ -14,8 +14,13 @@ class ErabliereApiProxy:
     self.authConfig = None
     self.verifySsl = verifySsl
     self.host = urlparse(baseUrl).netloc
+    self.timeout = 5
 
-  def envoyer_donnees(self, id_erabliere, temperature, vaccium, niveaubassin):
+  def get_donnees(self, id_erabliere: str, q: int, o: str):
+    data = self.get_request("/erablieres/" + str(id_erabliere) + "/donnees?q=" + str(q) + "&o=" + o)
+    return data.json()
+
+  def envoyer_donnees(self, id_erabliere: str, temperature: int, vaccium: int, niveaubassin: int):
     donnee = {'t': temperature, 'nb': niveaubassin, 'v': vaccium, 'idErabliere': id_erabliere}
     return self.post_request("/erablieres/" + str(id_erabliere) + "/donnees", donnee)
 
@@ -33,10 +38,16 @@ class ErabliereApiProxy:
     capteur = {'nom': nom, 'symbole': symbole, 'afficherCapteurDashboard': afficherCapteurDashboard, 'idErabliere': id_erabliere }
     return self.post_request("/erablieres/" + str(id_erabliere) + "/capteurs", capteur)
 
-  def post_request(self, action, body):
+  def get_request(self, action) -> requests.Response:
+    token = self.get_token()
+    h = {"Authorization": "Bearer " + str(token)}
+    r = requests.get(self.baseUrl + action, headers = h, timeout = self.timeout, verify = self.verifySsl)
+    return r
+
+  def post_request(self, action, body) -> requests.Response:
     token = self.get_token()
     h = {"Authorization": "Bearer " + str(token), "Content-Type":"Application/json"}
-    r = requests.post(self.baseUrl + action, json = body, headers = h, timeout = 5, verify=self.verifySsl)
+    r = requests.post(self.baseUrl + action, json = body, headers = h, timeout = self.timeout, verify = self.verifySsl)
     return r
 
   def get_token(self):

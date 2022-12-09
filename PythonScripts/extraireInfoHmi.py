@@ -95,7 +95,16 @@ for url in urls.split(","):
       sslVerify = False
     
     proxy = ErabliereApiProxy(url, "AzureAD", verifySsl=sslVerify)
-    reponse = proxy.envoyer_donnees(idErabliere, int(float(r_temperature[0].replace("°C", "")) * 10), vaccium, nb)
+    temperature = int(float(r_temperature[0].replace("°C", "")) * 10)
+    
+    if temperature == 77:
+      print('Cas spéciaux de image_to_string')
+      print('Vaider que la temperature précédente est negative')
+      temp_precedent = proxy.get_donnees(idErabliere, q=1, o='d')
+      if len(temp_precedent) == 1 and temp_precedent[0]['t'] < 0:
+        temperature = -77
+
+    reponse = proxy.envoyer_donnees(idErabliere, temperature, vaccium, nb)
     print("réponse", reponse.status_code)
     print(getDate(), "terminé.")
   except Exception as e:
