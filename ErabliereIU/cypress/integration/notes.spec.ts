@@ -1,7 +1,7 @@
 import { HomePage } from "cypress/pages/home.page";
 import { NotesPage } from "cypress/pages/notes.page";
 
-describe("Notes page", () => {
+describe("Notes page", { testIsolation: false }, () => {
     const homePage = new HomePage();
     let notesPage: NotesPage | null = null;
 

@@ -1,7 +1,7 @@
 import { HomePage } from '../pages/home.page';
 import { faker } from '@faker-js/faker';
 
-describe('Alerte functionnality', () => {
+describe('Alerte functionnality', { testIsolation: false }, () => {
     const homePage = new HomePage();
 
     it('Visit the alerte page', () => {

@@ -1,6 +1,6 @@
 import { HomePage } from "../pages/home.page";
 
-describe('Graph pannel test', () => {
+describe('Graph pannel test', { testIsolation: false }, () => {
     const homePage = new HomePage();
     const tauxSucreId = "010e708b-a7d0-449e-77e2-08d9d37ca582";
     var baseValue = 23;
