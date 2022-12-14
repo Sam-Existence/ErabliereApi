@@ -260,6 +260,7 @@ public class Startup
         // Distributed cache
         if (string.Equals(Configuration["USE_DISTRIBUTED_CACHE"], TrueString, OrdinalIgnoreCase))
         {
+            Console.WriteLine("Distributed cache enabled. Using Redis " + Configuration["REDIS_CONNEXION_STRING"]);
             services.AddStackExchangeRedisCache(options =>
             {
                 options.Configuration = Configuration["REDIS_CONNEXION_STRING"];
