@@ -72,6 +72,9 @@ export class AjouterNoteComponent implements OnInit {
             }
             this._api.postNote(this.idErabliereSelectionee, this.note)
                      .then(r => {
+                        this.errorObj = undefined;
+                        this.fileToLargeErrorMessage = undefined;
+                        this.generalError = undefined;
                         this.noteForm.reset();
                         this.needToUpdate.emit();
                       })
