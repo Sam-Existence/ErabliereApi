@@ -57,8 +57,6 @@ public class NotesController : ControllerBase
     [ValiderOwnership("id")]
     public async Task<IActionResult> Ajouter(Guid id, PostNote postNote, CancellationToken token)
     {
-        return StatusCode(413);
-
         if (id != postNote.IdErabliere)
         {
             return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
