@@ -2,30 +2,28 @@
     <button id="addNoteButton" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
+    <span class="text-danger">
+        {{generalError}}
+    </span>
     <form [formGroup]="noteForm">
         <div class="form-group">
           Titre: <input class="form-control" type="text" formControlName="title">
-          <div *ngIf="this.noteForm.controls['title'].errors">
-            <span class="text-danger">{{ this.noteForm.controls['title'].errors.message }}</span>
-          </div>
+          <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
         </div>
         <div class="form-group">
           Texte: <input class="form-control" type="text" formControlName="text">
-          <div *ngIf="this.noteForm.controls['text'].errors">
-            <span class="text-danger">{{ this.noteForm.controls['text'].errors.message }}</span>
-          </div>
+          <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
         </div>
         <div class="form-group">
           Fichier: <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
         </div>
-        <div *ngIf="this.noteForm.controls['file'].errors">
-          <span class="text-danger">{{ this.noteForm.controls['file'].errors.message }}</span>
-        </div>
+        <input-error [errorObj]="errorObj" [controlName]="'file'"></input-error>
+        <span class="text-danger">
+          {{fileToLargeErrorMessage}}
+        </span>
         <div class="form-group">
           Date de la note: <input class="form-control" type="text" formControlName="noteDate">
-          <div *ngIf="this.noteForm.dirty && this.noteForm.controls['noteDate'].errors">
-            <span class="text-danger">{{ this.noteForm.controls['noteDate'].errors.message }}</span>
-          </div>
+          <input-error [errorObj]="errorObj" [controlName]="'noteDate'"></input-error>
         </div>
       <button id="creerNote" class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
       <button id="annulerCreerNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>

@@ -40,6 +40,12 @@ export class AjouterNoteComponent implements OnInit {
 
     noteForm: UntypedFormGroup;
 
+    errorObj: any;
+
+    fileToLargeErrorMessage?: string;
+
+    generalError?: string;
+
     onSubmit() {
 
     }
@@ -71,33 +77,19 @@ export class AjouterNoteComponent implements OnInit {
                       })
                       .catch(e => {
                         if (e.status == 400) {
-                            if (e.error.errors.Title != undefined) {
-                                this.noteForm.controls['title'].setErrors({
-                                    'incorrect': true,
-                                    'message': e.error.errors.Title.join(', ')
-                                })
-                            }
-                            if (e.error.errors.Text != undefined) {
-                                this.noteForm.controls['text'].setErrors({
-                                    'incorrect': true,
-                                    'message': e.error.errors.Text.join(', ')
-                                })
-                            }
-                            if (e.error.errors.FileBase64 != undefined) {
-                                this.noteForm.controls['file'].setErrors({
-                                    'incorrect': true,
-                                    'message': e.error.errors.FileBase64.join(', ')
-                                })
-                            }
-                            if (e.error.errors['$.noteDate'] != undefined) {
-                                this.noteForm.controls['noteDate'].setErrors({
-                                    'incorrect': true,
-                                    'message': e.error.errors['$.noteDate'].join(', ')
-                                })
-                            }
+                            this.errorObj = e
+                            this.fileToLargeErrorMessage = undefined;
+                            this.generalError = undefined;
+                        }
+                        else if (e.status == 413) {
+                            this.errorObj = undefined;
+                            this.fileToLargeErrorMessage = "Le fichier est trop gros."
+                            this.generalError = undefined;
                         }
                         else {
-                            throw e;
+                            this.errorObj = undefined;
+                            this.fileToLargeErrorMessage = undefined;
+                            this.generalError = "Une erreur est survenue."
                         }
                       });
         }
