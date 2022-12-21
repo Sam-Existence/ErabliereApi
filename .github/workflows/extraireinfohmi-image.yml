@@ -5,11 +5,11 @@ on:
   push:
     branches:
       - master
-    path_include:
-    - 'Infrastructure/docker/extraireInfoHmi.dockerfile'    
+    paths:
+    - 'Infrastructure/docker/extraireInfoHmi.dockerfile'
   pull_request:
     types: [opened, synchronize, reopened]
-    path_include:
+    paths:
     - 'Infrastructure/docker/extraireInfoHmi.dockerfile'
 
 env:

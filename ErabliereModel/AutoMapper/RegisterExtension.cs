@@ -58,6 +58,8 @@ public static class RegisterExtension
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.FromBase64String(p.File) : null))
                   .ReverseMap()
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
+            config.CreateMap<Note, PostNoteMultipartResponse>()
+                  .ReverseMap();
 
             config.CreateMap<PutAlerteCapteur, AlerteCapteur>();
 

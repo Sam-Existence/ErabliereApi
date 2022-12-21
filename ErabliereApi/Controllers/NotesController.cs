@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
+using ErabliereApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
@@ -77,6 +78,43 @@ public class NotesController : ControllerBase
         await _depot.SaveChangesAsync(token);
 
         return Ok(entite.Entity);
+    }
+
+    /// <summary>
+    /// Action permettant de créer une note en utilisant Content-Type: multipart/form-data
+    /// </summary>
+    /// <param name="id">Id de l'érablière</param>
+    /// <param name="token"></param>
+    /// <param name="postNoteMultipart"></param>
+    /// <returns></returns>
+    [HttpPost("multipart")]
+    [ProducesResponseType(200, Type = typeof(PostNoteMultipartResponse))]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> AjouterMultipart(Guid id, CancellationToken token, [FromForm] PostNoteMultipart postNoteMultipart)
+    {
+        if (postNoteMultipart.File == null) 
+        {
+            return BadRequest("Le fichier est manquant");
+        }
+
+        var note = _mapper.Map<Note>(postNoteMultipart);
+
+        note.File = await ToByteArray(postNoteMultipart.File, token);
+
+        var entite = await _depot.Notes.AddAsync(note, token);
+
+        await _depot.SaveChangesAsync(token);
+
+        return Ok(_mapper.Map<PostNoteMultipartResponse>(entite.Entity));
+    }
+
+    private async Task<byte[]> ToByteArray(IFormFile file, CancellationToken token)
+    {
+        using var ms = new MemoryStream();
+
+        await file.CopyToAsync(ms, token);
+
+        return ms.ToArray();
     }
 
     /// <summary>
