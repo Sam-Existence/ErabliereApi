@@ -88,7 +88,7 @@ public class NotesController : ControllerBase
     /// <param name="postNoteMultipart"></param>
     /// <returns></returns>
     [HttpPost("multipart")]
-    [ProducesResponseType(200, Type = typeof(Note))]
+    [ProducesResponseType(200, Type = typeof(PostNoteMultipartResponse))]
     [ValiderOwnership("id")]
     public async Task<IActionResult> AjouterMultipart(Guid id, CancellationToken token, [FromForm] PostNoteMultipart postNoteMultipart)
     {
@@ -105,7 +105,7 @@ public class NotesController : ControllerBase
 
         await _depot.SaveChangesAsync(token);
 
-        return Ok(entite.Entity);
+        return Ok(_mapper.Map<PostNoteMultipartResponse>(entite.Entity));
     }
 
     private async Task<byte[]> ToByteArray(IFormFile file, CancellationToken token)
