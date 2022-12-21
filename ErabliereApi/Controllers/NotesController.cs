@@ -49,7 +49,7 @@ public class NotesController : ControllerBase
     /// <summary>
     /// Action permettant d'ajouter une note
     /// </summary>
-    /// <param name="id"></param>
+    /// <param name="id">Id de l'érablière</param>
     /// <param name="postNote"></param>
     /// <param name="token"></param>
     /// <returns></returns>
