@@ -2,6 +2,15 @@ name: ExtraireInfoHmi-Image
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - master
+    path_include:
+    - 'Infrastructure/docker/extraireInfoHmi.dockerfile'    
+  pull_request:
+    types: [opened, synchronize, reopened]
+    path_include:
+    - 'Infrastructure/docker/extraireInfoHmi.dockerfile'
 
 env:
   REGISTRY_HOSTNAME: erabliereapi
@@ -29,4 +38,5 @@ jobs:
 
       # Push the image
       - name: Docker push
+        if: github.ref == 'refs/heads/master'
         run: docker push $REGISTRY_HOSTNAME/$IMAGE_NAME:$IMAGE_TAG
