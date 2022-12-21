@@ -25,6 +25,8 @@ using ErabliereApi.Services;
 using ErabliereApi.Authorization.Customers;
 using ErabliereApi.Services.Users;
 using ErabliereApi.Middlewares;
+using ErabliereApi.Models;
+using ErabliereApi.Donnees;
 
 namespace ErabliereApi;
 
@@ -128,8 +130,15 @@ public class Startup
         }
 
         // Automapper
-        services.AjouterAutoMapperErabliereApiDonnee(
-            StripeIntegration.AutoMapperExtension.AddCustomersApiKeyMappings
+        services.AjouterAutoMapperErabliereApiDonnee(config => 
+            {
+                StripeIntegration.AutoMapperExtension.AddCustomersApiKeyMappings(config);
+
+                config.CreateMap<PostNoteMultipart, Note>()
+                  .ForMember(d => d.File, o => o.Ignore())
+                  .ReverseMap()
+                  .ForMember(d => d.File, o => o.Ignore());
+            }
         );
 
         // Database
