@@ -178,6 +178,8 @@ public class NotesController : ControllerBase
 
             await _depot.SaveChangesAsync(token);
 
+            entity.File = null;
+
             return Ok(entity);
         }
         else
