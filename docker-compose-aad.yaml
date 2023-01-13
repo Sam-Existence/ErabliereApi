@@ -3,7 +3,7 @@ services:
   erabliere-api:
     image: "erabliereapi/erabliereapi:v3-dev"
     environment:
-      Logging__LogLevel_Default: "Debug"
+      Logging__LogLevel__Default: "Warning" # Trace, Debug, Information, Warning, Error, Critical, None
       ASPNETCORE_ENVIRONMENT: "Development"
       ASPNETCORE_URLS: "https://+;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: password
