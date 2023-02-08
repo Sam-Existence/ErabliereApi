@@ -136,14 +136,14 @@
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
-            "browserTarget": "erabliere-iu:build",
+            "browserTarget": "ErabliereIU:build",
             "port": 6006
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "erabliere-iu:build"
+            "browserTarget": "ErabliereIU:build"
           }
         }
       }
