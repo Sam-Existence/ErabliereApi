@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/angular';
+import { Meta } from '@storybook/angular';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 
@@ -7,11 +7,8 @@ import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 export default {
-  title: 'EditAccessComponent',
   component: EditAccessComponent,
-  decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
-  ]
+  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
 } as Meta;
 
 var customerAccess = new CustomerAccess();
@@ -25,21 +22,23 @@ customerAccess.customer.name = faker.name.firstName();
 customerAccess.customer.email = faker.internet.email();
 customerAccess.customer.uniqueName = customerAccess.customer.email;
 
-//👇 We create a “template” of how args map to rendering
-const Template: Story = (args) => ({
-  props: args,
-});
+export const Display = {
+  render: (args: any) => ({
+    props: args,
+  }),
 
-//👇 Each story then reuses that template
-export const Display = Template.bind({});
-
-Display.args = {
-  acces: customerAccess
+  args: {
+    acces: customerAccess,
+  },
 };
 
-export const Edit = Template.bind({});
+export const Edit = {
+  render: (args: any) => ({
+    props: args,
+  }),
 
-Edit.args = {
-  acces: customerAccess,
-  displayEditAccess: true
+  args: {
+    acces: customerAccess,
+    displayEditAccess: true,
+  },
 };

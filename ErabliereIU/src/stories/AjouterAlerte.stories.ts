@@ -1,4 +1,4 @@
-import { Meta, Story } from '@storybook/angular';
+import { Meta } from '@storybook/angular';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 
@@ -7,37 +7,38 @@ import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 export default {
-  title: 'AjouterAlerteComponent',
   component: AjouterAlerteComponent,
-  decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
-  ]
+  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
 } as Meta;
 
 var fixture = {};
 
-//👇 We create a “template” of how args map to rendering
-const Template: Story = (args) => ({
-  props: args
-});
+export const Button = {
+  render: (args: any) => ({
+    props: args,
+  }),
 
-//👇 Each story then reuses that template
-export const Button = Template.bind({});
-
-Button.args = {
-    
+  args: {},
 };
 
-export const FormAlerteTrioDonnees = Template.bind({});
+export const FormAlerteTrioDonnees = {
+  render: (args: any) => ({
+    props: args,
+  }),
 
-FormAlerteTrioDonnees.args = {
-  display: true,
-  typeAlerte: 1
+  args: {
+    display: true,
+    typeAlerte: 1,
+  },
 };
 
-export const FormAlerteCapteur = Template.bind({});
+export const FormAlerteCapteur = {
+  render: (args: any) => ({
+    props: args,
+  }),
 
-FormAlerteCapteur.args = {
-  display: true,
-  typeAlerte: 2
+  args: {
+    display: true,
+    typeAlerte: 2,
+  },
 };

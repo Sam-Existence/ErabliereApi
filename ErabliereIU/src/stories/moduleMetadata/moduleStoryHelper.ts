@@ -6,7 +6,7 @@ import { moduleMetadata } from "@storybook/angular";
 
 export class ModuleStoryHelper{
     static getErabliereApiStoriesModuleMetadata(declarations: Array<any> = [], additionnalImports: Array<any> = []) {
-        let imports = [
+        let imports: any[] = [
             HttpClientModule,
             FormsModule,
             ReactiveFormsModule,
@@ -26,7 +26,7 @@ export class ModuleStoryHelper{
                         }
                       })
                 },
-                MsalService
+                MsalService,
             ]
         })
     }
