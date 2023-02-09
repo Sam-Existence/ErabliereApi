@@ -10,10 +10,8 @@ export class ModuleStoryHelper{
             HttpClientModule,
             FormsModule,
             ReactiveFormsModule,
+            ...additionnalImports
         ]
-        for (var i = 0; i < additionnalImports.length; i++) {
-            imports.push(additionnalImports[i])
-        }
         return moduleMetadata({
             declarations: declarations,
             imports: imports,
