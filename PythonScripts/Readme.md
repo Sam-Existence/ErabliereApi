@@ -53,3 +53,12 @@ Version plus complexe envoyant les données récupéré à deux API une sans vé
 python3 /home/ubuntu/erabliereapi/PythonScripts/extraireInfoHmi.py http:/<ip-address-hmi>/1.jpg [noSslVerify]https://192.168.1.2:5001,https://erabliereapi.freddycoder.com <guid-erabliere>
 ```
 
+## getwather.py
+
+```
+python3 getweather.py <acuweather-api-key-file-path> <location> <api-domain> <capteur-guid-id>
+```
+ex:
+```
+python3 getweather.py /home/ubuntu/.erabliereapi/acuweather.key 1365711 https://erabliereapi.freddycoder.com 00000000-0000-0000-0000-000000000000
+```
