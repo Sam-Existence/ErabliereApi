@@ -66,7 +66,11 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
             // Valider les droits d'accès sur l'érablière
             // Si l'érablière a été trouvé
             // Si l'érablière est publique et que l'accès est en lecture, l'accès est autorisé
-            if (erabliere != null && 
+            if (erabliere == null) 
+            {
+                context.Result = new NotFoundResult();
+            }
+            else if (erabliere != null && 
                 (erabliere.IsPublic == true && context.HttpContext.Request.Method == "GET") == false)
             {
                 var userService = context.HttpContext.RequestServices.GetRequiredService<IUserService>();
