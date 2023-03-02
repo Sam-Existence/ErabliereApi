@@ -35,7 +35,7 @@ public class DonneesCapteurController : ControllerBase
     }
 
     /// <summary>
-    /// Liste les DonneesCapteur
+    /// Liste les données d'un capteur
     /// </summary>
     /// <param name="id">Identifiant du capteur</param>
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
@@ -71,7 +71,7 @@ public class DonneesCapteurController : ControllerBase
     }
 
     /// <summary>
-    /// Liste les données de plusieurs capteurs DonneesCapteur
+    /// Liste les données de plusieurs capteurs capteurs
     /// </summary>
     /// <param name="ids">Identifiant des capteurs</param>
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>
@@ -96,7 +96,7 @@ public class DonneesCapteurController : ControllerBase
     }
 
     /// <summary>
-    /// Ajouter un capteur
+    /// Ajouter une données d'un capteur
     /// </summary>
     /// <param name="id">L'identifiant du capteurs</param>
     /// <param name="donneeCapteur">Le capteur a ajouter</param>
@@ -125,7 +125,7 @@ public class DonneesCapteurController : ControllerBase
     }
 
     /// <summary>
-    /// Modifier un capteur
+    /// Modifier une données d'un capteur
     /// </summary>
     /// <param name="id">L'identifiant du capteur</param>
     /// <param name="capteur">Le capteur a modifier</param>
@@ -148,7 +148,7 @@ public class DonneesCapteurController : ControllerBase
     }
 
     /// <summary>
-    /// Supprimer un capteur
+    /// Supprimer une données d'un capteur
     /// </summary>
     /// <param name="id">Identifiant du capteur</param>
     /// <param name="capteur">Le capteur a supprimer</param>
