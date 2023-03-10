@@ -1,0 +1,24 @@
+[VERSION]
+APIVERSION=(600)
+VERSION=(6,3,0,300)
+[FRAME]
+PLACEMENT=(44,2,3,-1,-1,-1,-1,26,26,1466,785)
+FRAME DATA=(1,1,0,0)
+[FRAME DATA]
+1=(44,2,3,-1,-1,-8,-31,26,26,832,401)
+2=(44,0,1,-1,-1,-1,-1,0,23,360,858)
+[Ladder Views]
+F1V1=(95,1,0,6,15,5,1,1,1,0,1)
+[Ladder Frame 1]
+Ladder View 1z=(0,0,1459,824)
+[FRAME TYPES]
+1=3
+2=8
+[Cross Reference Views]
+F2V1=(1,0,0,8,1,1,1,1,1,1,1,1,6,0,0,172,56,56,98)
+[DOCKPANE TO FRAME XREF]
+XRef View`59502=2
+[DISPLAY MODE]
+DoMDIRestore=0
+[SYSTEM NAME]
+System Name=MINI-HP

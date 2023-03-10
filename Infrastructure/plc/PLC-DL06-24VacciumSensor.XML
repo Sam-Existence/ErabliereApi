@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DockingPaneLayouts CompactMode="1">
+	<DSP_PANE_SECTION>
+		<Summary Panes="4" TopContainer="2" Client="4"/>
+		<Pane-1 Type="0" DockingCX="360" DockingCY="286" Title="XRef View\n\n" ID="59502" DockingHolder="3" LastHolder="3"/>
+		<Pane-2 Type="2" Horiz="1" Panes="2" Pane-1="3" Pane-2="4"/>
+		<Pane-3 Type="1" DockingCX="360" DockingCY="286" Panes="1" Selected="1" Pane-1="1"/>
+		<Pane-4 Type="4" DockingCX="1488"/>
+	</DSP_PANE_SECTION>
+</DockingPaneLayouts>
