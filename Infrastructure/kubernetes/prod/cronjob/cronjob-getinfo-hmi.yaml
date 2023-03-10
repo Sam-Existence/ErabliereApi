@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: extraire-info-hmi
 spec:
-  schedule: "0 * * * *"
+  schedule: "0/10 * * * *"
   jobTemplate:
     spec:
       template:
