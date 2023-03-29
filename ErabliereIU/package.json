@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^15.1.4",
     "@angular/platform-browser-dynamic": "^15.1.4",
     "@angular/router": "^15.1.4",
-    "@azure/msal-angular": "^2.5.2",
+    "@azure/msal-angular": "^2.5.4",
     "@azure/msal-browser": "^2.34.0",
     "@babel/core": "^7.20.12",
     "ansi-regex": "^6.0.1",
