@@ -3,7 +3,6 @@ import requests
 import os
 from urllib.parse import urlparse
 from auth.getAccessToken import getAccessToken as getAccessTokenIdentity
-from auth.getAccessTokenAAD import getAccessToken as getAccessTokenAAD
 from auth.getAccessTokenAAD import AzureADAccessTokenProvider
 
 class ErabliereApiProxy:
@@ -54,7 +53,7 @@ class ErabliereApiProxy:
     if (self.auth_provider == None or self.auth_provider == "None"):
       return None
     if (self.auth_provider == "Identity"):
-      return getAccessTokenIdentity("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret")
+      return getAccessTokenIdentity("https://192.168.0.103:5005/connect/token", "raspberrylocal", "secret", verifySsl = False)
     if (self.auth_provider == "AzureAD"):
       if self.authConfig == None:
         authPath = f"/home/ubuntu/.erabliereapi/auth.{self.host}.config"
