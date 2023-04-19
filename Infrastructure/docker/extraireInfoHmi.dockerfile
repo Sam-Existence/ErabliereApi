@@ -1,6 +1,6 @@
 # An docker image containing a python script to extract information from a HMI
 # it is based on ubuntu and posses all teseract-ocr dependencies
-FROM ubuntu:rolling
+FROM ubuntu:22.10
 WORKDIR /app
 ENV TZ=Canada/Eastern
 ENV FLASK_APP=image2textapi
