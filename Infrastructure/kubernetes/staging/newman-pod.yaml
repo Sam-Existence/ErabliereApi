@@ -12,6 +12,8 @@ spec:
     volumeMounts:
     - name: shared-data
       mountPath: /test-results
+    securityContext:
+      allowPrivilegeEscalation: false
   - name: securetesting-newman
     image: erabliereapi/securetesting-newman:latest
     command: 
