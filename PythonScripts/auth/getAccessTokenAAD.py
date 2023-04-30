@@ -27,7 +27,7 @@ def getAccessToken(config):
 
   print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
-  pathSaveFile = '/home/ubuntu/aad_oauth_token.json'
+  pathSaveFile = f'/home/{os.environ["USER"]}/aad_oauth_token.json'
   if os.name == 'nt':
     pathSaveFile = '__pycache__\\aad_oauth_token.json'
   with open(pathSaveFile, 'w') as outfile:
@@ -47,7 +47,7 @@ class AzureADAccessTokenProvider:
       print("Access token lifetime: " + str(self.in_memory_token[1] - int(time.time())))
       return self.in_memory_token[0]
 
-    aadTokenFile = f'/home/ubuntu/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
+    aadTokenFile = f'/home/{os.environ["USER"]}/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
     if os.name == 'nt':
       aadTokenFile = f'__pycache__\\aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
     if path.exists(aadTokenFile):
@@ -67,7 +67,7 @@ class AzureADAccessTokenProvider:
     print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
     try:
-      pathSaveFile = f'/home/ubuntu/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
+      pathSaveFile = f'/home/${os.environ["USER"]}/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       if os.name == 'nt':
         pathSaveFile = f'__pycache__\\aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       with open(pathSaveFile, 'w') as outfile:
