@@ -66,6 +66,7 @@ class AzureADAccessTokenProvider:
 
     print("Access token lifetime: " + str(accessToken[1] - int(time.time())))
 
+    pathSaveFile = ""
     try:
       pathSaveFile = f'/home/${os.environ["USER"]}/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       if os.name == 'nt':
@@ -73,7 +74,7 @@ class AzureADAccessTokenProvider:
       with open(pathSaveFile, 'w') as outfile:
         json.dump(accessToken, outfile)
     except:
-      print("Error saving token to file")
+      print("Error saving token to file. " + pathSaveFile)
 
     self.in_memory_token = accessToken
 
