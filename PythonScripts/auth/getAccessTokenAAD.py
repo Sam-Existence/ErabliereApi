@@ -68,7 +68,7 @@ class AzureADAccessTokenProvider:
 
     pathSaveFile = ""
     try:
-      pathSaveFile = f'/home/${os.environ["USER"]}/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
+      pathSaveFile = f'/home/{os.environ["USER"]}/aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       if os.name == 'nt':
         pathSaveFile = f'__pycache__\\aad_oauth_token.{urlparse(config["Scopes"]).netloc}.json'
       with open(pathSaveFile, 'w') as outfile:
