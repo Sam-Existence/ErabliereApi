@@ -2,7 +2,7 @@ import requests
 import base64
 import json
 
-def getAccessToken(url, clientId, clientSecret):
+def getAccessToken(url, clientId, clientSecret, verifySsl: bool | None):
 
     # Générer l'entête en base 64
     sample_string = clientId + ":" + clientSecret
@@ -19,7 +19,7 @@ def getAccessToken(url, clientId, clientSecret):
 
     # Envoyer la requete
     print("Start client credential request at " + url)
-    response = requests.request("POST", url, data=body, headers=headers, verify = False, timeout = 10)
+    response = requests.request("POST", url, data=body, headers=headers, verify = verifySsl, timeout = 10)
     print("Request terminated, deserialization starting")
     responseObj = json.loads(response.text)
     print(responseObj)

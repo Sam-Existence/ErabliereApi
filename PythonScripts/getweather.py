@@ -1,16 +1,16 @@
-from datetime import datetime as dt
-from datetime import timedelta as td
 from erabliere_api_proxy import ErabliereApiProxy
 import requests
 import os
 import sys
 
-apiKey = sys.argv[1]
+apiKeyFilePath = sys.argv[1]
 locationKey = sys.argv[2]
 
+# Validate against path traversal attack
+
 # If the file apiKey exist, read it
-if os.path.isfile(apiKey):
-    with open(apiKey, 'r') as f:
+if os.path.isfile(apiKeyFilePath):
+    with open(apiKeyFilePath, 'r') as f:
         apiKey = f.read()
 
 url = "http://dataservice.accuweather.com/currentconditions/v1/1365711?apikey=" + apiKey + "&language=fr&_=" + locationKey
