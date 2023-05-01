@@ -37,6 +37,7 @@ import { ModifierAccesUtilisateursComponent } from 'src/erablieres/modifier-acce
 import { SelectCustomerComponent } from 'src/customer/select-customer.component';
 import { EditAccessComponent } from 'src/access/edit-access.component';
 import { InputErrorComponent } from "../formsComponents/input-error.component";
+import { VacciumGraphPannelComponent } from 'src/donnees/sub-panel/vaccium-graph-pannel.component';
 
 declare global {
   interface Window { 
@@ -124,6 +125,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         DonneesComponent,
         DashboardComponent,
         GraphPannelComponent,
+        VacciumGraphPannelComponent,
         DateTimeSelectorComponent,
         CapteurPannelsComponent,
         BarPannelComponent,
@@ -139,7 +141,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         AjouterDonneeCapteurComponent,
         SigninRedirectCallbackComponent,
         SignoutRedirectCallbackComponent,
-        InputErrorComponent
+        InputErrorComponent,
     ],
     providers: [
         {
