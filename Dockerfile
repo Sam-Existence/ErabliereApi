@@ -2,8 +2,8 @@
 FROM node:18-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
-RUN npm install
-RUN npm install -g @angular/cli
+RUN npm ci
+RUN npm install -g @angular/cli@15.2.7
 COPY ErabliereIU/ .
 RUN ng build --configuration production
 
