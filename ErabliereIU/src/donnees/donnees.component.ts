@@ -21,13 +21,13 @@ import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
                            [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
             </div>
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
-              <graph-pannel [titre]="titre_vaccium" 
+              <vaccium-graph-pannel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
-                           [timeaxes]="timeaxes" 
+                           [timeaxes]="timeaxes"
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="vaccium" #vacciumGraphPannel></graph-pannel>
+                           [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
             </div>
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-pannel [titre]="titre_niveaubassin" 
@@ -80,15 +80,6 @@ export class DonneesComponent implements OnInit {
       vaccium: ChartDataSets[] = []
       vacciumValueActuel?:string|null
       vacciumSymbole:string = "HG"
-      vacciumYOption:any = [
-          {
-            display: true,
-            ticks: { 
-                beginAtZero: true, 
-                max: 30
-            }
-        }
-      ]
 
       titre_niveaubassin = "Niveau Bassin"
       niveaubassin: ChartDataSets[] = []

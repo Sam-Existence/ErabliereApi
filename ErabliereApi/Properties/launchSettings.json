@@ -22,7 +22,7 @@
         //"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
 
         // Utiliser l'authentification
-        "USE_AUTHENTICATION": "true",
+        "USE_AUTHENTICATION": "false",
 
         // Configuration swagger active avec USE_AUTHENTICATION: true
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
@@ -65,7 +65,7 @@
         //"Stripe:ApiKey": ""
 
         // ChaosEngineering
-        "USE_CHAOS_ENGINEERING": "true",
+        "USE_CHAOS_ENGINEERING": "false",
         "ChaosEngineeringPercent": "0.1"
       }
     }

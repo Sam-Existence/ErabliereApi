@@ -4,10 +4,10 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
-    selector: 'graph-pannel',
+    selector: 'vaccium-graph-pannel',
     templateUrl: './graph-pannel.component.html',
 })
-export class GraphPannelComponent implements OnInit {
+export class VacciumGraphPannelComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
     @Input() datasets: ChartDataSets[] = [];
     @Input() timeaxes: Label[] = [];
@@ -23,6 +23,12 @@ export class GraphPannelComponent implements OnInit {
                     maxTicksLimit: 7
                 }
             }],
+            yAxes: [{
+                ticks: {
+                    min: 0,
+                    max: 30
+                }
+            }]
         }
     };
 

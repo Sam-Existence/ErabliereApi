@@ -3,5 +3,5 @@
     "stsAuthority": "https://localhost:5005",
     "clientId": "erabliereiu",
     "appRoot": "https://localhost:4200",
-    "authEnable": true
+    "authEnable": false
 }
