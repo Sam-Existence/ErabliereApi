@@ -388,6 +388,7 @@ ErabliereIU/npm-debug.log
 ErabliereIU/yarn-error.log
 ErabliereIU/testem.log
 ErabliereIU/typings
+ErabliereIU/cypress/counter.txt
 
 # System Files
 ErabliereIU/.DS_Store

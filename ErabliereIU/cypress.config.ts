@@ -9,6 +9,7 @@ export default defineConfig({
     fixturesFolder: "cypress/fixtures",
     baseUrl: "https://localhost:4200",
     projectId: "7cxkq4",
-    chromeWebSecurity: false
+    chromeWebSecurity: false,
+    video: false
   }
 })
