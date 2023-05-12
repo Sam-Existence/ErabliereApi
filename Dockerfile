@@ -3,9 +3,8 @@ FROM node:18-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm ci
-RUN npm install -g @angular/cli@15.2.7
 COPY ErabliereIU/ .
-RUN ng build --configuration production
+RUN npm run build:prod
 
 # Build the api
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-api-env
