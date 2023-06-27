@@ -15,6 +15,7 @@ import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
+import { PutCapteur } from 'src/model/putCapteur';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
 
 @Injectable({ providedIn: 'root' })
@@ -69,6 +70,12 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.get<Capteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", { headers: headers }).toPromise();
+    }
+
+    async postCapteur(idErabliereSelectionnee: any, capteur: PutCapteur) {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.post<Capteur>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", capteur, { headers: headers }).toPromise();
     }
 
     async postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {

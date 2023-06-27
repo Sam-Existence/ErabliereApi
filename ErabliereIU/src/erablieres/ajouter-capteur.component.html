@@ -1,0 +1,36 @@
+<form #capteurForm="ngForm">
+  <!-- ajouter la section des erreurs général -->
+  <span class="text-danger">
+    {{generalError}}
+  </span>
+  <div class="form-group">
+   <label for="nomCapteur" class="col-form-label">Nom:</label>
+   <input type="text" class="form-control" id="nom" name="nom" [(ngModel)]="capteur.nom" placeholder="Nom du capteur">
+   <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
+  </div>
+  <div class="form-group">
+   <label for="symboleCapteur" class="col-form-label">Symbole:</label>
+   <input type="text" class="form-control" id="symbole" name="symbole" [(ngModel)]="capteur.symbole" plateholder="°C">
+   <input-error [errorObj]="errorObj" [controlName]="'symbole'"></input-error>
+  </div>
+  <div class="form-group">
+   <label for="afficherCapteurDashboard" class="col-form-label">Afficher dans les graphiques:</label>
+   <select class="form-control" id="afficherCapteurDashboard" name="afficherCapteurDashboard" [(ngModel)]="capteur.afficherCapteurDashboard">
+    <option value="true" [defaultSelected]>Oui</option>
+    <option value="false">Non</option>
+   </select>
+   <input-error [errorObj]="errorObj" [controlName]="'afficherCapteurDashboard'"></input-error>
+  </div>
+  <div class="form-group">
+   <label for="ajouterDonneeDepuisInterface" class="col-form-label">Saisi manuel:</label>
+   <select class="form-control" id="ajouterDonneeDepuisInterface" name="ajouterDonneeDepuisInterface" [(ngModel)]="capteur.ajouterDonneeDepuisInterface">
+    <option value="true">Oui</option>
+    <option value="false" [defaultSelected]>Non</option>
+   </select>
+   <input-error [errorObj]="errorObj" [controlName]="'ajouterDonneeDepuisInterface'"></input-error>
+  </div>
+  <!-- bouton pour l'envoie -->
+  <button class="btn btn-primary" (click)="ajouterCapteur()">Ajouter</button>
+  <!-- bouton pour l'annulation -->
+  <button type="button" class="btn btn-secondary" (click)="buttonAnnuler()">Annuler</button>
+ </form>

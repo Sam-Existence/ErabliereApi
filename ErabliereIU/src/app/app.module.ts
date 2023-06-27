@@ -38,6 +38,9 @@ import { SelectCustomerComponent } from 'src/customer/select-customer.component'
 import { EditAccessComponent } from 'src/access/edit-access.component';
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { VacciumGraphPannelComponent } from 'src/donnees/sub-panel/vaccium-graph-pannel.component';
+import { GestionCapteursComponent } from 'src/erablieres/gestion-capteurs.component';
+import { AjouterCapteurComponent } from 'src/erablieres/ajouter-capteur.component';
+import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
 
 declare global {
   interface Window { 
@@ -128,6 +131,9 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         VacciumGraphPannelComponent,
         DateTimeSelectorComponent,
         CapteurPannelsComponent,
+        GestionCapteursComponent,
+        AjouterCapteurComponent,
+        CapteurListComponent,
         BarPannelComponent,
         BarilsComponent,
         AlerteComponent,

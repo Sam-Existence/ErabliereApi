@@ -43,6 +43,10 @@
             <label for="indiquateurIsPublic" class="form-check-label">Érablière publique</label>
         </div>
         <hr />
+        <div *ngIf="erabliere.id" >
+            <gestion-capteurs [idErabliere]="erabliere.id"></gestion-capteurs>
+        </div>
+        <hr *ngIf="erabliere.id" />
     </div>
     <div class="form-group">
         <button type="button" 

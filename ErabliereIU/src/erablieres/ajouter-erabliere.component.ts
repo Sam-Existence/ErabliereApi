@@ -17,29 +17,27 @@ export class AjouterErabliereComponent implements OnInit {
     }
 
     ajouterErabliere() {
-        if (this.erabliereForm != undefined) {
-            if (this.erabliereForm.erabliere != undefined) {
-                let erabliere = this.erabliereForm.erabliere
+        if (this.erabliereForm != undefined && this.erabliereForm.erabliere != undefined) {
+            let erabliere = this.erabliereForm.erabliere
 
-                this._api.postErabliere(erabliere).then(() => {
-                    if (this.erabliereForm != undefined) {
+            this._api.postErabliere(erabliere).then(() => {
+                if (this.erabliereForm != undefined) {
+                    this.erabliereForm.generalError = undefined
+                    this.erabliereForm.errorObj = undefined
+                    this.erabliereForm.erabliere = this.erabliereForm.getDefaultErabliere()
+                }
+                this.shouldReloadErablieres.emit();
+            }).catch(error => {
+                if (this.erabliereForm != undefined) {
+                    if (error.status == 400) {
+                        this.erabliereForm.errorObj = error
                         this.erabliereForm.generalError = undefined
-                        this.erabliereForm.errorObj = undefined
-                        this.erabliereForm.erabliere = this.erabliereForm.getDefaultErabliere()
+                    } 
+                    else {
+                        this.erabliereForm.generalError = "Une erreur est survenue lors de l'ajout de l'érablière. Veuillez réessayer plus tard."
                     }
-                    this.shouldReloadErablieres.emit();
-                }).catch(error => {
-                    if (this.erabliereForm != undefined) {
-                        if (error.status == 400) {
-                            this.erabliereForm.errorObj = error
-                            this.erabliereForm.generalError = undefined
-                        } 
-                        else {
-                            this.erabliereForm.generalError = "Une erreur est survenue lors de l'ajout de l'érablière. Veuillez réessayer plus tard."
-                        }
-                    }
-                });
-            }
+                }
+            });
         }
     }
 }
