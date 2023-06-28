@@ -9,6 +9,7 @@ import { Baril } from 'src/model/baril';
 import { Capteur } from 'src/model/capteur';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
+import { DeleteCapteur } from 'src/model/deleteCapteur';
 import { Documentation } from 'src/model/documentation';
 import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
@@ -78,10 +79,24 @@ export class ErabliereApi {
         return await this._httpClient.post<Capteur>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", capteur, { headers: headers }).toPromise();
     }
 
+    async deleteCapteur(idErabliereSelectionnee: any, capteur: DeleteCapteur) {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+        return await this._httpClient.delete<DeleteCapteur>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", 
+            {
+                body: capteur,
+                headers: headers
+            }).toPromise();
+    }
+
     async postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.post<Alerte>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", alerte, { headers: headers }).toPromise();
+        return await this._httpClient.post<Alerte>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", 
+            alerte, 
+            { headers: headers }).toPromise();
     }
 
     async putAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {

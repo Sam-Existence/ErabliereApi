@@ -1,7 +1,7 @@
 import { DonneeCapteur } from "./donneeCapteur";
 
 export class Capteur {
-    id?: number;
+    id?: string;
     nom?: string;
     symbole?: string;
     afficherCapteurDashboard?: boolean;
