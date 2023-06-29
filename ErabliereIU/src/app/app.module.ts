@@ -41,6 +41,7 @@ import { VacciumGraphPannelComponent } from 'src/donnees/sub-panel/vaccium-graph
 import { GestionCapteursComponent } from 'src/erablieres/gestion-capteurs.component';
 import { AjouterCapteurComponent } from 'src/erablieres/ajouter-capteur.component';
 import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
+import { TableFormInputComponent } from 'src/formsComponents/table-form-input.component';
 
 declare global {
   interface Window { 
@@ -148,6 +149,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         SigninRedirectCallbackComponent,
         SignoutRedirectCallbackComponent,
         InputErrorComponent,
+        TableFormInputComponent,
     ],
     providers: [
         {

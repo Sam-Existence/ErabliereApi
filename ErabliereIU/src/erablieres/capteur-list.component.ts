@@ -15,6 +15,8 @@ export class CapteurListComponent implements OnInit {
 
     @Output() shouldRefreshCapteurs = new EventEmitter<void>();
 
+    displayEdits: { [id: string]: boolean } = {};
+
     constructor(private readonly erabliereApi: ErabliereApi) {
 
     }
@@ -22,8 +24,25 @@ export class CapteurListComponent implements OnInit {
     ngOnInit(): void {
     }
 
-    showModifierCapteur(capteur: Capteur) {
+    resolveDisplayEdit(capteurId: string | undefined) {
+        if (!capteurId) {
+            return false;
+        }
 
+        return this.displayEdits[capteurId];
+    }
+
+    showModifierCapteur(capteur: Capteur) {
+        if (capteur.id)
+            this.displayEdits[capteur.id] = true;
+    }
+
+    hideModifierCapteur(capteur: Capteur) {
+        if (capteur.id)
+            this.displayEdits[capteur.id] = false;
+    }
+
+    modifierCapteur(capteur: Capteur) {
     }
 
     async supprimerCapteur(capteur: Capteur) {
