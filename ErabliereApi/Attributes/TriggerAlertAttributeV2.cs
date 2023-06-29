@@ -97,7 +97,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         {
             validationCount++;
 
-            if (alerte.MinVaue.Value <= _donnee.V)
+            if (_donnee.V <= alerte.MinVaue.Value)
             {
                 conditionMet++;
             }
@@ -107,7 +107,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         {
             validationCount++;
 
-            if (alerte.MaxValue.Value >= _donnee.V)
+            if (_donnee.V >= alerte.MaxValue.Value)
             {
                 conditionMet++;
             }
