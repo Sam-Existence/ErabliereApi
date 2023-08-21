@@ -52,3 +52,7 @@ kubectl logs erabliereapi-deployment-54d89d4698-85hhh --namespace=erabliere-api 
 # Vérifier ce qu'il y a autour de la transaction de 13ms
 kubectl logs erabliereapi-deployment-54d89d4698-85hhh --namespace=erabliere-api | grep 13ms --before-context=20 --after-context=4
 ```
+
+## Documentations
+
+https://learn.microsoft.com/en-us/ef/core/managing-schemas/migrations/?tabs=dotnet-core-cli
