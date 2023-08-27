@@ -75,7 +75,7 @@ public class ErabliereApiUserService : IUserService
                                      .Where(c => c.UniqueName == uniqueName)
                                      .ProjectTo<CustomerOwnershipAccess>(_fetchCustomerOwnershipAccessMap, new { idErabliere });
 
-        return await query.SingleOrDefaultAsync();
+        return await query.SingleOrDefaultAsync(token);
     }
 
     private static readonly AutoMapper.IConfigurationProvider _fetchCustomerOwnershipAccessMap = new MapperConfiguration(config =>

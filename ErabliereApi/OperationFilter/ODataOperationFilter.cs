@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.OData.Query;
+using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -31,10 +32,10 @@ public class ODataOperationFilter : IOperationFilter
                 AddODataParameter("$expand");
             }
             
-            AddODataParameter("$orderby", format: "string", type: "string");
+            AddODataParameter("$orderby", format: "string", type: "string"/*, GetOrderByExample()*/);
         }
 
-        void AddODataParameter(string name, string format = "expression", string type = "string")
+        void AddODataParameter(string name, string format = "expression", string type = "string", IOpenApiAny? example = default)
         {
             operation.Parameters.Add(new OpenApiParameter
             {
@@ -44,10 +45,19 @@ public class ODataOperationFilter : IOperationFilter
                 {
                     Format = format,
                     Type = type
-                }
+                },
+                Example = example
             });
         }
     }
+
+    //private IOpenApiAny? GetOrderByExample()
+    //{
+    //    return new OpenApiExample
+    //    {
+    //        Value = new OpenApiString("")
+    //    };
+    //}
 
     private bool ExpandEnabled(IEnumerable<EnableQueryAttribute> enableQueryAttributes)
     {

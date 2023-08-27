@@ -6,6 +6,7 @@ using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -68,6 +69,8 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
 
         var (customer, apiKey) = await _factory.CreateValidApiKeyAsync();
 
+        client.DefaultRequestHeaders.Add("X-ErabliereApi-ApiKey", apiKey);
+
         const string nomErabliere = "ErabliereApiKey";
 
         using var content = new StringContent(JsonSerializer.Serialize(new PostErabliere
@@ -80,14 +83,26 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
             IpRules = "-"
         }), Encoding.UTF8, "application/json");
 
-        content.Headers.Add("X-ErabliereApi-ApiKey", apiKey);
-
         var response = await client.PostAsync("/Erablieres", content);
 
         Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 
         // Vérification BD
         await VerificationBd(response, nomErabliere, isPublic: false, apiKey: apiKey);
+
+        // Obtenir l'érablière créer
+        var responseGet = await client.GetAsync("/Erablieres?my=true");
+
+        var contentGet = await responseGet.Content.ReadAsStringAsync();
+
+        var erablieres = JsonSerializer.Deserialize<List<Erabliere>>(contentGet, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        })
+            ?? throw new System.InvalidOperationException("Deserializing contentGet result in null reference.");
+
+        Assert.Single(erablieres);
+        Assert.Contains(erablieres, e => e.IsPublic == false && e.Nom == nomErabliere);
     }
 
     private async Task VerificationBd(HttpResponseMessage response, 

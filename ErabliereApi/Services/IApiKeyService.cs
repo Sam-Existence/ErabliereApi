@@ -40,8 +40,8 @@ public interface IApiKeyService
     /// <summary>
     /// Set the subscription key for a customer
     /// </summary>
-    /// <param name="customerId"></param>
-    /// <param name="id"></param>
+    /// <param name="customerId">The stripe customer id</param>
+    /// <param name="id">The stripe subscription id</param>
     /// <param name="token"></param>
     /// <returns></returns>
     Task SetSubscriptionKeyAsync(string customerId, string id, CancellationToken token);

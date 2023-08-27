@@ -173,7 +173,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
                 }
 
                 shouldRetry--;
-                _logger.LogInformation("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
+                _logger.LogWarning("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
                 await Task.Delay(1000, token);
             }
         }
@@ -208,7 +208,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
                 }
 
                 shouldRetry--;
-                _logger.LogInformation("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
+                _logger.LogWarning("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
                 await Task.Delay(1000, token);
             }
         }

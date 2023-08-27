@@ -88,7 +88,13 @@ public class StripeCheckoutService : ICheckoutService
 
         var stripeEvent = EventUtility.ConstructEvent(json, signature, _options.Value.WebhookSiginSecret);
 
-        await WebHookSwitchCaseLogic(stripeEvent, _logger, _mapper, _userService, _apiKeyService, _accessor.HttpContext?.RequestAborted ?? CancellationToken.None);
+        await WebHookSwitchCaseLogic(
+            stripeEvent, 
+            _logger,
+            _mapper, 
+            _userService,
+            _apiKeyService, 
+            _accessor.HttpContext?.RequestAborted ?? CancellationToken.None);
     }
 
     /// <summary>

@@ -70,14 +70,14 @@ public class ErablieresController : ControllerBase
         }
         else if (my)
         {
-            var isAuth = await IsAuthenticatedAsync(token);
+            var (isAuthenticate, authType, customer) = await IsAuthenticatedAsync(token);
 
-            if (isAuth.Item1 == true && isAuth.Item3 != null)
+            if (isAuthenticate == true && customer != null)
             {
                 Guid?[] erablieresOwned
                     = await _context.CustomerErablieres
                     .AsNoTracking()
-                    .Where(c => c.IdCustomer == isAuth.Item3.Id)
+                    .Where(c => c.IdCustomer == customer.Id)
                     .Select(c => c.IdErabliere)
                     .ToArrayAsync(token);
 
