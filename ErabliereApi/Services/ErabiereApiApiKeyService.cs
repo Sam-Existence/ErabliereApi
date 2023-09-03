@@ -190,9 +190,10 @@ public class ErabiereApiApiKeyService : IApiKeyService
 
     private async Task<ApiKey?> TryGetApiKeyAsync(Expression<Func<ApiKey, bool>> predicat, CancellationToken token)
     {
-        var shouldRetry = 10;
+        var retryCount = _config.GetValue<int>("ErabliereApiKeyService:TryGetApiKey:TryCount");
+        var milisecondDelay = _config.GetValue<int>("ErabliereApiKeyService:TryGetApiKey:DelayBetweenTryMilliseconds");
 
-        while (shouldRetry > 0)
+        while (retryCount > 0)
         {
             try
             {
@@ -209,14 +210,14 @@ public class ErabiereApiApiKeyService : IApiKeyService
             }
             catch (InvalidOperationException)
             {
-                if (shouldRetry == 0)
+                if (retryCount == 0)
                 {
                     throw;
                 }
 
-                shouldRetry--;
-                _logger.LogWarning("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
-                await Task.Delay(1000, token);
+                retryCount--;
+                _logger.LogWarning($"Customer was not found in the database, wait {milisecondDelay / 1000} seconds and retry. RetryLeft: {retryCount}");
+                await Task.Delay(milisecondDelay, token);
             }
         }
 
