@@ -113,13 +113,16 @@ public class StripeCheckoutService : ICheckoutService
         switch (stripeEvent.Type)
         {
             case "customer.created":
+                logger.LogInformation("Begin of customer.created");
                 var customer = mapper.Map<Donnees.Customer>
                     (stripeEvent.Data.Object as Stripe.Customer);
 
                 await userService.CreateCustomerAsync(customer, token);
+                logger.LogInformation("End of customer.created");
                 break;
 
             case "invoice.paid":
+                logger.LogInformation("Begin of invoice.paid");
                 var data = stripeEvent.Data.Object as Invoice;
 
                 if (data is null)
@@ -128,9 +131,11 @@ public class StripeCheckoutService : ICheckoutService
                 }
 
                 await apiKeyService.CreateApiKeyAsync(data.CustomerEmail, token);
+                logger.LogInformation("End of invoice.paid");
                 break;
 
             case "customer.subscription.created":
+                logger.LogInformation("Begin of customer.subscription.created");
                 var subscription = stripeEvent.Data.Object as Subscription;
 
                 if (subscription is null)
@@ -140,6 +145,7 @@ public class StripeCheckoutService : ICheckoutService
 
                 await apiKeyService.SetSubscriptionKeyAsync(
                     subscription.CustomerId, subscription.Items.First().Id, token);
+                logger.LogInformation("End of customer.subscription.created");
                 break;
 
             default:

@@ -18,6 +18,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
     private readonly IEmailService _emailService;
     private readonly EmailConfig _emailConfig;
     private readonly ILogger<ErabiereApiApiKeyService> _logger;
+    private readonly IConfiguration _config;
 
     /// <summary>
     /// Constructeur par initlaisation
@@ -26,16 +27,19 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <param name="emailService"></param>
     /// <param name="emailConfig"></param>
     /// <param name="logger"></param>
+    /// <param name="config"></param>
     public ErabiereApiApiKeyService(
         IServiceScopeFactory scopeFactory, 
         IEmailService emailService, 
         IOptions<EmailConfig> emailConfig,
-        ILogger<ErabiereApiApiKeyService> logger)
+        ILogger<ErabiereApiApiKeyService> logger,
+        IConfiguration config)
     {
         _scopeFactory = scopeFactory;
         _emailService = emailService;
         _emailConfig = emailConfig.Value;
         _logger = logger;
+        _config = config;
     }
 
     /// <inheritdoc />
@@ -150,9 +154,10 @@ public class ErabiereApiApiKeyService : IApiKeyService
 
     private async Task<Customer?> TryGetCustomerAsync(Expression<Func<Customer, bool>> predicat, CancellationToken token)
     {
-        var shouldRetry = 10;
+        var retryCount = _config.GetValue<int>("ErabliereApiKeyService:TryGetCustomer:TryCount");
+        var milisecondDelay = _config.GetValue<int>("ErabliereApiKeyService:TryGetCustomer:DelayBetweenTryMilliseconds");
 
-        while (shouldRetry > 0)
+        while (retryCount > 0)
         {
             try
             {
@@ -167,14 +172,16 @@ public class ErabiereApiApiKeyService : IApiKeyService
             }
             catch (InvalidOperationException)
             {
-                if (shouldRetry == 0)
+                if (retryCount == 0)
                 {
                     throw;
                 }
 
-                shouldRetry--;
-                _logger.LogWarning("Customer was not found in the database, wait 1 seconds and retry. RetryLeft: {shouldRetry}", shouldRetry);
-                await Task.Delay(1000, token);
+                retryCount--;
+                _logger.LogWarning($"Customer was not found in the database, wait {milisecondDelay / 1000} seconds and retry. RetryLeft: {retryCount}", retryCount);
+                await Task.Delay(
+                    millisecondsDelay: milisecondDelay, 
+                    cancellationToken: token);
             }
         }
 

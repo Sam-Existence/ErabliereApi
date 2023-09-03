@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ public class CustomersController : ControllerBase
     }
 
     /// <summary>
-    /// Permet de lister les utilisateurs
+    /// Permet de lister les utilisateurs en exposant un minimum d'information.
     /// </summary>
     /// <returns></returns>
     [HttpGet]
@@ -39,5 +40,18 @@ public class CustomersController : ControllerBase
     public IQueryable<GetCustomer> GetCustomers()
     {
         return _context.Customers.ProjectTo<GetCustomer>(_mapper.ConfigurationProvider);
+    }
+
+    /// <summary>
+    /// Point de terminaison pour l'administration des utilisateurs
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet]
+    [EnableQuery]
+    [Route("/admin/customers")]
+    [Authorize(Roles = "administrateur")]
+    public IQueryable<Customer> GetCustomersAdmin()
+    {
+        return _context.Customers;
     }
 }
