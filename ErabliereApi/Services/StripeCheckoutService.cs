@@ -122,20 +122,20 @@ public class StripeCheckoutService : ICheckoutService
                 break;
 
             case "invoice.paid":
-                logger.LogInformation("Begin of invoice.paid");
-                var data = stripeEvent.Data.Object as Invoice;
+                //logger.LogInformation("Begin of invoice.paid");
+                //var data = stripeEvent.Data.Object as Invoice;
 
-                if (data is null)
-                {
-                    throw new ArgumentNullException(nameof(data));
-                }
+                //if (data is null)
+                //{
+                //    throw new ArgumentNullException(nameof(data));
+                //}
 
-                await apiKeyService.CreateApiKeyAsync(data.CustomerEmail, token);
-                logger.LogInformation("End of invoice.paid");
+                //await apiKeyService.CreateApiKeyAsync(data.CustomerEmail, token);
+                //logger.LogInformation("End of invoice.paid");
                 break;
 
             case "customer.subscription.created":
-                logger.LogInformation("Begin of customer.subscription.created");
+                logger.LogInformation("Begin create API Key");
                 var subscription = stripeEvent.Data.Object as Subscription;
 
                 if (subscription is null)
@@ -143,6 +143,10 @@ public class StripeCheckoutService : ICheckoutService
                     throw new ArgumentNullException(nameof(subscription));
                 }
 
+                await apiKeyService.CreateApiKeyAsync(subscription.CustomerId, token);
+                logger.LogInformation("End of create API Key");
+
+                logger.LogInformation("Begin of customer.subscription.created");
                 await apiKeyService.SetSubscriptionKeyAsync(
                     subscription.CustomerId, subscription.Items.First().Id, token);
                 logger.LogInformation("End of customer.subscription.created");

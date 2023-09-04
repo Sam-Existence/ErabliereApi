@@ -43,9 +43,9 @@ public class ErabiereApiApiKeyService : IApiKeyService
     }
 
     /// <inheritdoc />
-    public async Task<ApiKey> CreateApiKeyAsync(string email, CancellationToken token)
+    public async Task<ApiKey> CreateApiKeyAsync(string stripeCustomerId, CancellationToken token)
     {
-        var customer = await TryGetCustomerAsync(x => x.Email == email, token);
+        var customer = await TryGetCustomerAsync(x => x.StripeId == stripeCustomerId, token);
 
         if (customer == null)
         {
@@ -74,7 +74,7 @@ public class ErabiereApiApiKeyService : IApiKeyService
             await context.SaveChangesAsync(token);
         }        
 
-        await SendEmailAsync(email, Convert.ToBase64String(apiKeyBytes), token);
+        await SendEmailAsync(customer.Email, Convert.ToBase64String(apiKeyBytes), token);
 
         return apiKeyObj;
     }
