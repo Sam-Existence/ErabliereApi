@@ -206,6 +206,7 @@ public class Startup
         services.AddSingleton<CollectorRegistry>(Metrics.DefaultRegistry);
 
         // Stripe
+        services.AddScoped<ApiKeyAuthorizationContext>();
         if (Configuration.StripeIsEnabled())
         {
             services.Configure<StripeOptions>(o =>
@@ -223,7 +224,6 @@ public class Startup
                     .AddTransient<ApiKeyMiddleware>();
 
             // Authorization
-            services.AddScoped<ApiKeyAuthorizationContext>();
             services.AddSingleton<IAuthorizationHandler, ApiKeyAuthrizationHandler>();
 
             // Context and usage reccorder
