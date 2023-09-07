@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
+using ErabliereApi.Extensions;
 using ErabliereApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,6 +62,11 @@ public class NotesController : ControllerBase
         if (id != postNote.IdErabliere)
         {
             return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
+        }
+
+        if (postNote.File != null && !postNote.File.IsValidBase64())
+        {
+            return BadRequest("Le fichier n'est pas en base64 valide");
         }
 
         if (postNote.Created == null)
