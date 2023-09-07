@@ -113,6 +113,7 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
         }
         else
         {
+            context.HttpContext.Response.Headers["X-ErabliereApi-ForbidenReason"] = "L'utilisateur courrant n'a pas accès a effectuer cette action sur cette érablière";
             context.Result = new ForbidResult();
         }
     }
