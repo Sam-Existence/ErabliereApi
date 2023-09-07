@@ -21,7 +21,7 @@ public static class StripeUsageReccordTaskHostExtensions
 
         if (config.StripeIsEnabled())
         {
-            return new StripeUsageReccordTaskHost(host);
+            return new StripeUsageReccordTaskHost(host, config);
         }
 
         return host;
@@ -34,14 +34,16 @@ public static class StripeUsageReccordTaskHostExtensions
 public class StripeUsageReccordTaskHost : IHost 
 {
     private readonly IHost _host;
+    private readonly IConfiguration _config;
     private Task? _task;
 
     /// <summary>
     /// Initialise une nouvelle instance de la classe <see cref="StripeUsageReccordTaskHost"/>.
     /// </summary>
-    public StripeUsageReccordTaskHost(IHost host)
+    public StripeUsageReccordTaskHost(IHost host, IConfiguration config)
     {
         _host = host;
+        _config = config;
     }
 
     /// <summary>
@@ -82,37 +84,43 @@ public class StripeUsageReccordTaskHost : IHost
 
     private async Task EnvoyerUtilisationAsync()
     {
-        using (var scope = Services.CreateScope())
+        var skip = _config.GetValue<string>("StripeUsageReccord.SkipRecord");
+
+        if (skip == "true")
         {
-            var context = scope.ServiceProvider.GetRequiredService<UsageContext>();
+            return;
+        }
 
-            var usageSummary = new Dictionary<string, UsageRecordCreateOptions>(context.Usages.Count);
+        using var scope = Services.CreateScope();
 
-            while (context.Usages.TryDequeue(out var usageReccorded))
+        var context = scope.ServiceProvider.GetRequiredService<UsageContext>();
+
+        var usageSummary = new Dictionary<string, UsageRecordCreateOptions>(context.Usages.Count);
+
+        while (context.Usages.TryDequeue(out var usageReccorded))
+        {
+            if (usageSummary.TryGetValue(usageReccorded.SubscriptionId, out var usage))
             {
-                if (usageSummary.TryGetValue(usageReccorded.SubscriptionId, out var usage))
-                {
-                    usage.Quantity += usageReccorded.Quantite;
-                }
-                else
-                {
-                    usageSummary.Add(usageReccorded.SubscriptionId, new UsageRecordCreateOptions
-                    {
-                        Quantity = usageReccorded.Quantite,
-                        Timestamp = DateTimeOffset.Now.UtcDateTime
-                    });
-                }
+                usage.Quantity += usageReccorded.Quantite;
             }
-
-            var options = scope.ServiceProvider.GetRequiredService<IOptions<StripeOptions>>();
-
-            StripeConfiguration.ApiKey = options.Value.ApiKey;
-
-            foreach (var usageReccord in usageSummary)
+            else
             {
-                var service = new UsageRecordService();
-                await service.CreateAsync(usageReccord.Key, usageReccord.Value);
+                usageSummary.Add(usageReccorded.SubscriptionId, new UsageRecordCreateOptions
+                {
+                    Quantity = usageReccorded.Quantite,
+                    Timestamp = DateTimeOffset.Now.UtcDateTime
+                });
             }
+        }
+
+        var options = scope.ServiceProvider.GetRequiredService<IOptions<StripeOptions>>();
+
+        StripeConfiguration.ApiKey = options.Value.ApiKey;
+
+        foreach (var usageReccord in usageSummary)
+        {
+            var service = new UsageRecordService();
+            await service.CreateAsync(usageReccord.Key, usageReccord.Value);
         }
     }
 

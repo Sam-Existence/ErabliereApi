@@ -10,10 +10,10 @@ public interface IApiKeyService
     /// <summary>
     /// Créer une clé d'api pour le email donnée
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="customer"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task<ApiKey> CreateApiKeyAsync(string email, CancellationToken token);
+    Task<ApiKey> CreateApiKeyAsync(Customer customer, CancellationToken token);
 
     /// <summary>
     /// Hash an api key from a string
@@ -40,9 +40,9 @@ public interface IApiKeyService
     /// <summary>
     /// Set the subscription key for a customer
     /// </summary>
-    /// <param name="customerId">The stripe customer id</param>
+    /// <param name="customer">The ErabliereAPI Customer</param>
     /// <param name="id">The stripe subscription id</param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task SetSubscriptionKeyAsync(string customerId, string id, CancellationToken token);
+    Task SetSubscriptionKeyAsync(Donnees.Customer customer, string id, CancellationToken token);
 }

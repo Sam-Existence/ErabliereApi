@@ -118,6 +118,7 @@ La première fois, il faut se connecter avec ```stripe login```.
 ```
 stripe login
 stripe listen --forward-to localhost:5000/Checkout/Webhook
+dotnet user-secrets set Stripe.WebhookSiginSecret <webhook-signing-secret-from-previous-command>
 ```
 
 > Plus d'information: https://stripe.com/docs/webhooks/test

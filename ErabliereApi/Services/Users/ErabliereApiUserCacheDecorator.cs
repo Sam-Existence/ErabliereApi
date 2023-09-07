@@ -1,4 +1,5 @@
 using System.Text.Json;
+using ErabliereApi.Authorization;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.NonHttp;
 using ErabliereApi.Extensions;
@@ -14,21 +15,27 @@ public class ErabliereApiUserCacheDecorator : IUserService
     private readonly IUserService _userService;
     private readonly IDistributedCache _cache;
     private readonly IServiceScopeFactory _scopeFactory;
+    private readonly ApiKeyAuthorizationContext _apiKeyAuthorization;
 
     /// <summary>
     /// Constructeur
     /// </summary>
-    public ErabliereApiUserCacheDecorator(IUserService userService, IDistributedCache cache, IServiceScopeFactory scopeFactory)
+    public ErabliereApiUserCacheDecorator(
+        IUserService userService, 
+        IDistributedCache cache, 
+        IServiceScopeFactory scopeFactory,
+        ApiKeyAuthorizationContext apiKeyAuthorization)
     {
         _userService = userService;
         _cache = cache;
         _scopeFactory = scopeFactory;
+        _apiKeyAuthorization = apiKeyAuthorization;
     }
 
     /// <inheritdoc />
-    public Task CreateCustomerAsync(Donnees.Customer customer, CancellationToken token)
+    public Task<Customer> GetOrCreateCustomerAsync(Donnees.Customer customer, CancellationToken token)
     {
-        return _userService.CreateCustomerAsync(customer, token);
+        return _userService.GetOrCreateCustomerAsync(customer, token);
     }
 
     /// <inheritdoc />
@@ -47,7 +54,16 @@ public class ErabliereApiUserCacheDecorator : IUserService
         
         if (uniqueName == null)
         {
-            throw new InvalidOperationException("Customer should not be null here ...");
+            // Try to find customer from the ApiKey, if any
+            if (_apiKeyAuthorization.Authorize)
+            {
+                uniqueName = _apiKeyAuthorization.Customer?.UniqueName;
+            }
+
+            if (uniqueName == null)
+            {
+                throw new InvalidOperationException("Customer should not be null here ...");
+            }
         }
 
         var customerWithAccess = await _cache.GetAsync<CustomerOwnershipAccess>($"CustomerWithAccess_{uniqueName}_{erabliere.Id}", token);
@@ -80,5 +96,17 @@ public class ErabliereApiUserCacheDecorator : IUserService
         }
 
         return customerWithAccess;
+    }
+
+    /// <inheritdoc />
+    public Task UpdateEnsureStripeInfoAsync(Customer customer, string stripeId, CancellationToken token)
+    {
+        return _userService.UpdateEnsureStripeInfoAsync(customer, stripeId, token);
+    }
+
+    /// <inheritdoc />
+    public Task<Stripe.Customer> StripeGetAsync(string customerId, CancellationToken token)
+    {
+        return _userService.StripeGetAsync(customerId, token);
     }
 }

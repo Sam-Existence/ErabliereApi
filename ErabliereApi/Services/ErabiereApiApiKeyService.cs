@@ -43,10 +43,8 @@ public class ErabiereApiApiKeyService : IApiKeyService
     }
 
     /// <inheritdoc />
-    public async Task<ApiKey> CreateApiKeyAsync(string stripeCustomerId, CancellationToken token)
+    public async Task<ApiKey> CreateApiKeyAsync(Donnees.Customer customer, CancellationToken token)
     {
-        var customer = await TryGetCustomerAsync(x => x.StripeId == stripeCustomerId, token);
-
         if (customer == null)
         {
             throw new InvalidOperationException("A customer instance is required");
@@ -116,76 +114,38 @@ public class ErabiereApiApiKeyService : IApiKeyService
 
     /// <inheritdoc />
     public async Task SetSubscriptionKeyAsync(
-        string customerId, string id, CancellationToken token)
+        Donnees.Customer customer, string id, CancellationToken token)
     {
-        Customer? customer = await TryGetCustomerAsync(c => c.StripeId == customerId, token);
-
-        if (customer != null)
+        if (customer == null)
         {
-            var now = DateTimeOffset.Now;
-
-            var apiKey = await TryGetApiKeyAsync(a => 
-                                a.CustomerId == customer.Id &&
-                                a.CreationTime <= now &&
-                                a.RevocationTime == null &&
-                                a.DeletionTime == null, token);
-
-            if (apiKey == null)
-            {
-                throw new InvalidOperationException("apiKey is required to continue the process");
-            }
-
-            apiKey.SubscriptionId = id;
-
-            using (var scope = _scopeFactory.CreateScope())
-            {
-                var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
-
-                var entity = context.Update(apiKey);
-
-                await context.SaveChangesAsync(token);
-            }
-        }
-        else
-        {
-            _logger.LogCritical("customer was null inside the SetSubscriptionKeyAsync method");
-        }
-    }
-
-    private async Task<Customer?> TryGetCustomerAsync(Expression<Func<Customer, bool>> predicat, CancellationToken token)
-    {
-        var retryCount = _config.GetValue<int>("ErabliereApiKeyService:TryGetCustomer:TryCount");
-        var milisecondDelay = _config.GetValue<int>("ErabliereApiKeyService:TryGetCustomer:DelayBetweenTryMilliseconds");
-
-        while (retryCount > 0)
-        {
-            try
-            {
-                using (var scope = _scopeFactory.CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
-
-                    var customer = await context.Customers.SingleAsync(predicat, token);
-
-                    return customer;
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                if (retryCount == 0)
-                {
-                    throw;
-                }
-
-                retryCount--;
-                _logger.LogWarning($"Customer was not found in the database, wait {milisecondDelay / 1000} seconds and retry. RetryLeft: {retryCount}", retryCount);
-                await Task.Delay(
-                    millisecondsDelay: milisecondDelay, 
-                    cancellationToken: token);
-            }
+            var message = "customer was null inside the SetSubscriptionKeyAsync method";
+            _logger.LogCritical(message);
+            throw new InvalidOperationException(message);
         }
 
-        return null;
+        var now = DateTimeOffset.Now;
+
+        var apiKey = await TryGetApiKeyAsync(a =>
+                            a.CustomerId == customer.Id &&
+                            a.CreationTime <= now &&
+                            a.RevocationTime == null &&
+                            a.DeletionTime == null, token);
+
+        if (apiKey == null)
+        {
+            throw new InvalidOperationException("apiKey is required to continue the process");
+        }
+
+        apiKey.SubscriptionId = id;
+
+        using (var scope = _scopeFactory.CreateScope())
+        {
+            var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
+
+            var entity = context.Update(apiKey);
+
+            await context.SaveChangesAsync(token);
+        }
     }
 
     private async Task<ApiKey?> TryGetApiKeyAsync(Expression<Func<ApiKey, bool>> predicat, CancellationToken token)

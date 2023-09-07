@@ -9,12 +9,20 @@ namespace ErabliereApi.Services.Users;
 public interface IUserService
 {
     /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="customerId"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task<Stripe.Customer> StripeGetAsync(string customerId, CancellationToken token);
+
+    /// <summary>
     /// Créer un utilisateur (<see cref="Customer"/>) 
     /// </summary>
     /// <param name="customer"></param>
     /// <param name="token"></param>
     /// <returns></returns>
-    Task CreateCustomerAsync(Customer customer, CancellationToken token);
+    Task<Customer> GetOrCreateCustomerAsync(Customer customer, CancellationToken token);
     
     /// <summary>
     /// Permet d'obtenir une instance de <see cref="Customer" /> avec les droits
@@ -24,4 +32,14 @@ public interface IUserService
     /// <param name="token"></param>
     /// <returns></returns>
     Task<CustomerOwnershipAccess?> GetCurrentUserWithAccessAsync(Erabliere erabliere, CancellationToken token);
+
+    /// <summary>
+    /// Permet de modifier un customer pour appliquer les informations stripe.
+    /// L'action se veut idempotent, si les données sont déjà appliqué, rien ne sera changé.
+    /// </summary>
+    /// <param name="customer"></param>
+    /// <param name="stripeId"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    Task UpdateEnsureStripeInfoAsync(Customer customer, string stripeId, CancellationToken token);
 }

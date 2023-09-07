@@ -64,7 +64,7 @@ public class ErablieresController : ControllerBase
         var query = _context.Erabliere.AsNoTracking();
 
         if (_config.IsAuthEnabled() &&
-            User.Identity?.IsAuthenticated == false)
+            (await IsAuthenticatedAsync(token)).Item1 == false)
         {
             query = query.Where(e => e.IsPublic == true);
         }

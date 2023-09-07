@@ -28,7 +28,9 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
         {
             webBuilder.AddCommandLine(new[]
             {
-                "Stripe.ApiKey=abcd"
+                "Stripe.ApiKey=abcd",
+                "StripeUsageReccord.SkipRecord=true",
+                "ErabliereApiUserService.TestMode=true"
             });
         });
 
@@ -102,7 +104,7 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
 
         var customer = ErabliereFixture.CreerFixture().Create<Donnees.Customer>();
 
-        await userService.CreateCustomerAsync(customer, CancellationToken.None);
+        await userService.GetOrCreateCustomerAsync(customer, CancellationToken.None);
 
         if (customer.Id == null)
         {

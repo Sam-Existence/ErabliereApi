@@ -40,15 +40,15 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         await Step("setup_intent.created", client);
         await Step("checkout.session.completed", client);
         await Step("customer.created", client);
-        AssertCustomerExist();
         await Step("payment_method.attached", client);
         await Step("customer.updated", client);
         await Step("invoice.created", client);
         await Step("invoice.finalized", client);
         await Step("invoice.paid", client);
-        AssertCustomerApiKeyDosentExist();
         await Step("invoice.payment_succeeded", client);
+        AssertCustomerDoesntExist();
         await Step("customer.subscription.created", client);
+        AssertCustomerExist();
         AssertCustomerApiKey();
         AssertApiKeySubscriptionKey();
     }
@@ -85,19 +85,6 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
         var emailService = _factory.Services.GetRequiredService<IEmailService>();
 
         emailService.ReceivedWithAnyArgs(1);
-    }
-
-    private void AssertCustomerApiKeyDosentExist()
-    {
-        using var scope = _factory.Services.CreateScope();
-
-        var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
-
-        var customer = database.Customers.AsNoTracking().Single(c => c.Email == "john@doe.com");
-
-        var apiKeys = database.ApiKeys.AsNoTracking().Where(a => a.CustomerId == customer.Id).ToArray();
-
-        Assert.Empty(apiKeys);
     }
 
     private void AssertCustomerDoesntExist()

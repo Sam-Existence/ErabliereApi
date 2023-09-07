@@ -108,17 +108,21 @@ public class StripeCheckoutService : ICheckoutService
     /// <param name="token"></param>
     /// <returns></returns>
     public static async Task WebHookSwitchCaseLogic(Event stripeEvent,
-        ILogger logger, IMapper mapper, IUserService userService, IApiKeyService apiKeyService, CancellationToken token)
+        ILogger logger, 
+        IMapper mapper, 
+        IUserService userService, 
+        IApiKeyService apiKeyService, 
+        CancellationToken token)
     {
         switch (stripeEvent.Type)
         {
             case "customer.created":
-                logger.LogInformation("Begin of customer.created");
-                var customer = mapper.Map<Donnees.Customer>
-                    (stripeEvent.Data.Object as Stripe.Customer);
+                // logger.LogInformation("Begin of customer.created");
+                // var customer = mapper.Map<Donnees.Customer>
+                //     (stripeEvent.Data.Object as Stripe.Customer);
 
-                await userService.CreateCustomerAsync(customer, token);
-                logger.LogInformation("End of customer.created");
+                // await userService.CreateCustomerAsync(customer, token);
+                // logger.LogInformation("End of customer.created");
                 break;
 
             case "invoice.paid":
@@ -135,7 +139,8 @@ public class StripeCheckoutService : ICheckoutService
                 break;
 
             case "customer.subscription.created":
-                logger.LogInformation("Begin create API Key");
+                logger.LogInformation("Begin create customer.subscription.created");
+
                 var subscription = stripeEvent.Data.Object as Subscription;
 
                 if (subscription is null)
@@ -143,12 +148,20 @@ public class StripeCheckoutService : ICheckoutService
                     throw new ArgumentNullException(nameof(subscription));
                 }
 
-                await apiKeyService.CreateApiKeyAsync(subscription.CustomerId, token);
+                logger.LogInformation("Begin of create customer");
+                var stripeCustomer = await userService.StripeGetAsync(subscription.CustomerId, token);
+                var customerMapped = mapper.Map<Donnees.Customer>(stripeCustomer);
+                var customer = await userService.GetOrCreateCustomerAsync(customerMapped, token);
+                await userService.UpdateEnsureStripeInfoAsync(customer, customerMapped.StripeId, token);
+                logger.LogInformation("End of create customer");
+
+                logger.LogInformation("Begin of create API Key");
+                await apiKeyService.CreateApiKeyAsync(customer, token);
                 logger.LogInformation("End of create API Key");
 
                 logger.LogInformation("Begin of customer.subscription.created");
                 await apiKeyService.SetSubscriptionKeyAsync(
-                    subscription.CustomerId, subscription.Items.First().Id, token);
+                    customer, subscription.Items.First().Id, token);
                 logger.LogInformation("End of customer.subscription.created");
                 break;
 
