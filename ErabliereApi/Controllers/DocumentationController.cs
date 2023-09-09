@@ -72,4 +72,30 @@ public class DocumentationController : ControllerBase
 
         return Ok(entite.Entity);
     }
+
+    /// <summary>
+    /// Action permettant de supprimer un document
+    /// </summary>
+    /// <param name="id">id de l'érablière</param>
+    /// <param name="idDocumentation">id du document</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpDelete("{idDocumentation}")]
+    [ProducesResponseType(204)]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> Supprimer(Guid id, Guid idDocumentation, CancellationToken token)
+    {
+        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+
+        if (documentation == null)
+        {
+            return NotFound();
+        }
+
+        _depot.Documentation.Remove(documentation);
+
+        await _depot.SaveChangesAsync(token);
+
+        return NoContent();
+    }
 }

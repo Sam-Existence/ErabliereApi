@@ -15,6 +15,7 @@ import { Dompeux } from 'src/model/dompeux';
 import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
+import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
 import { Note } from 'src/model/note';
 import { PutCapteur } from 'src/model/putCapteur';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
@@ -196,6 +197,12 @@ export class ErabliereApi {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();
+    }
+
+    async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + "/documentation", document, { headers: headers }).toPromise();
     }
 
     async postAlerteCapteur(idCapteur: any, alerteCapteur: AlerteCapteur): Promise<AlerteCapteur> {

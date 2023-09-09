@@ -1,0 +1,25 @@
+<div *ngIf="!display">
+    <button id="ajouter-documentation-btn" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
+</div>
+<div *ngIf="display">
+    <span class="text-danger">{{generalError}}</span>
+    <form [formGroup]="documentForm">
+        <div class="form-group">
+            Titre: <input class="form-control" type="text" formControlName="title">
+            <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
+        </div>
+        <div class="form-group">
+            Texte: <input class="form-control" type="text" formControlName="text">
+            <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
+        </div>
+        <div class="form-group">
+            Fichier: <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
+        </div>
+        <input-error [errorObj]="errorObj" [controlName]="'file'"></input-error>
+        <span class="text-danger">
+            {{fileToLargeErrorMessage}}
+        </span>
+    </form>
+    <button id="creerDocument" class="btn btn-primary" (click)="onButtonCreerClick()">Créer</button>
+    <button id="annuler-creer-document" class="btn btn-secondary" (click)="onButtonAnnulerClick()">Annuler</button>
+</div>

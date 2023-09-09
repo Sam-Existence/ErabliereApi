@@ -37,7 +37,11 @@
     <alerte-page class="col-lg-10 col-md-12" [alertes]="alertes" [alertesCapteur]="alertesCapteur" [hidden]="pageSelectionnee !== 1" [idErabliereSelectionee]="idSelectionnee">
     </alerte-page>
 
-    <documentation class="col-lg-10 col-md-12" [documentations]="documentations" [hidden]="pageSelectionnee !== 4" [idErabliereSelectionee]="idSelectionnee">
+    <documentation class="col-lg-10 col-md-12" 
+                   [documentations]="documentations" 
+                   [hidden]="pageSelectionnee !== 4" 
+                   [idErabliereSelectionee]="idSelectionnee"
+                   (needToUpdate)="loadDocumentations()">
     </documentation>
 
     <notes class="col-lg-10 col-md-12" 

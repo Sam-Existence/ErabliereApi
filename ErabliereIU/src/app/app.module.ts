@@ -42,6 +42,7 @@ import { GestionCapteursComponent } from 'src/erablieres/gestion-capteurs.compon
 import { AjouterCapteurComponent } from 'src/erablieres/ajouter-capteur.component';
 import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
 import { TableFormInputComponent } from 'src/formsComponents/table-form-input.component';
+import { AjouterDocumentationComponent } from 'src/documentation/ajouter-documentation.component';
 
 declare global {
   interface Window { 
@@ -142,6 +143,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         ModifierAlerteComponent,
         AproposComponent,
         DocumentationComponent,
+        AjouterDocumentationComponent,
         NotesComponent,
         NoteComponent,
         AjouterNoteComponent,
