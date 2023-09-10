@@ -1,6 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core'
-import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
-import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Documentation } from 'src/model/documentation';
@@ -17,12 +15,9 @@ export class DocumentationComponent implements OnInit {
     @Input() documentations?: Documentation[];
 
     @Output() needToUpdate = new EventEmitter();
-    authService: IAuthorisationSerivce;
     
     constructor (private _api: ErabliereApi, 
-        private _env: EnvironmentService,
-        authFactoryService: AuthorisationFactoryService) {
-        this.authService = authFactoryService.getAuthorisationService();
+        private _env: EnvironmentService) {
     }
 
     ngOnInit(): void {
@@ -44,7 +39,7 @@ export class DocumentationComponent implements OnInit {
     /**
      * Download a file from the server and add the bearer token to the request
      * 
-     * @param id 
+     * @param doc The document to download 
      */
     async downloadFile(doc: ErabliereApiDocument) {
         // Get the file from the server from base64 string

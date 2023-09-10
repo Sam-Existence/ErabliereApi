@@ -15,6 +15,7 @@
 
             <div class="col-md-8">
                 <button 
+                    style="margin-top: 1.5em;"
                     class="btn btn-danger ml-auto"
                     (click)="deleteDocumentation(documentation)">
                         Supprimer
@@ -24,6 +25,12 @@
         
         <div class="row">
             <p>{{ documentation.text }}</p>
+        </div>
+        <div class="row">
+            <p><span>Extension: </span>{{ documentation.fileExtension }}</p>
+        </div>
+        <div class="row">
+            <p><span>Date ajout: </span>{{ documentation.created }}</p>
         </div>
         
         <div class="row">

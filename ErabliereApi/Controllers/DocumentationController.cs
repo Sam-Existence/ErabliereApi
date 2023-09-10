@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData.Query;
 using ErabliereApi.Attributes;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ErabliereApi.Controllers;
 
