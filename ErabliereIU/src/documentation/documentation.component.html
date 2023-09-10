@@ -9,7 +9,17 @@
     </div>
     <div *ngFor="let documentation of documentations" class="col-12">
         <div class="row">
-            <h4 class="mt-4">{{ documentation.title }}</h4>
+            <div class="col-md-4">
+                <h4 class="mt-4">{{ documentation.title }}</h4>
+            </div>
+
+            <div class="col-md-8">
+                <button 
+                    class="btn btn-danger ml-auto"
+                    (click)="deleteDocumentation(documentation)">
+                        Supprimer
+                </button>
+            </div>
         </div>
         
         <div class="row">
@@ -17,7 +27,15 @@
         </div>
         
         <div class="row">
-            <img *ngIf="documentation.file != ''" src="data:image/png;base64,{{ documentation.file }}" />
+            <img 
+                *ngIf="documentation.file != '' && isImageType(documentation)" 
+                src="data:image/png;base64,{{ documentation.file }}" />
+            <button 
+                *ngIf="documentation.file != '' && !isImageType(documentation)" 
+                (click)="downloadFile(documentation)"
+                class="btn btn-secondary">
+                    Télécharger
+            </button>
         </div>
     </div>
 </div>

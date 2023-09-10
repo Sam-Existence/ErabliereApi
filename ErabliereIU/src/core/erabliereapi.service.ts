@@ -166,7 +166,19 @@ export class ErabliereApi {
     async getDocumentations(idErabliereSelectionnee:any): Promise<Documentation[]> {
         const token = await this._authService.getAccessToken();
         const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation", { headers: headers }).toPromise();
+        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation?$select=id,idErabliere,created,title,text,fileExtension", { headers: headers }).toPromise();
+    }
+
+    async getDocumentationBase64(idErabliereSelectionnee:any, idDocumentation:any): Promise<Documentation[]> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
+        return await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation?$select=file&$filter=id eq " + idDocumentation, { headers: headers }).toPromise();
+    }
+
+    async deleteDocumentation(idErabliereSelectionnee:any, idDocumentation:any): Promise<any> {
+        const token = await this._authService.getAccessToken();
+        const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`).set('Accept', 'application/json');
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation/" + idDocumentation, { headers: headers }).toPromise();
     }
 
     async getNotes(idErabliereSelectionnee:any): Promise<Note[]> {

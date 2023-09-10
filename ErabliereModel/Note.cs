@@ -57,6 +57,13 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     /// </summary>
     public DateTimeOffset? NoteDate { get; set; }
 
+    /// <summary>
+    /// Filtre de notification. Permet à la note d'afficher comme une notification
+    /// si le filtre est évaluer à vrai.
+    /// </summary>
+    [MaxLength(100)]
+    public string? NotificationFilter { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(Note? other)
     {

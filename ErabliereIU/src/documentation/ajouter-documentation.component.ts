@@ -49,6 +49,7 @@ export class AjouterDocumentationComponent implements OnInit {
         reader.readAsDataURL(file);
         reader.onload = () => {
             this.documentForm.controls['fileBase64'].setValue(reader.result?.toString().split(',')[1]);
+            this.documentForm.controls['fileExtension'].setValue(file.name.split('.').pop());
         };
     }
 
@@ -59,6 +60,7 @@ export class AjouterDocumentationComponent implements OnInit {
             this.document.title = this.documentForm.controls['title'].value;
             this.document.text = this.documentForm.controls['text'].value;
             this.document.file = this.documentForm.controls['fileBase64'].value;
+            this.document.fileExtension = this.documentForm.controls['fileExtension'].value;
             this._api.postDocument(this.idErabliereSelectionee, this.document)
                      .then(r => {
                         this.errorObj = undefined;

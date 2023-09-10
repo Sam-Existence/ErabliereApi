@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData.Query;
 using ErabliereApi.Attributes;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ErabliereApi.Controllers;
 
@@ -45,6 +46,41 @@ public class DocumentationController : ControllerBase
     }
 
     /// <summary>
+    /// Action permettant de télécharger le fichier relié à la documentation
+    /// </summary>
+    /// <param name="id">id de l'érablière</param>
+    /// <param name="idDocumentation">id de la documentation</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpGet("{idDocumentation}/Fichier")]
+    [ProducesResponseType(200, Type = typeof(FileStreamResult))]
+    [ProducesResponseType(204)]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> TelechargerFichier(Guid id, Guid idDocumentation, CancellationToken token)
+    {
+        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+
+        if (documentation == null)
+        {
+            return NotFound();
+        }
+
+        if (documentation.IdErabliere != id)
+        {
+            return BadRequest("Le document n'apportient pas à l'érbière indiqué");
+        }
+
+        if (documentation.File == null)
+        {
+            return NoContent();
+        }
+
+        var stream = new MemoryStream(documentation.File);
+
+        return File(stream, "application/octet-stream", documentation.Title + '.' + documentation.FileExtension);
+    }
+
+    /// <summary>
     /// Action permettant d'ajouter une documentation
     /// </summary>
     /// <param name="id"></param>
@@ -72,6 +108,56 @@ public class DocumentationController : ControllerBase
 
         return Ok(entite.Entity);
     }
+
+    /// <summary>
+    /// Action permettant de modifier une documentation
+    /// </summary>
+    /// <param name="id">id de l'érablière</param>
+    /// <param name="idDocumentation">id de la documentation</param>
+    /// <param name="putDocumentation">nouvelle informations sur la documentation</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPut("{idDocumentation}")]
+    [ProducesResponseType(200, Type = typeof(Documentation))]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> Modifier(Guid id, Guid idDocumentation, Documentation putDocumentation, CancellationToken token)
+    {
+        if (id != putDocumentation.IdErabliere)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière possédant la dcumentation");
+        }
+
+        if (idDocumentation != putDocumentation.Id)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id de la documentation");
+        }
+
+        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+
+        if (documentation == null)
+        {
+            return NotFound();
+        }
+
+        if (!string.IsNullOrWhiteSpace(putDocumentation.Title)) 
+        {
+            documentation.Title = putDocumentation.Title;
+        }
+
+        if (!string.IsNullOrWhiteSpace(putDocumentation.Text)) 
+        {
+            documentation.Text = putDocumentation.Text;
+        }
+
+        if (!string.IsNullOrWhiteSpace(putDocumentation.FileExtension)) 
+        {
+            documentation.FileExtension = putDocumentation.FileExtension;
+        }
+
+        await _depot.SaveChangesAsync(token);
+
+        return Ok(documentation);
+    } 
 
     /// <summary>
     /// Action permettant de supprimer un document

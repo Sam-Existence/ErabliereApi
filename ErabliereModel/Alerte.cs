@@ -24,6 +24,12 @@ public class Alerte : IIdentifiable<Guid?, Alerte>, IErabliereOwnable
     public Erabliere? Erabliere { get; set; }
 
     /// <summary>
+    /// Le nom de l'alerte
+    /// </summary>
+    [MaxLength(100)]
+    public string? Nom { get; set; }
+
+    /// <summary>
     /// Une liste d'adresse email séparer par des ';'
     /// </summary>
     /// <example>exemple@courriel.com;exemple2@courriel.com</example>
