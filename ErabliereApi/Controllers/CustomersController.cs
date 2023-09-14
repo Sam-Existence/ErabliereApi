@@ -3,9 +3,11 @@ using AutoMapper.QueryableExtensions;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers;
 
@@ -53,5 +55,70 @@ public class CustomersController : ControllerBase
     public IQueryable<Customer> GetCustomersAdmin()
     {
         return _context.Customers;
+    }
+
+    /// <summary>
+    /// Point de terminaison d'administration pour 
+    /// modifier les accès d'un utilisateur
+    /// </summary>
+    /// <param name="id">Id de l'utilisateur</param>
+    /// <param name="putAdminCustomerAccess">Les accès à modifier</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("/admin/customers/{id}/customeraccess")]
+    [Authorize(Roles = "administrateur")]
+    public async Task<IActionResult> PutAdminCustomerAccess(Guid id, PutAdminCustomerAccess putAdminCustomerAccess, CancellationToken token)
+    {
+        var access = await _context.CustomerErablieres
+            .FirstOrDefaultAsync(ce => ce.IdCustomer == id && ce.IdErabliere == putAdminCustomerAccess.IdErabliere, token);
+
+        if (access == null)
+        {
+            // create a new access
+            access = new CustomerErabliere
+            {
+                IdCustomer = id,
+                IdErabliere = putAdminCustomerAccess.IdErabliere,
+                Access = putAdminCustomerAccess.CustomerAccessLevel
+            };
+
+            await _context.AddAsync(access, token);
+        }
+        else 
+        {
+            access.Access = putAdminCustomerAccess.CustomerAccessLevel;
+        }
+
+        await _context.SaveChangesAsync(token);
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Point de terminaison pour la suppression d'un utilisateur
+    /// </summary>
+    /// <param name="id">Id de l'utilisateur</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpDelete]
+    [Route("/admin/customers/{id}")]
+    [Authorize(Roles = "administrateur")]
+    public async Task<IActionResult> DeleteCustomerAdmin(Guid id, CancellationToken token)
+    {
+        var customer = await _context.Customers
+            .Include(c => c.CustomerErablieres)
+            .FirstOrDefaultAsync(c => c.Id == id, token);
+
+        if (customer == null)
+        {
+            return NoContent();
+        }
+
+        _context.Remove(customer);
+
+        await _context.SaveChangesAsync(token);
+
+        return NoContent();
     }
 }

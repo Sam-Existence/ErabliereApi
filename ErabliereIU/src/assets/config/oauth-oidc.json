@@ -1,8 +1,8 @@
 {
     "apiUrl": "https://localhost:5001",
-    "clientId": "8259365a-0b82-45e9-a566-942285f409ec",
-    "tenantId": "c383c74f-8edf-4f51-9bf3-c2bc352996bd",
-    "scopes": "api://2de748c0-f2ab-44ce-acf3-ed1f75b3a8d2/.default",
+    "clientId": "4f782545-4370-417d-a0f8-eba950872a13",
+    "tenantId": "common",
+    "scopes": "api://4f782545-4370-417d-a0f8-eba950872a13/.default",
     "appRoot": "https://localhost:4200",
     "authEnable": true
 }
