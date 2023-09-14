@@ -7,9 +7,10 @@
     <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
 </div>
 
-<div *ngIf="!(supportEmail == '' || supportEmail == null)">
+<div *ngIf="!(supportEmail == '' || supportEmail == null) || tenantId == 'common'">
     <h4 class="mt-4">Obtenir un compte</h4>
-    <p>Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+    <p *ngIf="!(supportEmail == '' || supportEmail == null)">Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+    <p *ngIf="tenantId == 'common'">Vous pouvez mainenant vous connecter avec votre compte microsoft sans demander de compte.</p>
 </div>
 
 <h4 class="mt-4">Spécification de l'api</h4>

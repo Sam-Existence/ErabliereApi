@@ -49,6 +49,7 @@ import { UrlModel } from '../model/urlModel';
                 <div class="col-12">
                     <div class="alert alert-information" role="alert">
                         <strong>Vous n'êtes pas connecté </strong> <a href="#" (click)="login()">Cliquer ici pour vous connecter</a>
+                        <p *ngIf="tenantId == 'common'">Connectez-vous maintenant avec votre compte Microsoft.</p>
                         <p>Pour obtenir un compte, communiquer à l'administrateur. Vous trouverez les informations dans la page À propos.</p>
                     </div>
                 </div>
@@ -60,7 +61,7 @@ import { UrlModel } from '../model/urlModel';
                     #erabliereComponent></erablieres>
     `
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit {
   title: string;
   cacheMenuErabliere: boolean;
   thereIsAtLeastOneErabliere: boolean;
@@ -68,26 +69,33 @@ export class DashboardComponent {
   isLoggedIn: boolean;
   urls: UrlModel[]
   pageSelectionnee: number;
+  tenantId?: string;
 
   private _authService: IAuthorisationSerivce
 
-  constructor(authFactoryService: AuthorisationFactoryService, environmentService: EnvironmentService, cdr: ChangeDetectorRef) {
+  constructor(
+      private authFactoryService: AuthorisationFactoryService, 
+      private environmentService: EnvironmentService, 
+      private cdr: ChangeDetectorRef) {
     this.title = 'Érablière IU'
     this.pageSelectionnee = 0
     this.cacheMenuErabliere = false
+    this._authService = authFactoryService.getAuthorisationService()
     this.useAuthentication = environment.enableAuth
     this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
     this.urls = []
-    this._authService = authFactoryService.getAuthorisationService()
+  }
+  ngOnInit(): void {
     this._authService.isLoggedIn().then(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
     this._authService.loginChanged.subscribe(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
-      cdr.detectChanges();
+      this.cdr.detectChanges();
     });
-    this.urls = environmentService.additionnalUrls ?? [];
+    this.urls = this.environmentService.additionnalUrls ?? [];
+    this.tenantId = this.environmentService.tenantId;
   }
 
   login() {
