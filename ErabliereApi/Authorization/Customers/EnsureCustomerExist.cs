@@ -42,7 +42,7 @@ public class EnsureCustomerExist : IMiddleware
                 {
                     // Cas spécial ou l'utilisateur aurait été créé précédement
                     // et le uniqueName est vide.
-                    if (!(await dbContext.Customers.AnyAsync(c => c.UniqueName == "", context.RequestAborted))) 
+                    if ((await dbContext.Customers.AnyAsync(c => c.UniqueName == "", context.RequestAborted))) 
                     {
                         var cust = await dbContext.Customers.SingleAsync(c => c.UniqueName == "", context.RequestAborted);
 

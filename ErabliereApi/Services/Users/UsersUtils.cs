@@ -27,6 +27,11 @@ internal class UsersUtils
                 uniqueName = user.FindFirst("preferred_username")?.Value ?? "";
             }
 
+            if (string.IsNullOrWhiteSpace(uniqueName))
+            {
+                uniqueName = user.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier")?.Value ?? "";
+            }
+
             return uniqueName;
         }
 

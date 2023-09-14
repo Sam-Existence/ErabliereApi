@@ -28,7 +28,7 @@ def getNiveauBassin():
   niveauBassin = 0
   return niveauBassin
 
-proxy = ErabliereApiProxy(urlBase, "AzureAD")
+proxy = ErabliereApiProxy(urlBase, "AzureAD", verifySsl=False)
 
 print("Érablière :", idErabliere)
 t = temperature(datetime.datetime.utcnow())
