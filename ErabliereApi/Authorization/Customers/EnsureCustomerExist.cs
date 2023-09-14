@@ -18,7 +18,17 @@ public class EnsureCustomerExist : IMiddleware
     {
         if (context.User?.Identity?.IsAuthenticated == true)
         {
-            var uniqueName = context.User.FindFirst("unique_name")?.Value ?? "";
+            var uniqueName = UsersUtils.GetUniqueName(context.RequestServices.CreateScope(), context.User);
+
+            if (uniqueName == null)
+            {
+                throw new InvalidOperationException("User is authenticated but no unique name was found");
+            }
+
+            if (uniqueName == "") 
+            {
+                throw new InvalidOperationException("User is authenticated but unique name is empty");
+            }
 
             var cache = context.RequestServices.GetRequiredService<IDistributedCache>();
 
@@ -30,19 +40,40 @@ public class EnsureCustomerExist : IMiddleware
 
                 if (!(await dbContext.Customers.AnyAsync(c => c.UniqueName == uniqueName)))
                 {
-                    var customerEntity = await dbContext.Customers.AddAsync(new Donnees.Customer
+                    // Cas spécial ou l'utilisateur aurait été créé précédement
+                    // et le uniqueName est vide.
+                    if (!(await dbContext.Customers.AnyAsync(c => c.UniqueName == "", context.RequestAborted))) 
                     {
-                        Email = uniqueName,
-                        UniqueName = uniqueName,
-                        Name = context.User.FindFirst("name")?.Value ?? "",
-                        CreationTime = DateTimeOffset.Now
-                    }, context.RequestAborted);
+                        var cust = await dbContext.Customers.SingleAsync(c => c.UniqueName == "", context.RequestAborted);
 
-                    await dbContext.SaveChangesAsync(context.RequestAborted);
+                        cust.UniqueName = uniqueName;
 
-                    customer = customerEntity.Entity;
+                        if (!cust.AccountType.Contains("AzureAD", StringComparison.OrdinalIgnoreCase))
+                        {
+                            cust.AccountType = string.Concat(cust.AccountType, ',', "AzureAD");
+                        }
 
-                    await cache.SetAsync($"Customer_{uniqueName}", customer, context.RequestAborted);
+                        await dbContext.SaveChangesAsync(context.RequestAborted);
+
+                        await cache.SetAsync($"Customer_{uniqueName}", cust, context.RequestAborted);
+                    }
+                    else
+                    {
+                        var customerEntity = await dbContext.Customers.AddAsync(new Donnees.Customer
+                        {
+                            Email = uniqueName,
+                            UniqueName = uniqueName,
+                            Name = context.User.FindFirst("name")?.Value ?? "",
+                            AccountType = "AzureAD",
+                            CreationTime = DateTimeOffset.Now
+                        }, context.RequestAborted);
+
+                        await dbContext.SaveChangesAsync(context.RequestAborted);
+
+                        customer = customerEntity.Entity;
+
+                        await cache.SetAsync($"Customer_{uniqueName}", customer, context.RequestAborted);
+                    }
                 }
                 else 
                 {

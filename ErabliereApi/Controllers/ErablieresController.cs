@@ -29,6 +29,7 @@ public class ErablieresController : ControllerBase
     private readonly IMapper _mapper;
     private readonly IConfiguration _config;
     private readonly IDistributedCache _cache;
+    private readonly IServiceProvider _serviceProvider;
 
     /// <summary>
     /// Constructeur par initialisation
@@ -37,12 +38,19 @@ public class ErablieresController : ControllerBase
     /// <param name="mapper">mapper de donnée</param>
     /// <param name="config">Permet d'accéder au configuration de l'api</param>
     /// <param name="cache">Cache distribué</param>
-    public ErablieresController(ErabliereDbContext context, IMapper mapper, IConfiguration config, IDistributedCache cache)
+    /// <param name="serviceProvider">Service scope</param>
+    public ErablieresController(
+        ErabliereDbContext context, 
+        IMapper mapper, 
+        IConfiguration config, 
+        IDistributedCache cache,
+        IServiceProvider serviceProvider)
     {
         _context = context;
         _mapper = mapper;
         _config = config;
         _cache = cache;
+        _serviceProvider = serviceProvider;
     }
 
     private const int TakeErabliereNbMax = 20;
@@ -277,7 +285,7 @@ public class ErablieresController : ControllerBase
     {
         if (User?.Identity?.IsAuthenticated == true)
         {
-            var unique_name = User.FindFirst("unique_name")?.Value ?? "";
+            var unique_name = UsersUtils.GetUniqueName(_serviceProvider.CreateScope(), User);
 
             var customer = await _context.Customers.SingleAsync(c => c.UniqueName == unique_name, token);
 

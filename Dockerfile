@@ -1,5 +1,5 @@
 # Build the angular app
-FROM node:18-alpine AS angular-builder
+FROM node:20-alpine AS angular-builder
 WORKDIR /usr/src/app
 COPY ErabliereIU/package.json ErabliereIU/package-lock.json ./
 RUN npm ci
