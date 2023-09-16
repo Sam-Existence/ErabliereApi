@@ -33,6 +33,7 @@ export class AjouterAlerteComponent implements OnInit {
 
     initializeForms() {
         this.alerteForm = this.fb.group({
+            nom: '',
             destinataire: '',
             temperatureMin: '',
             temperatureMax: '',
@@ -42,6 +43,7 @@ export class AjouterAlerteComponent implements OnInit {
             niveauBassinMax: ''
         });
         this.alerteCapteurForm = this.fb.group({
+            nom: '',
             destinataire: '',
             min: '',
             max: '',
@@ -87,6 +89,7 @@ export class AjouterAlerteComponent implements OnInit {
     onButtonCreerClick() {
         if (this.alerte != undefined) {
             this.alerte.idErabliere = this.idErabliereSelectionee;
+            this.alerte.nom = this.alerteForm.controls['nom'].value;
             this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
             this.alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
             this.alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
@@ -112,6 +115,7 @@ export class AjouterAlerteComponent implements OnInit {
     onButtonCreerAlerteCapteurClick() {
         if (this.alerteCapteur != undefined) {
             this.alerteCapteur.idCapteur = this.alerteCapteurForm.controls['idCapteur'].value;
+            this.alerteCapteur.nom = this.alerteCapteurForm.controls['nom'].value;
             this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
             if (this.alerteCapteurForm.controls['min'].value != "") {
                 this.alerteCapteur.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);

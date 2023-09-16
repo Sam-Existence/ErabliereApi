@@ -26,6 +26,9 @@
                         Id
                     </th>
                     <th>
+                        Nom
+                    </th>
+                    <th>
                         État
                     </th>
                     <th>
@@ -47,6 +50,9 @@
                 <tr *ngFor="let alerte of alertesCapteur">
                     <td class="shortid">
                         {{alerte.id}}
+                    </td>
+                    <td>
+                        {{alerte.nom}}
                     </td>
                     <td *ngIf="alerte.isEnable">
                         Activé
@@ -86,6 +92,9 @@
                         Id
                     </th>
                     <th>
+                        Nom
+                    </th>
+                    <th>
                         État
                     </th>
                     <th>
@@ -116,6 +125,9 @@
                 <tr *ngFor="let alerte of alertes">
                     <td class="shortid">
                         {{alerte.id}}
+                    </td>
+                    <td>
+                        {{alerte.nom}}
                     </td>
                     <td *ngIf="alerte.isEnable">
                         Activé

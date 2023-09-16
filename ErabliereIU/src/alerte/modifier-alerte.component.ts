@@ -13,6 +13,7 @@ export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.alerteForm = this.fb.group({
             id: '',
+            nom: '',
             destinataire: '',
             temperatureMin: '',
             temperatureMax: '',
@@ -24,6 +25,7 @@ export class ModifierAlerteComponent implements OnInit {
         });
         this.alerteCapteurForm = this.fb.group({
             destinataire: '',
+            nom: '',
             min: '',
             max: '',
             isEnable: ''
@@ -36,6 +38,7 @@ export class ModifierAlerteComponent implements OnInit {
         if (alerte != undefined) {
             this.alerteForm.setValue({
                 id: alerte.id,
+                nom: alerte.nom,
                 destinataire: alerte.envoyerA,
                 temperatureMin: alerte.temperatureThresholdHight,
                 temperatureMax: alerte.temperatureThresholdLow,
@@ -52,6 +55,7 @@ export class ModifierAlerteComponent implements OnInit {
         if (alerteCapteur != undefined) {
             this.alerteCapteurForm.setValue({
                 destinataire: alerteCapteur.envoyerA,
+                nom: alerteCapteur.nom,
                 min: alerteCapteur.minVaue,
                 max: alerteCapteur.maxValue,
                 isEnable: alerteCapteur.isEnable
@@ -88,6 +92,7 @@ export class ModifierAlerteComponent implements OnInit {
 
         alerte.id = this.alerteForm.controls['id'].value;
         alerte.idErabliere = this.idErabliereSelectionee;
+        alerte.nom = this.alerteForm.controls['nom'].value;
         alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
         alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
         alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
@@ -112,6 +117,7 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.id = this.alerteCapteur?.id;
         alerte.idCapteur = this.alerteCapteur?.idCapteur;
         alerte.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
+        alerte.nom = this.alerteCapteurForm.controls['nom'].value;
         alerte.isEnable = this.alerteCapteurForm.controls['isEnable'].value;
         if (this.alerteCapteurForm.controls['min'].value != "") {
             alerte.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);

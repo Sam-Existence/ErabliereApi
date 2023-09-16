@@ -3,6 +3,9 @@
     <p>Id: {{ alerte?.id }}</p>
     <form [formGroup]="alerteForm">
         <div class="form-group">
+          Nom: <input class="form-control" type="text" formControlName="nom">
+        </div>
+        <div class="form-group">
           Destinataires: <input class="form-control" type="text" formControlName="destinataire">
         </div>
         <div class="form-group">
@@ -34,6 +37,9 @@
   <span class="text-danger">{{generalError}}</span>
   <p>Id: {{ alerteCapteur?.id }}</p>
   <form [formGroup]="alerteCapteurForm">
+      <div class="form-group">
+        Nom: <input class="form-control" type="text" formControlName="nom">
+      </div>
       <div class="form-group">
         Destinataires: <input class="form-control" type="text" formControlName="destinataire">
       </div>
