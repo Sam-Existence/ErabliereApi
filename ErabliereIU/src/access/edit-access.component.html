@@ -1,11 +1,31 @@
 <div *ngIf="!displayEditAccess">
-    {{acces.access}}
+    {{getAccessText(acces.access)}}
 </div>
 <div *ngIf="displayEditAccess">
     <div class="container">
         <div class="row">
             <div class="col-10">
-                <input class="form-control form-control-sm" type="number" [(ngModel)]="accessInternal.access">
+                <select 
+                    class="form-control form-control-sm" 
+                    [(ngModel)]="accessInternal.access" 
+                    placeholder="Accès">
+                    <option value="0">Aucun</option>
+                    <option value="1">Lecture</option>
+                    <option value="2">Création</option>
+                    <option value="3">Lecture et création</option>
+                    <option value="4">Modification</option>
+                    <option value="5">Lecture et modification</option>
+                    <option value="6">Création et modification</option>
+                    <option value="7">Lecture, création et modification</option>
+                    <option value="8">Suppression</option>
+                    <option value="9">Lecture et suppression</option>
+                    <option value="10">Création et suppression</option>
+                    <option value="11">Lecture, création et suppression</option>
+                    <option value="12">Modification et suppression</option>
+                    <option value="13">Lecture, modification et suppression</option>
+                    <option value="14">Création, modification et suppression</option>
+                    <option value="15">Lecture, création, modification et suppression</option>
+                </select>
             </div>
             <div class="col-2">
                 <button class="btn btn-primary btn-sm float-right" (click)="updateAccess()">&#9998;</button>

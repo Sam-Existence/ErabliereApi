@@ -38,7 +38,27 @@
                         <select-customer (customerSelected)="customerSelected($event)"></select-customer>
                     </td>
                     <td>
-                        <input type="number" class="form-control form-control-sm" [(ngModel)]="newCustomerAccess.customerErablieres[0].access" placeholder="Accès">
+                        <select 
+                            class="form-control form-control-sm" 
+                            [(ngModel)]="newCustomerAccess.customerErablieres[0].access" 
+                            placeholder="Accès">
+                            <option value="0">Aucun</option>
+                            <option value="1">Lecture</option>
+                            <option value="2">Création</option>
+                            <option value="3">Lecture et création</option>
+                            <option value="4">Modification</option>
+                            <option value="5">Lecture et modification</option>
+                            <option value="6">Création et modification</option>
+                            <option value="7">Lecture, création et modification</option>
+                            <option value="8">Suppression</option>
+                            <option value="9">Lecture et suppression</option>
+                            <option value="10">Création et suppression</option>
+                            <option value="11">Lecture, création et suppression</option>
+                            <option value="12">Modification et suppression</option>
+                            <option value="13">Lecture, modification et suppression</option>
+                            <option value="14">Création, modification et suppression</option>
+                            <option value="15">Lecture, création, modification et suppression</option>
+                        </select>
                     </td>
                     <td>
                         <button class="btn btn-primary btn-sm float-right" (click)="creerAcces()">&#43;</button>
