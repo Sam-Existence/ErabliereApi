@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ErabliereApi.Donnees.Action.Put;
 
@@ -15,11 +11,13 @@ public class PutAlerteCapteur
     /// <summary>
     /// La clé primaire
     /// </summary>
+    [Required]
     public Guid? Id { get; set; }
 
     /// <summary>
     /// L'id du capteur
     /// </summary>
+    [Required]
     public Guid? IdCapteur { get; set; }
 
     /// <summary>

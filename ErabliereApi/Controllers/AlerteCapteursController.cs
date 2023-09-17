@@ -123,18 +123,32 @@ public class AlerteCapteursController : ControllerBase
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
     [ValiderOwnership("id", typeof(Capteur))]
-    public async Task<IActionResult> Modifier(Guid id, PutAlerteCapteur alerte, bool? additionnalProperties, CancellationToken token)
+    public async Task<IActionResult> Modifier(Guid id, PutAlerteCapteur alerte, bool? additionalProperties, CancellationToken token)
     {
         if (id != alerte.IdCapteur)
         {
             return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à modifier.");
         }
 
-        var entity = _depot.Update(_mapper.Map<AlerteCapteur>(alerte));
+        var alerteCapteur = await _depot.AlerteCapteurs.FindAsync(alerte.Id);
+
+        if (alerteCapteur == null)
+        {
+            return NotFound("L'alerte de capteur n'existe pas");
+        }
+
+        alerteCapteur.IdCapteur = alerte.IdCapteur;
+        alerteCapteur.IsEnable = alerte.IsEnable;
+        alerteCapteur.EnvoyerA = alerte.EnvoyerA;
+        alerteCapteur.MaxValue = alerte.MaxValue;
+        alerteCapteur.MinVaue = alerte.MinVaue;
+        alerteCapteur.Nom = alerte.Nom;
+
+        var entity = _depot.Update(alerteCapteur);
 
         await _depot.SaveChangesAsync(token);
 
-        if (additionnalProperties == true) {
+        if (additionalProperties == true) {
             return Ok(_mapper.Map<GetAlerteCapteur>(entity.Entity));
         }
 

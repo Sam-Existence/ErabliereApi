@@ -25,14 +25,23 @@ public static class ErabliereFixture
 
         fixture.Customize<PostErabliere>(c => c.With(e => e.IpRules, () => fixture.CreateRandomIPAddress().ToString())
                                                .With(e => e.IsPublic, () => true));
+        
         fixture.Customize<Erabliere>(c => c.With(e => e.IpRule, () => fixture.CreateRandomIPAddress().ToString())
                                            .Without(e => e.Donnees)
                                            .Without(e => e.Dompeux)
                                            .Without(e => e.Barils)
-                                           .Without(e => e.Capteurs)
                                            .Without(e => e.Documentations)
                                            .Without(e => e.Notes)
                                            .Without(e => e.Alertes));
+
+        fixture.Customize<Capteur>(c => c.Without(cc => cc.Erabliere));
+
+        fixture.Customize<DonneeCapteur>(c => c.Without(cc => cc.Capteur)
+                                               .Without(cc => cc.Owner));
+
+        fixture.Customize<AlerteCapteur>(c => c.Without(cc => cc.Capteur)
+                                               .Without(cc => cc.Owner)
+                                               .Without(cc => cc.Id));
 
         fixture.Customize<Customer>(c =>
             c.With(c => c.Email, RandomEmail)
