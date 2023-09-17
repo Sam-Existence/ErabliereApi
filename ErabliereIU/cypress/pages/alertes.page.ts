@@ -12,6 +12,10 @@ export class AlertesPage {
         FormUtil.typeText(email, "alerte-page", "destinataire");
         return this;
     }
+    typeName(name: string): AlertesPage {
+        FormUtil.typeText(name, "alerte-page", "nom");
+        return this;
+    }
     clickOnCreateButton(): AlertesPage {
         FormUtil.clickButton("alerte-page", "creer-alerte-donnees-btn");
         return this;

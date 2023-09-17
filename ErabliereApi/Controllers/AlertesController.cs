@@ -86,12 +86,13 @@ public class AlertesController : ControllerBase
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
     /// <param name="alerte">L'alerte a modifier</param>
+    /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <response code="200">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>
     [HttpPut]
     [ValiderOwnership("id")]
-    public async Task<IActionResult> Modifier(Guid id, Alerte alerte, CancellationToken token)
+    public async Task<IActionResult> Modifier(Guid id, Alerte alerte, bool? additionalProperties, CancellationToken token)
     {
         if (id != alerte.IdErabliere)
         {
@@ -101,6 +102,11 @@ public class AlertesController : ControllerBase
         var entity = _depot.Update(alerte);
 
         await _depot.SaveChangesAsync(token);
+
+        if (additionalProperties == true) 
+        {
+            return Ok(_mapper.Map<GetAlerte>(entity.Entity));
+        }
 
         return Ok(entity.Entity);
     }

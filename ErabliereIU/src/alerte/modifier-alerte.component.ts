@@ -112,7 +112,7 @@ export class ModifierAlerteComponent implements OnInit {
     }
 
     onButtonModifierAlerteCapteurClick() {
-        let alerte = new AlerteCapteur();
+        const alerte = new AlerteCapteur();
 
         alerte.id = this.alerteCapteur?.id;
         alerte.idCapteur = this.alerteCapteur?.idCapteur;

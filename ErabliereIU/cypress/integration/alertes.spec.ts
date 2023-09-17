@@ -24,4 +24,19 @@ describe('Alerte functionnality', { testIsolation: false }, () => {
 
         alertePage.getLastAlerteDonneesEmail().should('have.text', email);
     })
+
+    // Edit alerte test in progress
+    // it("should edit an alerte on 'donnees'", () => {
+    //     let alertePage = homePage.clickOnAlerteButtonNavMenu();
+
+    //     const name = faker.random.word.toString();
+
+    //     alertePage.clickOnEditAlerteButton()
+    //               .typeName(name)
+    //               .clickOnEditButton();
+
+    //     cy.wait(1000);
+
+    //     alertePage.getLastAlerteDonneesName().should('have.text', name);
+    // });
 });
