@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "6eb66a4c-f14b-4f63-9a62-829aaf8d7505",
+		"_postman_id": "e2b77f99-60ed-4797-944c-df22343e3878",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "6202256"
@@ -1602,42 +1602,6 @@
 					"response": []
 				}
 			]
-		},
-		{
-			"name": "Get Dashboard",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"\r",
-							"    var responseJson = pm.response.json();\r",
-							"\r",
-							"    pm.expect(responseJson).to.haveOwnProperty('length');\r",
-							"    pm.expect(responseJson.length).to.be.lessThan(21);\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/erablieres/dashboard",
-					"host": [
-						"{{url}}"
-					],
-					"path": [
-						"erablieres",
-						"dashboard"
-					]
-				}
-			},
-			"response": []
 		}
 	],
 	"auth": {
