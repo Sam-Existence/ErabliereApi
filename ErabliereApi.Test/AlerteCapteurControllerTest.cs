@@ -18,6 +18,25 @@ public class AlerteCapteurControllerTest
     }
 
     [Theory, AutoApiData]
+    public async Task TestGetAlerteCapteur(
+        AlerteCapteursController controller, ErabliereDbContext context) 
+    {
+        var erabliere = context.Erabliere.GetRandom();
+
+        var response = await controller.ListerAlerteCapteurErabliere(
+            erabliere.Id.Value,
+            additionnalProperties: true,
+            include: "Capteur",
+            System.Threading.CancellationToken.None
+        );  
+
+        var alerteCapteurs = Assert.IsType<GetAlerteCapteur[]>(response);
+
+        Assert.NotNull(alerteCapteurs[0].Capteur);
+        Assert.NotEmpty(alerteCapteurs[0].Capteur.Symbole);
+    }
+
+    [Theory, AutoApiData]
     public async Task TestPutAlerteCapteur(
         AlerteCapteursController controller, ErabliereDbContext context)
     {

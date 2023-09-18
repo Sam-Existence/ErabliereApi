@@ -119,69 +119,6 @@ public class ErablieresController : ControllerBase
     }
 
     /// <summary>
-    /// Obtenir les données pour la page principale d'ErabliereIU
-    /// </summary>
-    /// <returns>Une liste d'érablière</returns>
-    [HttpGet("[action]")]
-    [ProducesResponseType(200, Type = typeof(GetErabliereDashboard[]))]
-    public async Task<IActionResult> Dashboard(DateTimeOffset? dd, DateTimeOffset? df, DateTimeOffset? ddr, CancellationToken token, int nbErabliere = TakeErabliereNbMax)
-    {
-        if (nbErabliere < 0)
-        {
-            return BadRequest($"Le paramètre {nbErabliere} ne peut pas être négatif.");
-        }
-
-        if (dd == null && df == null)
-        {
-            dd = DateTime.Now - TimeSpan.FromHours(12);
-        }
-
-        var dashboardData = await _context.Erabliere.AsNoTracking()
-            .ProjectTo<GetErabliereDashboard>(_dashboardMapper, new { dd, df, ddr })
-            .OrderBy(e => e.IndiceOrdre)
-            .ThenBy(e => e.Nom)
-            .Take(nbErabliere)
-            .ToArrayAsync(token);
-
-        return Ok(dashboardData);
-    }
-
-    private static readonly AutoMapper.IConfigurationProvider _dashboardMapper = new MapperConfiguration(config =>
-    {
-        DateTimeOffset? ddr = default;
-        DateTimeOffset? dd = default;
-        DateTimeOffset? df = default;
-
-        config.CreateMap<Erabliere, GetErabliereDashboard>()
-              .ForMember(d => d.Donnees, o => o.MapFrom(e => e.Donnees.Where(d => (ddr == null || d.D > ddr) &&
-                                                                                  (dd == null || d.D >= dd) &&
-                                                                                  (df == null || d.D <= df))))
-              .ForMember(d => d.Dompeux, o => o.MapFrom(e => e.Dompeux.Where(d => (ddr == null || d.T > ddr) &&
-                                                                                  (dd == null || d.T >= dd) &&
-                                                                                  (df == null || d.T <= df))))
-              .ForMember(d => d.Capteurs, o => o.MapFrom(e => e.Capteurs.Where(c => c.AfficherCapteurDashboard == true)))
-              .ReverseMap();
-
-        config.CreateMap<Capteur, GetCapteursAvecDonnees>()
-              .ForMember(c => c.Donnees, o => o.MapFrom(e => e.DonneesCapteur.Where(d => (ddr == null || d.D > ddr) &&
-                                                                                         (dd == null || d.D >= dd) &&
-                                                                                         (df == null || d.D <= df))))
-              .ReverseMap();
-
-        config.CreateMap<DonneeCapteur, GetDonneesCapteur>()
-              .ReverseMap();
-
-        config.CreateMap<Dompeux, GetDompeux>()
-              .ReverseMap();
-
-        config.CreateMap<Donnee, GetDonnee>()
-              .ReverseMap();
-
-        config.CreateMap<Baril, GetBaril>()
-              .ReverseMap();
-    });
-
-    /// <summary>
     /// Obtenir les accès des utilisateurs à une érablière
     /// </summary>
     /// <response code="200">Les droits d'accès de l'érablère demandé</response>

@@ -57,15 +57,33 @@ public class AlerteCapteursController : ControllerBase
     /// </summary>
     /// <param name="id">L'id de l'érablière</param>
     /// <param name="additionnalProperties">Propriétés additionnel</param>
+    /// <param name="include">Inclure les propriétés de navigation</param>
+    /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <returns></returns>
     [Route("/Erablieres/{id}/AlertesCapteur")]
     [HttpGet]
     [ValiderOwnership("id")]
-    public async Task<IEnumerable<AlerteCapteur>> ListerAlerteCapteurErabliere(Guid id, [FromQuery] bool additionnalProperties)
+    public async Task<IEnumerable<AlerteCapteur>> ListerAlerteCapteurErabliere(
+        Guid id, 
+        [FromQuery] bool additionnalProperties,
+        [FromQuery] string? include,
+        CancellationToken token)
     {
+        var alertesCapteursQuery = _depot.AlerteCapteurs
+            .AsNoTracking()
 #nullable disable
-        var alertesCapteurs = await _depot.AlerteCapteurs.AsNoTracking().Where(b => b.Capteur.IdErabliere == id).ToArrayAsync();
+            .Where(b => b.Capteur.IdErabliere == id);
 #nullable enable
+
+        if (include != null)
+        {
+            foreach (var property in include.Split(','))
+            {
+                alertesCapteursQuery = alertesCapteursQuery.Include(property);
+            }
+        }
+
+        var alertesCapteurs = await alertesCapteursQuery.ToArrayAsync(token);
 
         if (additionnalProperties)
         {
@@ -117,7 +135,7 @@ public class AlerteCapteursController : ControllerBase
     /// </summary>
     /// <param name="id">L'identifiant du capteur</param>
     /// <param name="alerte">L'alerte a modifier</param>
-    /// <param name="additionnalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
+    /// <param name="additionalProperties">Propriété additionnel, tel que les adresse couriels dans une liste</param>
     /// <param name="token">Jeton d'annulation de la tâche</param>
     /// <response code="200">L'alerte a été correctement supprimé.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du baril à modifier.</response>

@@ -31,11 +31,6 @@ export class ErabliereApi {
         this._authService = authFactoryService.getAuthorisationService();
     }
 
-    async getErablieresDashboard(): Promise<HttpResponse<Erabliere[]>> {
-        const headers = await this.getHeaders();
-        return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres/dashboard', { headers: headers, observe: 'response' }).toPromise();
-    }
-
     async getErablieres(my:boolean): Promise<Erabliere[]> {
         const headers = await this.getHeaders();
         return await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?my=' + my, { headers: headers }).toPromise();
@@ -60,7 +55,9 @@ export class ErabliereApi {
 
     async getAlertesCapteur(idErabliereSelectionnee:any): Promise<AlerteCapteur[]> {
         const headers = await this.getHeaders();
-        return await this._httpClient.get<AlerteCapteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur?additionnalProperties=true", { headers: headers }).toPromise();
+        return await this._httpClient.get<AlerteCapteur[]>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur?additionnalProperties=true&include=Capteur", 
+            { headers: headers }).toPromise();
     }
 
     async getCapteurs(idErabliereSelectionnee:any): Promise<Capteur[]> {
