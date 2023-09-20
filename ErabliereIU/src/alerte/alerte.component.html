@@ -69,8 +69,8 @@
                     <td>
                         {{alerte.maxValue}}
                     </td>
-                    <td class="shortid">
-                        {{alerte.idCapteur}}
+                    <td>
+                        {{alerte.capteur?.nom}}
                     </td>
                     <td>
                         <button *ngIf="alerte.isEnable" class="btn btn-outline-warning btn-block" (click)="onButtonDesactiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">désactiver</button>

@@ -119,13 +119,17 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
         alerte.nom = this.alerteCapteurForm.controls['nom'].value;
         alerte.isEnable = this.alerteCapteurForm.controls['isEnable'].value;
-        if (this.alerteCapteurForm.controls['min'].value != "") {
-            alerte.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);
+        var minInForm = this.alerteCapteurForm.controls['min'].value;
+        if (minInForm !== "" || minInForm === 0) {
+            console.log('parseMin')
+            alerte.minVaue = parseInt(minInForm);
         } else {
+            console.log('min to undefined')
             alerte.minVaue = undefined;
         }
-        if (this.alerteCapteurForm.controls['max'].value != "") {
-            alerte.maxValue = parseInt(this.alerteCapteurForm.controls['max'].value);
+        var maxInForm = this.alerteCapteurForm.controls['max'].value;
+        if (maxInForm !== "" || maxInForm === 0) {
+            alerte.maxValue = parseInt(maxInForm);
         } else {
             alerte.maxValue = undefined;
         }
