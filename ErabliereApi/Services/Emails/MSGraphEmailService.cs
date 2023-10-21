@@ -49,7 +49,7 @@ public class MSGraphEmailService : IEmailService
             {
                 EmailAddress = new EmailAddress
                 {
-                    Address = r.Name
+                    Address = r.ToString()
                 }
             }).ToList()
         };

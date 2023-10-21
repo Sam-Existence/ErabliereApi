@@ -294,6 +294,7 @@ public class Startup
                         o.TenantId = deserializedConfig.TenantId;
                         o.SmtpServer = deserializedConfig.SmtpServer;
                         o.SmtpPort = deserializedConfig.SmtpPort;
+                        o.UseMSGraphAPI = deserializedConfig.UseMSGraphAPI;
                     }
                 }
                 catch (Exception e)
