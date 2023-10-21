@@ -18,6 +18,8 @@ public class EmailConfig
 
     /// <summary>
     /// Mot de passe du couriel de la propriété <see cref="Email" />
+    /// Laisser vide pour utiliser l'authentification OAuth.
+    /// Utiliser pour l'authentification basic.
     /// </summary>
     public string? Password { get; set; }
 
@@ -36,4 +38,14 @@ public class EmailConfig
     /// </summary>
     public bool IsConfigured => Email != null && 
                                 Sender != null;
+
+    /// <summary>
+    /// Indique le tenent, nécessaire pour l'authentication oauth
+    /// </summary>
+    public string? TenantId { get; set; }
+
+    /// <summary>
+    /// Indiquate if the MSGraph service should be use to send email
+    /// </summary>
+    public bool? UseMSGraphAPI { get; set; }
 }

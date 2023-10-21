@@ -22,7 +22,7 @@ Pour que la fonctionnalité d'alerte fonctionne, il faut que des configurations 
 
 La variable d'environnement ```EMAIL_CONFIG_PATH``` est utiliser pour obtenir le path du fichier de configuration.
 
-Le fichier de configuration doit ressembler à ceci : 
+Le fichier de configuration doit ressembler à ceci (basic auth): 
 ```
 {
   "Sender": "adresse@courriel.com",
@@ -32,6 +32,20 @@ Le fichier de configuration doit ressembler à ceci :
   "SmtpPort": 587
 }
 ```
+
+(OAuth)
+```
+{
+  "Sender": "adresse@courriel.com",
+  "Email": "adresse@courriel.com",
+  "TenantId": "id-du-tenant",
+  "SmtpServer": "smtp.courriel.com",
+  "SmtpPort": 587
+}
+```
+
+Info sur MailKit et Exchange: https://github.com/jstedfast/MailKit/blob/master/ExchangeOAuth2.md
+Info sur MSGraph: https://medium.com/medialesson/how-to-send-emails-in-net-with-the-microsoft-graph-a97b57430bbd
 
 Lors des déploiements k8s, un fichier doit être présent. Pour ce faire, vous pouvez utiliser un secret comme le suivant : 
 ```

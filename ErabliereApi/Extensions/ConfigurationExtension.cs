@@ -36,4 +36,14 @@ public static class ConfigurationExtension
     {
         return string.Equals(config["USE_CHAOS_ENGINEERING"], TrueString, OrdinalIgnoreCase);
     }
+
+    /// <summary>
+    /// Check if the variable ASPNETCORE_ENVIRONMENT is equal to Development
+    /// </summary>
+    /// <param name="config"></param>
+    /// <returns></returns>
+    public static bool IsDevelopment(this IConfiguration config)
+    {
+        return string.Equals(config["ASPNETCORE_ENVIRONMENT"], Environments.Development, OrdinalIgnoreCase);
+    }
 }

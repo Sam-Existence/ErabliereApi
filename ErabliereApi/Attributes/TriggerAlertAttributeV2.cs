@@ -9,6 +9,7 @@ using System.Text.Json;
 using static System.Text.Json.JsonSerializer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using ErabliereApi.Services;
 
 namespace ErabliereApi.Controllers.Attributes;
 
@@ -65,13 +66,15 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
                 var emailConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<EmailConfig>>();
 
+                var emailService = context.HttpContext.RequestServices.GetRequiredService<IEmailService>();
+
                 var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur && a.IsEnable).ToArrayAsync();
 
                 for (int i = 0; i < alertes.Length; i++)
                 {
                     var alerte = alertes[i];
 
-                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value);
+                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value, emailService);
                 }
             }
             catch (Exception e)
@@ -83,7 +86,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig)
+    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
     {
         if (_donnee == null)
         {
@@ -115,11 +118,11 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
         if (validationCount > 0 && validationCount == conditionMet)
         {
-            TriggerAlerte(alerte, logger, emailConfig);
+            TriggerAlerte(alerte, logger, emailConfig, emailService);
         }
     }
 
-    private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig)
+    private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
     {
         if (!emailConfig.IsConfigured)
         {
@@ -144,11 +147,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
                     Text = FormatTextMessage(alerte, _donnee)
                 };
 
-                using var smtpClient = new SmtpClient();
-                await smtpClient.ConnectAsync(emailConfig.SmtpServer, emailConfig.SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
-                await smtpClient.AuthenticateAsync(emailConfig.Email, emailConfig.Password);
-                await smtpClient.SendAsync(mailMessage);
-                await smtpClient.DisconnectAsync(true);
+                await emailService.SendEmailAsync(mailMessage, CancellationToken.None);
             }
         }
         catch (Exception e)
