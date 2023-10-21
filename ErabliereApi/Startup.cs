@@ -27,6 +27,11 @@ using ErabliereApi.Services.Users;
 using ErabliereApi.Middlewares;
 using ErabliereApi.Models;
 using ErabliereApi.Donnees;
+using MailKit.Net.Smtp;
+using MailKit;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Options;
+using ErabliereApi.Services.Emails;
 
 namespace ErabliereApi;
 
@@ -96,6 +101,11 @@ public class Startup
             if (Configuration["AzureAD__TenantId"] != null && Configuration["AzureAD:TenantId"] == null)
             {
                 Configuration["AzureAD:TenantId"] = Configuration["AzureAD__TenantId"];
+            }
+
+            if (Configuration["AzureAD__ClientSecret"] != null && Configuration["AzureAD:ClientSecret"] == null)
+            {
+                Configuration["AzureAD:ClientSecret"] = Configuration["AzureAD__ClientSecret"];
             }
 
             if (string.IsNullOrWhiteSpace(Configuration["AzureAD:ClientId"]) == false)
@@ -231,7 +241,35 @@ public class Startup
         }
 
         // Email
-        services.AddTransient<IEmailService, ErabliereApiEmailService>();
+        services.AddTransient<ErabliereApiEmailService>();
+        services.AddTransient<MSGraphEmailService>();
+        services.AddTransient<IEmailService>(sp =>
+        {
+            var o = sp.GetRequiredService<IOptions<EmailConfig>>().Value;
+
+            if (o.UseMSGraphAPI == true)
+            {
+                return sp.GetRequiredService<MSGraphEmailService>();
+            }
+
+            return sp.GetRequiredService<ErabliereApiEmailService>();
+        });
+        services.AddSingleton<ISmtpClient, SmtpClient>();
+        services.AddSingleton<IProtocolLogger>(sp =>
+        {
+            if (Configuration.IsDevelopment())
+            {
+                return new ProtocolLogger(Console.OpenStandardOutput());
+            }
+            else
+            {
+                return new ProtocolLogger(Stream.Null);
+            }
+        });
+        services.AddSingleton<SmtpClient>(sp =>
+        {
+           return new SmtpClient(sp.GetRequiredService<IProtocolLogger>());
+        });
         services.Configure<EmailConfig>(o =>
         {
             var path = Configuration["EMAIL_CONFIG_PATH"];
@@ -253,8 +291,10 @@ public class Startup
                         o.Sender = deserializedConfig.Sender;
                         o.Email = deserializedConfig.Email;
                         o.Password = deserializedConfig.Password;
+                        o.TenantId = deserializedConfig.TenantId;
                         o.SmtpServer = deserializedConfig.SmtpServer;
                         o.SmtpPort = deserializedConfig.SmtpPort;
+                        o.UseMSGraphAPI = deserializedConfig.UseMSGraphAPI;
                     }
                 }
                 catch (Exception e)
