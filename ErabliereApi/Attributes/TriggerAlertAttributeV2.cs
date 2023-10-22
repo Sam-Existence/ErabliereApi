@@ -120,6 +120,12 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         {
             TriggerAlerte(alerte, logger, emailConfig, emailService);
         }
+        else
+        {
+            logger.LogInformation($"Alerte {alerte.Id} {alerte.Nom}");
+            logger.LogInformation($"Validation count greater that 0 {validationCount > 0} && validation count eqal conditionMet {validationCount} == {conditionMet} = false");
+            logger.LogInformation($"Alerte {alerte.Id} {alerte.Nom} not trigger");
+        }
     }
 
     private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
