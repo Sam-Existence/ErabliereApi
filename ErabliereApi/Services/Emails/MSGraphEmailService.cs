@@ -71,6 +71,8 @@ public class MSGraphEmailService : IEmailService
                 Message = message,
                 SaveToSentItems = saveToSentItems
             }, cancellationToken: token);
+
+            _logger.LogInformation("Email sent successfully");
         }
         catch (Exception e)
         {
