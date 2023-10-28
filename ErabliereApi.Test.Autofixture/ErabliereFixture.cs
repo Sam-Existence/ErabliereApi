@@ -15,6 +15,11 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace ErabliereApi.Test.Autofixture;
 public static class ErabliereFixture
 {
+    /// <summary>
+    /// Create and instance of <see cref="IFixture"/> with ErabliereAPI configuration.
+    /// </summary>
+    /// <param name="modelOnly">If set to false, DBContext will be register and populate with fixture data</param>
+    /// <returns></returns>
     public static IFixture CreerFixture(bool modelOnly = true)
     {
         var fixture = new Fixture();
