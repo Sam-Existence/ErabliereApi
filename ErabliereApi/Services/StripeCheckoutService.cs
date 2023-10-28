@@ -116,28 +116,6 @@ public class StripeCheckoutService : ICheckoutService
     {
         switch (stripeEvent.Type)
         {
-            case "customer.created":
-                // logger.LogInformation("Begin of customer.created");
-                // var customer = mapper.Map<Donnees.Customer>
-                //     (stripeEvent.Data.Object as Stripe.Customer);
-
-                // await userService.CreateCustomerAsync(customer, token);
-                // logger.LogInformation("End of customer.created");
-                break;
-
-            case "invoice.paid":
-                //logger.LogInformation("Begin of invoice.paid");
-                //var data = stripeEvent.Data.Object as Invoice;
-
-                //if (data is null)
-                //{
-                //    throw new ArgumentNullException(nameof(data));
-                //}
-
-                //await apiKeyService.CreateApiKeyAsync(data.CustomerEmail, token);
-                //logger.LogInformation("End of invoice.paid");
-                break;
-
             case "customer.subscription.created":
                 logger.LogInformation("Begin create customer.subscription.created");
 
@@ -166,7 +144,7 @@ public class StripeCheckoutService : ICheckoutService
                 break;
 
             default:
-                logger.LogWarning("Unknow stripe event: {event}", stripeEvent);
+                logger.LogTrace("Unknow stripe event: {event}", stripeEvent);
                 break;
         }
     }
