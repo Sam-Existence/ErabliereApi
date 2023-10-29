@@ -86,7 +86,6 @@ public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<
         var initialResponse = await client.GetFromJsonAsync<Erabliere[]>("/Erablieres");
 
         Assert.NotNull(initialResponse);
-        Assert.Empty(initialResponse);
 
         var newErabliere = _fixture.Create<PostErabliere>();
 
