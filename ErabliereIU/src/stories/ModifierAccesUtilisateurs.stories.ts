@@ -3,7 +3,6 @@ import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 
 import { ModifierAccesUtilisateursComponent } from '../erablieres/modifier-acces-utilisateurs.component';
-import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 export default {

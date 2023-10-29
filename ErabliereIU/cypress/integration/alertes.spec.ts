@@ -1,5 +1,5 @@
+import { FixtureUtil } from 'cypress/util/fixtureUtil';
 import { HomePage } from '../pages/home.page';
-import { faker } from '@faker-js/faker';
 
 describe('Alerte functionnality', { testIsolation: false }, () => {
     const homePage = new HomePage();
@@ -14,7 +14,7 @@ describe('Alerte functionnality', { testIsolation: false }, () => {
     it("should add an alerte on 'donnees'", () => {
         let alertePage = homePage.clickOnAlerteButtonNavMenu();
 
-        const email = faker.internet.email().toString();
+        const email = FixtureUtil.getRandomEmail();
 
         alertePage.clickOnAddAlerteButton()
                   .typeEmail(email)
@@ -23,13 +23,14 @@ describe('Alerte functionnality', { testIsolation: false }, () => {
         cy.wait(1000);
 
         alertePage.getLastAlerteDonneesEmail().should('have.text', email);
-    })
+    });
 
+    // TODO. End this test
     // Edit alerte test in progress
     // it("should edit an alerte on 'donnees'", () => {
     //     let alertePage = homePage.clickOnAlerteButtonNavMenu();
 
-    //     const name = faker.random.word.toString();
+    //     const name = FixtureUtil.getRandomName();
 
     //     alertePage.clickOnEditAlerteButton()
     //               .typeName(name)

@@ -3,7 +3,6 @@ import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 
 import { AjouterDonneeCapteurComponent } from '../donneeCapteurs/ajouter-donnee-capteur.component';
-import faker from '@faker-js/faker';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 export default {
