@@ -1,6 +1,6 @@
 requests
 azure-identity
-pillow
+pillow>=10.1.0
 pytesseract
 flask-restful
 werkzeug>=3.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
