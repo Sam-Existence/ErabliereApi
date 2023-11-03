@@ -34,7 +34,8 @@ public class EmailConfig
     public int SmtpPort { get; set; }
 
     /// <summary>
-    /// Indicate if email is configure
+    /// Indicate if email is configure.
+    /// Return true if email and sender are not null
     /// </summary>
     public bool IsConfigured => Email != null && 
                                 Sender != null;

@@ -116,7 +116,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
             }
         }
 
-        if (validationCount > 0 && validationCount == conditionMet)
+        if (conditionMet > 0)
         {
             TriggerAlerte(alerte, logger, emailConfig, emailService);
         }

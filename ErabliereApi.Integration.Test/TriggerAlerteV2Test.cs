@@ -2,17 +2,24 @@
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Integration.Test.ApplicationFactory;
+using ErabliereApi.Services;
 using ErabliereApi.Test.Autofixture;
 using Microsoft.AspNetCore.Mvc.Testing;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Graph.Models;
+using NSubstitute;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Reflection;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xunit;
+using Xunit.Sdk;
 
 namespace ErabliereApi.Integration.Test;
+
 public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<Startup>>
 {
     private readonly ErabliereApiApplicationFactory<Startup> _factory;
@@ -29,7 +36,7 @@ public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<
     }
 
     [Fact]
-    public async Task ValidateTriggerAlerteV2()
+    public async Task WhenMinIsSet()
     {
         var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
         {
@@ -39,17 +46,100 @@ public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<
         });
 
         var id = await CreateErabiere(client);
-        await CréerCapteurEtAlerte(client, id);
 
-        // TODO: Tester les différents scénarios (voir issue)
-        // https://github.com/freddycoder/ErabliereApi/issues/200
         // When only min is set
-        // When only max is set
-        // When both values are set on valid values are in between
-        // When both values are set and valid values are outside both values
+        var capteurId = await CréerCapteurEtAlerte(client, id, 400, null);
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 100
+        });
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 550
+        }, noAlerte: true);
     }
 
-    private async Task CréerCapteurEtAlerte(HttpClient client, Guid id)
+    [Fact]
+    public async Task WhenMaxIsSet()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true,
+            MaxAutomaticRedirections = 7
+        });
+
+        var id = await CreateErabiere(client);
+
+        // When only max is set
+        var capteurId = await CréerCapteurEtAlerte(client, id, null, 400);
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 100
+        }, noAlerte: true);
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 550
+        });
+    }
+
+    [Fact]
+    public async Task WhenBothMinMaxAreSet()
+    {
+        var client = _factory.CreateClient(new WebApplicationFactoryClientOptions
+        {
+            AllowAutoRedirect = true,
+            HandleCookies = true,
+            MaxAutomaticRedirections = 7
+        });
+
+        var id = await CreateErabiere(client);
+
+        // When both values are set on valid values are in between
+        var capteurId = await CréerCapteurEtAlerte(client, id, 400, 700);
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 100
+        });
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 900
+        });
+        await EnvoyerDonneesCapeur(client, new PostDonneeCapteur
+        {
+            IdCapteur = capteurId,
+            V = 550
+        }, noAlerte: true);
+    }
+
+    private async Task EnvoyerDonneesCapeur(HttpClient client, PostDonneeCapteur postDonneeCapteur, bool noAlerte = false)
+    {
+        var response = await client.PostAsJsonAsync($"Capteurs/{postDonneeCapteur.IdCapteur}/DonneesCapteur", postDonneeCapteur);
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+
+        var emailService = _factory.Services.GetRequiredService<IEmailService>();
+
+        if (noAlerte)
+        {
+            var calls = emailService.ReceivedCalls();
+            Assert.Empty(calls);
+        }
+        else
+        {
+            var calls = emailService.ReceivedCalls();
+            Assert.NotEmpty(calls);
+            emailService.ClearReceivedCalls();
+        }
+    }
+
+    private async Task<Guid> CréerCapteurEtAlerte(HttpClient client, Guid id, short? min, short? max)
     {
         var postCapteur = _fixture.Create<PostCapteur>();
         postCapteur.IdErabliere = id;
@@ -66,8 +156,8 @@ public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<
         {
             IdCapteur = capteur.Id,
             EnvoyerA = "test@test.com",
-            MaxValue = 700,
-            MinVaue = 400,
+            MaxValue = max,
+            MinVaue = min,
             IsEnable = true,
             Nom = "Humidité sous-sol"
         };
@@ -79,6 +169,10 @@ public class TriggerAlerteV2Test : IClassFixture<ErabliereApiApplicationFactory<
         var alerte = await alerteResponse.Content.ReadFromJsonAsync<AlerteCapteur>(_serializerOptions);
 
         Assert.NotNull(alerte);
+
+        Assert.NotNull(capteur.Id);
+
+        return capteur.Id.Value;
     }
 
     private async Task<Guid> CreateErabiere(HttpClient client)
