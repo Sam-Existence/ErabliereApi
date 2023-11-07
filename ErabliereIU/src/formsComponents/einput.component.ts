@@ -10,6 +10,7 @@ import { NgxMaskDirective } from "ngx-mask";
                 class="form-control" 
                 type="text" 
                 formControlName="{{ name }}" 
+                name="{{ name }}"
                 placeholder="{{ placeholder }}"
                 [decimalMarker]="decimalMarker"
                 [mask]="textMask"
