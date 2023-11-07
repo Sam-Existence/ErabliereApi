@@ -1,21 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { GraphPannelComponent } from '../donnees/sub-panel/graph-pannel.component';
+import { GraphPannelComponent } from 'src/donnees/sub-panel/graph-pannel.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<GraphPannelComponent> = {
+  title: 'GraphPannelComponent',
   component: GraphPannelComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-var fixture = {};
+export default meta;
+type Story = StoryObj<GraphPannelComponent>;
 
-export const Primary = {
-  render: (args: any) => ({
+export const Default: Story = {
+  render: (args: GraphPannelComponent) => ({
     props: args,
   }),
-
-  args: {},
 };

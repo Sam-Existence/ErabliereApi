@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { convertTenthToNormale } from "src/core/calculator.service";
 import { ErabliereApi } from "src/core/erabliereapi.service";
+import { Capteur } from "src/model/capteur";
 import { PostDonneeCapteur } from "src/model/donneeCapteur";
 
 @Component({
@@ -15,7 +17,7 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
                 </div>
                 <div class="form-group">
                     <label for="valeur">Valeur</label>
-                    <input type="number" class="form-control" id="valeur" name="valeur" placeholder="Valeur" formControlName="valeur">
+                    <einput type="number" id="valeur" name="valeur" [formGroup]="donneeCapteurForm" [symbole]="symbole" />
                     <div *ngIf="this.donneeCapteurForm.controls['valeur'].errors">
                         <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
                     </div>
@@ -40,6 +42,7 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
 })
 export class AjouterDonneeCapteurComponent implements OnInit {
     @Input() idCapteur: any;
+    @Input() symbole?: string
     donneeCapteurForm: UntypedFormGroup;
     display: boolean = false;
     generalErrorMessage: string | null = null;
@@ -66,7 +69,7 @@ export class AjouterDonneeCapteurComponent implements OnInit {
         var donneeCapteur = new PostDonneeCapteur();
         var validationError = false;
         try {
-            donneeCapteur.v = parseInt(this.donneeCapteurForm.controls['valeur'].value);
+            donneeCapteur.v = parseInt(convertTenthToNormale(this.donneeCapteurForm.controls['valeur'].value));
         } catch (error) {
             this.donneeCapteurForm.controls['valeur'].setErrors({
                 'incorrect': true,

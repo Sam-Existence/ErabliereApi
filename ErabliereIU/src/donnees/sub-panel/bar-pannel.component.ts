@@ -10,7 +10,12 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 
             <div class="btn-group">
                 <div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <a class="btn btn-secondary dropdown-toggle" 
+                       href="#" role="button" 
+                       id="dropdownMenuLink" 
+                       data-toggle="dropdown" 
+                       aria-haspopup="true" 
+                       aria-expanded="false">
                         Durée {{ duree }}
                     </a>
 

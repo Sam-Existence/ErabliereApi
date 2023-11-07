@@ -1,21 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { AjouterErabliereComponent } from '../erablieres/ajouter-erabliere.component';
+import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<AjouterErabliereComponent> = {
+  title: 'AjouterErabliereComponent',
   component: AjouterErabliereComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-var fixture = {};
+export default meta;
+type Story = StoryObj<AjouterErabliereComponent>;
 
-export const Primary = {
-  render: (args: any) => ({
+export const Default: Story = {
+  render: (args: AjouterErabliereComponent) => ({
     props: args,
   }),
-
-  args: {},
 };

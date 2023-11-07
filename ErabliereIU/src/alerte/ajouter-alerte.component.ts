@@ -4,6 +4,7 @@ import { Alerte } from "src/model/alerte";
 import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl } from "@angular/forms";
 import { AlerteCapteur } from "src/model/alerteCapteur";
 import { Capteur } from "src/model/capteur";
+import { convertTenthToNormale } from "src/core/calculator.service";
 
 @Component({
     selector: 'ajouter-alerte-modal',
@@ -51,7 +52,11 @@ export class AjouterAlerteComponent implements OnInit {
         });
     }
     
-    
+    capteurSymbole(): string {
+        const formIdCapteur = this.alerteCapteurForm.controls['idCapteur'].value
+        const capteur = this.capteurs.find(c => c.id == formIdCapteur);
+        return capteur?.symbole ?? "";
+    }
 
     @Input() alertes?: Array<Alerte>;
     @Input() alertesCapteur?: Array<AlerteCapteur>;
@@ -91,10 +96,10 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerte.idErabliere = this.idErabliereSelectionee;
             this.alerte.nom = this.alerteForm.controls['nom'].value;
             this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
-            this.alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
-            this.alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
-            this.alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMax'].value;
-            this.alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
+            this.alerte.temperatureThresholdLow = convertTenthToNormale(this.alerteForm.controls['temperatureMax'].value)
+            this.alerte.temperatureThresholdHight = convertTenthToNormale(this.alerteForm.controls['temperatureMin'].value)
+            this.alerte.vacciumThresholdLow = convertTenthToNormale(this.alerteForm.controls['vacciumMax'].value)
+            this.alerte.vacciumThresholdHight = convertTenthToNormale(this.alerteForm.controls['vacciumMin'].value)
             this.alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
             this.alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
@@ -118,12 +123,12 @@ export class AjouterAlerteComponent implements OnInit {
             this.alerteCapteur.nom = this.alerteCapteurForm.controls['nom'].value;
             this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
             if (this.alerteCapteurForm.controls['min'].value != "") {
-                this.alerteCapteur.minVaue = parseInt(this.alerteCapteurForm.controls['min'].value);
+                this.alerteCapteur.minVaue = parseInt(convertTenthToNormale(this.alerteCapteurForm.controls['min'].value));
             } else {
                 this.alerteCapteur.minVaue = undefined;
             }
             if (this.alerteCapteurForm.controls['max'].value != "") {
-                this.alerteCapteur.maxValue = parseInt(this.alerteCapteurForm.controls['max'].value);
+                this.alerteCapteur.maxValue = parseInt(convertTenthToNormale(this.alerteCapteurForm.controls['max'].value));
             } else {
                 this.alerteCapteur.maxValue = undefined;
             }

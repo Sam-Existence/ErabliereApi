@@ -1,21 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { SignoutRedirectCallbackComponent } from '../authorisation/signout-redirect/signout-redirect-callback.component';
+import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<SignoutRedirectCallbackComponent> = {
+  title: 'SignoutRedirectCallbackComponent',
   component: SignoutRedirectCallbackComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-var fixture = {};
+export default meta;
+type Story = StoryObj<SignoutRedirectCallbackComponent>;
 
-export const Primary = {
-  render: (args: any) => ({
+export const Default: Story = {
+  render: (args: SignoutRedirectCallbackComponent) => ({
     props: args,
   }),
-
-  args: {},
 };

@@ -43,6 +43,8 @@ import { AjouterCapteurComponent } from 'src/erablieres/ajouter-capteur.componen
 import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
 import { TableFormInputComponent } from 'src/formsComponents/table-form-input.component';
 import { AjouterDocumentationComponent } from 'src/documentation/ajouter-documentation.component';
+import { EInputComponent } from 'src/formsComponents/einput.component';
+import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 
 declare global {
   interface Window { 
@@ -150,6 +152,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         AjouterDonneeCapteurComponent,
         SigninRedirectCallbackComponent,
         SignoutRedirectCallbackComponent,
+        EInputComponent,
         InputErrorComponent,
         TableFormInputComponent,
     ],
@@ -165,7 +168,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
             useFactory: MSALInstanceFactory,
             deps: [EnvironmentService]
         },
-        MsalService
+        MsalService,
+        provideNgxMask()
     ],
     imports: [
         BrowserModule,
@@ -174,6 +178,8 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         HttpClientModule,
         ReactiveFormsModule,
         FormsModule,
+        NgxMaskDirective, 
+        NgxMaskPipe
     ]
 })
 export class AppModule implements DoBootstrap { 

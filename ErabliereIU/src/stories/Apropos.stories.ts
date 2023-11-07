@@ -1,52 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { AproposComponent } from '../apropos/apropos.component';
+import { AproposComponent } from 'src/apropos/apropos.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<AproposComponent> = {
+  title: 'AproposComponent',
   component: AproposComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
-
-var fixture = {};
-
-export const Default = {
-  render: (args: any) => ({
-    props: args,
-  }),
-
-  args: {},
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
 };
 
-export const WithEmaiSupport = {
-  render: (args: any) => ({
+export default meta;
+type Story = StoryObj<AproposComponent>;
+
+export const Default: Story = {
+  render: (args: AproposComponent) => ({
     props: args,
   }),
-
-  args: {
-    supportEmail: 'exemple@domain.com',
-  },
-};
-
-export const StripeEnabled = {
-  render: (args: any) => ({
-    props: args,
-  }),
-
-  args: {
-    checkoutEnabled: true,
-  },
-};
-
-export const EveryOptions = {
-  render: (args: any) => ({
-    props: args,
-  }),
-
-  args: {
-    supportEmail: 'example@domain.com',
-    checkoutEnabled: true,
-  },
 };

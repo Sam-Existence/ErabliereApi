@@ -153,4 +153,31 @@ export class AlerteComponent implements OnInit {
           });
       });
   }
+
+  formatStringNumber(str?: string, symbol?: string) {
+    if (str == null || str == "" || str == NaN.toString()) {
+      return null;
+    }
+
+    return (parseInt(str) / 10).toFixed(1) + " " + symbol;
+  }
+
+  formatStringNumberBase10(str?: string, symbol?: string) {
+    if (str == null || str == "") {
+      return null;
+    }
+
+    return (parseInt(str)) + " " + symbol;
+  }
+
+  formatNumber(i?: number, symbol?: string) {
+    if (i == null) {
+      return null;
+    }
+
+    // formt the number with one decimal place
+    var formatted = (i / 10).toFixed(1);
+
+    return formatted + " " + symbol;
+  }
 }

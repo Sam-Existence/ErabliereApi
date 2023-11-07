@@ -31,7 +31,11 @@
         </div>
 
         <div class="col-12">
-            <ajouter-donnee-capteur *ngIf="ajouterDonneeDepuisInterface" [idCapteur]="idCapteur" (needToUpdate)="updateDonneesCapteur($event)"></ajouter-donnee-capteur>
+            <ajouter-donnee-capteur 
+                *ngIf="ajouterDonneeDepuisInterface" 
+                [idCapteur]="idCapteur" 
+                (needToUpdate)="updateDonneesCapteur($event)"
+                [symbole]="symbole" />
             <h6>{{ textActuel }}</h6>
         </div>
     </div>

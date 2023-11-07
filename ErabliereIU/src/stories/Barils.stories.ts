@@ -1,23 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { BarilsComponent } from '../barils/barils.component';
+import { BarilsComponent } from 'src/barils/barils.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-import { ChartsModule } from 'ng2-charts';
-import { BrowserModule } from '@angular/platform-browser';
 
-export default {
+const meta: Meta<BarilsComponent> = {
+  title: 'BarilsComponent',
   component: BarilsComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata([], [ChartsModule])],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-var fixture = {};
+export default meta;
+type Story = StoryObj<BarilsComponent>;
 
-export const Primary = {
-  render: (args: any) => ({
+export const Default: Story = {
+  render: (args: BarilsComponent) => ({
     props: args,
   }),
-
-  args: {},
 };

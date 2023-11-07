@@ -38,7 +38,6 @@
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
-            "sourceMap": true,
             "optimization": false,
             "namedChunks": true
           },
@@ -136,14 +135,19 @@
         "storybook": {
           "builder": "@storybook/angular:start-storybook",
           "options": {
+            "configDir": ".storybook",
             "browserTarget": "ErabliereIU:build",
+            "compodoc": false,
             "port": 6006
           }
         },
         "build-storybook": {
           "builder": "@storybook/angular:build-storybook",
           "options": {
-            "browserTarget": "ErabliereIU:build"
+            "configDir": ".storybook",
+            "browserTarget": "ErabliereIU:build",
+            "compodoc": false,
+            "outputDir": "storybook-static"
           }
         }
       }

@@ -1,31 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { AjouterNoteComponent } from '../notes/ajouter-note.component';
+import { AjouterNoteComponent } from 'src/notes/ajouter-note.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<AjouterNoteComponent> = {
+  title: 'AjouterNoteComponent',
   component: AjouterNoteComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
-
-var fixture = {};
-
-export const Button = {
-  render: (args: any) => ({
-    props: args,
-  }),
-
-  args: {},
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
 };
 
-export const Form = {
-  render: (args: any) => ({
+export default meta;
+type Story = StoryObj<AjouterNoteComponent>;
+
+export const Default: Story = {
+  render: (args: AjouterNoteComponent) => ({
     props: args,
   }),
-
-  args: {
-    display: true,
-  },
 };

@@ -64,10 +64,10 @@
                       <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
                     </td>
                     <td>
-                        {{alerte.minVaue}}
+                        {{formatNumber(alerte.minVaue, alerte.capteur?.symbole)}}
                     </td>
                     <td>
-                        {{alerte.maxValue}}
+                        {{formatNumber(alerte.maxValue, alerte.capteur?.symbole)}}
                     </td>
                     <td>
                         {{alerte.capteur?.nom}}
@@ -139,22 +139,22 @@
                       <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
                     </td>
                     <td>
-                        {{alerte.temperatureThresholdHight}}
+                        {{formatStringNumber(alerte.temperatureThresholdHight, "°C")}}
                     </td>
                     <td>
-                        {{alerte.temperatureThresholdLow}}
+                        {{formatStringNumber(alerte.temperatureThresholdLow, "°C")}}
                     </td>
                     <td>
-                        {{alerte.vacciumThresholdHight}}
+                        {{formatStringNumber(alerte.vacciumThresholdHight, "HG")}}
                     </td>
                     <td>
-                        {{alerte.vacciumThresholdLow}}
+                        {{formatStringNumber(alerte.vacciumThresholdLow, "HG")}}
                     </td>
                     <td>
-                        {{alerte.niveauBassinThresholdHight}}
+                        {{formatStringNumberBase10(alerte.niveauBassinThresholdHight, "%")}}
                     </td>
                     <td>
-                        {{alerte.niveauBassinThresholdLow}}
+                        {{formatStringNumberBase10(alerte.niveauBassinThresholdLow, "%")}}
                     </td>
                     <td>
                         <button *ngIf="alerte.isEnable" class="btn btn-outline-warning btn-block" (click)="onButtonDesactiverAlerteClick(alerte.id)">désactiver</button>

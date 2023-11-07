@@ -9,22 +9,22 @@
           Destinataires: <input class="form-control" type="text" formControlName="destinataire">
         </div>
         <div class="form-group">
-          Temperature Min.: <input class="form-control" type="text" formControlName="temperatureMin">
+          Temperature Min.: <einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
         </div>
         <div class="form-group">
-          Temperature Max.: <input class="form-control" type="text" formControlName="temperatureMax">
+          Temperature Max.: <einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
         </div>
         <div class="form-group">
-          Vaccium Min.: <input class="form-control" type="text" formControlName="vacciumMin">
+          Vaccium Min.: <einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
         </div>
         <div class="form-group">
-          Vaccium Max.: <input class="form-control" type="text" formControlName="vacciumMax">
+          Vaccium Max.: <einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
         </div>
         <div class="form-group">
-          Niveau Bassin Min.: <input class="form-control" type="text" formControlName="niveauBassinMin">
+          Niveau Bassin Min.: <einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
         </div>
         <div class="form-group">
-          Niveau Bassin Max.: <input class="form-control" type="text" formControlName="niveauBassinMax">
+          Niveau Bassin Max.: <einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
         </div>
       <button class="btn btn-primary" (click)="onButtonModifierClick()">Modifier</button>
       <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
@@ -44,10 +44,10 @@
         Destinataires: <input class="form-control" type="text" formControlName="destinataire">
       </div>
       <div class="form-group">
-        Min.: <input class="form-control" type="text" formControlName="min">
+        Min.: <einput [formGroup]="alerteCapteurForm" name="min" [symbole]="alerteCapteur?.capteur?.symbole" />
       </div>
       <div class="form-group">
-        Max.: <input class="form-control" type="text" formControlName="max">
+        Max.: <einput [formGroup]="alerteCapteurForm" name="max" [symbole]="alerteCapteur?.capteur?.symbole" />
       </div>
     <button class="btn btn-primary" (click)="onButtonModifierAlerteCapteurClick()">Modifier</button>
     <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>

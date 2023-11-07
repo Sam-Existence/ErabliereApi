@@ -1,21 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
 
-import { SelectCustomerComponent } from '../customer/select-customer.component';
+import { SelectCustomerComponent } from 'src/customer/select-customer.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-export default {
+const meta: Meta<SelectCustomerComponent> = {
+  title: 'SelectCustomerComponent',
   component: SelectCustomerComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-var fixture = {};
+export default meta;
+type Story = StoryObj<SelectCustomerComponent>;
 
-export const Primary = {
-  render: (args: any) => ({
+export const Default: Story = {
+  render: (args: SelectCustomerComponent) => ({
     props: args,
   }),
-
-  args: {},
 };

@@ -4,6 +4,7 @@ import { Alerte } from "src/model/alerte";
 import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
 import { Subject } from "rxjs";
 import { AlerteCapteur } from "src/model/alerteCapteur";
+import { convertTenthToNormale, divideByTen, divideNByTen } from "src/core/calculator.service";
 
 @Component({
     selector: 'modifier-alerte-modal',
@@ -40,10 +41,10 @@ export class ModifierAlerteComponent implements OnInit {
                 id: alerte.id,
                 nom: alerte.nom,
                 destinataire: alerte.envoyerA,
-                temperatureMin: alerte.temperatureThresholdHight,
-                temperatureMax: alerte.temperatureThresholdLow,
-                vacciumMin: alerte.vacciumThresholdHight,
-                vacciumMax: alerte.vacciumThresholdLow,
+                temperatureMin: divideByTen(alerte.temperatureThresholdHight),
+                temperatureMax: divideByTen(alerte.temperatureThresholdLow),
+                vacciumMin: divideByTen(alerte.vacciumThresholdHight),
+                vacciumMax: divideByTen(alerte.vacciumThresholdLow),
                 niveauBassinMin: alerte.niveauBassinThresholdHight,
                 niveauBassinMax: alerte.niveauBassinThresholdLow,
                 isEnable: alerte.isEnable
@@ -56,8 +57,8 @@ export class ModifierAlerteComponent implements OnInit {
             this.alerteCapteurForm.setValue({
                 destinataire: alerteCapteur.envoyerA,
                 nom: alerteCapteur.nom,
-                min: alerteCapteur.minVaue,
-                max: alerteCapteur.maxValue,
+                min: divideNByTen(alerteCapteur.minVaue),
+                max: divideNByTen(alerteCapteur.maxValue),
                 isEnable: alerteCapteur.isEnable
             });
         }
@@ -94,10 +95,10 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.idErabliere = this.idErabliereSelectionee;
         alerte.nom = this.alerteForm.controls['nom'].value;
         alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
-        alerte.temperatureThresholdLow = this.alerteForm.controls['temperatureMax'].value;
-        alerte.temperatureThresholdHight = this.alerteForm.controls['temperatureMin'].value;
-        alerte.vacciumThresholdLow = this.alerteForm.controls['vacciumMax'].value;
-        alerte.vacciumThresholdHight = this.alerteForm.controls['vacciumMin'].value;
+        alerte.temperatureThresholdLow = convertTenthToNormale(this.alerteForm.controls['temperatureMax'].value);
+        alerte.temperatureThresholdHight = convertTenthToNormale(this.alerteForm.controls['temperatureMin'].value);
+        alerte.vacciumThresholdLow = convertTenthToNormale(this.alerteForm.controls['vacciumMax'].value);
+        alerte.vacciumThresholdHight = convertTenthToNormale(this.alerteForm.controls['vacciumMin'].value);
         alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
         alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
         alerte.isEnable = this.alerteForm.controls['isEnable'].value;
@@ -120,16 +121,16 @@ export class ModifierAlerteComponent implements OnInit {
         alerte.nom = this.alerteCapteurForm.controls['nom'].value;
         alerte.isEnable = this.alerteCapteurForm.controls['isEnable'].value;
         var minInForm = this.alerteCapteurForm.controls['min'].value;
-        if (minInForm !== "" || minInForm === 0) {
+        if (minInForm != null && (minInForm !== "" || minInForm === 0)) {
             console.log('parseMin')
-            alerte.minVaue = parseInt(minInForm);
+            alerte.minVaue = parseInt(convertTenthToNormale(minInForm.toString()));
         } else {
             console.log('min to undefined')
             alerte.minVaue = undefined;
         }
         var maxInForm = this.alerteCapteurForm.controls['max'].value;
-        if (maxInForm !== "" || maxInForm === 0) {
-            alerte.maxValue = parseInt(maxInForm);
+        if (maxInForm != null && (maxInForm !== "" || maxInForm === 0)) {
+            alerte.maxValue = parseInt(convertTenthToNormale(maxInForm.toString()));
         } else {
             alerte.maxValue = undefined;
         }

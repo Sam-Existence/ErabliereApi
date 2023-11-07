@@ -1,6 +1,6 @@
 {
   "name": "erabliere-iu",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0",
@@ -33,6 +33,7 @@
     "chart.js": "^2.9.4",
     "jquery": "^3.7.0",
     "ng2-charts": "^2.4.3",
+    "ngx-mask": "^15.2.1",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.14.3",
     "rxjs": "~6.6.7",
@@ -55,15 +56,16 @@
     "@storybook/addon-links": "7.5.1",
     "@storybook/addons": "7.5.1",
     "@storybook/angular": "7.5.1",
+    "@storybook/blocks": "^7.5.3",
     "@storybook/testing-library": "^0.2.2",
     "@storybook/theming": "7.5.1",
     "@types/jasmine": "~3.6.0",
-    "@types/node": "^12.11.1",
+    "@types/node": "^20.0.0",
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "babel-loader": "^8.2.5",
     "chromatic": "^6.7.0",
-    "cypress": "^13.1.0",
+    "cypress": "^13.4.0",
     "eslint": "^8.23.0",
     "eslint-plugin-storybook": "^0.6.15",
     "jasmine-core": "~3.6.0",
@@ -76,6 +78,6 @@
     "ts-node": "~8.3.0",
     "typescript": "^4.8.2"
   },
-  "readme": "ERROR: No README data found!",
+  "readme": "README.md",
   "_id": "erabliere-iu@3.0.0"
 }

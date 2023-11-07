@@ -1,17 +1,27 @@
-import { Meta } from '@storybook/angular';
-import { CapteurPannelsComponent } from '../donnees/sub-panel/capteur-pannels.component';
+import type { Meta, StoryObj } from '@storybook/angular';
+import { moduleMetadata } from '@storybook/angular';
+import { CommonModule } from '@angular/common';
+
+import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-import { GraphiqueComponent } from 'src/graphique/graphique.component';
 
-export default {
+const meta: Meta<CapteurPannelsComponent> = {
+  title: 'CapteurPannelsComponent',
   component: CapteurPannelsComponent,
-  decorators: [ModuleStoryHelper.getErabliereApiStoriesModuleMetadata([GraphiqueComponent])],
-} as Meta;
+  parameters: {
+    // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
+    layout: 'fullscreen',
+  },
+  decorators: [
+    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+  ]
+};
 
-export const Primary = {
-  render: (args: any) => ({
+export default meta;
+type Story = StoryObj<CapteurPannelsComponent>;
+
+export const Default: Story = {
+  render: (args: CapteurPannelsComponent) => ({
     props: args,
   }),
-
-  args: {},
 };
