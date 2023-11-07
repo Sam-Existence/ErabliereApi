@@ -3,11 +3,7 @@ import { HomePage } from "../pages/home.page";
 describe('Graph pannel test', { testIsolation: false }, () => {
     const homePage = new HomePage();
     const tauxSucreId = "010e708b-a7d0-449e-77e2-08d9d37ca582";
-    var baseValue = 23;
-
-    function convertBaseValue(value: number) {
-        return (value / 10).toString().replace(',', '.');
-    }
+    var baseValue = "2.3";
 
     it('Check the base value of "Taux de sucre" pannel', () => {
         homePage.visit()
@@ -18,8 +14,8 @@ describe('Graph pannel test', { testIsolation: false }, () => {
                 
                     expect(text).to.match(/Taux de sucre/);
                     
-                    if (text.indexOf(convertBaseValue(baseValue)) > -1) {
-                        baseValue = baseValue + 1;
+                    if (text.indexOf(baseValue) > -1) {
+                        baseValue = "2.4";
                     }
                 });
     });
@@ -59,6 +55,6 @@ describe('Graph pannel test', { testIsolation: false }, () => {
 
         var title = graphPannel.find('h3');
         title.should('exist');
-        title.should('contain', convertBaseValue(baseValue));
+        title.should('contain', baseValue);
     });
 });
