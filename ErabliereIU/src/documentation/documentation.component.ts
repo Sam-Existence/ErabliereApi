@@ -75,8 +75,10 @@ export class DocumentationComponent implements OnInit {
     }
 
     async deleteDocumentation(document: ErabliereApiDocument) {
-        await this._api.deleteDocumentation(document.idErabliere, document.id);
+        if (confirm("Voulez-vous vraiment supprimer ce document?")) {
+            await this._api.deleteDocumentation(document.idErabliere, document.id);
 
-        this.needToUpdate.emit();
+            this.needToUpdate.emit();
+        }
     }
 }

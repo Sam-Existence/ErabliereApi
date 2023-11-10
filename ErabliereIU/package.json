@@ -29,13 +29,13 @@
     "@azure/msal-browser": "^2.38.1",
     "@babel/core": "^7.23.0",
     "ansi-regex": "^6.0.1",
-    "bootstrap": "^4.6.1",
+    "bootstrap": "^5.3.2",
     "chart.js": "^2.9.4",
-    "jquery": "^3.7.0",
+    
     "ng2-charts": "^2.4.3",
     "ngx-mask": "^15.2.1",
     "oidc-client": "^1.11.5",
-    "popper.js": "^1.14.3",
+    "@popperjs/core": "^2.11.8",
     "rxjs": "~6.6.7",
     "tslib": "^2.5.3"
   },
@@ -76,7 +76,7 @@
     "storybook": "7.5.1",
     "storybook-addon-angular-router": "1.9.1",
     "ts-node": "~8.3.0",
-    "typescript": "^4.8.2"
+    "typescript": "^4.9.3"
   },
   "readme": "README.md",
   "_id": "erabliere-iu@3.0.0"

@@ -357,6 +357,12 @@ public class ErablieresController : ControllerBase
                 switch (action.Action)
                 {
                     case PutSingleCustomerErabliereAction.Create:
+                        if (await _context.CustomerErablieres.AnyAsync(
+                            c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token))
+                        {
+                            return BadRequest($"L'utilisateur avec l'id {action.IdCustomer} a déjà un droit d'accès à l'érablière avec l'id {id}.");
+                        }
+
                         await _context.CustomerErablieres.AddAsync(new CustomerErabliere
                         {
                             Access = action.Access,

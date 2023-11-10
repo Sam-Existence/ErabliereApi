@@ -11,13 +11,17 @@ import { UrlModel } from '../model/urlModel';
   template: `
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
-            <h2 class="mr-5">{{ title }}</h2>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+            <h2 class="ms-4 me-5">{{ title }}</h2>
+            <button class="navbar-toggler" 
+                    type="button" 
+                    data-toggle="collapse" 
+                    data-bs-target=".navbar-collapse" 
+                    aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="navbar-collapse collapse d-lg-inline-flex flex-lg-row">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 mr-auto">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 me-auto">
                     <li class="nav-item">
                         <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
                     </li>

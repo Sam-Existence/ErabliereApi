@@ -3,30 +3,28 @@
 
     <div class="container">
         <div class="col-6 btn-group">
-            <div class="dropdown show">
-                <a class="btn btn-secondary 
-                   dropdown-toggle" 
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" 
                    href="#" 
-                   role="button" 
-                   id="dropdownMenuLink" 
-                   data-toggle="dropdown" 
+                   role="button"
+                   data-bs-toggle="dropdown" 
                    aria-haspopup="true" 
                    aria-expanded="false">
                     Durée {{ duree }}
-                </a>
+            </button>
 
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                <span class="dropdown-item" (click)="updateGraph(0, 12)">12h</span>
-                <span class="dropdown-item" (click)="updateGraph(0, 24)">24h</span>
-                <span class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</span>
-                <span class="dropdown-item">
+            <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="updateGraph(0, 12)">12h</a>
+                <a class="dropdown-item" (click)="updateGraph(0, 24)">24h</a>
+                <a class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</a>
+                <a class="dropdown-item">
                     Choisir interval
                     <div>
                         <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
                         <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
                     </div>
                     <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
-                </span>
+                </a>
             </div>
         </div>
 

@@ -3,7 +3,7 @@
     [idErabliereSelectionee]="idErabliereSelectionee"
     (needToUpdate)="updateDocuments()">
 </app-ajouter-documentation>
-<div class="row ml-1">
+<div class="row ms-1">
     <div *ngIf="documentations == undefined || documentations.length == 0">
         <p>Aucune documentation</p>
     </div>
@@ -16,7 +16,7 @@
             <div class="col-md-8">
                 <button 
                     style="margin-top: 1.5em;"
-                    class="btn btn-danger ml-auto"
+                    class="btn btn-danger ms-auto"
                     (click)="deleteDocumentation(documentation)">
                         Supprimer
                 </button>
@@ -34,15 +34,14 @@
         </div>
         
         <div class="row">
-            <img 
-                *ngIf="documentation.file != '' && isImageType(documentation)" 
-                src="data:image/png;base64,{{ documentation.file }}" />
-            <button 
-                *ngIf="documentation.file != '' && !isImageType(documentation)" 
-                (click)="downloadFile(documentation)"
-                class="btn btn-secondary">
-                    Télécharger
-            </button>
+            <div>
+                <button 
+                    *ngIf="documentation.file != ''"
+                    (click)="downloadFile(documentation)"
+                    class="btn btn-secondary">
+                        Télécharger
+                </button>
+            </div>
         </div>
     </div>
 </div>
