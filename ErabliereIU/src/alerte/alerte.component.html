@@ -69,13 +69,13 @@
                     </td>
                     <td>
                         <div class="d-grid gap-3">
-                            <button *ngIf="alerte.isEnable" class="btn btn-outline-warning btn-block"
+                            <button *ngIf="alerte.isEnable" class="btn btn-outline-warning"
                                 (click)="onButtonDesactiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">désactiver</button>
-                            <button *ngIf="!alerte.isEnable" class="btn btn-outline-success btn-block"
+                            <button *ngIf="!alerte.isEnable" class="btn btn-outline-success"
                                 (click)="onButtonActiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">activer</button>
-                            <button class="btn btn-info btn-block"
+                            <button class="btn btn-info"
                                 (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
-                            <button class="btn btn-danger btn-block"
+                            <button class="btn btn-danger"
                                 (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
 
                         </div>

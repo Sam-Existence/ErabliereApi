@@ -14,7 +14,7 @@ import { UrlModel } from '../model/urlModel';
             <h2 class="ms-4 me-5">{{ title }}</h2>
             <button class="navbar-toggler" 
                     type="button" 
-                    data-toggle="collapse" 
+                    data-bs-toggle="collapse" 
                     data-bs-target=".navbar-collapse" 
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
