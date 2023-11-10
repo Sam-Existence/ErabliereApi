@@ -23,12 +23,18 @@
                     <td>{{acces.customer?.email}}</td>
                     <td>{{acces.customer?.uniqueName}}</td>
                     <td>
-                        <edit-access [acces]="acces" [displayEditAccess]="displayEditAccess" (shouldUpdateAccess)="shouldRefreshAccessAfterUpdate($event)"></edit-access>
+                        <edit-access [acces]="acces" [displayEditAccess]="displayEditAccess"
+                            (shouldUpdateAccess)="shouldRefreshAccessAfterUpdate($event)"></edit-access>
                     </td>
                     <td>
-                        <button class="btn btn-danger btn-sm float-right" (click)="supprimer(acces)">&#10683;</button>
-                        <button *ngIf="!displayEditAccess" class="btn btn-outline-info btn-sm mr-3 float-right" (click)="showEditForm()">&#9998;</button>
-                        <button *ngIf="displayEditAccess" class="btn btn-outline-secondary btn-sm mr-3 float-right" (click)="hideEditForm()">&#8854;</button>
+                        <div class="d-grid gap-3">
+                            <button *ngIf="!displayEditAccess" class="btn btn-outline-info btn-sm me-3"
+                                (click)="showEditForm()">&#9998;</button>
+                            <button class="btn btn-danger btn-sm me-3" (click)="supprimer(acces)">&#10683;</button>
+                            <button *ngIf="displayEditAccess" class="btn btn-outline-secondary btn-sm me-3"
+                                (click)="hideEditForm()">&#8854;</button>
+
+                        </div>
                     </td>
                 </tr>
                 <tr *ngIf="displayNewLine">
@@ -38,10 +44,8 @@
                         <select-customer (customerSelected)="customerSelected($event)"></select-customer>
                     </td>
                     <td>
-                        <select 
-                            class="form-control form-control-sm" 
-                            [(ngModel)]="newCustomerAccess.customerErablieres[0].access" 
-                            placeholder="Accès">
+                        <select class="form-control form-control-sm form-select"
+                            [(ngModel)]="newCustomerAccess.customerErablieres[0].access" placeholder="Accès">
                             <option value="0">Aucun</option>
                             <option value="1">Lecture</option>
                             <option value="2">Création</option>
@@ -61,7 +65,7 @@
                         </select>
                     </td>
                     <td>
-                        <button class="btn btn-primary btn-sm float-right" (click)="creerAcces()">&#43;</button>
+                        <button class="btn btn-primary btn-sm float-end" (click)="creerAcces()">&#43;</button>
                     </td>
                 </tr>
             </tbody>
@@ -71,7 +75,11 @@
                 Une erreur est survenue lors de l'ajout d'un accès.
             </div>
         </div>
-        <button *ngIf="!erreurChargementDroits && !displayNewLine" class="btn btn-outline-success" (click)="addUserAccess()">&#43;</button>
-        <button *ngIf="!erreurChargementDroits && displayNewLine" class="btn btn-outline-secondary" (click)="hideAddUserAccess()">&#8854;</button>
+        <div>
+            <button *ngIf="!erreurChargementDroits && !displayNewLine" class="btn btn-outline-success"
+                (click)="addUserAccess()">&#43;</button>
+            <button *ngIf="!erreurChargementDroits && displayNewLine" class="btn btn-outline-secondary"
+                (click)="hideAddUserAccess()">&#8854;</button>
+        </div>
     </div>
 </div>

@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-10">
                 <select 
-                    class="form-control form-control-sm" 
+                    class="form-control form-control-sm form-select" 
                     [(ngModel)]="accessInternal.access" 
                     placeholder="Accès">
                     <option value="0">Aucun</option>
@@ -28,7 +28,7 @@
                 </select>
             </div>
             <div class="col-2">
-                <button class="btn btn-primary btn-sm float-right" (click)="updateAccess()">&#9998;</button>
+                <button class="btn btn-primary btn-sm float-end" (click)="updateAccess()">&#9998;</button>
             </div>
         </div>        
     </div>

@@ -29,7 +29,7 @@ import { Note } from 'src/model/note';
             </div>
 
             <div *ngIf="note.fileExtension != 'csv'" class="row">
-                <img *ngIf="note.file != ''" src="data:image/png;base64,{{ note.file }}" />
+                <img *ngIf="note.file != ''" style="max-width: 25%;" src="data:image/png;base64,{{ note.file }}" />
             </div>
         </div>
     `

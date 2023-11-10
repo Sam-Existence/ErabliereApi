@@ -17,12 +17,12 @@
                 class="list-group-item list-group-item-action"
                 [class.active]="erabliereSelectionnee?.id === erabliere.id"
                 (click)="handleErabliereLiClick(erabliere.id)">{{erabliere.nom}} <button *ngIf="(!erabliere.isPublic || authDisabled || loggedIn)"
-                                                                                         class="btn btn-info btn-sm float-right"
+                                                                                         class="btn btn-info btn-sm float-end"
                                                                                          (click)="openEditErabliereForm(erabliere)"
-                                                                                         data-toggle="modal" 
-                                                                                         data-target="#modifierErabliereFormModal">&#9998;</button></a>
+                                                                                         data-bs-toggle="modal" 
+                                                                                         data-bs-target="#modifierErabliereFormModal">&#9998;</button></a>
             <button *ngIf="loggedIn" class="list-group-item list-group-item-action" 
-                    data-toggle="modal" data-target="#erabliereFormModal">
+                    data-bs-toggle="modal" data-bs-target="#erabliereFormModal">
                 <div class="d-flex w-100 justify-content-between">
                     <h5 class="mb-1">Ajouter une erablière</h5>
                 </div>

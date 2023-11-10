@@ -113,7 +113,8 @@ public class ValiderOwnershipAttribute : ActionFilterAttribute
         }
         else
         {
-            context.HttpContext.Response.Headers["X-ErabliereApi-ForbidenReason"] = "Access Denied for this action on this resources";
+            context.HttpContext.Response.Headers["X-ErabliereApi-ForbidenReason"] = 
+                $"Access Denied for {context.HttpContext.Request.Method} {context.HttpContext.Request.Path}";
             context.Result = new ForbidResult();
         }
     }
