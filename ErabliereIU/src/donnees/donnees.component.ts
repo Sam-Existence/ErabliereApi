@@ -1,6 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartType } from 'chart.js';
-import { Label } from 'ng2-charts';
+import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
@@ -60,8 +59,8 @@ export class DonneesComponent implements OnInit {
       @Input() erabliereSubject: Subject<Erabliere> = new Subject<Erabliere>()
       @Input() dureeDonneesRequete:any
 
-      timeaxes: Label[] = [];
-      timeaxes_dompeux: Label[] = []
+      timeaxes: string[] = [];
+      timeaxes_dompeux: string[] = []
 
       derniereDonneeRecu?:string = undefined;
       ddr?:string = undefined;
@@ -72,22 +71,22 @@ export class DonneesComponent implements OnInit {
       idsDompeux:Array<number> = []
 
       titre_temperature = "Temperature"
-      temperature: ChartDataSets[] = []
+      temperature: ChartDataset[] = []
       temperatureValueActuel?:string|null
       temperatureSymbole:string = "°c"
 
       titre_vaccium = "Vaccium"
-      vaccium: ChartDataSets[] = []
+      vaccium: ChartDataset[] = []
       vacciumValueActuel?:string|null
       vacciumSymbole:string = "HG"
 
       titre_niveaubassin = "Niveau Bassin"
-      niveaubassin: ChartDataSets[] = []
+      niveaubassin: ChartDataset[] = []
       niveauBassinValueActuel?:string|null
       niveauBassinSymbole:string = "%"
 
       titre_dompeux = "Dompeux"
-      dompeux: ChartDataSets[] = []
+      dompeux: ChartDataset[] = []
       dompeux_line_type: ChartType = "bar"
       dompeux_chart_type:string = "bar"
 
@@ -189,7 +188,7 @@ export class DonneesComponent implements OnInit {
               }
               
               dompeux[0].data.forEach((d:number) => this.dompeux[0].data?.push(d));
-              timeaxes_dompeux.forEach((t: Label) => this.timeaxes_dompeux?.push(t));
+              timeaxes_dompeux.forEach((t: string) => this.timeaxes_dompeux?.push(t));
               idsDompeux.forEach((n: number) => this.idsDompeux.push(n));
 
               while (this.timeaxes_dompeux.length > 0 &&
@@ -245,7 +244,7 @@ export class DonneesComponent implements OnInit {
               { data: e.map(ee => ee.v != null ? ee.v / 10 : null), label: 'Vaccium' }
             ];
             let niveaubassin = [
-              { data: e.map(ee => ee.nb), label: 'Niveau bassin' }
+              { data: e.map(ee => ee.nb ?? null), label: 'Niveau bassin' }
             ];
 
             let timeaxes = e.map(ee => ee.d);

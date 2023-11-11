@@ -5,6 +5,7 @@ import { Component } from '@angular/core';
   template: `
     <div>
       <router-outlet></router-outlet>
+      <app-redirect></app-redirect>
     </div>
   `
 })

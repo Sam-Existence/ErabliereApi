@@ -1,11 +1,9 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector } from '@angular/core';
+import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { DonneesComponent } from 'src/donnees/donnees.component';
 import { GraphPannelComponent } from 'src/donnees/sub-panel/graph-pannel.component';
 import { BarilsComponent } from 'src/barils/barils.component';
-import { ChartsModule } from 'ng2-charts';
 import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AproposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
@@ -24,7 +22,7 @@ import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
 import { NotesComponent } from 'src/notes/notes.component';
 import { AjouterNoteComponent } from 'src/notes/ajouter-note.component';
 import { AjouterDonneeCapteurComponent } from 'src/donneeCapteurs/ajouter-donnee-capteur.component';
-import { MsalService, MSAL_INSTANCE } from '@azure/msal-angular';
+import { MsalService, MSAL_INSTANCE, MsalRedirectComponent } from '@azure/msal-angular';
 import { BrowserCacheLocation, Configuration, IPublicClientApplication, LogLevel, PublicClientApplication } from '@azure/msal-browser';
 import { environment } from 'src/environments/environment';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
@@ -45,6 +43,10 @@ import { TableFormInputComponent } from 'src/formsComponents/table-form-input.co
 import { AjouterDocumentationComponent } from 'src/documentation/ajouter-documentation.component';
 import { EInputComponent } from 'src/formsComponents/einput.component';
 import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
+import { NgChartsModule } from 'ng2-charts';
+import { BrowserModule } from '@angular/platform-browser';
+import { EntraRedirectComponent } from './app-redirect.component';
+import 'chartjs-adapter-date-fns';
 
 declare global {
   interface Window { 
@@ -150,6 +152,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         NoteComponent,
         AjouterNoteComponent,
         AjouterDonneeCapteurComponent,
+        EntraRedirectComponent,
         SigninRedirectCallbackComponent,
         SignoutRedirectCallbackComponent,
         EInputComponent,
@@ -173,14 +176,14 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
     ],
     imports: [
         BrowserModule,
-        ChartsModule,
+        NgChartsModule,
         AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
         FormsModule,
         NgxMaskDirective, 
         NgxMaskPipe
-    ]
+    ],
 })
 export class AppModule implements DoBootstrap { 
   constructor(private injector: Injector) {}

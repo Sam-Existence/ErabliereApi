@@ -22,14 +22,14 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
                         <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
                     </div>
                 </div>
-                <div class="form-group">
+                <div class="form-group mb-2">
                     <label for="date">Date</label>
                     <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
                     <div *ngIf="this.donneeCapteurForm.controls['date'].errors">
                         <span class="text-danger">{{ this.donneeCapteurForm.controls['date'].errors.message }}</span>
                     </div>
                 </div>
-                <button type="button" class="btn btn-primary" (click)="ajouterDonnee()">Ajouter</button>
+                <button type="button" class="btn btn-primary me-2" (click)="ajouterDonnee()">Ajouter</button>
                 <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
             </form>
         </div>

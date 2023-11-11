@@ -26,6 +26,7 @@ export class GraphiqueComponent implements OnChanges {
     }
 
     resetChildForm(){
-        this.resetErabliere.next(this.erabliere);
+        if (this.erabliere != null)
+            this.resetErabliere.next(this.erabliere);
     }
 }

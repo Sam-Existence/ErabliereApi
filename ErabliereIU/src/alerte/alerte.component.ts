@@ -76,7 +76,8 @@ export class AlerteComponent implements OnInit {
 
   onButtonModifierClick(alerteId: any) {
     this.alerteEditForm = this.alertes?.find(a => a.id == alerteId);
-    this.alerteEditFormSubject.next(this.alerteEditForm);
+    if (this.alerteEditForm != null)
+      this.alerteEditFormSubject.next(this.alerteEditForm);
     this.displayEditFormSubject.next("alerte");
     this.editAlerte = true;
     this.editAlerteCapteur = false;
@@ -84,7 +85,8 @@ export class AlerteComponent implements OnInit {
 
   onButtonModifierAlerteCapteurClick(alerteId: any) {
     this.alerteCapteurEditForm = this.alertesCapteur?.find(a => a.id == alerteId);
-    this.alerteCapteurEditFormSubject.next(this.alerteCapteurEditForm);
+    if (this.alerteCapteurEditForm != null)
+      this.alerteCapteurEditFormSubject.next(this.alerteCapteurEditForm);
     this.displayEditFormSubject.next("alerteCapteur");
     this.editAlerte = false;
     this.editAlerteCapteur = true;

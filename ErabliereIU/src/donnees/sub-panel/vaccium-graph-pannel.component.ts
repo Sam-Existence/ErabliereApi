@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType, LinearScale, TickOptions } from 'chart.js';
-import { Color, Label, BaseChartDirective } from 'ng2-charts';
+import { ChartDataset, ChartOptions, ChartType, LinearScale, TickOptions } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
@@ -9,30 +9,35 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 })
 export class VacciumGraphPannelComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
-    @Input() datasets: ChartDataSets[] = [];
-    @Input() timeaxes: Label[] = [];
+    @Input() datasets: ChartDataset[] = [];
+    @Input() timeaxes: string[] = [];
     @Input() lineChartType = 'line' as ChartType;
-    @Input() lineScaleType = 'time'
+    @Input() lineScaleType: 'time' = 'time'
     lineChartOptions: ChartOptions = {
         responsive: true,
         scales: {
-            xAxes: [{
+            x: {
                 type: this.lineScaleType,
+                time: {
+                    unit: 'minute',
+                    tooltipFormat: 'yyyy-MM-dd HH:mm:ss',
+                    displayFormats: {
+                        minute: 'dd MMM HH:mm'
+                    },
+                },
                 ticks: {
                     autoSkip: true,
-                    maxTicksLimit: 7
+                    maxTicksLimit: 6,
                 }
-            }],
-            yAxes: [{
-                ticks: {
-                    min: 0,
-                    max: 30
-                }
-            }]
+            },
+            y: {
+                min: 0,
+                max: 30
+            } 
         }
     };
 
-    lineChartColors: Color[] = [
+    lineChartColors: any[] = [
         {
             borderColor: 'black',
             backgroundColor: 'rgba(255,255,0,0.28)',
