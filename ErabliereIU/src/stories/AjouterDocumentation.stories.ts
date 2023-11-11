@@ -7,7 +7,6 @@ import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<AjouterDocumentationComponent> = {
   title: 'AjouterDocumentationComponent',
-  component: AjouterDocumentationComponent,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
     layout: 'fullscreen',

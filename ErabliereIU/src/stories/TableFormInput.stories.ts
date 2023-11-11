@@ -7,7 +7,6 @@ import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<TableFormInputComponent> = {
   title: 'TableFormInputComponent',
-  component: TableFormInputComponent,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
     layout: 'fullscreen',

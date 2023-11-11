@@ -7,7 +7,6 @@ import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<AjouterCapteurComponent> = {
   title: 'AjouterCapteurComponent',
-  component: AjouterCapteurComponent,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
     layout: 'fullscreen',

@@ -7,7 +7,6 @@ import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<ModifierAlerteComponent> = {
   title: 'ModifierAlerteComponent',
-  component: ModifierAlerteComponent,
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
     layout: 'fullscreen',
