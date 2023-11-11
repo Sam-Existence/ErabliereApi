@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
-import { Color, Label, BaseChartDirective } from 'ng2-charts';
+import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 
 @Component({
     selector: 'bar-pannel',
@@ -30,10 +30,9 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
                     [datasets]="datasets" 
                     [labels]="timeaxes" 
                     [options]="lineChartOptions"
-                    [colors]="lineChartColors" 
                     [legend]="lineChartLegend" 
-                    [chartType]="barChartType" 
-                    [plugins]="lineChartPlugins">
+                    [plugins]="lineChartPlugins"
+                    [type]="barChartType">
                 </canvas>
             </div>
         </div>
@@ -42,15 +41,15 @@ import { Color, Label, BaseChartDirective } from 'ng2-charts';
 export class BarPannelComponent {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
 
-    @Input() datasets: ChartDataSets[]
+    @Input() datasets: ChartDataset[]
 
-    @Input() timeaxes: Label[]
+    @Input() timeaxes: string[]
 
     @Input() barChartType: ChartType;
 
     lineChartOptions: ChartOptions
 
-    lineChartColors: Color[]
+    lineChartColors: any[]
 
     lineChartLegend: boolean
     lineChartPlugins: never[]
@@ -67,11 +66,11 @@ export class BarPannelComponent {
         this.lineChartOptions = {
             responsive: true,
             scales: {
-                xAxes: [{
-                    gridLines: {
-                        offsetGridLines: true
+                x: {
+                    grid: {
+                        offset: true
                     }
-                }]
+                }
             }
         }
         this.lineChartColors  = [

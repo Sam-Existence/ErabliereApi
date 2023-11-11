@@ -3,7 +3,7 @@
 
     <div class="container">
         <div class="col-6 btn-group">
-            <div class="dropdown">
+            <div class="dropdown me-2">
                 <button class="btn btn-secondary dropdown-toggle" 
                    href="#" 
                    role="button"
@@ -34,7 +34,7 @@
                 [idCapteur]="idCapteur" 
                 (needToUpdate)="updateDonneesCapteur($event)"
                 [symbole]="symbole" />
-            <h6>{{ textActuel }}</h6>
+            <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
         </div>
     </div>
 
@@ -44,10 +44,9 @@
             [datasets]="datasets" 
             [labels]="timeaxes" 
             [options]="lineChartOptions"
-            [colors]="lineChartColors" 
             [legend]="lineChartLegend" 
-            [chartType]="lineChartType" 
-            [plugins]="lineChartPlugins">
+            [plugins]="lineChartPlugins"
+            [type]="lineChartType">
         </canvas>
     </div>
 </div>

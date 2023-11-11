@@ -23,6 +23,10 @@ export class EnvironmentService {
     this.getAdditionnalUrls();
 
     return this._httpClient.get<OAuthConfig>("/assets/config/oauth-oidc.json").toPromise().then(c => {
+      if (c == null) {
+        return;
+      }
+
       this.apiUrl = c.apiUrl;
       this.appRoot = c.appRoot;
       this.clientId = c.clientId;

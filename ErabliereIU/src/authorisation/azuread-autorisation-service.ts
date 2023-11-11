@@ -82,7 +82,7 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
       if (this._isLoggedIn == false) {
         this.completeLogin();
       }
-      return authResult.accessToken;
+      return authResult?.accessToken ?? null;
     }).catch(reason => {
       console.log(reason);
       this._isLoggedIn = false;
