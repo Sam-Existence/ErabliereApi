@@ -64,7 +64,8 @@ export class BarPannelComponent {
         this.timeaxes = []
         this.barChartType = 'bar' as ChartType
         this.lineChartOptions = {
-            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1.7,
             scales: {
                 x: {
                     grid: {

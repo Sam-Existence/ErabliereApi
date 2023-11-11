@@ -14,7 +14,8 @@ export class VacciumGraphPannelComponent implements OnInit {
     @Input() lineChartType = 'line' as ChartType;
     @Input() lineScaleType: 'time' = 'time'
     lineChartOptions: ChartOptions = {
-        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1.7,
         scales: {
             x: {
                 type: this.lineScaleType,

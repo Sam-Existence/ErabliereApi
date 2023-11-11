@@ -3,7 +3,6 @@ import { ChartDataset, ChartOptions, ChartType, Color, LinearScale, TickOptions,
 import { BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
-
 @Component({
     selector: 'graph-pannel',
     templateUrl: './graph-pannel.component.html',
@@ -15,7 +14,8 @@ export class GraphPannelComponent implements OnInit {
     @Input() lineChartType = 'line' as ChartType;
     @Input() lineScaleType: 'time' | 'timeseries' = 'time'
     lineChartOptions: ChartOptions = {
-        responsive: true,
+        maintainAspectRatio: false,
+        aspectRatio: 1.7,
         scales: {
             x: {
                 type: this.lineScaleType,
