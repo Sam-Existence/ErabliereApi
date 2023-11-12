@@ -49,8 +49,6 @@ export class BarPannelComponent {
 
     lineChartOptions: ChartOptions
 
-    lineChartColors: any[]
-
     lineChartLegend: boolean
     lineChartPlugins: never[]
     
@@ -66,6 +64,8 @@ export class BarPannelComponent {
         this.lineChartOptions = {
             maintainAspectRatio: false,
             aspectRatio: 1.7,
+            borderColor: 'black',
+            backgroundColor: 'rgba(33,42,234,0.78)',
             scales: {
                 x: {
                     grid: {
@@ -74,12 +74,7 @@ export class BarPannelComponent {
                 }
             }
         }
-        this.lineChartColors  = [
-            {
-                borderColor: 'black',
-                backgroundColor: 'rgba(33,42,234,0.78)',
-            }
-        ]
+
         this.lineChartLegend = true
         this.lineChartPlugins = []
         this.titre = ""

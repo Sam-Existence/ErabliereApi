@@ -24,7 +24,7 @@ import { NgxMaskDirective } from "ngx-mask";
         </div>
     `
 })
-export class EInputComponent implements OnInit {
+export class EinputComponent implements OnInit {
     @Input() arialabel?: string
     @Input() symbole?: string
     @Input() name: string = ""

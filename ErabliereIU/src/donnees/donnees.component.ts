@@ -237,14 +237,32 @@ export class DonneesComponent implements OnInit {
 
             let ids = e.map(ee => ee.id);
 
-            let temperature = [
-              { data: e.map(ee => ee.t != null ? ee.t / 10 : null), label: 'Temperature' }
+            let temperature: Array<ChartDataset> = [
+              { 
+                data: e.map(ee => ee.t != null ? ee.t / 10 : null), label: 'Temperature',
+                fill: true,
+                pointBackgroundColor: 'rgba(255,255,0,0.8)',
+                pointBorderColor: 'black',
+                tension: 0.5
+              }
             ];
-            let vaccium = [
-              { data: e.map(ee => ee.v != null ? ee.v / 10 : null), label: 'Vaccium' }
+            let vaccium: Array<ChartDataset> = [
+              { 
+                data: e.map(ee => ee.v != null ? ee.v / 10 : null), label: 'Vaccium',
+                fill: true,
+                pointBackgroundColor: 'rgba(255,255,0,0.8)',
+                pointBorderColor: 'black',
+                tension: 0.5
+              }
             ];
-            let niveaubassin = [
-              { data: e.map(ee => ee.nb ?? null), label: 'Niveau bassin' }
+            let niveaubassin: Array<ChartDataset> = [
+              { 
+                data: e.map(ee => ee.nb ?? null), label: 'Niveau bassin',
+                fill: true,
+                pointBackgroundColor: 'rgba(255,255,0,0.8)',
+                pointBorderColor: 'black',
+                tension: 0.5
+              }
             ];
 
             let timeaxes = e.map(ee => ee.d);

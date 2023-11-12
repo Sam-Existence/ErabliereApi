@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { MsalService } from "@azure/msal-angular";
 
 @Component({
-  selector: 'app-redirect', // Selector to be added to index.html
+  selector: 'entra-redirect', // Selector to be added to index.html
   template: ''
 })
 export class EntraRedirectComponent implements OnInit {

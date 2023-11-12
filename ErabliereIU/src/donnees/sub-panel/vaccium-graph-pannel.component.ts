@@ -16,6 +16,9 @@ export class VacciumGraphPannelComponent implements OnInit {
     lineChartOptions: ChartOptions = {
         maintainAspectRatio: false,
         aspectRatio: 1.7,
+        backgroundColor: 'rgba(255,255,0,0.28)',
+        color: 'black',
+        borderColor: 'black',
         scales: {
             x: {
                 type: this.lineScaleType,
@@ -37,13 +40,6 @@ export class VacciumGraphPannelComponent implements OnInit {
             } 
         }
     };
-
-    lineChartColors: any[] = [
-        {
-            borderColor: 'black',
-            backgroundColor: 'rgba(255,255,0,0.28)',
-        }
-    ];
 
     lineChartLegend = true;
     lineChartPlugins = [];
@@ -115,8 +111,14 @@ export class VacciumGraphPannelComponent implements OnInit {
 
             let ids = json.map(ee => ee.id);
 
-            let donnees = [
-                { data: json.map(donneeCapteur => donneeCapteur.valeur != null ? donneeCapteur.valeur / 10 : null), label: this.titre }
+            let donnees: Array<ChartDataset> = [
+                { 
+                    data: json.map(donneeCapteur => donneeCapteur.valeur != null ? donneeCapteur.valeur / 10 : null), label: this.titre,
+                    fill: true,
+                    pointBackgroundColor: 'rgba(255,255,0,0.8)',
+                    pointBorderColor: 'black',
+                    tension: 0.5
+                }
             ];
 
             let timeaxes = json.map(donneeCapteur => donneeCapteur.d);

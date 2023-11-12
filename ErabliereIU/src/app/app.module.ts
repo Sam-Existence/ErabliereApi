@@ -41,11 +41,11 @@ import { AjouterCapteurComponent } from 'src/erablieres/ajouter-capteur.componen
 import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
 import { TableFormInputComponent } from 'src/formsComponents/table-form-input.component';
 import { AjouterDocumentationComponent } from 'src/documentation/ajouter-documentation.component';
-import { EInputComponent } from 'src/formsComponents/einput.component';
+import { EinputComponent } from 'src/formsComponents/einput.component';
 import { NgxMaskDirective, NgxMaskPipe, provideEnvironmentNgxMask, provideNgxMask } from 'ngx-mask';
 import { NgChartsModule } from 'ng2-charts';
 import { BrowserModule } from '@angular/platform-browser';
-import { EntraRedirectComponent } from './app-redirect.component';
+import { EntraRedirectComponent } from './entra-redirect.component';
 import 'chartjs-adapter-date-fns';
 
 declare global {
@@ -155,7 +155,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         EntraRedirectComponent,
         SigninRedirectCallbackComponent,
         SignoutRedirectCallbackComponent,
-        EInputComponent,
+        EinputComponent,
         InputErrorComponent,
         TableFormInputComponent,
     ],
@@ -183,7 +183,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         FormsModule,
         NgxMaskDirective, 
         NgxMaskPipe
-    ],
+    ]
 })
 export class AppModule implements DoBootstrap { 
   constructor(private injector: Injector) {}

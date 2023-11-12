@@ -1,26 +1,26 @@
 import type { Meta, StoryObj } from '@storybook/angular';
-import { moduleMetadata } from '@storybook/angular';
-import { CommonModule } from '@angular/common';
-
-import { EInputComponent } from 'src/formsComponents/einput.component';
+import { EinputComponent } from 'src/formsComponents/einput.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-const meta: Meta<EInputComponent> = {
+const meta: Meta<EinputComponent> = {
   title: 'EinputComponent',
+  component: EinputComponent,
+  tags: ['autodocs'],
   parameters: {
     // More on how to position stories at: https://storybook.js.org/docs/angular/configure/story-layout
     layout: 'fullscreen',
   },
   decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesModuleMetadata()
+    // ModuleStoryHelper.getErabliereApiStoriesModuleMetadata(),
+    // ModuleStoryHelper.getErabliereApiStoriesApplicationConfig()
   ]
 };
 
 export default meta;
-type Story = StoryObj<EInputComponent>;
+type Story = StoryObj<EinputComponent>;
 
 export const Default: Story = {
-  render: (args: EInputComponent) => ({
+  render: (args: EinputComponent) => ({
     props: args,
   }),
 };
