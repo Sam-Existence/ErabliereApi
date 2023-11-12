@@ -1,14 +1,18 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
-import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder, UntypedFormControl, ReactiveFormsModule } from "@angular/forms";
 import { AlerteCapteur } from "src/model/alerteCapteur";
 import { Capteur } from "src/model/capteur";
 import { convertTenthToNormale } from "src/core/calculator.service";
+import { EinputComponent } from "../formsComponents/einput.component";
+import { NgIf, NgFor } from "@angular/common";
 
 @Component({
     selector: 'ajouter-alerte-modal',
-    templateUrl: 'ajouter-alerte.component.html'
+    templateUrl: 'ajouter-alerte.component.html',
+    standalone: true,
+    imports: [NgIf, ReactiveFormsModule, EinputComponent, NgFor]
 })
 export class AjouterAlerteComponent implements OnInit {
     typeAlerteSelectListForm: UntypedFormGroup

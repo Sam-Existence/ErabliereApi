@@ -3,11 +3,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
+import { TableFormInputComponent } from "../formsComponents/table-form-input.component";
+import { NgFor, NgIf } from "@angular/common";
 
 @Component({
     selector: 'capteur-list',
-    templateUrl: 'capteur-list.component.html'
-    })
+    templateUrl: 'capteur-list.component.html',
+    standalone: true,
+    imports: [NgFor, TableFormInputComponent, NgIf]
+})
 export class CapteurListComponent implements OnInit {
 
     @Input() idErabliere?: string;

@@ -5,10 +5,12 @@ import { environment } from 'src/environments/environment';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
+import { ErabliereComponent as ErabliereComponent_1 } from '../erablieres/erabliere.component';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
-  selector: 'dashboard',
-  template: `
+    selector: 'dashboard',
+    template: `
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
             <h2 class="ms-4 me-5">{{ title }}</h2>
@@ -63,7 +65,9 @@ import { UrlModel } from '../model/urlModel';
                     [cacheMenuErabliere]="cacheMenuErabliere"
                     (onAfterRecieveingErablieres)="onAfterRecieveingErablieres($event)"
                     #erabliereComponent></erablieres>
-    `
+    `,
+    standalone: true,
+    imports: [NgFor, NgIf, ErabliereComponent_1]
 })
 export class DashboardComponent implements OnInit {
   title: string;

@@ -118,10 +118,31 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
   return new PublicClientApplication(msalConfig);
 }
 
-const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigator.userAgent.indexOf('Trident/') > -1;
-
 @NgModule({
-    declarations: [
+    providers: [
+        {
+            provide: APP_INITIALIZER,
+            useFactory: initConfig,
+            deps: [EnvironmentService],
+            multi: true,
+        },
+        {
+            provide: MSAL_INSTANCE,
+            useFactory: MSALInstanceFactory,
+            deps: [EnvironmentService]
+        },
+        MsalService,
+        provideNgxMask()
+    ],
+    imports: [
+        BrowserModule,
+        NgChartsModule,
+        AppRoutingModule,
+        HttpClientModule,
+        ReactiveFormsModule,
+        FormsModule,
+        NgxMaskDirective,
+        NgxMaskPipe,
         AppComponent,
         ErabliereComponent,
         AjouterErabliereComponent,
@@ -157,32 +178,7 @@ const isIE = window.navigator.userAgent.indexOf('MSIE ') > -1 || window.navigato
         SignoutRedirectCallbackComponent,
         EinputComponent,
         InputErrorComponent,
-        TableFormInputComponent,
-    ],
-    providers: [
-        {
-            provide: APP_INITIALIZER,
-            useFactory: initConfig,
-            deps: [EnvironmentService],
-            multi: true,
-        },
-        {
-            provide: MSAL_INSTANCE,
-            useFactory: MSALInstanceFactory,
-            deps: [EnvironmentService]
-        },
-        MsalService,
-        provideNgxMask()
-    ],
-    imports: [
-        BrowserModule,
-        NgChartsModule,
-        AppRoutingModule,
-        HttpClientModule,
-        ReactiveFormsModule,
-        FormsModule,
-        NgxMaskDirective, 
-        NgxMaskPipe
+        TableFormInputComponent
     ]
 })
 export class AppModule implements DoBootstrap { 

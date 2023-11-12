@@ -1,10 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
+import { ErabliereFormComponent as ErabliereFormComponent_1 } from './erabliere-form.component';
 
 @Component({
     selector: 'ajouter-erabliere',
     templateUrl: './ajouter-erabliere.component.html',
+    standalone: true,
+    imports: [ErabliereFormComponent_1],
 })
 export class AjouterErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent

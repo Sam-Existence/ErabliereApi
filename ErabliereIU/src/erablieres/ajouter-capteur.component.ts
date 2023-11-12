@@ -1,10 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { PutCapteur } from "src/model/putCapteur";
+import { InputErrorComponent } from "../formsComponents/input-error.component";
+import { ReactiveFormsModule, FormsModule } from "@angular/forms";
 
 @Component({
     selector: 'ajouter-capteur',
-    templateUrl: 'ajouter-capteur.component.html'
+    templateUrl: 'ajouter-capteur.component.html',
+    standalone: true,
+    imports: [ReactiveFormsModule, FormsModule, InputErrorComponent]
 })
 export class AjouterCapteurComponent implements OnInit {
 

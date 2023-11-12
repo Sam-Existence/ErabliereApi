@@ -1,11 +1,15 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
-import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Note } from "src/model/note";
+import { InputErrorComponent } from "../formsComponents/input-error.component";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'ajouter-note',
-    templateUrl: 'ajouter-note.component.html'
+    templateUrl: 'ajouter-note.component.html',
+    standalone: true,
+    imports: [NgIf, ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {

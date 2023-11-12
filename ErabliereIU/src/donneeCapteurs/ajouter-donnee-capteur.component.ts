@@ -1,9 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { UntypedFormBuilder, UntypedFormGroup } from "@angular/forms";
+import { UntypedFormBuilder, UntypedFormGroup, ReactiveFormsModule } from "@angular/forms";
 import { convertTenthToNormale } from "src/core/calculator.service";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
 import { PostDonneeCapteur } from "src/model/donneeCapteur";
+import { EinputComponent } from "../formsComponents/einput.component";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'ajouter-donnee-capteur',
@@ -38,7 +40,9 @@ import { PostDonneeCapteur } from "src/model/donneeCapteur";
         .border-top {
             border-top: 1px solid #ccc;
         }
-    `]
+    `],
+    standalone: true,
+    imports: [NgIf, ReactiveFormsModule, EinputComponent]
 })
 export class AjouterDonneeCapteurComponent implements OnInit {
     @Input() idCapteur: any;

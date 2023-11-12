@@ -21,7 +21,7 @@
    </select>
    <input-error [errorObj]="errorObj" [controlName]="'afficherCapteurDashboard'"></input-error>
   </div>
-  <div class="form-group">
+  <div class="form-group mb-2">
    <label for="ajouterDonneeDepuisInterface" class="col-form-label">Saisi manuel:</label>
    <select class="form-control" id="ajouterDonneeDepuisInterface" name="ajouterDonneeDepuisInterface" [(ngModel)]="capteur.ajouterDonneeDepuisInterface">
     <option value="true">Oui</option>
@@ -30,7 +30,7 @@
    <input-error [errorObj]="errorObj" [controlName]="'ajouterDonneeDepuisInterface'"></input-error>
   </div>
   <!-- bouton pour l'envoie -->
-  <button class="btn btn-primary" (click)="ajouterCapteur()">Ajouter</button>
+  <button class="btn btn-primary me-2 mb-2" (click)="ajouterCapteur()">Ajouter</button>
   <!-- bouton pour l'annulation -->
-  <button type="button" class="btn btn-secondary" (click)="buttonAnnuler()">Annuler</button>
+  <button type="button" class="btn btn-secondary mb-2" (click)="buttonAnnuler()">Annuler</button>
  </form>

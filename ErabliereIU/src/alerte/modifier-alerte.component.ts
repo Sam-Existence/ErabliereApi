@@ -1,14 +1,18 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
-import { UntypedFormGroup, UntypedFormBuilder } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { Subject } from "rxjs";
 import { AlerteCapteur } from "src/model/alerteCapteur";
 import { convertTenthToNormale, divideByTen, divideNByTen } from "src/core/calculator.service";
+import { EinputComponent } from "../formsComponents/einput.component";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'modifier-alerte-modal',
-    templateUrl: 'modifier-alerte.component.html'
+    templateUrl: 'modifier-alerte.component.html',
+    standalone: true,
+    imports: [NgIf, ReactiveFormsModule, EinputComponent]
 })
 export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {

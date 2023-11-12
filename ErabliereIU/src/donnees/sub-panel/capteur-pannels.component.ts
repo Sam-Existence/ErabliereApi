@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Capteur } from 'src/model/capteur';
+import { GraphPannelComponent } from './graph-pannel.component';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'capteur-pannels',
@@ -14,7 +16,9 @@ import { Capteur } from 'src/model/capteur';
             </div>
           </div>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [NgFor, GraphPannelComponent]
 })
 export class CapteurPannelsComponent implements OnInit {
   @Input() capteurs?: Capteur[]

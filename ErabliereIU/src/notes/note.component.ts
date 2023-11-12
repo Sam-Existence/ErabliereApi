@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Note } from 'src/model/note';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'note',
@@ -32,7 +33,9 @@ import { Note } from 'src/model/note';
                 <img *ngIf="note.file != ''" style="max-width: 25%;" src="data:image/png;base64,{{ note.file }}" />
             </div>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [NgIf]
 })
 
 export class NoteComponent implements OnInit {

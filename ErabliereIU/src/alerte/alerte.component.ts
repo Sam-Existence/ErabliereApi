@@ -3,11 +3,16 @@ import { Observable, Subject } from "rxjs";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Alerte } from "src/model/alerte";
 import { AlerteCapteur } from "src/model/alerteCapteur";
+import { ModifierAlerteComponent } from "./modifier-alerte.component";
+import { AjouterAlerteComponent } from "./ajouter-alerte.component";
+import { NgIf, NgFor } from "@angular/common";
 
 @Component({
-  selector: 'alerte-page',
-  templateUrl: './alerte.component.html',
-  styleUrls: ['./alerte.component.css']
+    selector: 'alerte-page',
+    templateUrl: './alerte.component.html',
+    styleUrls: ['./alerte.component.css'],
+    standalone: true,
+    imports: [NgIf, AjouterAlerteComponent, ModifierAlerteComponent, NgFor]
 })
 export class AlerteComponent implements OnInit {
   @Input() alertes?: Array<Alerte>;

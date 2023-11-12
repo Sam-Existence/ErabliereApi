@@ -5,7 +5,8 @@ import { IAuthorisationSerivce } from '../iauthorisation-service';
 
 @Component({
     selector: 'signout-redirect-callback',
-    template: '<div></div>'
+    template: '<div></div>',
+    standalone: true
 })
 
 export class SignoutRedirectCallbackComponent implements OnInit {

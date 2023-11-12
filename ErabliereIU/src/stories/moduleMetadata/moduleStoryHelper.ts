@@ -1,33 +1,23 @@
-import { CommonModule } from "@angular/common";
-import { HttpClientModule } from "@angular/common/http";
-import { importProvidersFrom } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { applicationConfig, moduleMetadata } from "@storybook/angular";
-import { NgChartsModule } from "ng2-charts";
-import { NgxMaskDirective, NgxMaskPipe } from "ngx-mask";
-import { AppRoutingModule } from "src/app/app-routing.module";
-import { AppModule } from "src/app/app.module";
+import { provideHttpClient } from "@angular/common/http";
+import { MSAL_INSTANCE, MsalService } from "@azure/msal-angular";
+import { applicationConfig } from "@storybook/angular";
+import { provideNgxMask } from "ngx-mask";
+import { MSALInstanceFactory } from "src/app/app.module";
+import { EnvironmentService } from "src/environments/environment.service";
 
 export class ModuleStoryHelper{
-    static getErabliereApiStoriesModuleMetadata(declarations: Array<any> = [], additionnalImports: Array<any> = []) {
-        return moduleMetadata({
-            declarations: declarations,
-            imports: [
-                CommonModule,
-                NgChartsModule,
-                //AppRoutingModule,
-                HttpClientModule,
-                ReactiveFormsModule,
-                FormsModule,
-                NgxMaskDirective, 
-                NgxMaskPipe
-            ],
-        });
-    }
-
     static getErabliereApiStoriesApplicationConfig() {
         return applicationConfig({
-            providers: [importProvidersFrom(AppModule)]
+            providers: [
+                provideHttpClient(), 
+                provideNgxMask(),
+                MsalService,
+                {
+                  provide: MSAL_INSTANCE,
+                  useFactory: MSALInstanceFactory,
+                  deps: [EnvironmentService]
+                }
+            ]
         });
     }
 }

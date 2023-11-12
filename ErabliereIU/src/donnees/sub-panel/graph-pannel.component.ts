@@ -1,11 +1,21 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions, ChartType, Color, LinearScale, TickOptions, _adapters } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
+import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
+import { NgIf } from '@angular/common';
+import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
 
 @Component({
     selector: 'graph-pannel',
     templateUrl: './graph-pannel.component.html',
+    standalone: true,
+    imports: [
+        DateTimeSelectorComponent,
+        NgIf,
+        AjouterDonneeCapteurComponent,
+        NgChartsModule,
+    ],
 })
 export class GraphPannelComponent implements OnInit {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;

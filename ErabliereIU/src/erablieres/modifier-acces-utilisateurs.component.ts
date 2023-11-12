@@ -3,10 +3,23 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { SelectCustomerComponent } from '../customer/select-customer.component';
+import { EditAccessComponent } from '../access/edit-access.component';
+import { NgIf, NgFor } from '@angular/common';
 
 @Component({
     selector: 'modifier-acces-utilisateurs',
     templateUrl: 'modifier-acces-utilisateurs.component.html',
+    standalone: true,
+    imports: [
+        NgIf,
+        NgFor,
+        EditAccessComponent,
+        SelectCustomerComponent,
+        ReactiveFormsModule,
+        FormsModule,
+    ],
 })
 
 export class ModifierAccesUtilisateursComponent implements OnInit {

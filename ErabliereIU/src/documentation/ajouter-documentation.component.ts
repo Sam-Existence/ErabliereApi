@@ -1,11 +1,19 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators } from "@angular/forms";
+import { FormControl, UntypedFormBuilder, UntypedFormGroup, Validators, ReactiveFormsModule } from "@angular/forms";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { ErabliereApiDocument } from "src/model/erabliereApiDocument";
+import { InputErrorComponent } from "../formsComponents/input-error.component";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'app-ajouter-documentation',
     templateUrl: 'ajouter-documentation.component.html',
+    standalone: true,
+    imports: [
+        NgIf,
+        ReactiveFormsModule,
+        InputErrorComponent,
+    ],
 })
 export class AjouterDocumentationComponent implements OnInit {
     display:boolean = false;

@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { FormGroup } from "@angular/forms";
+import { FormGroup, ReactiveFormsModule } from "@angular/forms";
 import { NgxMaskDirective } from "ngx-mask";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'einput',
@@ -22,7 +23,9 @@ import { NgxMaskDirective } from "ngx-mask";
                 <span class="input-group-text">{{ symbole }}</span>
             </div>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [ReactiveFormsModule, NgxMaskDirective, NgIf]
 })
 export class EinputComponent implements OnInit {
     @Input() arialabel?: string

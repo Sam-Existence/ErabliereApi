@@ -3,6 +3,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
 import { Baril } from 'src/model/baril';
 import { Erabliere } from 'src/model/erabliere';
+import { NgFor } from '@angular/common';
 
 @Component({
     selector: 'barils-panel',
@@ -45,7 +46,9 @@ import { Erabliere } from 'src/model/erabliere';
                 </tbody>
             </table>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [NgFor]
 })
 export class BarilsComponent implements OnInit, OnChanges {
     barils?:Array<Baril>;

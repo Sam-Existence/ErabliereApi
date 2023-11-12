@@ -2,10 +2,23 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { Erabliere } from 'src/model/erabliere';
+import { GestionCapteursComponent } from './gestion-capteurs.component';
+import { NgIf, NgClass } from '@angular/common';
+import { InputErrorComponent } from '../formsComponents/input-error.component';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @Component({
     selector: 'erabliere-form',
     templateUrl: './erabliere-form.component.html',
+    standalone: true,
+    imports: [
+        ReactiveFormsModule,
+        FormsModule,
+        InputErrorComponent,
+        NgIf,
+        GestionCapteursComponent,
+        NgClass,
+    ],
 })
 export class ErabliereFormComponent implements OnInit {
     getDefaultErabliere() {

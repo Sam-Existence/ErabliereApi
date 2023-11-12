@@ -10,10 +10,19 @@ import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
 import { ModifierErabliereComponent } from './modifier-erabliere.component';
+import { AproposComponent } from '../apropos/apropos.component';
+import { NotesComponent } from '../notes/notes.component';
+import { DocumentationComponent } from '../documentation/documentation.component';
+import { AlerteComponent } from '../alerte/alerte.component';
+import { GraphiqueComponent } from '../graphique/graphique.component';
+import { NgIf, NgFor } from '@angular/common';
+import { AjouterErabliereComponent } from './ajouter-erabliere.component';
 
 @Component({
-  selector: 'erablieres',
-  templateUrl: 'erabliere.component.html'
+    selector: 'erablieres',
+    templateUrl: 'erabliere.component.html',
+    standalone: true,
+    imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor, GraphiqueComponent, AlerteComponent, DocumentationComponent, NotesComponent, AproposComponent]
 })
 export class ErabliereComponent implements OnInit {
   erablieres?: Array<Erabliere>;

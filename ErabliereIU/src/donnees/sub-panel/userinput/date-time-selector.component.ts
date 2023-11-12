@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange } from '@angular/core';
-import { UntypedFormControl } from '@angular/forms';
+import { UntypedFormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
     selector: 'date-time-selector',
     template: `
         <span>{{titre}}</span>
         <input class="form-control" type="date" [formControl]="dateControl"/>
-    `
+    `,
+    standalone: true,
+    imports: [ReactiveFormsModule]
 })
 export class DateTimeSelectorComponent implements OnInit {
     @Input() titre?: string;

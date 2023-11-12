@@ -5,7 +5,8 @@ import { IAuthorisationSerivce } from '../iauthorisation-service';
 
 @Component({
     selector: 'app-signin-callback',
-    template: '<div></div>'
+    template: '<div></div>',
+    standalone: true
 })
 
 export class SigninRedirectCallbackComponent implements OnInit {

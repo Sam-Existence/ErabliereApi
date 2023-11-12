@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
+import { BarPannelComponent } from './sub-panel/bar-pannel.component';
+import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'donnees-panel',
@@ -45,7 +48,9 @@ import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
             <div>
           </div>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [NgIf, GraphPannelComponent, VacciumGraphPannelComponent, BarPannelComponent]
 })
 export class DonneesComponent implements OnInit {
       @ViewChild('temperatureGraphPannel') temperatureGraphPannel?: GraphPannelComponent

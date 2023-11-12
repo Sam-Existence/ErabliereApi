@@ -3,10 +3,18 @@ import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angu
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 import { ModifierAccesUtilisateursComponent } from './modifier-acces-utilisateurs.component';
+import { NgIf } from '@angular/common';
+import { ErabliereFormComponent as ErabliereFormComponent_1 } from './erabliere-form.component';
 
 @Component({
     selector: 'modifier-erabliere',
     templateUrl: './modifier-erabliere.component.html',
+    standalone: true,
+    imports: [
+        ErabliereFormComponent_1,
+        NgIf,
+        ModifierAccesUtilisateursComponent,
+    ],
 })
 export class ModifierErabliereComponent implements OnInit {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;

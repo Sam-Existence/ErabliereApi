@@ -2,10 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { CustomerAccess } from 'src/model/customerAccess';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 @Component({
     selector: 'edit-access',
-    templateUrl: 'edit-access.component.html'
+    templateUrl: 'edit-access.component.html',
+    standalone: true,
+    imports: [NgIf, ReactiveFormsModule, FormsModule]
 })
 export class EditAccessComponent implements OnInit {
     @Input() displayEditAccess: Boolean = false;

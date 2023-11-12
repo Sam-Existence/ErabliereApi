@@ -1,6 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { Subject } from "rxjs";
 import { Erabliere } from "src/model/erabliere";
+import { BarilsComponent } from "../barils/barils.component";
+import { CapteurPannelsComponent } from "../donnees/sub-panel/capteur-pannels.component";
+import { DonneesComponent } from "../donnees/donnees.component";
+import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'graphique',
@@ -13,7 +17,9 @@ import { Erabliere } from "src/model/erabliere";
             <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
                           [erabliereId]="erabliere?.id"></barils-panel>
         </div>
-    `
+    `,
+    standalone: true,
+    imports: [NgIf, DonneesComponent, CapteurPannelsComponent, BarilsComponent]
 })
 export class GraphiqueComponent implements OnChanges {
     

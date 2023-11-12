@@ -3,10 +3,14 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { EnvironmentService } from 'src/environments/environment.service';
 import { Documentation } from 'src/model/documentation';
 import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
+import { NgIf, NgFor } from '@angular/common';
+import { AjouterDocumentationComponent } from './ajouter-documentation.component';
 
 @Component({
     selector: 'documentation',
-    templateUrl: "./documentation.component.html"
+    templateUrl: "./documentation.component.html",
+    standalone: true,
+    imports: [AjouterDocumentationComponent, NgIf, NgFor]
 })
 export class DocumentationComponent implements OnInit {
     @Input() idErabliereSelectionee:any
