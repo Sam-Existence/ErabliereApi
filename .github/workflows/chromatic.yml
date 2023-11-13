@@ -3,14 +3,45 @@
 # Workflow name
 name: 'Chromatic Publish'
 
-# Event for the workflow
 on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - PythonScripts/**
+      - .github/**
+      - Infrastructure/**
+      - Postman/**
+      - .gitignore
+      - '*.png'
+      - IdentityServer/**
+      - '*.ps1'
+      - '*.yaml'
+      - '*.md'
+      - Diagrams/**
+      - ErabliereAPI.Proxy/**
+      - ErabliereApi/**
+      - ErabliereApi*/**
+      - ErabliereModel/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths-ignore:
+      - PythonScripts/**
+      - .github/**
+      - Infrastructure/**
+      - Postman/**
+      - .gitignore
+      - '*.png'
+      - IdentityServer/**
+      - '*.ps1'
+      - '*.yaml'
+      - '*.md'
+      - Diagrams/**
+      - ErabliereAPI.Proxy/**
+      - ErabliereApi/**
+      - ErabliereApi*/**
+      - ErabliereModel/**
   workflow_dispatch:
-  # push:
-  #   branches: [ master ]
-  #   paths:
-  #     - ErabliereIU/**
-  #     - .github/workflows/chromatic.yml
 
 # List of jobs
 jobs:
@@ -19,15 +50,18 @@ jobs:
     runs-on: ubuntu-latest
     # Job steps
     steps:
-      - uses: actions/checkout@v1
-      - run: |
-          cd ErabliereIU
-          yarn
-        #👇 Adds Chromatic as a step in the workflow
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'yarn'
+      - run: yarn
+      #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
         with:
           #👇 Chromatic projectToken,
-          workingDir: ErabliereIU
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
