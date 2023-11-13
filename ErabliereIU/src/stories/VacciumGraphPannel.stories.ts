@@ -17,7 +17,7 @@ const meta: Meta<VacciumGraphPannelComponent> = {
 export default meta;
 type Story = StoryObj<VacciumGraphPannelComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: VacciumGraphPannelComponent) => ({
     props: args,
   }),

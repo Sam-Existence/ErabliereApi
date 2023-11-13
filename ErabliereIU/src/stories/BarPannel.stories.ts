@@ -17,7 +17,7 @@ const meta: Meta<BarPannelComponent> = {
 export default meta;
 type Story = StoryObj<BarPannelComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: BarPannelComponent) => ({
     props: args,
   }),

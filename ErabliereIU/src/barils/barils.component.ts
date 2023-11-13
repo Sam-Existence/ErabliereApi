@@ -8,7 +8,7 @@ import { NgFor } from '@angular/common';
 @Component({
     selector: 'barils-panel',
     template: `
-        <div class="border-top">
+        <div class="border-top m-3">
             <h3>Barils</h3>
             <h6>Id érablière {{ erabliereId }}</h6>
             <table class="table">

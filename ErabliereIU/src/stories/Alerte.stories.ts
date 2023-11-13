@@ -17,7 +17,7 @@ const meta: Meta<AlerteComponent> = {
 export default meta;
 type Story = StoryObj<AlerteComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: AlerteComponent) => ({
     props: args,
   }),

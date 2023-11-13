@@ -17,7 +17,7 @@ const meta: Meta<ModifierErabliereComponent> = {
 export default meta;
 type Story = StoryObj<ModifierErabliereComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: ModifierErabliereComponent) => ({
     props: args,
   }),

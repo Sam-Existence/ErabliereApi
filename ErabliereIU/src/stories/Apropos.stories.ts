@@ -22,3 +22,31 @@ export const Default: Story = {
     props: args,
   }),
 };
+
+export const EveryOptions: Story = {
+  render: (args: AproposComponent) => ({
+    props: args,
+  }),
+  args: {
+    supportEmail: 'example@domain.com',
+    checkoutEnabled: true,
+  },
+};
+
+export const StripeEnabled: Story = {
+  render: (args: AproposComponent) => ({
+    props: args,
+  }),
+  args: {
+    checkoutEnabled: true,
+  },
+};
+
+export const WithEmailSupport: Story = {
+  render: (args: AproposComponent) => ({
+    props: args,
+  }),
+  args: {
+    supportEmail: 'exemple@domain.com',
+  },
+};

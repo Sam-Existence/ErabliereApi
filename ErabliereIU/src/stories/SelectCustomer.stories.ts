@@ -17,7 +17,7 @@ const meta: Meta<SelectCustomerComponent> = {
 export default meta;
 type Story = StoryObj<SelectCustomerComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: SelectCustomerComponent) => ({
     props: args,
   }),

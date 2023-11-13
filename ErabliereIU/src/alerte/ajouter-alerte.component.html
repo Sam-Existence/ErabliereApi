@@ -1,13 +1,13 @@
 <div *ngIf="!display">
-    <button id="ajouter-alerte-btn" class="btn btn-primary mb-3" (click)="onButtonAjouterClick()">Ajouter</button>
+    <button id="ajouter-alerte-btn" class="btn btn-primary mb-2" (click)="onButtonAjouterClick()">Ajouter</button>
 </div>
 <div *ngIf="display">
     <span class="text-danger">{{generalError}}</span>
     <div>
       <div>
         <form [formGroup]="typeAlerteSelectListForm">
-          <div class="form-group">
-            <label for="typeAlerteSelect">Type d'alerte</label>
+          <div class="form-group mb-2">
+            <label for="typeAlerteSelect" class="form-label">Type d'alerte</label>
             <select class="form-control" id="typeAlerteSelect" formControlName="state" (change)="onChangeAlerteType($event)">
               <option value="1" [selected]="typeAlerte == 1">Alerte trio de donnée</option>
               <option value="2" [selected]="typeAlerte == 2">Alerte de capteur</option>
@@ -18,32 +18,40 @@
     </div>
     <div *ngIf="typeAlerte == 1">
       <form [formGroup]="alerteForm">
-          <div class="form-group">
-            Nom: <input class="form-control" type="text" formControlName="nom">
+          <div class="form-group mb-2">
+            <label class="form-label">Nom: </label>
+            <input class="form-control" type="text" formControlName="nom">
           </div>
-          <div class="form-group">
-            Destinataires: <input class="form-control" type="text" formControlName="destinataire">
+          <div class="form-group mb-2">
+            <label class="form-label">Destinataires: </label>
+            <input class="form-control" type="text" formControlName="destinataire">
           </div>
-          <div class="form-group">
-            Temperature Min.: <einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
+          <div class="form-group mb-2">
+            <label class="form-label">Temperature Min.: </label>
+            <einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
           </div>
-          <div class="form-group">
-            Temperature Max.: <einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
+          <div class="form-group mb-2">
+            <label class="form-label">Temperature Max.: </label>
+            <einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
           </div>
-          <div class="form-group">
-            Vaccium Min.: <einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
+          <div class="form-group mb-2">
+            <label class="form-label">Vaccium Min.: </label>
+            <einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
           </div>
-          <div class="form-group">
-            Vaccium Max.: <einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
+          <div class="form-group mb-2">
+            <label class="form-label">Vaccium Max.: </label>
+            <einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
           </div>
-          <div class="form-group">
-            Niveau Bassin Min.: <einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
+          <div class="form-group mb-2">
+            <label class="form-label">Niveau Bassin Min.: </label>
+            <einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
           </div>
-          <div class="form-group mb-3">
-            Niveau Bassin Max.: <einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
+          <div class="form-group mb-2">
+            <label class="form-label">Niveau Bassin Max.: </label>
+            <einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
           </div>
-        <button id="creer-alerte-donnees-btn" class="btn btn-primary me-2 mb-3" (click)="onButtonCreerClick()">Créer</button>
-        <button class="btn btn-secondary mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
+        <button id="creer-alerte-donnees-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerClick()">Créer</button>
+        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
         <div>
           <span class="text-danger">{{generalError}}</span>
         </div>
@@ -52,24 +60,24 @@
     <div *ngIf="typeAlerte == 2">
       <form [formGroup]="alerteCapteurForm">
           <div class="form-group">
-            Nom: <input class="form-control" type="text" formControlName="nom">
+            <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
           </div>
           <div class="form-group">
-            Capteur: <select class="form-control" formControlName="idCapteur">
+            <label class="form-label">Capteur: </label><select class="form-control" formControlName="idCapteur">
               <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
             </select>
           </div>
           <div class="form-group">
-            Destinataires: <input class="form-control" type="text" formControlName="destinataire">
+            <label class="form-label">Destinataires: </label><input class="form-control" type="text" formControlName="destinataire">
           </div>
           <div class="form-group">
-            Min.: <einput [formGroup]="alerteCapteurForm" name="min" symbole={{capteurSymbole()}} />
+            <label class="form-label">Min.: </label><einput [formGroup]="alerteCapteurForm" name="min" symbole={{capteurSymbole()}} />
           </div>
-          <div class="form-group">
-            Max.: <einput [formGroup]="alerteCapteurForm" name="max" symbole={{capteurSymbole()}} />
+          <div class="form-group mb-2">
+            <label class="form-label">Max.: </label><einput [formGroup]="alerteCapteurForm" name="max" symbole={{capteurSymbole()}} />
           </div>
-        <button id="creer-alerte-capteur-btn" class="btn btn-primary" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
-        <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+        <button id="creer-alerte-capteur-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
+        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
         <div>
           <span class="text-danger">{{generalError}}</span>
         </div>

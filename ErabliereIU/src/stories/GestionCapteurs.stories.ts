@@ -17,7 +17,7 @@ const meta: Meta<GestionCapteursComponent> = {
 export default meta;
 type Story = StoryObj<GestionCapteursComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: GestionCapteursComponent) => ({
     props: args,
   }),

@@ -17,7 +17,7 @@ const meta: Meta<ModifierAlerteComponent> = {
 export default meta;
 type Story = StoryObj<ModifierAlerteComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: ModifierAlerteComponent) => ({
     props: args,
   }),

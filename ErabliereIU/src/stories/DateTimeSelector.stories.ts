@@ -17,7 +17,7 @@ const meta: Meta<DateTimeSelectorComponent> = {
 export default meta;
 type Story = StoryObj<DateTimeSelectorComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: DateTimeSelectorComponent) => ({
     props: args,
   }),

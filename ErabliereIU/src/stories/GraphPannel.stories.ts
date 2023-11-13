@@ -17,7 +17,7 @@ const meta: Meta<GraphPannelComponent> = {
 export default meta;
 type Story = StoryObj<GraphPannelComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: GraphPannelComponent) => ({
     props: args,
   }),

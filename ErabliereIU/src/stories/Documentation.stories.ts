@@ -17,7 +17,7 @@ const meta: Meta<DocumentationComponent> = {
 export default meta;
 type Story = StoryObj<DocumentationComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: DocumentationComponent) => ({
     props: args,
   }),

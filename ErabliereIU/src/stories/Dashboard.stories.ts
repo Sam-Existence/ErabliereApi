@@ -17,7 +17,7 @@ const meta: Meta<DashboardComponent> = {
 export default meta;
 type Story = StoryObj<DashboardComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: DashboardComponent) => ({
     props: args,
   }),

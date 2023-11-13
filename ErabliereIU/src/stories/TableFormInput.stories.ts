@@ -17,7 +17,7 @@ const meta: Meta<TableFormInputComponent> = {
 export default meta;
 type Story = StoryObj<TableFormInputComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: TableFormInputComponent) => ({
     props: args,
   }),

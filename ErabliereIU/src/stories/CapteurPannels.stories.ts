@@ -17,7 +17,7 @@ const meta: Meta<CapteurPannelsComponent> = {
 export default meta;
 type Story = StoryObj<CapteurPannelsComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: CapteurPannelsComponent) => ({
     props: args,
   }),

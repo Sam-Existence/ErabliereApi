@@ -17,8 +17,28 @@ const meta: Meta<AjouterAlerteComponent> = {
 export default meta;
 type Story = StoryObj<AjouterAlerteComponent>;
 
-export const Default: Story = {
+export const Button: Story = {
   render: (args: AjouterAlerteComponent) => ({
     props: args,
   }),
+};
+
+export const FormAlerteCapteur: Story = {
+  render: (args: AjouterAlerteComponent) => ({
+    props: args,
+  }),
+  args: {
+    display: true,
+    typeAlerte: 1,
+  },
+};
+
+export const FormAlerteTrioDonnees: Story = {
+  render: (args: AjouterAlerteComponent) => ({
+    props: args,
+  }),
+  args: {
+    display: true,
+    typeAlerte: 2,
+  },
 };

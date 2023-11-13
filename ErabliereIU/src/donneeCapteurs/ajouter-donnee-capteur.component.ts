@@ -10,8 +10,8 @@ import { NgIf } from "@angular/common";
 @Component({
     selector: 'ajouter-donnee-capteur',
     template: `
-        <button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()">Ajouter</button>
-        <div *ngIf="display" class="border-top">
+        <button *ngIf="!display" class="btn btn-primary m-3" (click)="afficherForm()">Ajouter</button>
+        <div *ngIf="display" class="border-top m-3">
             <h3>Ajouter une donnée</h3>
             <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">

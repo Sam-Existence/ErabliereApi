@@ -17,7 +17,7 @@ const meta: Meta<BarilsComponent> = {
 export default meta;
 type Story = StoryObj<BarilsComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: BarilsComponent) => ({
     props: args,
   }),

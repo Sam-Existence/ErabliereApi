@@ -17,7 +17,7 @@ const meta: Meta<AjouterCapteurComponent> = {
 export default meta;
 type Story = StoryObj<AjouterCapteurComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: AjouterCapteurComponent) => ({
     props: args,
   }),

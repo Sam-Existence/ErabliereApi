@@ -1,36 +1,48 @@
-<h3>À Propos</h3>
-<hr />
+<div class="m-3">
+    <h3>À Propos</h3>
+    <hr />
 
-<div *ngIf="checkoutEnabled">
-    <h4>Obtenir une clé d'api</h4>
-    <p>Il est possible d'obtenir une clé d'api au tarif de 0.01$ par requête. Après l'achat de la clé, vous receverez un courriel avec la clé d'api à insérer dans les requêtes.</p>
-    <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
+    <div *ngIf="checkoutEnabled">
+        <h4>Obtenir une clé d'api</h4>
+        <p>Il est possible d'obtenir une clé d'api au tarif de 0.01$ par requête. Après l'achat de la clé, vous
+            receverez un courriel avec la clé d'api à insérer dans les requêtes.</p>
+        <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
+    </div>
+
+    <div *ngIf="!(supportEmail == '' || supportEmail == null) || tenantId == 'common'">
+        <h4 class="mt-4">Obtenir un compte</h4>
+        <p *ngIf="!(supportEmail == '' || supportEmail == null)">Envoyer un courriel à <a
+                href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+        <p *ngIf="tenantId == 'common'">Vous pouvez mainenant vous connecter avec votre compte microsoft sans demander
+            de compte.</p>
+    </div>
+
+    <h4 class="mt-4">Spécification de l'api</h4>
+    <a href="{{urlApi}}/api/index.html" target="_blank" rel="noopener noreferrer">Swagger</a>
+
+    <h4 class="mt-4">Érablière API</h4>
+    <p>Projet en développement, le but est de rendre ouvertes les données reliées aux érablières en fournissant des
+        mécanismes de monitorage, d'alerte et de partage de donnée entre multiples érablières.</p>
+
+    <h4 class="mt-4">Comment ça marche ?</h4>
+    <p>
+        Des ordinateurs dans le nuage sont dédié et réceptionnent les données envoyées par divers équipements depuis des
+        érablières. Les données peuvent ensuite être consultées à l'aide d'un navigateur web depuis un téléphone ou un
+        ordinateur ayant accès à internet.
+        <br />
+        <br />
+        Pour savoir si un appareil déjà à l'érablière est compatible avec cette technologie, il faut que cet appareil
+        soit en mesure d'effectuer des requêtes HTTP, ou de relayer l'information à un appareil ayant cette capacité.
+    </p>
+
+    <div *ngIf="!(supportEmail == '' || supportEmail == null)">
+        <h4 class="mt-4">Recherche d'érablière à connecter</h4>
+        <p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a
+                href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
+    </div>
+
+    <h4 class="mt-4">Recherche des développeurs</h4>
+    <p>Vous aimeriez participer au développement de ce projet ? Parcourir le code source du programme sur <a
+            href="https://github.com/freddycoder/ErabliereApi" target="_blank">github</a>.</p>
+
 </div>
-
-<div *ngIf="!(supportEmail == '' || supportEmail == null) || tenantId == 'common'">
-    <h4 class="mt-4">Obtenir un compte</h4>
-    <p *ngIf="!(supportEmail == '' || supportEmail == null)">Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
-    <p *ngIf="tenantId == 'common'">Vous pouvez mainenant vous connecter avec votre compte microsoft sans demander de compte.</p>
-</div>
-
-<h4 class="mt-4">Spécification de l'api</h4>
-<a href="{{urlApi}}/api/index.html" target="_blank" rel="noopener noreferrer">Swagger</a>
-
-<h4 class="mt-4">Érablière API</h4>
-<p>Projet en développement, le but est de rendre ouvertes les données reliées aux érablières en fournissant des mécanismes de monitorage, d'alerte et de partage de donnée entre multiples érablières.</p>
-
-<h4 class="mt-4">Comment ça marche ?</h4>
-<p>
-    Des ordinateurs dans le nuage sont dédié et réceptionnent les données envoyées par divers équipements depuis des érablières. Les données peuvent ensuite être consultées à l'aide d'un navigateur web depuis un téléphone ou un ordinateur ayant accès à internet.
-    <br />
-    <br />
-    Pour savoir si un appareil déjà à l'érablière est compatible avec cette technologie, il faut que cet appareil soit en mesure d'effectuer des requêtes HTTP, ou de relayer l'information à un appareil ayant cette capacité.
-</p>
-
-<div *ngIf="!(supportEmail == '' || supportEmail == null)">
-    <h4 class="mt-4">Recherche d'érablière à connecter</h4>
-    <p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
-</div>
-
-<h4 class="mt-4">Recherche des développeurs</h4>
-<p>Vous aimeriez participer au développement de ce projet ? Parcourir le code source du programme sur <a href="https://github.com/freddycoder/ErabliereApi" target="_blank">github</a>.</p>

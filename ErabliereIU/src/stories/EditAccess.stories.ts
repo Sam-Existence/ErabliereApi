@@ -17,7 +17,7 @@ const meta: Meta<EditAccessComponent> = {
 export default meta;
 type Story = StoryObj<EditAccessComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: EditAccessComponent) => ({
     props: args,
   }),

@@ -17,7 +17,7 @@ const meta: Meta<ModifierAccesUtilisateursComponent> = {
 export default meta;
 type Story = StoryObj<ModifierAccesUtilisateursComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: ModifierAccesUtilisateursComponent) => ({
     props: args,
   }),

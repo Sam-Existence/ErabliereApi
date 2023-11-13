@@ -17,7 +17,7 @@ const meta: Meta<InputErrorComponent> = {
 export default meta;
 type Story = StoryObj<InputErrorComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: InputErrorComponent) => ({
     props: args,
   }),

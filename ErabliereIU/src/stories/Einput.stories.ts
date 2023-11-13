@@ -17,7 +17,7 @@ const meta: Meta<EinputComponent> = {
 export default meta;
 type Story = StoryObj<EinputComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: EinputComponent) => ({
     props: args,
   }),

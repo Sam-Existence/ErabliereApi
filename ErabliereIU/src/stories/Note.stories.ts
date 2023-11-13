@@ -17,7 +17,7 @@ const meta: Meta<NoteComponent> = {
 export default meta;
 type Story = StoryObj<NoteComponent>;
 
-export const Default: Story = {
+export const Primary: Story = {
   render: (args: NoteComponent) => ({
     props: args,
   }),
