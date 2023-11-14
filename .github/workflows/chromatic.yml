@@ -55,6 +55,8 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v3
         with:
+          # setup working directory
+          working-directory: ./ErabliereIU
           node-version: 20
           cache: 'npm'
       - run: npm
