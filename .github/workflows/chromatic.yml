@@ -48,6 +48,10 @@ jobs:
   test:
     # Operating System
     runs-on: ubuntu-latest
+    # Setup workdir
+    defaults:
+      run:
+        working-directory: ./ErabliereIU
     # Job steps
     steps:
       - uses: actions/checkout@v3
@@ -56,7 +60,6 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           # setup working directory
-          working-directory: ./ErabliereIU
           node-version: 20
           cache: 'npm'
       - run: npm
@@ -64,7 +67,6 @@ jobs:
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
         with:
-          workingDir: './ErabliereIU'
           #👇 Chromatic projectToken,
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
