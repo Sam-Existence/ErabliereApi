@@ -60,9 +60,9 @@ jobs:
       - run: npm
       #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
+        workingDir: './EraliereIU'
         # Options required for Chromatic's GitHub Action
         with:
-          workingDir: './EraliereIU'
           #👇 Chromatic projectToken,
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
