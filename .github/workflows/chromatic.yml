@@ -48,25 +48,25 @@ jobs:
   test:
     # Operating System
     runs-on: ubuntu-latest
-    # Setup workdir
-    defaults:
-      run:
-        working-directory: ./ErabliereIU
-    # Job steps
     steps:
       - uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: actions/setup-node@v3
+      - name: Install node
+        uses: actions/setup-node@v2
         with:
-          # setup working directory
-          node-version: 20
-          cache: 'npm'
-      - run: npm
+            node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd ErabliereIU
+          npm install
+
       #👇 Adds Chromatic as a step in the workflow
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
         with:
+          workingDir: ./ErabliereIU
           #👇 Chromatic projectToken,
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
