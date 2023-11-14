@@ -64,7 +64,7 @@ Pour publier le storybook sur chromatic
 npm run chromatic
 ```
 
-Le storybook est accessible à: https://62c1fd30e87ba497a5005cc7-sxibrulzao.chromatic.com
+Le storybook est accessible à: https://www.chromatic.com/builds?appId=62c1fd30e87ba497a5005cc7 Choisir le build le plus récent et cliquer sur "View Storybook".
 
 Pour joindre le projet: https://www.chromatic.com/library?appId=62c1fd30e87ba497a5005cc7&inviteToken=fff43142d3c848f79f0378c7f29c89d9
 
