@@ -11,14 +11,12 @@ export class HomePage {
     }
 
     clickOnAlerteButtonNavMenu(): AlertesPage {
-        cy.waitFor('#nav-menu-alerte-button', 10000)
-        cy.get('#nav-menu-alerte-button', { timeout: 10000 }).click()
+        cy.get('#nav-menu-alerte-button').click()
         return new AlertesPage();
     }
 
     clickOnNotesButtonNavMenu(): NotesPage {
-        cy.waitFor('#nav-menu-notes-button', 10000)
-        cy.get('#nav-menu-notes-button', { timeout: 10000 }).click()
+        cy.get('#nav-menu-notes-button').click()
         return new NotesPage();
     }
 

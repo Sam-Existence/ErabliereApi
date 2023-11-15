@@ -123,7 +123,8 @@ export class VacciumGraphPannelComponent implements OnInit {
 
             let donnees: Array<ChartDataset> = [
                 { 
-                    data: json.map(donneeCapteur => donneeCapteur.valeur != null ? donneeCapteur.valeur / 10 : null), label: this.titre,
+                    data: json.map(donneeCapteur => donneeCapteur.valeur != null ? donneeCapteur.valeur / 10 : null), 
+                    label: this.titre,
                     fill: true,
                     pointBackgroundColor: 'rgba(255,255,0,0.8)',
                     pointBorderColor: 'black',

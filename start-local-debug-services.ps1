@@ -12,6 +12,8 @@ Start-Process dotnet -ArgumentList "watch", "run", "$PWD\ErabliereApi.csproj"
 Set-Location ..
 Set-Location ErabliereIU
 
+# install the latest version of cypress
+npm install cypress@latest
 npm install
 
 Start-Process npm -ArgumentList "start"

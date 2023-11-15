@@ -10,6 +10,8 @@ export default defineConfig({
     baseUrl: "https://localhost:4200",
     projectId: "7cxkq4",
     chromeWebSecurity: false,
-    video: false
+    video: false,
+    defaultCommandTimeout: 10000,
+    requestTimeout: 10000
   }
 })
