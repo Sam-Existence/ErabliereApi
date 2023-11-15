@@ -52,3 +52,9 @@ jobs:
         with:
           working-directory: ErabliereIU
           config: video=false,baseUrl=https://erabliereapi-demo.azurewebsites.net
+
+      - name: Upload screenshots
+        uses: actions/upload-artifact@v2
+        with:
+          name: screenshots
+          path: /home/runner/work/ErabliereApi/ErabliereApi/ErabliereIU/cypress/screenshots
