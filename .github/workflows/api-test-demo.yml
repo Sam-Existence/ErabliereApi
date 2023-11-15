@@ -55,6 +55,7 @@ jobs:
 
       - name: Upload screenshots
         uses: actions/upload-artifact@v2
+        if: failure()
         with:
           name: screenshots
           path: /home/runner/work/ErabliereApi/ErabliereApi/ErabliereIU/cypress/screenshots
