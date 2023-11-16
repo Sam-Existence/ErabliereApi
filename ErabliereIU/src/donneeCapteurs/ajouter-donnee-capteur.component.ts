@@ -10,22 +10,22 @@ import { NgIf } from "@angular/common";
 @Component({
     selector: 'ajouter-donnee-capteur',
     template: `
-        <button *ngIf="!display" class="btn btn-primary m-3" (click)="afficherForm()">Ajouter</button>
-        <div *ngIf="display" class="border-top m-3">
+        <button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()">Ajouter</button>
+        <div *ngIf="display" class="border-top ms-3">
             <h3>Ajouter une donnée</h3>
             <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">
                     <span *ngIf="generalErrorMessage" class="text-danger">{{ generalErrorMessage }}</span>
                 </div>
                 <div class="form-group">
-                    <label for="valeur">Valeur</label>
+                    <label for="valeur" class="form-label">Valeur</label>
                     <einput type="number" id="valeur" name="valeur" [formGroup]="donneeCapteurForm" [symbole]="symbole" />
                     <div *ngIf="this.donneeCapteurForm.controls['valeur'].errors">
                         <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
                     </div>
                 </div>
                 <div class="form-group mb-2">
-                    <label for="date">Date</label>
+                    <label for="date" class="form-label">Date</label>
                     <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
                     <div *ngIf="this.donneeCapteurForm.controls['date'].errors">
                         <span class="text-danger">{{ this.donneeCapteurForm.controls['date'].errors.message }}</span>

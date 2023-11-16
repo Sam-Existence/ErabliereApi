@@ -5,6 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
 import { NgIf } from '@angular/common';
 import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
+import { calculerMoyenne } from '../util';
 
 @Component({
     selector: 'graph-pannel',
@@ -218,12 +219,15 @@ export class GraphPannelComponent implements OnInit {
 
     fixRange: boolean = false;
 
+    @Input() mean?: string = undefined;
+
     updateGraphUsingFixRange() {
         this.fixRange = true;
         if (this.idCapteur != null) {
             this.cleanGraphComponentCache();
             this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
             this.doHttpCall();
+            this.mean = " Moyenne: " + calculerMoyenne(this.datasets[0]) + this.symbole;
         }
         else {
             // When this.idCapteur is null, we are in a component such as 'donnees.component.ts'

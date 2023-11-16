@@ -7,6 +7,7 @@ import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
 import { NgIf } from '@angular/common';
+import { calculerMoyenne } from './util';
 
 @Component({
     selector: 'donnees-panel',
@@ -16,6 +17,7 @@ import { NgIf } from '@angular/common';
             <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-pannel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
+                           [mean]="meanTemperature"
                            [symbole]="temperatureSymbole"
                            [timeaxes]="timeaxes" 
                            (updateGraphCallback)="updateGraph($event)"
@@ -27,6 +29,7 @@ import { NgIf } from '@angular/common';
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes"
+                           [mean]="meanTemperature"
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
@@ -36,6 +39,7 @@ import { NgIf } from '@angular/common';
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
+                           [mean]="meanTemperature"
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
@@ -79,16 +83,19 @@ export class DonneesComponent implements OnInit {
       temperature: ChartDataset[] = []
       temperatureValueActuel?:string|null
       temperatureSymbole:string = "°c"
+      meanTemperature?:string
 
       titre_vaccium = "Vaccium"
       vaccium: ChartDataset[] = []
       vacciumValueActuel?:string|null
       vacciumSymbole:string = "HG"
+      meanVaccium?:string
 
       titre_niveaubassin = "Niveau Bassin"
       niveaubassin: ChartDataset[] = []
       niveauBassinValueActuel?:string|null
       niveauBassinSymbole:string = "%"
+      meanNiveauBassin?:string
 
       titre_dompeux = "Dompeux"
       dompeux: ChartDataset[] = []
@@ -142,6 +149,9 @@ export class DonneesComponent implements OnInit {
           if (this.fixRange == false) {
             if (this.erabliereAfficherTrioDonnees == true) {
               this.doHttpCall();
+              this.meanNiveauBassin = calculerMoyenne(this.niveaubassin[0]);
+              this.meanTemperature = calculerMoyenne(this.temperature[0]);
+              this.meanVaccium = calculerMoyenne(this.vaccium[0]);
             }
           }
           if (this.erabliereAfficherSectionDompeux == true) {
@@ -244,7 +254,8 @@ export class DonneesComponent implements OnInit {
 
             let temperature: Array<ChartDataset> = [
               { 
-                data: e.map(ee => ee.t != null ? ee.t / 10 : null), label: 'Temperature',
+                data: e.map(ee => ee.t != null ? ee.t / 10 : null), 
+                label: 'Temperature',
                 fill: true,
                 pointBackgroundColor: 'rgba(255,255,0,0.8)',
                 pointBorderColor: 'black',
@@ -253,7 +264,8 @@ export class DonneesComponent implements OnInit {
             ];
             let vaccium: Array<ChartDataset> = [
               { 
-                data: e.map(ee => ee.v != null ? ee.v / 10 : null), label: 'Vaccium',
+                data: e.map(ee => ee.v != null ? ee.v / 10 : null), 
+                label: 'Vaccium',
                 fill: true,
                 pointBackgroundColor: 'rgba(255,255,0,0.8)',
                 pointBorderColor: 'black',
@@ -262,7 +274,8 @@ export class DonneesComponent implements OnInit {
             ];
             let niveaubassin: Array<ChartDataset> = [
               { 
-                data: e.map(ee => ee.nb ?? null), label: 'Niveau bassin',
+                data: e.map(ee => ee.nb ?? null), 
+                label: 'Niveau bassin',
                 fill: true,
                 pointBackgroundColor: 'rgba(255,255,0,0.8)',
                 pointBorderColor: 'black',

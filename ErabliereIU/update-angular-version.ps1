@@ -1,8 +1,13 @@
-# a script to update the angular version in the project
+Write-Host "A script to update the angular version in the project"
 
-# Update the angular version using cli
-ng update @angular/cli@16 --force --allow-dirty
-ng update @angular/core@16 --force --allow-dirty
-ng update @angular-eslint/schematics@16 --force --allow-dirty
+$version = "latest"
 
-npm install ng2-charts chart.js --save
+Write-Host "ng update preview"
+ng update
+
+Write-Host "Update the angular version $version"
+ng update @angular/cli@$version --force --allow-dirty
+ng update @angular/core@$version --force --allow-dirty
+ng update @angular-eslint/schematics@$version --force --allow-dirty
+
+npm install typescript@latest

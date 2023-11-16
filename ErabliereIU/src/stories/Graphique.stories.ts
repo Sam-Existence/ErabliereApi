@@ -21,4 +21,12 @@ export const Primary: Story = {
   render: (args: GraphiqueComponent) => ({
     props: args,
   }),
+  args: {
+    erabliere: {
+      afficherTrioDonnees: true,
+      afficherSectionDompeux: true,
+      afficherSectionBaril: true,
+      nom: 'Érablière du Lac-Beauport',
+    }
+  }
 };
