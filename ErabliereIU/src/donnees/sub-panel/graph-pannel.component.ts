@@ -167,6 +167,13 @@ export class GraphPannelComponent implements OnInit {
             }
 
             this.chart?.update();
+
+            if (this.fixRange) {
+                this.mean = " Moyenne: " + calculerMoyenne(this.datasets[0]) + this.symbole;
+            }
+            else {
+                this.mean = undefined;
+            }
         });
     }
 
@@ -227,7 +234,6 @@ export class GraphPannelComponent implements OnInit {
             this.cleanGraphComponentCache();
             this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
             this.doHttpCall();
-            this.mean = " Moyenne: " + calculerMoyenne(this.datasets[0]) + this.symbole;
         }
         else {
             // When this.idCapteur is null, we are in a component such as 'donnees.component.ts'

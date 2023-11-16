@@ -9,5 +9,4 @@ Write-Host "Update the angular version $version"
 ng update @angular/cli@$version --force --allow-dirty
 ng update @angular/core@$version --force --allow-dirty
 ng update @angular-eslint/schematics@$version --force --allow-dirty
-
-npm install typescript@latest
+ng update @angular/cdk@$version --force --allow-dirty

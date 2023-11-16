@@ -149,9 +149,6 @@ export class DonneesComponent implements OnInit {
           if (this.fixRange == false) {
             if (this.erabliereAfficherTrioDonnees == true) {
               this.doHttpCall();
-              this.meanNiveauBassin = calculerMoyenne(this.niveaubassin[0]);
-              this.meanTemperature = calculerMoyenne(this.temperature[0]);
-              this.meanVaccium = calculerMoyenne(this.vaccium[0]);
             }
           }
           if (this.erabliereAfficherSectionDompeux == true) {
@@ -338,6 +335,17 @@ export class DonneesComponent implements OnInit {
             this.temperatureGraphPannel?.chart?.update();
             this.vacciumGraphPannel?.chart?.update();
             this.niveaubassinGraphPannel?.chart?.update();
+
+            if (this.fixRange) {
+              this.meanNiveauBassin = calculerMoyenne(this.niveaubassin[0]);
+              this.meanTemperature = calculerMoyenne(this.temperature[0]);
+              this.meanVaccium = calculerMoyenne(this.vaccium[0]);
+            }
+            else {
+              this.meanNiveauBassin = undefined;
+              this.meanTemperature = undefined;
+              this.meanVaccium = undefined;
+            }
           })
           .catch(reason => {
             console.log(reason);

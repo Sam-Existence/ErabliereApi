@@ -6,7 +6,9 @@ const config: StorybookConfig = {
     "@storybook/addon-links",
     "@storybook/addon-essentials",
     "@storybook/addon-interactions",
-    '@storybook/addon-a11y', //👈 The a11y addon goes here (accessibility test)
+    //👈 The a11y addon goes here (accessibility test)
+    '@storybook/addon-a11y',
+    "@storybook/addon-mdx-gfm"
   ],
   framework: {
     name: "@storybook/angular",

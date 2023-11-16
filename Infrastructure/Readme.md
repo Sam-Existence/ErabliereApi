@@ -12,6 +12,12 @@ cd AzureAKS-TLS
 .\azure-aks-cluster-deployment.ps1 -resourceGroup erabliereapiv3 -location canadaeast -aksClusterName kerabliereapiv3 -namespace erabliereapi-prod -appScriptPath .\erabliereapi-v3\application-deployment.ps1 -useLetsEncryptProd true -customDomain erabliereapi.freddycoder.com
 ```
 
+Ensuite si vous voulez mettre à jour l'image avec une action github. Il est possible de lieu créer un SP:
+
+```
+az ad sp create-for-rbac --name "deploy-erabliereapi-2023-2024" --role contributor --scopes /subscriptions/<subscription-id>/resourceGroups/erabliereapiv3 --json-auth
+```
+
 > Dans la version 1 et la version 2 du projet Les configurations de la BD sont basé sur ce cours : https://app.pluralsight.com/library/courses/microsoft-azure-deploying-sql-server-containers pour la version 3, la BD est dans Azure SQL avec la version serverless.
 
 ### Fonctionnalité d'alerte

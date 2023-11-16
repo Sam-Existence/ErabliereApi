@@ -60,21 +60,26 @@
     <div *ngIf="typeAlerte == 2">
       <form [formGroup]="alerteCapteurForm">
           <div class="form-group">
-            <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
+            <label class="form-label">Nom: </label>
+            <input class="form-control" type="text" formControlName="nom">
           </div>
           <div class="form-group">
-            <label class="form-label">Capteur: </label><select class="form-control" formControlName="idCapteur">
+            <label class="form-label">Capteur: </label>
+            <select class="form-control" formControlName="idCapteur">
               <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">Destinataires: </label><input class="form-control" type="text" formControlName="destinataire">
+            <label class="form-label">Destinataires: </label>
+            <input class="form-control" type="text" formControlName="destinataire">
           </div>
           <div class="form-group">
-            <label class="form-label">Min.: </label><einput [formGroup]="alerteCapteurForm" name="min" symbole={{capteurSymbole()}} />
+            <label class="form-label">Min.: </label>
+            <einput [formGroup]="alerteCapteurForm" name="min" symbole={{capteurSymbole()}} />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Max.: </label><einput [formGroup]="alerteCapteurForm" name="max" symbole={{capteurSymbole()}} />
+            <label class="form-label">Max.: </label>
+            <einput [formGroup]="alerteCapteurForm" name="max" symbole={{capteurSymbole()}} />
           </div>
         <button id="creer-alerte-capteur-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
         <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
