@@ -6,6 +6,10 @@ on:
       - master
     paths:
       - ErabliereAPI.Proxy/**
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - ErabliereAPI.Proxy/**
   workflow_dispatch:
 
 env:
@@ -30,6 +34,7 @@ jobs:
         run: dotnet build $PROJECT_PATH -c Release -o bin/Release
 
       - name: Push the package to nuget.org
+        if: ${{ github.ref == 'refs/heads/master' }}
         run: |
           # Extract the version from the csproj file
           VERSION=$(grep -Eoi "<version>([[:digit:]\.]+)</version>" ErabliereAPI.Proxy/ErabliereAPI.Proxy.csproj | sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p')
