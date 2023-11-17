@@ -93,7 +93,7 @@ public class ErablieresController : ControllerBase
             }
         }
 
-        HttpContext.Response.Headers.Add("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
+        HttpContext.Response.Headers.Append("X-ErabliereTotal", (await query.CountAsync(token)).ToString());
 
         if (!HttpContext.Request.Query.TryGetValue("$orderby", out _))
         {
