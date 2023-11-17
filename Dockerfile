@@ -44,7 +44,6 @@ EXPOSE 80
 # Breaking change dotnet 8
 # https://learn.microsoft.com/en-us/aspnet/core/migration/70-80?view=aspnetcore-8.0&tabs=visual-studio#update-docker-port
 ENV ASPNETCORE_HTTP_PORTS=80
-ENV ASPNETCORE_HTTPS_PORTS=443
 
 #Create a new user (erabliereapp) and new group (erabliereapi); then switch into that user’s context 
 #RUN useradd erabliereapp && groupadd erabliereapi 

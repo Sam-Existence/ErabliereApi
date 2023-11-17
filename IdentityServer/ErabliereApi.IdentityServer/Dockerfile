@@ -21,6 +21,8 @@ COPY --from=build-env /app/out ./
 ENV ASPNETCORE_HTTP_PORTS=80
 ENV ASPNETCORE_HTTPS_PORTS=443
 
+RUN dotnet dev-certs https --trust
+
 # Expose port
 EXPOSE 443
 
