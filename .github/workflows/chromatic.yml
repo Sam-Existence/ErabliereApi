@@ -7,40 +7,12 @@ on:
   push:
     branches:
       - master
-    paths-ignore:
-      - PythonScripts/**
-      - .github/**
-      - Infrastructure/**
-      - Postman/**
-      - .gitignore
-      - '*.png'
-      - IdentityServer/**
-      - '*.ps1'
-      - '*.yaml'
-      - '*.md'
-      - Diagrams/**
-      - ErabliereAPI.Proxy/**
-      - ErabliereApi/**
-      - ErabliereApi*/**
-      - ErabliereModel/**
+    path:
+      - ErabliereIU/**
   pull_request:
     types: [opened, synchronize, reopened]
-    paths-ignore:
-      - PythonScripts/**
-      - .github/**
-      - Infrastructure/**
-      - Postman/**
-      - .gitignore
-      - '*.png'
-      - IdentityServer/**
-      - '*.ps1'
-      - '*.yaml'
-      - '*.md'
-      - Diagrams/**
-      - ErabliereAPI.Proxy/**
-      - ErabliereApi/**
-      - ErabliereApi*/**
-      - ErabliereModel/**
+    paths:
+      - ErabliereIU/**
   workflow_dispatch:
 
 # List of jobs

@@ -72,9 +72,9 @@ public class DompeuxController : ControllerBase
         {
             if (ddr.HasValue)
             {
-                HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
+                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString());
             }
-            HttpContext.Response.Headers.Add("x-dde", list[^1].T.ToString());
+            HttpContext.Response.Headers.Append("x-dde", list[^1].T.ToString());
         }
 
         return list;

@@ -7,7 +7,7 @@ COPY ErabliereIU/ .
 RUN npm run build:prod
 
 # Build the api
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-api-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-api-env
 WORKDIR /app
 
 COPY ErabliereModel/*.csproj ./ErabliereModel/
@@ -30,7 +30,7 @@ RUN dotnet test ../ErabliereApi.Integration.Test/ErabliereApi.Integration.Test.c
 RUN dotnet publish -c Release -o out
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:7.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 COPY --from=build-api-env /app/ErabliereApi/out ./
 RUN chmod u+x docker-entrypoint.sh

@@ -62,7 +62,7 @@ public class ApiKeyMiddleware : IMiddleware
         else
         {
             context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
-            context.Response.Headers.Add("X-ErabliereApi-ApiKey-Reason", "Something is wrong with the token");
+            context.Response.Headers.Append("X-ErabliereApi-ApiKey-Reason", "Something is wrong with the token");
         }
     }
 }
