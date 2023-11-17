@@ -28,7 +28,7 @@ public static class UseForwardedHeadersExtension
                     string? network = array[i];
                     var ipInfo = network.Split("/");
 
-                    options.KnownNetworks.Add(new IPNetwork(IPAddress.Parse(ipInfo[0]), int.Parse(ipInfo[1])));
+                    options.KnownNetworks.Add(new Microsoft.AspNetCore.HttpOverrides.IPNetwork(IPAddress.Parse(ipInfo[0]), int.Parse(ipInfo[1])));
                 }
             });
         }
