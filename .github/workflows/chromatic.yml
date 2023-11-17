@@ -9,8 +9,6 @@ on:
       - master
     paths:
       - ErabliereIU/**
-    paths-ignore:
-      - Dockerfile
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
