@@ -7,7 +7,7 @@ on:
   push:
     branches:
       - master
-    path:
+    paths:
       - ErabliereIU/**
     paths-ignore:
       - Dockerfile
