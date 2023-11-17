@@ -20,7 +20,6 @@ COPY --from=build-env /app/out ./
 # https://learn.microsoft.com/en-us/aspnet/core/migration/70-80?view=aspnetcore-8.0&tabs=visual-studio#update-docker-portss
 ENV ASPNETCORE_HTTP_PORTS=80
 ENV ASPNETCORE_HTTPS_PORTS=443
-ENV ASPNETCORE_URLS=http://+:80;https://+:
 
 # Expose port
 EXPOSE 443
