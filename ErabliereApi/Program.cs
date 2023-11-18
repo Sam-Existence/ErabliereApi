@@ -12,7 +12,10 @@ await Host.CreateDefaultBuilder(Environment.GetCommandLineArgs())
         webBuilder.UseStartup<Startup>();
         webBuilder.ConfigureKestrel((c, o) =>
         {
-            Console.WriteLine(c.Configuration["ASPNETCORE_ENVIRONMENT"]);
+            Console.WriteLine("ASPNETCORE_ENVIRONMENT: " + c.Configuration["ASPNETCORE_ENVIRONMENT"]);
+            Console.WriteLine("ASPNETCORE_URLS: " + c.Configuration["ASPNETCORE_URLS"]);
+            Console.WriteLine("ASPNETCORE_HTTP_PORT: " + c.Configuration["ASPNETCORE_HTTP_PORT"]);
+            Console.WriteLine("ASPNETCORE_HTTPS_PORT: " + c.Configuration["ASPNETCORE_HTTPS_PORT"]);
 
             try 
             {

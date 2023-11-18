@@ -1,23 +1,4 @@
-import { type Meta, type StoryObj } from '@storybook/angular';
-import { DonneesComponent } from 'src/donnees/donnees.component';
-import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-
-const meta: Meta<DonneesComponent> = {
-  title: 'DonneesComponent',
-  component: DonneesComponent,
-  tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
-  decorators: [
-    ModuleStoryHelper.getErabliereApiStoriesApplicationConfig()
-  ],
-};
-
-export default meta;
-type Story = StoryObj<DonneesComponent>;
-
-const novemberDatas = [
+[
   {
     "id": "d03bdada-3265-465c-05bf-08dac5b248a3",
     "d": "2022-11-13T20:04:33.9515327+00:00",
@@ -14659,45 +14640,3 @@ const novemberDatas = [
     "iddp": null
   }
 ]
-
-export const OneFullMounth: Story = {
-  render: (args: DonneesComponent) => ({
-    props: args,
-  }),
-  args: {
-    erabliereId: 'some-guid',
-    initialErabliere: {
-      afficherTrioDonnees: true,
-    },
-    dateDebutFixRange: '2022-11-01',
-    dateFinFixRange: '2022-11-30',
-    erabliereAfficherTrioDonnees: true,
-    erabliereAfficherSectionDompeux: true,
-    fixRange: true,
-    timeaxes: novemberDatas.map(d => d.d),
-    temperature: [{
-      data: novemberDatas.map(d => d.t),
-      label: 'Temperature',
-      fill: true,
-      pointBackgroundColor: 'rgba(255,255,0,0.8)',
-      pointBorderColor: 'black',
-      tension: 0.5
-    }],
-    vaccium: [{
-      data: novemberDatas.map(d => d.v),
-      label: 'Vaccium',
-      fill: true,
-      pointBackgroundColor: 'rgba(255,255,0,0.8)',
-      pointBorderColor: 'black',
-      tension: 0.5
-    }],
-    niveaubassin: [{
-      data: novemberDatas.map(d => d.nb),
-      label: 'Niveau Bassin',
-      fill: true,
-      pointBackgroundColor: 'rgba(255,255,0,0.8)',
-      pointBorderColor: 'black',
-      tension: 0.5
-    }],
-  }
-};

@@ -62,9 +62,9 @@ public class DonneesCapteurController : ControllerBase
         {
             if (ddr.HasValue)
             {
-                HttpContext.Response.Headers.Add("x-ddr", ddr.Value.ToString());
+                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString());
             }
-            HttpContext.Response.Headers.Add("x-dde", donnees[^1].D.ToString());
+            HttpContext.Response.Headers.Append("x-dde", donnees[^1].D.ToString());
         }
 
         return donnees;

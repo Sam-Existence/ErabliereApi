@@ -225,8 +225,12 @@ export class DonneesComponent implements OnInit {
         let finFiltre = new Date().toISOString();
 
         if (this.fixRange) {
-          debutFiltre = this.dateDebutFixRange;
-          finFiltre = this.dateFinFixRange;
+          if (this.dateDebutFixRange != undefined) {
+            debutFiltre = this.dateDebutFixRange;
+          }
+          if (this.dateFinFixRange != undefined) {
+            finFiltre = this.dateFinFixRange;
+          }
         }
 
         var xddr = null;
@@ -398,8 +402,8 @@ export class DonneesComponent implements OnInit {
     }
 
     fixRange: boolean = false;
-    dateDebutFixRange?: any = undefined
-    dateFinFixRange?: any = undefined
+    dateDebutFixRange?: string = undefined
+    dateFinFixRange?: string = undefined
 
     updateGraphUsingFixRangeCallback($event: any): void {
       this.fixRange = true;
