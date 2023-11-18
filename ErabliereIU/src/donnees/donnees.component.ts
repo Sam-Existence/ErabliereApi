@@ -29,7 +29,7 @@ import { calculerMoyenne } from './util';
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
                            [timeaxes]="timeaxes"
-                           [mean]="meanTemperature"
+                           [mean]="meanVaccium"
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
@@ -39,7 +39,7 @@ import { calculerMoyenne } from './util';
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
                            [timeaxes]="timeaxes" 
-                           [mean]="meanTemperature"
+                           [mean]="meanNiveauBassin"
                            (updateGraphCallback)="updateGraph($event)"
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
@@ -337,9 +337,9 @@ export class DonneesComponent implements OnInit {
             this.niveaubassinGraphPannel?.chart?.update();
 
             if (this.fixRange) {
-              this.meanNiveauBassin = calculerMoyenne(this.niveaubassin[0]);
-              this.meanTemperature = calculerMoyenne(this.temperature[0]);
-              this.meanVaccium = calculerMoyenne(this.vaccium[0]);
+              this.meanTemperature = "Moyenne: " + calculerMoyenne(this.temperature[0]) + " " + this.temperatureSymbole;
+              this.meanVaccium = "Moyenne: " + calculerMoyenne(this.vaccium[0]) + " " + this.vacciumSymbole;
+              this.meanNiveauBassin = "Moyenne: " + calculerMoyenne(this.niveaubassin[0]) + " " + this.niveauBassinSymbole;
             }
             else {
               this.meanNiveauBassin = undefined;
