@@ -34,7 +34,6 @@ export class GraphPannelComponent implements OnInit {
             x: {
                 type: this.lineScaleType,
                 time: {
-                    unit: 'minute',
                     tooltipFormat: 'yyyy-MM-dd HH:mm:ss',
                     displayFormats: {
                         minute: 'dd MMM HH:mm'

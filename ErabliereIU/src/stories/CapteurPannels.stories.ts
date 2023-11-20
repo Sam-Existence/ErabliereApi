@@ -21,4 +21,15 @@ export const Primary: Story = {
   render: (args: CapteurPannelsComponent) => ({
     props: args,
   }),
+  args: {
+    capteurs: [
+      {
+        id: "some-guid",
+        nom: "Temperature",
+        symbole: "°C",
+        afficherCapteurDashboard: true,
+        ajouterDonneeDepuisInterface: false,
+      }
+    ]
+  }
 };
