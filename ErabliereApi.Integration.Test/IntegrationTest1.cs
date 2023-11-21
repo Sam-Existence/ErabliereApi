@@ -1,6 +1,7 @@
 using ErabliereApi.Integration.Test.ApplicationFactory;
 using Microsoft.AspNetCore.Mvc.Testing;
-using System;
+using Shouldly;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Xunit;
@@ -43,18 +44,11 @@ public class IntegrationTest1 : IClassFixture<ErabliereApiApplicationFactory<Sta
 
         using var content = new StringContent("");
 
-        InvalidOperationException? e = null;
+        var response = await client.PostAsync("/Checkout", content);
 
-        try
-        {
-            var response = await client.PostAsync("/Checkout", content);
-        }
-        catch (InvalidOperationException exception)
-        {
-            e = exception;
-        }
-
-        Assert.NotNull(e);
+        response.StatusCode
+            .ShouldBe(HttpStatusCode.InternalServerError, 
+            await response.Content.ReadAsStringAsync());
     }
 
     [Fact]

@@ -4,7 +4,6 @@ using ErabliereApi.Authorization;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.NonHttp;
-using ErabliereApi.Extensions;
 using Microsoft.EntityFrameworkCore;
 using Stripe;
 
@@ -13,8 +12,13 @@ namespace ErabliereApi.Services.Users;
 /// <summary>
 /// Implémentation de <see cref="IUserService" /> selon la logique interne du projet ErabliereApi
 /// </summary>
-public class ErabliereApiUserService : IUserService
+public class UserService : IUserService
 {
+    private readonly ErabliereDbContext _context;
+    private readonly IServiceScopeFactory _scopeFactory;
+    private readonly ApiKeyAuthorizationContext _apiKeyAuthorizationContext;
+    private readonly IConfiguration _config;
+
     /// <summary>
     /// Constructeur par initialisation
     /// </summary>
@@ -22,7 +26,7 @@ public class ErabliereApiUserService : IUserService
     /// <param name="serviceScope"></param>
     /// <param name="apiKeyAuthorizationContext"></param>
     /// <param name="config"></param>
-    public ErabliereApiUserService(
+    public UserService(
         ErabliereDbContext context, 
         IServiceScopeFactory serviceScope, 
         ApiKeyAuthorizationContext apiKeyAuthorizationContext,
@@ -153,8 +157,4 @@ public class ErabliereApiUserService : IUserService
 
         config.CreateMap<CustomerErabliere, CustomerErabliereOwnershipAccess>();
     });
-    private readonly ErabliereDbContext _context;
-    private readonly IServiceScopeFactory _scopeFactory;
-    private readonly ApiKeyAuthorizationContext _apiKeyAuthorizationContext;
-    private readonly IConfiguration _config;
 }

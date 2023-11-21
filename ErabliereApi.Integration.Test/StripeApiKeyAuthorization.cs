@@ -57,9 +57,11 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
             MaxAutomaticRedirections = 7
         });
 
-        var apiKeyService = _factory.Services.GetRequiredService<IApiKeyService>();
+        using var scope = _factory.Services.CreateScope();
 
-        var context = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        var apiKeyService = scope.ServiceProvider.GetRequiredService<IApiKeyService>();
+
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
@@ -94,9 +96,11 @@ public class StripeApiKeyAuthorization : IClassFixture<StripeEnabledApplicationF
             MaxAutomaticRedirections = 7
         });
 
-        var apiKeyService = _factory.Services.GetRequiredService<IApiKeyService>();
+        using var scope = _factory.Services.CreateScope();
 
-        var context = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        var apiKeyService = scope.ServiceProvider.GetRequiredService<IApiKeyService>();
+
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var key = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 
