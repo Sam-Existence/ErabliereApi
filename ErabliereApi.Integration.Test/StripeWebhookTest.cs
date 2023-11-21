@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NSubstitute;
+using Shouldly;
 using System;
 using System.IO;
 using System.Linq;
@@ -93,7 +94,8 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var database = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-        var customer = database.Customers.AsNoTracking().SingleOrDefault(c => c.Email == "john@doe.com");
+        var customer = database.Customers
+            .AsNoTracking().SingleOrDefault(c => c.Email == "john@doe.com");
 
         Assert.Null(customer);
     }
@@ -118,7 +120,9 @@ public class StripeWebhookTest : IClassFixture<StripeEnabledApplicationFactory<S
 
         var response = await client.PostAsync("/Checkout/Webhook", content);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        response.StatusCode.ShouldBe(
+            HttpStatusCode.OK, 
+            await response.Content.ReadAsStringAsync());
     }
 
     public static string GetBody(string step)

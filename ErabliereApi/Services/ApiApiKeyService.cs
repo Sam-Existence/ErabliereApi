@@ -12,12 +12,12 @@ namespace ErabliereApi.Services;
 /// Implémentation de <see cref="IApiKeyService" /> gérant les clé avec la logique interne 
 /// au projet ErabliereApi
 /// </summary>
-public class ErabiereApiApiKeyService : IApiKeyService
+public class ApiApiKeyService : IApiKeyService
 {
     private readonly IServiceScopeFactory _scopeFactory;
     private readonly IEmailService _emailService;
     private readonly EmailConfig _emailConfig;
-    private readonly ILogger<ErabiereApiApiKeyService> _logger;
+    private readonly ILogger<ApiApiKeyService> _logger;
     private readonly IConfiguration _config;
 
     /// <summary>
@@ -28,11 +28,11 @@ public class ErabiereApiApiKeyService : IApiKeyService
     /// <param name="emailConfig"></param>
     /// <param name="logger"></param>
     /// <param name="config"></param>
-    public ErabiereApiApiKeyService(
+    public ApiApiKeyService(
         IServiceScopeFactory scopeFactory, 
         IEmailService emailService, 
         IOptions<EmailConfig> emailConfig,
-        ILogger<ErabiereApiApiKeyService> logger,
+        ILogger<ApiApiKeyService> logger,
         IConfiguration config)
     {
         _scopeFactory = scopeFactory;
@@ -150,35 +150,21 @@ public class ErabiereApiApiKeyService : IApiKeyService
 
     private async Task<ApiKey?> TryGetApiKeyAsync(Expression<Func<ApiKey, bool>> predicat, CancellationToken token)
     {
-        var retryCount = _config.GetValue<int>("ErabliereApiKeyService:TryGetApiKey:TryCount");
-        var milisecondDelay = _config.GetValue<int>("ErabliereApiKeyService:TryGetApiKey:DelayBetweenTryMilliseconds");
-
-        while (retryCount > 0)
+        try
         {
-            try
-            {
-                using (var scope = _scopeFactory.CreateScope())
-                {
-                    var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
+            using var scope = _scopeFactory.CreateScope();
 
-                    var apikey = await context.ApiKeys
-                        .Where(predicat).OrderByDescending(a => a.CreationTime)
-                        .FirstAsync(token);
+            var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
-                    return apikey;
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                if (retryCount == 0)
-                {
-                    throw;
-                }
+            var apikey = await context.ApiKeys
+                .Where(predicat).OrderByDescending(a => a.CreationTime)
+                .FirstAsync(token);
 
-                retryCount--;
-                _logger.LogWarning($"Customer was not found in the database, wait {milisecondDelay / 1000} seconds and retry. RetryLeft: {retryCount}");
-                await Task.Delay(milisecondDelay, token);
-            }
+            return apikey;
+        }
+        catch (InvalidOperationException)
+        {
+            _logger.LogWarning($"Customer was not found in the database");
         }
 
         return null;

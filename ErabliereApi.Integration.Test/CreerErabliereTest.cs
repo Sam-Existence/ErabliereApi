@@ -6,6 +6,8 @@ using ErabliereApi.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shouldly;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -36,7 +38,8 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
             MaxAutomaticRedirections = 7
         });
 
-        const string nomErabliere = "ErabliereAnonyme";
+        // EA: ErabliereAnnonyme
+        string nomErabliere = $"EA-{Guid.NewGuid()}";
 
         using var content = new StringContent(JsonSerializer.Serialize(new PostErabliere
         {
@@ -51,7 +54,9 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
 
         var response = await client.PostAsync("/Erablieres", content);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        response.StatusCode
+            .ShouldBe(HttpStatusCode.OK,
+                      customMessage: await response.Content.ReadAsStringAsync());
 
         // Vérification BD
         await VerificationBd(response, nomErabliere, isPublic: true, apiKey: null);
@@ -71,7 +76,7 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
 
         client.DefaultRequestHeaders.Add("X-ErabliereApi-ApiKey", apiKey);
 
-        const string nomErabliere = "ErabliereApiKey";
+        string nomErabliere = $"EA-{Guid.NewGuid()}";
 
         using var content = new StringContent(JsonSerializer.Serialize(new PostErabliere
         {
@@ -85,7 +90,9 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
 
         var response = await client.PostAsync("/Erablieres", content);
 
-        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        response.StatusCode.ShouldBe(
+            HttpStatusCode.OK, 
+            await response.Content.ReadAsStringAsync());
 
         // Vérification BD
         await VerificationBd(response, nomErabliere, isPublic: false, apiKey: apiKey);
@@ -110,53 +117,52 @@ public class CreerErabliereTest : IClassFixture<StripeEnabledApplicationFactory<
                                       bool isPublic,
                                       string? apiKey)
     {
-        var context = _factory.Services.GetRequiredService<ErabliereDbContext>();
+        using var scope = _factory.Services.CreateScope();
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
         var erabliere = await context.Erabliere.FirstOrDefaultAsync(e => e.Nom == nomErabliere);
         Assert.NotNull(erabliere);
-        if (erabliere != null)
+
+        Assert.Equal(nomErabliere, erabliere.Nom);
+        Assert.True(erabliere.AfficherSectionBaril);
+        Assert.True(erabliere.AfficherSectionDompeux);
+        Assert.True(erabliere.AfficherTrioDonnees);
+        Assert.Equal(0, erabliere.IndiceOrdre);
+        Assert.Equal("-", erabliere.IpRule);
+
+        // Valider si l'érablière est publique
+        if (isPublic)
         {
-            Assert.Equal(nomErabliere, erabliere.Nom);
-            Assert.True(erabliere.AfficherSectionBaril);
-            Assert.True(erabliere.AfficherSectionDompeux);
-            Assert.True(erabliere.AfficherTrioDonnees);
-            Assert.Equal(0, erabliere.IndiceOrdre);
-            Assert.Equal("-", erabliere.IpRule);
+            Assert.True(erabliere.IsPublic, "L'érablière doit avoir un status publique lorsque créer par un utilisateur non authentifié");
+        }
+        else
+        {
+            Assert.False(erabliere.IsPublic, "L'erabliere ne doit pas avoir le status publique lorsque créé par un utilisateur authentifié");
 
-            // Valider si l'érablière est publique
-            if (isPublic)
+            if (apiKey != null)
             {
-                Assert.True(erabliere.IsPublic, "L'érablière doit avoir un status publique lorsque créer par un utilisateur non authentifié");
+                var apiKeyService = scope.ServiceProvider.GetRequiredService<IApiKeyService>();
+
+                var hashApiKey = apiKeyService.HashApiKey(apiKey);
+
+                var customerId = context.ApiKeys.Single(a => a.Key == hashApiKey).CustomerId;
+
+                var ownership = context.CustomerErablieres.Where(ce => ce.IdErabliere == erabliere.Id &&
+                                                                       ce.IdCustomer == customerId).ToArray();
+
+                Assert.Single(ownership);
+                Assert.Equal(15, ownership[0].Access);
             }
-            else
-            {
-                Assert.False(erabliere.IsPublic, "L'erabliere ne doit pas avoir le status publique lorsque créé par un utilisateur authentifié");
+        }
 
-                if (apiKey != null)
-                {
-                    var apiKeyService = _factory.Services.GetRequiredService<IApiKeyService>();
-
-                    var hashApiKey = apiKeyService.HashApiKey(apiKey);
-
-                    var customerId = context.ApiKeys.Single(a => a.Key == hashApiKey).CustomerId;
-
-                    var ownership = context.CustomerErablieres.Where(ce => ce.IdErabliere == erabliere.Id &&
-                                                                           ce.IdCustomer == customerId).ToArray();
-
-                    Assert.Single(ownership);
-                    Assert.Equal(15, ownership[0].Access);
-                }
-            }
-
-            // Déserialiser la réponse et valider l'id
-            var erabliereResponse = JsonSerializer.Deserialize<Erabliere>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
-            Assert.NotNull(erabliereResponse);
-            if (erabliereResponse != null)
-            {
-                Assert.Equal(erabliere.Id, erabliereResponse.Id);
-            }
+        // Déserialiser la réponse et valider l'id
+        var erabliereResponse = JsonSerializer.Deserialize<Erabliere>(await response.Content.ReadAsStringAsync(), new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true
+        });
+        Assert.NotNull(erabliereResponse);
+        if (erabliereResponse != null)
+        {
+            Assert.Equal(erabliere.Id, erabliereResponse.Id);
         }
     }
 }

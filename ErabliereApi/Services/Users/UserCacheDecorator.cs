@@ -10,7 +10,7 @@ namespace ErabliereApi.Services.Users;
 /// <summary>
 /// Décorateur pour le cache de l'utilisateur
 /// </summary>
-public class ErabliereApiUserCacheDecorator : IUserService
+public class UserCacheDecorator : IUserService
 {
     private readonly IUserService _userService;
     private readonly IDistributedCache _cache;
@@ -20,7 +20,7 @@ public class ErabliereApiUserCacheDecorator : IUserService
     /// <summary>
     /// Constructeur
     /// </summary>
-    public ErabliereApiUserCacheDecorator(
+    public UserCacheDecorator(
         IUserService userService, 
         IDistributedCache cache, 
         IServiceScopeFactory scopeFactory,
@@ -80,7 +80,7 @@ public class ErabliereApiUserCacheDecorator : IUserService
                 }
                 catch (Exception e) 
                 {
-                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<ErabliereApiUserCacheDecorator>>();
+                    var logger = scope.ServiceProvider.GetRequiredService<ILogger<UserCacheDecorator>>();
 
                     logger.LogWarning($"CustomerWithAccess {uniqueName} cannot be set in cache, error: {e.Message}");
                     logger.LogDebug(JsonSerializer.Serialize(customerWithAccess));
@@ -90,7 +90,7 @@ public class ErabliereApiUserCacheDecorator : IUserService
         else 
         {
             // Log that the CustomerWithAccess was found in cache
-            var logger = scope.ServiceProvider.GetRequiredService<ILogger<ErabliereApiUserCacheDecorator>>();
+            var logger = scope.ServiceProvider.GetRequiredService<ILogger<UserCacheDecorator>>();
 
             logger.LogDebug($"CustomerWithAccess {uniqueName} was found in cache");
         }

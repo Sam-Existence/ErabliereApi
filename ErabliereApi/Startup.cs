@@ -88,8 +88,8 @@ public class Startup
         services.AddErabliereAPIForwardedHeaders(Configuration);
 
         // Authentication
-        services.AddTransient<IUserService, ErabliereApiUserService>()
-                .Decorate<IUserService, ErabliereApiUserCacheDecorator>()
+        services.AddTransient<IUserService, UserService>()
+                .Decorate<IUserService, UserCacheDecorator>()
                 .AddHttpContextAccessor();
         if (Configuration.IsAuthEnabled())
         {
@@ -230,7 +230,7 @@ public class Startup
             });
 
             services.AddTransient<ICheckoutService, StripeCheckoutService>()
-                    .AddTransient<IApiKeyService, ErabiereApiApiKeyService>()
+                    .AddTransient<IApiKeyService, ApiApiKeyService>()
                     .AddTransient<ApiKeyMiddleware>();
 
             // Authorization
@@ -330,8 +330,13 @@ public class Startup
     /// <summary>
     /// Configure
     /// </summary>
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider, ILogger<Startup> logger)
+    public void Configure(
+        IApplicationBuilder app, 
+        IWebHostEnvironment env, 
+        IServiceProvider serviceProvider)
     {
+        var logger = serviceProvider.GetRequiredService<ILogger<Startup>>();
+
         if (string.Equals(Configuration["USE_SQL"], TrueString, OrdinalIgnoreCase) &&
             string.Equals(Configuration["SQL_USE_STARTUP_MIGRATION"], TrueString, OrdinalIgnoreCase))
         {

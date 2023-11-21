@@ -14,6 +14,7 @@ using Microsoft.Extensions.Logging;
 using NSubstitute;
 using Stripe;
 using System;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
@@ -24,17 +25,25 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.ConfigureAppConfiguration(webBuilder =>
-        {
-            webBuilder.AddCommandLine(new[]
-            {
-                "Stripe.ApiKey=abcd",
-                "StripeUsageReccord.SkipRecord=true",
-                "ErabliereApiUserService.TestMode=true"
-            });
-        });
-
         base.ConfigureWebHost(builder);
+
+        var config = new Dictionary<string, string>
+        {
+            { "Stripe.ApiKey", "abcd" },
+            { "StripeUsageReccord.SkipRecord", "true" },
+            { "ErabliereApiUserService.TestMode", "true" },
+            { "USE_SQL", "false" }
+        };
+
+        var configuration = new ConfigurationBuilder()
+            .AddInMemoryCollection(config)
+            .Build();
+
+        builder.UseConfiguration(configuration)
+               .ConfigureAppConfiguration(app =>
+               {
+                   app.AddInMemoryCollection(config);
+               });
 
         builder.ConfigureServices((webContext, services) =>
         {
@@ -48,7 +57,7 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
             });
 
             services.RemoveAll<IEmailService>();
-            services.TryAddScoped(sp =>
+            services.TryAddSingleton(sp =>
             {
                 return Substitute.For<IEmailService>();
             });
@@ -98,9 +107,10 @@ public class StripeEnabledApplicationFactory<TStartup> : ErabliereApiApplication
     /// <returns>La clé d'api créer pouvant être ajouter en entête lors des appels http</returns>
     public async Task<(Donnees.Customer, string)> CreateValidApiKeyAsync()
     {
-        var apiKeyService = Services.GetRequiredService<IApiKeyService>();
-        var userService = Services.GetRequiredService<IUserService>();
-        var context = Services.GetRequiredService<ErabliereDbContext>();
+        using var scope = Services.CreateScope();
+        var apiKeyService = scope.ServiceProvider.GetRequiredService<IApiKeyService>();
+        var userService = scope.ServiceProvider.GetRequiredService<IUserService>();
+        var context = scope.ServiceProvider.GetRequiredService<ErabliereDbContext>();
 
         var customer = ErabliereFixture.CreerFixture().Create<Donnees.Customer>();
 
