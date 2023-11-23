@@ -13,7 +13,7 @@ if os.path.isfile(apiKeyFilePath):
     with open(apiKeyFilePath, 'r') as f:
         apiKey = f.read()
 
-url = "http://dataservice.accuweather.com/currentconditions/v1/1365711?apikey=" + apiKey + "&language=fr&_=" + locationKey
+url = "http://dataservice.accuweather.com/currentconditions/v1/" + locationKey + "?apikey=" + apiKey + "&language=fr"
 
 print("Requesting " + url)
 response = requests.get(url)
