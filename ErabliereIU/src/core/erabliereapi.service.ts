@@ -256,6 +256,12 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere, { headers: headers, body: erabliere }).toPromise();
     }
 
+    async getWeatherForecast(idErabliere:any): Promise<any[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<any[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/WeatherForecast", { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
     async startCheckoutSession(): Promise<any> {
         return await this._httpClient.post<any>(this._environmentService.apiUrl + "/Checkout", {}, {}).toPromise();
     }

@@ -35,6 +35,12 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     public int? IndiceOrdre { get; set; }
 
     /// <summary>
+    /// Code postal, utiliser pour les fonctions de prédiction météo
+    /// </summary>
+    [MaxLength(30)]
+    public string? CodePostal { get; set; }
+
+    /// <summary>
     /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
     /// </summary>
     public bool? AfficherSectionBaril { get; set; }
