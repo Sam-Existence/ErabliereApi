@@ -5,24 +5,27 @@ import { BarilsComponent } from "../barils/barils.component";
 import { CapteurPannelsComponent } from "../donnees/sub-panel/capteur-pannels.component";
 import { DonneesComponent } from "../donnees/donnees.component";
 import { NgIf } from "@angular/common";
+import { WeatherForecastComponent } from "src/donnees/weatherforecast.component";
 
 @Component({
     selector: 'graphique',
     template: `
-        <div>
-            <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
-                           [initialErabliere]="erabliere"
-                           [erabliereSubject]="resetErabliere"></donnees-panel>
-            <capteur-pannels [capteurs]="erabliere?.capteurs"></capteur-pannels>
-            <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
-                          [erabliereId]="erabliere?.id"></barils-panel>
+        <div class="container">
+            <div class="row">
+                <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
+                            [initialErabliere]="erabliere"
+                            [erabliereSubject]="resetErabliere"></donnees-panel>
+                <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
+                <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
+                            [erabliereId]="erabliere?.id"></barils-panel>
+            </div>
         </div>
     `,
     standalone: true,
     imports: [NgIf, DonneesComponent, CapteurPannelsComponent, BarilsComponent]
 })
 export class GraphiqueComponent implements OnChanges {
-    
+   
     @Input() erabliere?:Erabliere
 
     resetErabliere: Subject<Erabliere> = new Subject<Erabliere>();
@@ -34,5 +37,11 @@ export class GraphiqueComponent implements OnChanges {
     resetChildForm(){
         if (this.erabliere != null)
             this.resetErabliere.next(this.erabliere);
+    }
+
+    notNullOrWitespace(arg0?: string): any {
+        if (arg0 == null)
+            return false;
+        return arg0.trim().length > 0;
     }
 }

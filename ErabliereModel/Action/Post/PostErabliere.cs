@@ -33,6 +33,12 @@ namespace ErabliereApi.Donnees.Action.Post
         public int? IndiceOrdre { get; set; }
 
         /// <summary>
+        /// Code postal, utilisé pour les prédictions météo
+        /// </summary>
+        [MaxLength(30)]
+        public string? CodePostal { get; set; }
+
+        /// <summary>
         /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
         /// </summary>
         public bool? AfficherSectionBaril { get; set; }

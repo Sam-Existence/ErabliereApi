@@ -325,6 +325,9 @@ public class Startup
         {
             services.AddSingleton<ChaosEngineeringMiddleware>();
         }
+
+        // Weather Service
+        services.AddTransient<WeatherService>();
     }
 
     /// <summary>

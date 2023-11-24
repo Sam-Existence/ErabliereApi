@@ -5,6 +5,7 @@ export class Erabliere {
     nom?: string;
     ipRule?: string;
     indiceOrdre?: number;
+    codePostal?: string;
     isPublic?: boolean;
     afficherSectionBaril?: boolean;
     afficherTrioDonnees?: boolean;

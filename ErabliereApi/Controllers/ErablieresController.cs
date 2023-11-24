@@ -129,7 +129,7 @@ public class ErablieresController : ControllerBase
     [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
     public async Task<IActionResult> CustomersAccess(Guid id, CancellationToken token)
     {
-        var erabliere = await _context.Erabliere.FindAsync(new object?[] { id }, cancellationToken: token);
+        var erabliere = await _context.Erabliere.FindAsync([id], cancellationToken: token);
 
         if (erabliere == null)
         {
@@ -166,7 +166,7 @@ public class ErablieresController : ControllerBase
             return BadRequest($"L'érablière nommé '{postErabliere.Nom}' existe déjà");
         }
         if (postErabliere.Id != null &&
-            (await _context.Erabliere.FindAsync(new object? [] { postErabliere.Id }, token)) != null) {
+            (await _context.Erabliere.FindAsync([postErabliere.Id], token)) != null) {
                 
             return Conflict($"L'érablière avec l'id '{postErabliere.Id}' existe déjà");
         }
@@ -289,6 +289,11 @@ public class ErablieresController : ControllerBase
         if (erabliere.IndiceOrdre.HasValue)
         {
             entity.IndiceOrdre = erabliere.IndiceOrdre;
+        }
+
+        if (erabliere.CodePostal != null)
+        {
+            entity.CodePostal = erabliere.CodePostal;
         }
 
         if (erabliere.AfficherSectionBaril.HasValue)

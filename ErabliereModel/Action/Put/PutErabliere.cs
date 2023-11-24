@@ -32,6 +32,11 @@ public class PutErabliere
     public int? IndiceOrdre { get; set; }
 
     /// <summary>
+    /// Code postal utilisé pour les prédictions météo
+    /// </summary>
+    public string? CodePostal { get; set; }
+
+    /// <summary>
     /// Indicateur permettant de déterminer si la section des barils sera utiliser par l'érablière
     /// </summary>
     public bool? AfficherSectionBaril { get; set; }
