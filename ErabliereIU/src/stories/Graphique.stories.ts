@@ -30,3 +30,35 @@ export const Primary: Story = {
     }
   }
 };
+
+export const WeatherForecast = {
+  render: (args: GraphiqueComponent) => ({
+    props: args,
+  }),
+  args: {
+    erabliere: {
+      codePostal: 'G3B 2S6'
+    }
+  }
+};
+
+export const AllGraph = {
+  render: (args: GraphiqueComponent) => ({
+    props: args,
+  }),
+  args: {
+    erabliere: {
+      codePostal: 'G3B 2S6',
+      afficherTrioDonnees: true,
+      afficherSectionDompeux: true,
+      capteurs: [
+        {
+          id: "some-guid",
+          nom: "Capteur 1",
+          type:"vitesse vent",
+          symbole: "km/h",
+        }
+      ],
+    }
+  }
+};

@@ -10,7 +10,7 @@ import { WeatherForecastComponent } from "src/donnees/weatherforecast.component"
 @Component({
     selector: 'graphique',
     template: `
-        <div class="container">
+
             <div class="row">
                 <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
                             [initialErabliere]="erabliere"
@@ -19,7 +19,7 @@ import { WeatherForecastComponent } from "src/donnees/weatherforecast.component"
                 <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
                             [erabliereId]="erabliere?.id"></barils-panel>
             </div>
-        </div>
+
     `,
     standalone: true,
     imports: [NgIf, DonneesComponent, CapteurPannelsComponent, BarilsComponent]
