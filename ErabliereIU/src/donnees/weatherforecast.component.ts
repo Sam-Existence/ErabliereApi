@@ -1,6 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Chart } from 'chart.js';
+import { BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { WeatherForecase } from 'src/model/weatherforecast';
+import { notNullOrWitespace } from './util';
 
 @Component({
   selector: 'weather-forecast',
@@ -8,9 +11,21 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
     <div>
         <div id="graph-pannel-weather-forecast" class="border-top">
             <h3>Prévision 5 jours</h3>
-            <div class="chart-wrapper">
-                <canvas id="weatherChart" width="400" height="200"></canvas>
+            <span>{{ text }}</span>
+            @if (notNullOrWhitespace(error)){
+                <div class="alert alert-danger" role="alert">
+                    {{error}}
+                </div>
+            }
+            @else {
+              <div class="chart-wrapper">
+                <canvas 
+                  id="weatherChart" 
+                  class="chart">
+                </canvas>
             </div>
+            }
+            
         </div>
     </div>
   `,
@@ -19,19 +34,40 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 export class 
 WeatherForecastComponent implements OnInit {
   chart: any;
-  weatherData?: any;
+  @Input() weatherData?: WeatherForecase;
+  text?: string;
+  error: any;
   @Input() idErabliere: any;
+  interval?: NodeJS.Timeout;
 
   constructor(private api: ErabliereApi) { }
 
   ngOnInit() {
-    this.getWeatherData();
+    if (notNullOrWitespace(this.idErabliere)) {
+        this.getWeatherData();
+        this.interval = setInterval(() => {
+            this.getWeatherData();
+        }, 1000 * 60 * 60);
+        return;
+    }
+    else {
+      this.createChart();
+    }
+  }
+
+  ngOnDestroy() {
+    clearInterval(this.interval);
   }
 
   getWeatherData() {
-    this.api.getWeatherForecast(this.idErabliere).then((data: any) => {
+    this.api.getWeatherForecast(this.idErabliere).then((data: WeatherForecase) => {
       this.weatherData = data;
+      this.error = null;
       this.createChart();
+    }).catch((error: any) => {
+      console.log(error);
+      this.error = error;
+      this.weatherData = undefined;
     });
   }
 
@@ -43,10 +79,21 @@ WeatherForecastComponent implements OnInit {
     if (this.weatherData == null) {
         return;
     }
-    const dataF = this.weatherData.DailyForecasts as Array<any>;
-    const dates = dataF.map(entry => entry.Date);
-    const minTemperatures = dataF.map(entry => this.convertToCelsius(entry.Temperature.Minimum.Value));
-    const maxTemperatures = dataF.map(entry => this.convertToCelsius(entry.Temperature.Maximum.Value));
+    
+    this.text = this.weatherData.Headline?.Text;
+
+    const dataF = this.weatherData.DailyForecasts;
+    const dates = dataF?.map(entry => entry.Date);
+    const minTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Minimum.Value));
+    const maxTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Maximum.Value));
+
+    if (this.chart != null) {
+      try {
+        this.chart.destroy();
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
     this.chart = new Chart('weatherChart', {
       type: 'line',
@@ -72,20 +119,12 @@ WeatherForecastComponent implements OnInit {
         aspectRatio: 1.7,
         scales: {
           x: {
-            display: true,
-            title: {
-              display: true,
-              text: 'Date'
-            },
+            type: 'time',
             time: {
-                tooltipFormat: 'yyyy-MM-dd HH:mm:ss',
-                displayFormats: {
-                    day: 'DD MMM'
-                }
+              unit: 'day'
             }
           },
           y: {
-            display: true,
             title: {
               display: true,
               text: 'Temperature (°C)'
@@ -94,5 +133,9 @@ WeatherForecastComponent implements OnInit {
         }
       }
     });
+  }
+
+  notNullOrWhitespace(arg0: any) {
+    return notNullOrWitespace(arg0);
   }
 }

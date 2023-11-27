@@ -14,3 +14,10 @@ export const calculerMoyenne = (data: ChartDataset) => {
 
     return mean.toFixed(1);
 }
+
+
+export const notNullOrWitespace = (arg0?: string) => {
+    if (arg0 == null)
+        return false;
+    return arg0.trim().length > 0;
+  }

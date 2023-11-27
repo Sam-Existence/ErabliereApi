@@ -19,6 +19,7 @@ import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
 import { Note } from 'src/model/note';
 import { PutCapteur } from 'src/model/putCapteur';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
+import { WeatherForecase } from 'src/model/weatherforecast';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -256,10 +257,10 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere, { headers: headers, body: erabliere }).toPromise();
     }
 
-    async getWeatherForecast(idErabliere:any): Promise<any[]> {
+    async getWeatherForecast(idErabliere:any): Promise<WeatherForecase> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<any[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/WeatherForecast", { headers: headers }).toPromise();
-        return rtn ?? [];
+        const rtn = await this._httpClient.get<WeatherForecase>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/WeatherForecast", { headers: headers }).toPromise();
+        return rtn ?? new WeatherForecase();
     }
 
     async startCheckoutSession(): Promise<any> {

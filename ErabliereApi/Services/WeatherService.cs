@@ -10,6 +10,7 @@ public class WeatherService
     private readonly IDistributedCache _cache;
     private readonly ILogger<WeatherService> _logger;
     private readonly string? AccuWeatherApiKey;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
     /// <summary>
     /// Constructeur
@@ -17,12 +18,14 @@ public class WeatherService
     public WeatherService(
         IDistributedCache memoryCache,
         ILogger<WeatherService> logger,
-        IConfiguration configuration)
+        IConfiguration configuration,
+        IHttpContextAccessor httpContextAccessor)
     {
         _httpClient = new HttpClient();
         _cache = memoryCache;
         _logger = logger;
         AccuWeatherApiKey = configuration["AccuWeatherApiKey"];
+        _httpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
@@ -67,7 +70,7 @@ public class WeatherService
     /// <summary>
     /// Obtenir les prévisions météo à partir d'un code de localisation
     /// </summary>
-    public async ValueTask<object?> GetWeatherForecastAsync(string location)
+    public async ValueTask<object?> GetWeatherForecastAsync(string location, string lang)
     {
         var cacheKey = $"WeatherService.GetWeatherForecast.{location}";
         var cacheValue = await _cache.GetStringAsync(cacheKey);
@@ -79,10 +82,18 @@ public class WeatherService
 
         try
         {
-            string url = $"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location}?apikey={AccuWeatherApiKey}";
+            string url = 
+$"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location}?apikey={AccuWeatherApiKey}&language={lang}";
 
             HttpResponseMessage response = await _httpClient.GetAsync(url);
             response.EnsureSuccessStatusCode();
+
+            if (response.Headers.TryGetValues("RateLimit-Remaining", out var vals))
+            {
+                var httpContext = _httpContextAccessor.HttpContext;
+
+                httpContext?.Response.Headers.Append("X-ErabliereApi-AccuWeather-RateLimit-Remaining", vals.FirstOrDefault());
+            }
 
             var responseBody = await response.Content.ReadAsStringAsync();
 

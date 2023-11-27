@@ -28,13 +28,14 @@ public class WeatherForecastController
     /// Obtenir les prévisions météo pour une érablière
     /// </summary>
     /// <param name="id">Identifiant de l'érablière</param>
+    /// <param name="lang">Paramètre de langue, fr-ca par défaut.</param>
     /// <returns>Prévisions météo</returns>
     /// <response code="200">Prévisions météo</response>
     /// <response code="401">Non autorisé</response>
     /// <response code="404">Érablière non trouvée</response>
     /// <response code="500">Erreur interne du serveur</response>
     [HttpGet]
-    public async Task<IActionResult> GetWeatherForecast(Guid id)
+    public async Task<IActionResult> GetWeatherForecast(Guid id, string lang = "fr-ca")
     {
         // Résoudre l'érablière
         var erabliere = await _context.Erabliere.FindAsync(id);
@@ -57,7 +58,7 @@ public class WeatherForecastController
             return new BadRequestObjectResult("Impossible de trouver le code de localisation");
         }
 
-        var weatherForecast = await _weatherService.GetWeatherForecastAsync(locationCode);
+        var weatherForecast = await _weatherService.GetWeatherForecastAsync(locationCode, lang);
 
         if (weatherForecast == null)
         {

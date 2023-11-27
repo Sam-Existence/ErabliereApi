@@ -7,7 +7,7 @@ import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
 import { NgIf } from '@angular/common';
-import { calculerMoyenne } from './util';
+import { calculerMoyenne, notNullOrWitespace } from './util';
 import { WeatherForecastComponent } from './weatherforecast.component';
 
 @Component({
@@ -418,8 +418,6 @@ export class DonneesComponent implements OnInit {
   }
 
   notNullOrWitespace(arg0?: string): any {
-    if (arg0 == null)
-        return false;
-    return arg0.trim().length > 0;
+    return notNullOrWitespace(arg0);
   }
 }
