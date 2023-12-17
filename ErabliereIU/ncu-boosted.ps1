@@ -15,8 +15,12 @@ Write-Host "filteredOutput:" $filteredOutput
 $releaseNotes = $filteredOutput | ForEach-Object {
     Write-Host "Fetching release notes for $_"
     $packageName = ($_ -split " ")[0]
-    $releaseNote = Invoke-WebRequest -Uri "https://api.npms.io/v2/package/$packageName" | ConvertFrom-Json
-    $packageName, $releaseNote.collected.metadata.release
+    
+    # Fetch the release notes for the package using the github api
+    $releaseNote = Invoke-RestMethod -Uri "https://api.github.com/repos/$packageName/releases/latest" -Method Get
+
+    # Return the package name and the release notes
+    return "$packageName, " + $releaseNote.collected.metadata.release
 }
 
 # Print the release notes
