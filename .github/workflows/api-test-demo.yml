@@ -14,8 +14,9 @@ env:
   EXAMPLE: exemple
 
 jobs:
-  azure_login:
+  run_tests:
     runs-on: ubuntu-latest
+
     steps:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
         uses: azure/login@v1
@@ -23,21 +24,12 @@ jobs:
           creds: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
           enable-AzPSSession: true
 
-  reboot_webapp:
-    needs: azure_login
-    runs-on: ubuntu-latest
-    steps:
       - uses: actions/checkout@v2
       - name: Reboot the webapp
         run: |
           az webapp restart --name erabliereapi-demo --resource-group erabliereapi-demo
           sleep 35
 
-  run_newman_tests:
-    needs: reboot_webapp
-    runs-on: ubuntu-latest
-
-    steps:
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
         with:
@@ -45,11 +37,6 @@ jobs:
           environment: Postman/ErabliereAPI-Demo.postman_environment.json
           reporters: '["cli","junit"]'
 
-  run_cypress_tests:
-    needs: run_newman_tests
-    runs-on: ubuntu-latest
-
-    steps:
       - name: Install node
         uses: actions/setup-node@v2
         with:
