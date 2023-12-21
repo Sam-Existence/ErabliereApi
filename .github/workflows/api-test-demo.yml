@@ -34,6 +34,7 @@ jobs:
           sleep 35
 
   run_newman_tests:
+    needs: reboot_webapp
     runs-on: ubuntu-latest
 
     steps:
@@ -45,6 +46,7 @@ jobs:
           reporters: '["cli","junit"]'
 
   run_cypress_tests:
+    needs: run_newman_tests
     runs-on: ubuntu-latest
 
     steps:
