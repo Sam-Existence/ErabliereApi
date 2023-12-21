@@ -64,7 +64,7 @@ export class NotesPage {
         // get the first note of the page and check its description
         return cy.get("note").first().then(noteComponent => {
             cy.wrap(noteComponent)
-                .find('h4[class="mt-4"]')
+                .find('h4[class="card-header"]')
                 .then(text => {
                     return text;
                 }
