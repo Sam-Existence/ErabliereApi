@@ -1,3 +1,12 @@
+# Parse the first args as the api key
+
+param(
+    [Parameter(Mandatory=$true)]
+    [string]$apiKey
+)
+
+$headers = @{ "X-Key"= $apiKey }
+
 # Run the ncu command and store the output in a variable
 $ncuOutput = ncu --format lines
 
@@ -11,17 +20,24 @@ $filteredOutput = $ncuOutput | Where-Object { $_ -notlike "*typescript*" }
 
 Write-Host "filteredOutput:" $filteredOutput
 
+Invoke-WebRequest -Uri "https://api.newreleases.io/v1/projects" -Headers $headers
+
 # Fetch the release notes for the packages that can be updated
-$releaseNotes = $filteredOutput | ForEach-Object {
-    Write-Host "Fetching release notes for $_"
-    $packageName = ($_ -split " ")[0]
-    
-    # Fetch the release notes for the package using the github api
-    $releaseNote = Invoke-RestMethod -Uri "https://api.github.com/repos/$packageName/releases/latest" -Method Get
+foreach ($line in $filteredOutput) {
+    Write-Host "line:" $line
 
-    # Return the package name and the release notes
-    return "$packageName, " + $releaseNote.collected.metadata.release
+    # split the line by the @ character
+    $name = ($line -split "@")[0]
+
+    # use an api to get the release notes
+    $url = "https://api.newreleases.io/v1/project/$name/$name"
+
+    # print the url
+    Write-Host $url
+
+    # fetch the release notes using the url and apiKey
+    $releaseNotes = Invoke-WebRequest -Uri $url -Headers $headers | ConvertFrom-Json
+
+    # print release notes
+    Write-Host $releaseNotes.collected.metadata.releaseNotes
 }
-
-# Print the release notes
-$releaseNotes
