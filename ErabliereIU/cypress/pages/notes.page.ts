@@ -48,18 +48,6 @@ export class NotesPage {
         return this;
     }
 
-    getNoteDescription(): Cypress.Chainable<JQuery<HTMLElement>> {
-        // get the first note of the page and check its description
-        return cy.get("note").first().then(noteComponent => {
-            cy.wrap(noteComponent)
-                .find('p[class="noteDescription"]')
-                .then(text => {
-                    return text;
-                }
-            );
-        });
-    }
-
     getNoteTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
         // get the first note of the page and check its description
         return cy.get("note").first().then(noteComponent => {
@@ -72,11 +60,23 @@ export class NotesPage {
         });
     }
 
+    getNoteDescription(): Cypress.Chainable<JQuery<HTMLElement>> {
+        // get the first note of the page and check its description
+        return cy.get("note").first().then(noteComponent => {
+            cy.wrap(noteComponent)
+                .find('p[class="noteDescription card-text"]')
+                .then(text => {
+                    return text;
+                }
+            );
+        });
+    }
+
     getNoteDate(): Cypress.Chainable<JQuery<HTMLElement>> {
         // get the first note of the page and check its date
         return cy.get("note").first().then(noteComponent => {
             cy.wrap(noteComponent)
-                .find('p[class="noteDate"]')
+                .find('p[class="noteDate card-text"]')
                 .then(text => {
                     return text;
                 }
