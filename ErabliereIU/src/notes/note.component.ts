@@ -6,31 +6,25 @@ import { NgIf } from '@angular/common';
 @Component({
     selector: 'note',
     template: `
-        <div id="note-{{ note.id }}">
-            <div class="row">
-                <div class="col-md-4">
-                    <h4 class="mt-4">{{ note.title }}</h4>
-                </div>
+        <div id="note-{{ note.id }}" class="card mt-3">
+            <h4 class="card-header">{{ note.title }}</h4>
 
-                <div class="col-md-8">
-                    <button class="btn btn-danger btn-sm" (click)="deleteNote()">Supprimer</button>
-                </div>
+            <div class="card-body">
+                <p class="noteDescription card-text">{{ note.text }}</p>
+
+                <p *ngIf="note.fileExtension == 'csv'" class="card-text">{{ note.decodedTextFile }}</p>
+
+                <p class="noteDate card-text"><small class="text-muted">{{ note.noteDate }}</small></p>
+
+                <button class="btn btn-danger btn-sm" (click)="deleteNote()">Supprimer</button>
             </div>
 
-            <div class="row">
-                <p class="noteDate">{{ note.noteDate }}</p>
-            </div>
-
-            <div class="row">
-                <p class="noteDescription">{{ note.text }}</p>
-            </div>
-
-            <div *ngIf="note.fileExtension == 'csv'">
-                <p>{{ note.decodedTextFile }}</p>
-            </div>
-
-            <div *ngIf="note.fileExtension != 'csv'" class="row">
-                <img *ngIf="note.file != ''" style="max-width: 25%;" src="data:image/png;base64,{{ note.file }}" />
+            <div *ngIf="note.fileExtension != 'csv'">
+                <img 
+                    *ngIf="note.file != ''" 
+                    class="card-img-bottom"
+                    style="max-width: 50%;" 
+                    src="data:image/png;base64,{{ note.file }}" />
             </div>
         </div>
     `,
@@ -39,7 +33,7 @@ import { NgIf } from '@angular/common';
 })
 
 export class NoteComponent implements OnInit {
-    constructor(private _api: ErabliereApi) { 
+    constructor(private _api: ErabliereApi) {
         this.note = new Note();
     }
 

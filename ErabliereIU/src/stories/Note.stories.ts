@@ -21,4 +21,17 @@ export const Primary: Story = {
   render: (args: NoteComponent) => ({
     props: args,
   }),
+  args: {
+    note: {
+      id: 1,
+      idErabliere: 1,
+      title: 'Test',
+      text: 'Test',
+      noteDate: '2021-01-01',
+      file: '',
+      fileExtension: '',
+      decodedTextFile: ''
+    }
+  }
 };
+

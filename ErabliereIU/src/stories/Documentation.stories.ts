@@ -22,3 +22,29 @@ export const Primary: Story = {
     props: args,
   }),
 };
+
+export const WithData: Story = {
+  render: (args: DocumentationComponent) => ({
+    props: args,
+  }),
+  args: {
+    documentations: [
+      {
+        id: 1,
+        idErabliere: 1,
+        title: 'Test',
+        text: 'Test',
+        file: '',
+        fileExtension: ''
+      },
+      {
+        id: 2,
+        idErabliere: 1,
+        title: 'Test',
+        text: 'Test',
+        file: '',
+        fileExtension: ''
+      }
+    ]
+  }
+};

@@ -1,45 +1,27 @@
 <h3>Documentation</h3>
-<app-ajouter-documentation
-    [idErabliereSelectionee]="idErabliereSelectionee"
-    (needToUpdate)="updateDocuments()">
+<app-ajouter-documentation [idErabliereSelectionee]="idErabliereSelectionee" (needToUpdate)="updateDocuments()">
 </app-ajouter-documentation>
-<div class="row ms-1">
+<div class="mt-3">
     <div *ngIf="documentations == undefined || documentations.length == 0">
         <p>Aucune documentation</p>
     </div>
-    <div *ngFor="let documentation of documentations" class="col-12">
-        <div class="row">
-            <div class="col-md-4">
-                <h4 class="mt-4">{{ documentation.title }}</h4>
-            </div>
+    <div *ngFor="let documentation of documentations" class="card mb-3 me-3">
+        <h4 class="card-header">{{ documentation.title }}</h4>
+        <div class="card-body">
+            <p class="card-text">{{ documentation.text }}</p>
+            <p class="card-text"><span>Extension: </span>{{ documentation.fileExtension }}</p>
+            <p class="card-text"><small class="text-muted"><span>Date ajout: </span>{{ documentation.created }}</small></p>
 
-            <div class="col-md-8">
-                <button 
-                    style="margin-top: 1.5em;"
-                    class="btn btn-danger ms-auto"
-                    (click)="deleteDocumentation(documentation)">
-                        Supprimer
+            <div class="btn-group">
+                <button *ngIf="documentation.file != ''" (click)="downloadFile(documentation)"
+                    class="btn btn-secondary btn-sm">
+                    Télécharger
                 </button>
             </div>
-        </div>
-        
-        <div class="row">
-            <p>{{ documentation.text }}</p>
-        </div>
-        <div class="row">
-            <p><span>Extension: </span>{{ documentation.fileExtension }}</p>
-        </div>
-        <div class="row">
-            <p><span>Date ajout: </span>{{ documentation.created }}</p>
-        </div>
-        
-        <div class="row">
-            <div>
-                <button 
-                    *ngIf="documentation.file != ''"
-                    (click)="downloadFile(documentation)"
-                    class="btn btn-secondary">
-                        Télécharger
+            <div class="btn-group ms-2">
+                <button class="btn btn-danger btn-sm"
+                    (click)="deleteDocumentation(documentation)">
+                    Supprimer
                 </button>
             </div>
         </div>
