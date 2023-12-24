@@ -52,6 +52,11 @@ docker run -d -p 9001:80 erabliereapi/erabliereapi
 
 Une librairie proxy est disponible sur nuget.org:
 
+.NET 8
+```
+<PackageReference Include="ErabliereAPI.Proxy" Version="3.1.0" />
+```
+
 .NET 7
 ```
 <PackageReference Include="ErabliereAPI.Proxy" Version="2.0.1" />
@@ -98,7 +103,7 @@ Avec powershell core en tant qu'administrateur executer le script ```.\deploieme
 
 ### Intégration Stripe
 
-Dans la version 3, qui est en développement, l'api offre une intégration avec Stripe. Pour utiliser Stripe, il faut initialiser quelque variable d'environnement :
+À partir de la version 3 (v3-dev ou latest), l'api offre une intégration avec Stripe. Pour utiliser Stripe, il faut initialiser quelque variable d'environnement :
 
 ```
   "Stripe.ApiKey": "sk_test_...",
