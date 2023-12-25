@@ -10,6 +10,10 @@ Le but de ce projet est d'analyser, lever des alertes et automatiser certain mec
 
 L'information pourrait aussi bien venir d'appeil ayant la capacité de faire des requêtes http ou d'interaction humaine.
 
+## Suivit du projet
+
+Le suivit du projet est effectué dans AzureDevOps : https://dev.azure.com/freddycoder/ErabliereAPI
+
 ## Structure
 
 ### Diagramme de haut niveau de la solution déployé dans AKS
