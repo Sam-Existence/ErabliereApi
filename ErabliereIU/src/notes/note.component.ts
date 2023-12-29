@@ -26,11 +26,13 @@ import { Subject } from 'rxjs';
             </div>
 
             <div *ngIf="note.fileExtension != 'csv'">
-                <img 
-                    *ngIf="note.file != ''" 
-                    class="card-img-bottom"
-                    style="max-width: 50%;" 
-                    src="data:image/png;base64,{{ note.file }}" />
+                <div class="container">
+                    <img 
+                        *ngIf="note.file != ''" 
+                        class="card-img-bottom img-thumbnail rounded mx-auto d-block"
+                        style="max-width: 50%;"
+                        src="data:image/png;base64,{{ note.file }}" />
+                </div>
             </div>
         </div>
     `,
