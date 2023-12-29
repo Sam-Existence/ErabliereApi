@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Note } from 'src/model/note';
 import { NgIf } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'note',
@@ -16,7 +17,12 @@ import { NgIf } from '@angular/common';
 
                 <p class="noteDate card-text"><small class="text-muted">{{ note.noteDate }}</small></p>
 
-                <button class="btn btn-danger btn-sm" (click)="deleteNote()">Supprimer</button>
+                <div class="btn-group me-2">
+                    <button class="btn btn-info btn-sm" (click)="selectEditNote()">Modifier</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-danger btn-sm" (click)="deleteNote()">Supprimer</button>
+                </div>
             </div>
 
             <div *ngIf="note.fileExtension != 'csv'">
@@ -33,6 +39,7 @@ import { NgIf } from '@angular/common';
 })
 
 export class NoteComponent implements OnInit {
+    
     constructor(private _api: ErabliereApi) {
         this.note = new Note();
     }
@@ -40,6 +47,17 @@ export class NoteComponent implements OnInit {
     ngOnInit() { }
 
     @Input() note: Note;
+
+    @Input() noteToModifySubject?: Subject<Note | undefined>;
+
+    selectEditNote() {
+        if (this.noteToModifySubject == null) {
+            console.error("noteToModifySubject is null");
+            return;
+        }
+
+        this.noteToModifySubject?.next(this.note);
+    }
 
     deleteNote() {
         this._api.deleteNote(this.note.idErabliere, this.note.id).then(

@@ -145,13 +145,28 @@ public class NotesController : ControllerBase
             return BadRequest("L'id de la note dans la route ne concorde pas avec l'id de la note dans le corps du message.");
         }
 
-        var entity = await _depot.Notes.FindAsync(new object?[] { noteId }, token);
+        var entity = await _depot.Notes.FindAsync([noteId], token);
 
         if (entity != null && entity.IdErabliere == id)
         {
             if (putNote.FileExtension != null)
             {
                 entity.FileExtension = putNote.FileExtension;
+            }
+
+            if (putNote.NoteDate != null)
+            {
+                entity.NoteDate = putNote.NoteDate;
+            }
+
+            if (putNote.Text != null)
+            {
+                entity.Text = putNote.Text;
+            }
+
+            if (putNote.Title != null)
+            {
+                entity.Title = putNote.Title;
             }
 
             await _depot.SaveChangesAsync(token);

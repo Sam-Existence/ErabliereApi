@@ -1,10 +1,19 @@
 <h3>Notes</h3>
-<ajouter-note [idErabliereSelectionee]="idErabliereSelectionee" (needToUpdate)="updateNotes($event)"></ajouter-note>
+<ajouter-note 
+    [idErabliereSelectionee]="idErabliereSelectionee" 
+    (needToUpdate)="updateNotes($event)"></ajouter-note>
+<modifier-note 
+    [idErabliereSelectionee]="idErabliereSelectionee"
+    [noteSubject]="noteToModify" 
+    (needToUpdate)="updateNotes($event)"></modifier-note>
 <div class="row me-1">
     <div *ngIf="notes == undefined || notes.length == 0">
         <p>Aucune note</p>
     </div>
     <div *ngFor="let note of notes">
-        <note [note]="note" (needToUpdate)="updateNotes($event)"></note>
+        <note 
+            [note]="note" 
+            [noteToModifySubject]="noteToModify" 
+            (needToUpdate)="updateNotes($event)"></note>
     </div>
 </div>
