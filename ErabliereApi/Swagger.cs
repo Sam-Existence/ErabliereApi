@@ -29,9 +29,9 @@ public static class Swagger
                 Description = "Un API pour assembler les informations de plusieurs appareils électronique de l'érablière",
                 Contact = new OpenApiContact
                 {
-                    Name = "Frédéric Jacques",
+                    Name = config["SWAGGER_CONTACT_NAME"] ?? string.Empty,
                     Email = config["SWAGGER_CONTACT_EMAIL"] ?? string.Empty,
-                    Url = new Uri("https://github.com/freddycoder"),
+                    Url = new Uri("https://github.com/ErabliereApi"),
                 },
                 License = new OpenApiLicense
                 {
