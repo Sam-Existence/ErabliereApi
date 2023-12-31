@@ -39,9 +39,43 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery(MaxExpansionDepth = 0)]
-    public IQueryable<GetCustomer> GetCustomers()
+    [ProducesResponseType(200, Type = typeof(List<GetCustomer>))]
+    public async Task<List<GetCustomer>> GetCustomers(CancellationToken token)
     {
-        return _context.Customers.ProjectTo<GetCustomer>(_mapper.ConfigurationProvider);
+        var customers = await _context.Customers.ProjectTo<GetCustomer>(_mapper.ConfigurationProvider)
+                                                .ToListAsync(token);
+
+        // Masquer avec des * certains caractères des adresses courriel
+        foreach (var customer in customers.Where(c => !string.IsNullOrEmpty(c.Email) && c.Email.Contains('@')))
+        {
+            var email = customer.Email.Split('@');
+            var name = email[0];
+            var domain = email[1];
+
+            var nameLength = name.Length;
+            var nameToHide = nameLength / 2;
+            var nameStart = name.Substring(0, nameToHide);
+            var nameEnd = name.Substring(nameToHide, nameLength - nameToHide);
+
+            customer.Email = $"{nameStart}{new string('*', nameEnd.Length)}@{domain}";
+        }
+
+        // Masquer avec des * certains caractères des noms unique
+        foreach (var customer in customers.Where(c => !string.IsNullOrEmpty(c.UniqueName) && c.UniqueName.Contains('@')))
+        {
+            var email = customer.UniqueName.Split('@');
+            var name = email[0];
+            var domain = email[1];
+
+            var nameLength = name.Length;
+            var nameToHide = nameLength / 2;
+            var nameStart = name.Substring(0, nameToHide);
+            var nameEnd = name.Substring(nameToHide, nameLength - nameToHide);
+
+            customer.UniqueName = $"{nameStart}{new string('*', nameEnd.Length)}@{domain}";
+        }
+
+        return customers;
     }
 
     /// <summary>
