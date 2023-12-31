@@ -48,6 +48,10 @@ public class CustomersController : ControllerBase
         // Masquer avec des * certains caractères des adresses courriel
         foreach (var customer in customers.Where(c => !string.IsNullOrEmpty(c.Email) && c.Email.Contains('@')))
         {
+            if (customer.Email == null) {
+                continue;
+            }
+
             var email = customer.Email.Split('@');
             var name = email[0];
             var domain = email[1];
@@ -63,6 +67,10 @@ public class CustomersController : ControllerBase
         // Masquer avec des * certains caractères des noms unique
         foreach (var customer in customers.Where(c => !string.IsNullOrEmpty(c.UniqueName) && c.UniqueName.Contains('@')))
         {
+            if (customer.UniqueName == null) {
+                continue;
+            }
+
             var email = customer.UniqueName.Split('@');
             var name = email[0];
             var domain = email[1];
