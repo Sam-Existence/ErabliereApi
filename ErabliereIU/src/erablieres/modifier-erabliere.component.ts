@@ -68,6 +68,22 @@ export class ModifierErabliereComponent implements OnInit {
                 this._api.deleteErabliere(this.idErabliere, erabliere).then(() => {
                     this.afficherSectionDeleteErabliere = true;
                     this.shouldReloadErablieres.emit({event: 'delete'});
+
+                    // Hide the modal with the ID modifierErabliereFormModal
+                    var modal = document.getElementById("modifierErabliereFormModal");
+                    if (modal != null) {
+                        modal.style.display = "none";
+
+                        // remove the div with class modal-backdrop
+                        var modalBackdrop = document.getElementsByClassName("modal-backdrop");
+                        if (modalBackdrop.length > 0) {
+                            modalBackdrop[0].remove();
+                        }
+                    }
+
+                }).catch(error => {
+                    console.error(error);
+                    alert("Une erreur est survenue lors de la suppression de l'érablière. Veuillez réessayer plus tard.");
                 });
             }
         }
