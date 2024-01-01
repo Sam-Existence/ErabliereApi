@@ -1,7 +1,7 @@
 # ErabliereApi
 Solution de monitoring pour érablière. Contient un REST API ainsi qu'un application web pour la gestion des données et d'autre script permettant de connecter divers appareils.
 
-L'application est accessible à l'url: https://erabliereapi.freddycoder.com/ une authentification est nécessare pour la majorité des fonctionnalités. POur obtenir un compte, veuillez accéder au instruction dans la section À propos.
+L'application est accessible à l'url: https://erabliereapi.freddycoder.com/ une authentification est nécessare pour la majorité des fonctionnalités. Pour obtenir un compte, veuillez accéder au instruction dans la section À propos.
 
 Un démo est accessible à l'url: https://erabliereapi-demo.azurewebsites.net/ qui ne nécessite pas d'authentification.
 
