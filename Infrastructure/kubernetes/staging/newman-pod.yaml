@@ -8,14 +8,20 @@ spec:
   containers:
   - name: file-copy
     image: ubuntu
+    imagePullPolicy: Always
     command: ["/bin/bash", "-c", "tail -f /dev/null"]
     volumeMounts:
     - name: shared-data
       mountPath: /test-results
     securityContext:
       allowPrivilegeEscalation: false
+    resources:
+      limits:
+        cpu: "100m"
+        memory: "100Mi"
   - name: securetesting-newman
     image: erabliereapi/securetesting-newman:latest
+    imagePullPolicy: Always
     command: 
       - /bin/sh
       - -c
