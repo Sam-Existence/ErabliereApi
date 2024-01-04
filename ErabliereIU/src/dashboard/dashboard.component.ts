@@ -1,7 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { environment } from 'src/environments/environment';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
@@ -82,14 +81,14 @@ export class DashboardComponent implements OnInit {
   private _authService: IAuthorisationSerivce
 
   constructor(
-      private authFactoryService: AuthorisationFactoryService, 
+      authFactoryService: AuthorisationFactoryService, 
       private environmentService: EnvironmentService, 
       private cdr: ChangeDetectorRef) {
     this.title = 'Érablière IU'
     this.pageSelectionnee = 0
     this.cacheMenuErabliere = false
     this._authService = authFactoryService.getAuthorisationService()
-    this.useAuthentication = environment.enableAuth
+    this.useAuthentication = environmentService.authEnable ?? false
     this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
     this.urls = []
