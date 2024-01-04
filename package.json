@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "vite": "^5.0.10",
+    "vite-plugin-angular": "^0.0.0"
+  }
+}
