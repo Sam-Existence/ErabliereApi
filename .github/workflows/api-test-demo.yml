@@ -24,7 +24,7 @@ jobs:
           creds: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
           enable-AzPSSession: true
 
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Reboot the webapp
         run: |
           az webapp restart --name erabliereapi-demo --resource-group erabliereapi-demo
