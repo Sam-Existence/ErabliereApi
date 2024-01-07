@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.OData.Query;
 using ErabliereApi.Attributes;
+using ErabliereApi.Donnees.Action.Put;
 
 namespace ErabliereApi.Controllers;
 
@@ -57,7 +58,7 @@ public class DocumentationController : ControllerBase
     [ValiderOwnership("id")]
     public async Task<IActionResult> TelechargerFichier(Guid id, Guid idDocumentation, CancellationToken token)
     {
-        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+        var documentation = await _depot.Documentation.FindAsync([idDocumentation], token);
 
         if (documentation == null)
         {
@@ -119,7 +120,7 @@ public class DocumentationController : ControllerBase
     [HttpPut("{idDocumentation}")]
     [ProducesResponseType(200, Type = typeof(Documentation))]
     [ValiderOwnership("id")]
-    public async Task<IActionResult> Modifier(Guid id, Guid idDocumentation, Documentation putDocumentation, CancellationToken token)
+    public async Task<IActionResult> Modifier(Guid id, Guid idDocumentation, PutDocumentation putDocumentation, CancellationToken token)
     {
         if (id != putDocumentation.IdErabliere)
         {
@@ -131,24 +132,24 @@ public class DocumentationController : ControllerBase
             return BadRequest("L'id de la route ne concorde pas avec l'id de la documentation");
         }
 
-        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+        var documentation = await _depot.Documentation.FindAsync([idDocumentation], token);
 
         if (documentation == null)
         {
             return NotFound();
         }
 
-        if (!string.IsNullOrWhiteSpace(putDocumentation.Title)) 
+        if (putDocumentation.Title != null) 
         {
             documentation.Title = putDocumentation.Title;
         }
 
-        if (!string.IsNullOrWhiteSpace(putDocumentation.Text)) 
+        if (putDocumentation.Text != null) 
         {
             documentation.Text = putDocumentation.Text;
         }
 
-        if (!string.IsNullOrWhiteSpace(putDocumentation.FileExtension)) 
+        if (putDocumentation.FileExtension != null) 
         {
             documentation.FileExtension = putDocumentation.FileExtension;
         }
@@ -170,7 +171,7 @@ public class DocumentationController : ControllerBase
     [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid idDocumentation, CancellationToken token)
     {
-        var documentation = await _depot.Documentation.FindAsync(new object[] { idDocumentation }, token);
+        var documentation = await _depot.Documentation.FindAsync([idDocumentation], token);
 
         if (documentation == null)
         {

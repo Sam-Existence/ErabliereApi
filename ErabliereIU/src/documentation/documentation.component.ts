@@ -5,12 +5,19 @@ import { Documentation } from 'src/model/documentation';
 import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
 import { NgIf, NgFor } from '@angular/common';
 import { AjouterDocumentationComponent } from './ajouter-documentation.component';
+import { ModifierDocumentationComponent } from './modifier-documentation.component';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'documentation',
     templateUrl: "./documentation.component.html",
     standalone: true,
-    imports: [AjouterDocumentationComponent, NgIf, NgFor]
+    imports: [
+        AjouterDocumentationComponent, 
+        ModifierDocumentationComponent, 
+        NgIf, 
+        NgFor
+    ]
 })
 export class DocumentationComponent implements OnInit {
     @Input() idErabliereSelectionee:any
@@ -19,6 +26,8 @@ export class DocumentationComponent implements OnInit {
     @Input() documentations?: Documentation[];
 
     @Output() needToUpdate = new EventEmitter();
+
+    @Input() editDocumentationSubject: Subject<ErabliereApiDocument | undefined> = new Subject<ErabliereApiDocument | undefined>();
     
     constructor (private _api: ErabliereApi, 
         private _env: EnvironmentService) {
@@ -76,6 +85,10 @@ export class DocumentationComponent implements OnInit {
 
         // Remove the blob from memory
         window.URL.revokeObjectURL(link.href);
+    }
+
+    modifierDocumentation(documentation: Documentation) {
+        this.editDocumentationSubject.next(documentation);
     }
 
     async deleteDocumentation(document: ErabliereApiDocument) {

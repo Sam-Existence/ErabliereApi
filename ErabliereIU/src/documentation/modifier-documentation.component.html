@@ -1,0 +1,15 @@
+<div *ngIf="display">
+    <span class="text-danger">{{generalError}}</span>
+    <form [formGroup]="documentForm">
+        <div class="form-group">
+            <label class="form-label">Titre: </label><input class="form-control" type="text" formControlName="title">
+            <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
+        </div>
+        <div class="form-group">
+            <label class="form-label">Texte: </label><input class="form-control" type="text" formControlName="text">
+            <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
+        </div>
+    </form>
+    <button id="modifierDocument" class="btn btn-primary mt-3 mb-3 me-2" (click)="onButtonModifierClick()">Modifier</button>
+    <button id="annuler-modifier-document" class="btn btn-secondary mt-3 mb-3" (click)="onButtonAnnulerClick()">Annuler</button>
+</div>

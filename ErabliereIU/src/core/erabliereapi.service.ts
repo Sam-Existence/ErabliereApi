@@ -234,6 +234,11 @@ export class ErabliereApi {
         return await this._httpClient.put<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/" + note.id, note, { headers: headers }).toPromise();
     }
 
+    async putDocumentation(idErabliereSelectionnee:any, documentation:Documentation): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<Documentation>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation/" + documentation.id, documentation, { headers: headers }).toPromise();
+    }
+
     async getCustomers(): Promise<Customer[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/Customers', { headers: headers }).toPromise();
