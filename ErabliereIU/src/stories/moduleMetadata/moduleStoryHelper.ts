@@ -1,4 +1,5 @@
 import { provideHttpClient } from "@angular/common/http";
+import { provideRouter } from "@angular/router";
 import { MSAL_INSTANCE, MsalService } from "@azure/msal-angular";
 import { applicationConfig } from "@storybook/angular";
 import { provideNgxMask } from "ngx-mask";
@@ -9,6 +10,7 @@ export class ModuleStoryHelper{
     static getErabliereApiStoriesApplicationConfig() {
         return applicationConfig({
             providers: [
+                provideRouter([]),
                 provideHttpClient(), 
                 provideNgxMask(),
                 MsalService,
