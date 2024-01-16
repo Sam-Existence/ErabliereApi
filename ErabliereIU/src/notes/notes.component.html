@@ -1,4 +1,5 @@
 <h3>Notes</h3>
+<span class="text-danger" *ngIf="error">{{error}}</span>
 <ajouter-note 
     [idErabliereSelectionee]="idErabliereSelectionee" 
     (needToUpdate)="updateNotes($event)"></ajouter-note>

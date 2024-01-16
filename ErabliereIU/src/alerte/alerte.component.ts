@@ -6,6 +6,7 @@ import { AlerteCapteur } from "src/model/alerteCapteur";
 import { ModifierAlerteComponent } from "./modifier-alerte.component";
 import { AjouterAlerteComponent } from "./ajouter-alerte.component";
 import { NgIf, NgFor } from "@angular/common";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'alerte-page',
@@ -38,7 +39,7 @@ export class AlerteComponent implements OnInit {
   editAlerte: boolean;
   editAlerteCapteur: boolean;
 
-  constructor(private _api: ErabliereApi) {
+  constructor(private _api: ErabliereApi, private _router: Router) {
     this.displayEditFormSubject = new Subject<string>();
     this.displayEditFormObservable = this.displayEditFormSubject.asObservable();
 
@@ -58,6 +59,8 @@ export class AlerteComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.loadAlertes();
+
     this.displayEditFormSubject.subscribe(b => {
       this.displayEditForm = b == "alerte" || b == "alerteCapteur";
     });
@@ -76,6 +79,15 @@ export class AlerteComponent implements OnInit {
 
         this.alertesCapteur[i] = b;
       }
+    });
+  }
+
+  loadAlertes() {
+    this._api.getAlertes(this.idErabliereSelectionee).then(alertes => {
+      this.alertes = alertes;
+    });
+    this._api.getAlertesCapteur(this.idErabliereSelectionee).then(alertesCapteur => {
+      this.alertesCapteur = alertesCapteur;
     });
   }
 

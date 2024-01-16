@@ -5,12 +5,10 @@ import { BarilsComponent } from "../barils/barils.component";
 import { CapteurPannelsComponent } from "../donnees/sub-panel/capteur-pannels.component";
 import { DonneesComponent } from "../donnees/donnees.component";
 import { NgIf } from "@angular/common";
-import { WeatherForecastComponent } from "src/donnees/weatherforecast.component";
 
 @Component({
     selector: 'graphique',
     template: `
-
             <div class="row">
                 <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
                             [initialErabliere]="erabliere"
@@ -19,7 +17,6 @@ import { WeatherForecastComponent } from "src/donnees/weatherforecast.component"
                 <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
                             [erabliereId]="erabliere?.id"></barils-panel>
             </div>
-
     `,
     standalone: true,
     imports: [NgIf, DonneesComponent, CapteurPannelsComponent, BarilsComponent]

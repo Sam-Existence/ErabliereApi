@@ -34,8 +34,14 @@ export class DocumentationComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        
+        this.loadDocumentations();
     }
+
+    loadDocumentations() {
+        this._api.getDocumentations(this.idErabliereSelectionee).then(documentations => {
+          this.documentations = documentations;
+        });
+      }
 
     updateDocuments() {
         this.needToUpdate.emit();

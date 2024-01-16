@@ -3,7 +3,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { environment } from 'src/environments/environment';
 import { Baril } from 'src/model/baril';
 import { Erabliere } from 'src/model/erabliere';
-import { NgFor } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'barils-panel',
@@ -11,6 +11,7 @@ import { NgFor } from '@angular/common';
         <div class="border-top m-3">
             <h3>Barils</h3>
             <h6>Id érablière {{ erabliereId }}</h6>
+            <span *ngIf="errorMessage" class="">errorMessage</span>
             <table class="table">
                 <thead>
                     <tr>
@@ -48,11 +49,12 @@ import { NgFor } from '@angular/common';
         </div>
     `,
     standalone: true,
-    imports: [NgFor]
+    imports: [NgFor, NgIf]
 })
 export class BarilsComponent implements OnInit, OnChanges {
     barils?:Array<Baril>;
     @Input() erabliereId:any
+    errorMessage?: string;
 
     constructor(private _erabliereApi : ErabliereApi) { }
 
@@ -65,6 +67,14 @@ export class BarilsComponent implements OnInit, OnChanges {
     }
 
     fetchBaril() {
-        this._erabliereApi.getBarils(this.erabliereId).then(d => this.barils = d);
+        this._erabliereApi.getBarils(this.erabliereId)
+                          .then(d => {
+                            this.barils = d
+                            this.errorMessage = undefined
+                          })
+                          .catch(e => {
+                            this.barils = undefined
+                            this.errorMessage = e
+                          })
     }
 }

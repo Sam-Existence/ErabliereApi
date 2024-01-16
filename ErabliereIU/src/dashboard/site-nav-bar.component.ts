@@ -1,14 +1,13 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
-import { ErabliereComponent as ErabliereComponent_1 } from '../erablieres/erabliere.component';
 import { NgFor, NgIf } from '@angular/common';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
-    selector: 'dashboard',
+    selector: 'site-nav-bar',
     template: `
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
@@ -24,22 +23,22 @@ import { NgFor, NgIf } from '@angular/common';
             <div class="navbar-collapse collapse d-lg-inline-flex flex-lg-row">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 0" (click)="selectionnerPage(0)" role="button">Graphique</a>
+                        <a class="nav-link" routerLink="/e/{{idErabliereSelectionnee}}" routerLinkActive="active" ariaCurrentWhenActive="page">Graphique</a>
                     </li>
                     <li *ngFor="let url of urls" class="nav-item">
                         <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a id="nav-menu-alerte-button" class="nav-link" [class.active]="pageSelectionnee === 1" (click)="selectionnerPage(1)" role="button">Alerte</a>
+                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/alertes" routerLinkActive="active" ariaCurrentWhenActive="page">Alerte</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a id="nav-menu-notes-button" class="nav-link" [class.active]="pageSelectionnee === 5" (click)="selectionnerPage(5)" role="button">Notes</a>
+                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/notes" routerLinkActive="active" ariaCurrentWhenActive="page">Notes</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 4" (click)="selectionnerPage(4)" role="button">Documentation</a>
+                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/documentations" routerLinkActive="active" ariaCurrentWhenActive="page">Documentation</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [class.active]="pageSelectionnee === 3" (click)="selectionnerPage(3)" role="button">À propos</a>
+                        <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page">À Propos</a>
                     </li>
                 </ul>
                 <span [hidden]="!useAuthentication">
@@ -49,50 +48,36 @@ import { NgFor, NgIf } from '@angular/common';
             </div>
             </div>
         </nav>
-        <div *ngIf="!isLoggedIn" class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-information" role="alert">
-                        <strong>Vous n'êtes pas connecté </strong> <a href="#" (click)="login()">Cliquer ici pour vous connecter</a>
-                        <p *ngIf="tenantId == 'common'">Connectez-vous maintenant avec votre compte Microsoft.</p>
-                        <p>Pour obtenir un compte, communiquer à l'administrateur. Vous trouverez les informations dans la page À propos.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <erablieres [pageSelectionnee]="pageSelectionnee" 
-                    [cacheMenuErabliere]="cacheMenuErabliere"
-                    (onAfterRecieveingErablieres)="onAfterRecieveingErablieres($event)"
-                    #erabliereComponent></erablieres>
     `,
     standalone: true,
-    imports: [NgFor, NgIf, ErabliereComponent_1]
+    imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive]
 })
-export class DashboardComponent implements OnInit {
+export class SiteNavBarComponent implements OnInit {
   title: string;
   cacheMenuErabliere: boolean;
   thereIsAtLeastOneErabliere: boolean;
   useAuthentication: boolean;
   isLoggedIn: boolean;
   urls: UrlModel[]
-  pageSelectionnee: number;
   tenantId?: string;
+  idErabliereSelectionnee?: any;
 
   private _authService: IAuthorisationSerivce
 
   constructor(
       authFactoryService: AuthorisationFactoryService, 
       private environmentService: EnvironmentService, 
-      private cdr: ChangeDetectorRef) {
+      private cdr: ChangeDetectorRef,
+      private router: Router) {
     this.title = 'Érablière IU'
-    this.pageSelectionnee = 0
     this.cacheMenuErabliere = false
     this._authService = authFactoryService.getAuthorisationService()
     this.useAuthentication = environmentService.authEnable ?? false
-    this.thereIsAtLeastOneErabliere = false
+    this.thereIsAtLeastOneErabliere = true
     this.isLoggedIn = false
     this.urls = []
   }
+  
   ngOnInit(): void {
     this._authService.isLoggedIn().then(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
@@ -103,6 +88,21 @@ export class DashboardComponent implements OnInit {
     });
     this.urls = this.environmentService.additionnalUrls ?? [];
     this.tenantId = this.environmentService.tenantId;
+
+    // update the idErabliereSelectionnee when the route changes
+    this.router.events.subscribe((val) => {
+      if (val instanceof NavigationEnd) {
+        const url = val.url;
+        const urlParts = url.split('/');
+        if (urlParts.length >= 3) {
+          const idErabliereSelectionnee = urlParts[2];
+          this.idErabliereSelectionnee = idErabliereSelectionnee;
+        }
+        else {
+
+        }
+      }
+    });
   }
 
   login() {
@@ -111,25 +111,6 @@ export class DashboardComponent implements OnInit {
 
   logout() {
     this._authService.logout();
-  }
-
-  @ViewChild('erabliereComponent') erabierePage?: ErabliereComponent
-
-  selectionnerPage(i: number) {
-    this.pageSelectionnee = i;
-    this.cacheMenuErabliere = i == 3;
-
-    if (this.pageSelectionnee == 1) {
-      this.erabierePage?.loadAlertes();
-    }
-
-    if (this.pageSelectionnee == 4) {
-      this.erabierePage?.loadDocumentations();
-    }
-
-    if (this.pageSelectionnee == 5) {
-      this.erabierePage?.loadNotes();
-    }
   }
 
   onAfterRecieveingErablieres($event: any) {

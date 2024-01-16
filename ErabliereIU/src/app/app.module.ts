@@ -8,9 +8,8 @@ import { AlerteComponent } from 'src/alerte/alerte.component';
 import { AproposComponent } from 'src/apropos/apropos.component';
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { BarPannelComponent } from 'src/donnees/sub-panel/bar-pannel.component';
-import { AppRoutingModule } from './app-routing.module';
+import { routes } from './app.routes';
 import { SigninRedirectCallbackComponent } from 'src/authorisation/signin-redirect/signin-redirect-callback.component';
-import { DashboardComponent } from 'src/dashboard/dashboard.component';
 import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redirect/signout-redirect-callback.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
@@ -47,6 +46,9 @@ import { NgChartsModule } from 'ng2-charts';
 import { BrowserModule } from '@angular/platform-browser';
 import { EntraRedirectComponent } from './entra-redirect.component';
 import 'chartjs-adapter-date-fns';
+import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
+import { YouAreNotConnectedComponent } from 'src/dashboard/you-are-note-connected.component';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 
 declare global {
   interface Window { 
@@ -132,12 +134,12 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
             deps: [EnvironmentService]
         },
         MsalService,
-        provideNgxMask()
+        provideNgxMask(),
+        provideRouter(routes, withComponentInputBinding())
     ],
     imports: [
         BrowserModule,
         NgChartsModule,
-        AppRoutingModule,
         HttpClientModule,
         ReactiveFormsModule,
         FormsModule,
@@ -153,7 +155,6 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         EditAccessComponent,
         GraphiqueComponent,
         DonneesComponent,
-        DashboardComponent,
         GraphPannelComponent,
         VacciumGraphPannelComponent,
         DateTimeSelectorComponent,
@@ -178,11 +179,13 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         SignoutRedirectCallbackComponent,
         EinputComponent,
         InputErrorComponent,
-        TableFormInputComponent
+        TableFormInputComponent,
+        SiteNavBarComponent,
+        YouAreNotConnectedComponent
     ]
 })
 export class AppModule implements DoBootstrap { 
-  constructor(private injector: Injector) {}
+  constructor() {}
 
   ngDoBootstrap(appRef: ApplicationRef): void {
     appRef.bootstrap(AppComponent);
