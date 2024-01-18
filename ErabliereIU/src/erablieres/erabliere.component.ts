@@ -30,13 +30,17 @@ export class ErabliereComponent {
   constructor(private _api: ErabliereApi, private route: ActivatedRoute) { 
     this.route.paramMap.subscribe(params => {
       this.idErabliereSelectionee = params.get('idErabliereSelectionee');
-
+      console.log('erabliere.component.paramMap ' + this.idErabliereSelectionee);
       if (this.idErabliereSelectionee) {
         this._api.getErabliere(this.idErabliereSelectionee).then((erabliere) => {
+          console.log(erabliere);
           this.erabliere = erabliere;
           this.resetErabliere.next(erabliere);
         });
       }
+    });
+    this.resetErabliere.subscribe((erabliere) => {
+      this.erabliere = erabliere;
     });
   }
 }

@@ -1,16 +1,13 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { Alerte } from 'src/model/alerte';
-import { AlerteCapteur } from 'src/model/alerteCapteur';
-import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
-import { Note } from 'src/model/note';
 import { NgIf, NgFor } from '@angular/common';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'erablieres-side-bar',
@@ -23,18 +20,15 @@ export class ErabliereSideBarComponent implements OnInit {
   etat: string = "";
   erabliereSelectionnee?: Erabliere;
   idSelectionnee?: any
-  @Input() cacheMenuErabliere?: boolean;
-  @Input() pageSelectionnee?: number = 0;
-  alertes?: Array<Alerte>;
-  alertesCapteur?: Array<AlerteCapteur>;
-  documentations?: Array<Documentation>;
-  notes?: Array<Note>;
+  @Input() showMenuSubject: Subject<boolean> = new Subject<boolean>();
   private _authService: IAuthorisationSerivce
-  @Output() onAfterRecieveingErablieres: EventEmitter<number> = new EventEmitter<number>();
   loggedIn: Boolean = false;
   authDisabled: boolean = false;
 
-  constructor(private _erabliereApi: ErabliereApi, authFactory: AuthorisationFactoryService, private _router: Router) {
+  constructor(private _erabliereApi: ErabliereApi, 
+      authFactory: AuthorisationFactoryService, 
+      private _router: Router,
+      private route: ActivatedRoute) {
     this.erabliereSelectionnee = undefined;
     this._authService = authFactory.getAuthorisationService();
     if (this._authService.type == "AuthDisabled") {
@@ -50,12 +44,28 @@ export class ErabliereSideBarComponent implements OnInit {
         this.erabliereSelectionnee = undefined;
         this.idSelectionnee = undefined;
         this.etat = "Vous n'êtes pas connecté";
-        this.pageSelectionnee = 0;
       }
     });
   }
 
   async ngOnInit() {
+    // Set cacheMenuErabliere to true to cache the menu when the path start with /apropos
+    this._router.events.subscribe((val) => {
+      console.log("router event");
+      console.log(this._router.url);
+      if (this._router.url.split("/").length > 1) {
+        let page = this._router.url.split("/")[1];
+        if (page == "apropos") {
+          this.showMenuSubject.next(false);
+        }
+        else {
+          this.showMenuSubject.next(true);
+        }
+      }
+      else {
+        this.showMenuSubject.next(true);
+      }
+    });
     this.loggedIn = await this._authService.isLoggedIn();
     await this.loadErablieresPage();
   }
@@ -90,7 +100,6 @@ export class ErabliereSideBarComponent implements OnInit {
       });
 
       if (this.erablieres.length > 0) {
-        this.onAfterRecieveingErablieres.emit(this.erablieres.length);
         this.etat = "Chargement des erablieres terminé";
         this.erabliereSelectionnee = this.erablieres[0];
         this.idSelectionnee = this.erabliereSelectionnee.id;
