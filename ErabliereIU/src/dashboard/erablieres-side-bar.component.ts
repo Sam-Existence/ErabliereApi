@@ -1,6 +1,5 @@
-import { AfterContentChecked, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -9,11 +8,6 @@ import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Documentation } from 'src/model/documentation';
 import { Erabliere } from 'src/model/erabliere';
 import { Note } from 'src/model/note';
-import { AproposComponent } from '../apropos/apropos.component';
-import { NotesComponent } from '../notes/notes.component';
-import { DocumentationComponent } from '../documentation/documentation.component';
-import { AlerteComponent } from '../alerte/alerte.component';
-import { GraphiqueComponent } from '../graphique/graphique.component';
 import { NgIf, NgFor } from '@angular/common';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
@@ -22,7 +16,7 @@ import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.co
     selector: 'erablieres-side-bar',
     templateUrl: 'erablieres-side-bar.component.html',
     standalone: true,
-    imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor, GraphiqueComponent, AlerteComponent, DocumentationComponent, NotesComponent, AproposComponent]
+    imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor]
 })
 export class ErabliereSideBarComponent implements OnInit {
   erablieres?: Array<Erabliere>;

@@ -6,6 +6,7 @@ import { AjouterNoteComponent } from './ajouter-note.component';
 import { ModifierNoteComponent } from './modifier-note.component';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
     selector: 'notes',
@@ -24,9 +25,16 @@ export class NotesComponent implements OnInit {
 
     error?: string;
 
-    constructor(private _api: ErabliereApi) { }
+    constructor(private _api: ErabliereApi, private route: ActivatedRoute) { }
 
     ngOnInit(): void {
+        this.route.paramMap.subscribe(params => {
+            this.idErabliereSelectionee = params.get('idErabliereSelectionee');
+
+            if (this.idErabliereSelectionee) {
+                this.loadNotes();
+            }
+        });
         this.loadNotes();
     }
 

@@ -1,4 +1,4 @@
-import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef, Injector, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { APP_INITIALIZER, NgModule, DoBootstrap, ApplicationRef } from '@angular/core';
 import { AppComponent } from './app.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { DonneesComponent } from 'src/donnees/donnees.component';
@@ -14,7 +14,6 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { HttpClientModule } from '@angular/common/http';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
 import { EnvironmentService } from 'src/environments/environment.service';
-import { GraphiqueComponent } from 'src/graphique/graphique.component';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ModifierAlerteComponent } from 'src/alerte/modifier-alerte.component';
@@ -153,7 +152,6 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         ModifierAccesUtilisateursComponent,
         SelectCustomerComponent,
         EditAccessComponent,
-        GraphiqueComponent,
         DonneesComponent,
         GraphPannelComponent,
         VacciumGraphPannelComponent,

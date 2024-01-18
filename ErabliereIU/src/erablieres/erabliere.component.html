@@ -1,1 +1,8 @@
-<graphique [erabliere]="erabliere"></graphique>
+<div class="row">
+    <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
+                [initialErabliere]="erabliere"
+                [erabliereSubject]="resetErabliere"></donnees-panel>
+    <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
+    <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
+                [erabliereId]="erabliere?.id"></barils-panel>
+</div>
