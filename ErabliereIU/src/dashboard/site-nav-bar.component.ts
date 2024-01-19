@@ -23,7 +23,7 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
             <div class="navbar-collapse collapse d-lg-inline-flex flex-lg-row">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" routerLink="/e/{{idErabliereSelectionnee}}" routerLinkActive="active" ariaCurrentWhenActive="page">Graphique</a>
+                        <a class="nav-link" routerLink="/e/{{idErabliereSelectionnee}}/graphiques" routerLinkActive="active" ariaCurrentWhenActive="page">Graphique</a>
                     </li>
                     <li *ngFor="let url of urls" class="nav-item">
                         <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>

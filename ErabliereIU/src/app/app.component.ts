@@ -67,7 +67,7 @@ export class AppComponent {
         this.classes = "col-lg-10 col-md-12";
       }
       else {
-        this.classes = "col-lg-12 col-md-12";
+        this.classes = "col-12";
       }
     });
   }

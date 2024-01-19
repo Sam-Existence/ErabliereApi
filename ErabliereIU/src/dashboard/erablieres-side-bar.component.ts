@@ -128,7 +128,7 @@ export class ErabliereSideBarComponent implements OnInit {
       this._router.navigate(["/e", idErabliere, page]);
     }
     else {
-      this._router.navigate(["/e", idErabliere]);
+      this._router.navigate(["/e", idErabliere, "graphiques"]);
     }
   }
 

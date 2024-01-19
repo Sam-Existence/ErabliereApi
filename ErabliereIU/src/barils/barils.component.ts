@@ -1,8 +1,6 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { environment } from 'src/environments/environment';
 import { Baril } from 'src/model/baril';
-import { Erabliere } from 'src/model/erabliere';
 import { NgFor, NgIf } from '@angular/common';
 
 @Component({
@@ -11,7 +9,7 @@ import { NgFor, NgIf } from '@angular/common';
         <div class="border-top m-3">
             <h3>Barils</h3>
             <h6>Id érablière {{ erabliereId }}</h6>
-            <span *ngIf="errorMessage" class="">errorMessage</span>
+            <span *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</span>
             <table class="table">
                 <thead>
                     <tr>

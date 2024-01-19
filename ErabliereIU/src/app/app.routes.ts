@@ -10,7 +10,7 @@ import { NotesComponent } from 'src/notes/notes.component';
 export const routes: Routes = [
     { path: '', redirectTo: 'e', pathMatch: 'full' },
     { path: 'e', component: ErabliereComponent },
-    { path: 'e/:idErabliereSelectionee', component: ErabliereComponent },
+    { path: 'e/:idErabliereSelectionee/graphiques', component: ErabliereComponent },
     { path: 'e/:idErabliereSelectionee/alertes', component: AlerteComponent },
     { path: 'e/:idErabliereSelectionee/documentations', component: DocumentationComponent },
     { path: 'e/:idErabliereSelectionee/notes', component: NotesComponent },
