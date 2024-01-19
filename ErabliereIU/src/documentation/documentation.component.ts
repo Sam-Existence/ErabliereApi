@@ -28,7 +28,7 @@ export class DocumentationComponent implements OnInit {
 
     @Output() needToUpdate = new EventEmitter();
 
-    @Input() editDocumentationSubject: Subject<ErabliereApiDocument | undefined> = new Subject<ErabliereApiDocument | undefined>();
+    editDocumentationSubject = new Subject<ErabliereApiDocument | undefined>();
     
     constructor (private _api: ErabliereApi, 
         private _env: EnvironmentService,
@@ -51,10 +51,6 @@ export class DocumentationComponent implements OnInit {
           this.documentations = documentations;
         });
       }
-
-    updateDocuments() {
-        this.needToUpdate.emit();
-    }
 
     isImageType(_t11: Documentation): boolean {
         return this.imgTypes.find(t => t == _t11.fileExtension) != null;
@@ -110,7 +106,7 @@ export class DocumentationComponent implements OnInit {
         if (confirm("Voulez-vous vraiment supprimer ce document?")) {
             await this._api.deleteDocumentation(document.idErabliere, document.id);
 
-            this.needToUpdate.emit();
+            this.loadDocumentations();
         }
     }
 }

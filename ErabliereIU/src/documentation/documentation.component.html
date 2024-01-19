@@ -1,11 +1,11 @@
 <h3>Documentation</h3>
 <app-ajouter-documentation 
     [idErabliereSelectionee]="idErabliereSelectionee" 
-    (needToUpdate)="updateDocuments()" />
+    (needToUpdate)="loadDocumentations()" />
 <modifier-documentation 
     [documentationSubject]="editDocumentationSubject"
     [idErabliereSelectionee]="idErabliereSelectionee"
-    (needToUpdate)="updateDocuments()" />
+    (needToUpdate)="loadDocumentations()" />
 <div class="mt-3">
     <div *ngIf="documentations == undefined || documentations.length == 0">
         <p>Aucune documentation</p>

@@ -60,6 +60,6 @@ export class NotesComponent implements OnInit {
     }
 
     updateNotes(event: any) {
-        this.needToUpdate.emit();
+        this.loadNotes();
     }
 }
