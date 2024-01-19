@@ -29,10 +29,10 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
                         <a class="nav-link" href="{{ url.href }}" role="button" target="_blank" rel="noopener noreferrer">{{ url.text }}</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/alertes" routerLinkActive="active" ariaCurrentWhenActive="page">Alerte</a>
+                        <a id="nav-menu-alerte-button" class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/alertes" routerLinkActive="active" ariaCurrentWhenActive="page">Alerte</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/notes" routerLinkActive="active" ariaCurrentWhenActive="page">Notes</a>
+                        <a id="nav-menu-notes-button" class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/notes" routerLinkActive="active" ariaCurrentWhenActive="page">Notes</a>
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
                         <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/documentations" routerLinkActive="active" ariaCurrentWhenActive="page">Documentation</a>
