@@ -11,8 +11,9 @@
     [editAlerte]="editAlerte" [editAlerteCapteur]="editAlerteCapteur">
 </modifier-alerte-modal>
 <div>
-    <p *ngIf="alertes != null && alertes.length == 0 && alertesCapteur != null && alertesCapteur.length == 0">Aucune
-        alerte de configuré</p>
+    <p *ngIf="alertes != null && alertes.length == 0 && alertesCapteur != null && alertesCapteur.length == 0">
+        Aucune alerte de configuré
+    </p>
 
     <div *ngIf="alertesCapteur != null && alertesCapteur.length > 0">
         <h4>Alerte capteurs</h4>

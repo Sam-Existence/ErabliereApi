@@ -21,4 +21,7 @@ export const Primary: Story = {
   render: (args: BarilsComponent) => ({
     props: args,
   }),
+  args: {
+    errorMessage: undefined
+  }
 };

@@ -32,6 +32,18 @@ export class ErabliereApi {
         this._authService = authFactoryService.getAuthorisationService();
     }
 
+    async getErabliere(idErabliereSelectionee: any): Promise<Erabliere> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(
+            this._environmentService.apiUrl + '/erablieres?$filter=id eq ' + idErabliereSelectionee + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true)',
+            { headers: headers }).toPromise();
+        
+        if (rtn != null && rtn.length > 0) {
+            return rtn[0];
+        }
+        return new Erabliere();
+    }
+
     async getErablieres(my:boolean): Promise<Erabliere[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?my=' + my, { headers: headers }).toPromise();
