@@ -54,7 +54,7 @@ jobs:
           config: video=false,baseUrl=https://erabliereapi-demo.azurewebsites.net
 
       - name: Upload screenshots
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4.2.0
         if: failure()
         with:
           name: screenshots

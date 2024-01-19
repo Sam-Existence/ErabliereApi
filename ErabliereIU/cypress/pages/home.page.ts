@@ -11,12 +11,12 @@ export class HomePage {
     }
 
     clickOnAlerteButtonNavMenu(): AlertesPage {
-        cy.get('#nav-menu-alerte-button').click()
+        cy.get('#nav-menu-alerte-button').focus().click()
         return new AlertesPage();
     }
 
     clickOnNotesButtonNavMenu(): NotesPage {
-        cy.get('#nav-menu-notes-button').click()
+        cy.get('#nav-menu-notes-button').focus().click()
         return new NotesPage();
     }
 
