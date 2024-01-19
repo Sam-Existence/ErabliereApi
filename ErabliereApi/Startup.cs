@@ -93,6 +93,8 @@ public class Startup
                 .AddHttpContextAccessor();
         if (Configuration.IsAuthEnabled())
         {
+            Console.WriteLine("Authentication enabled.");
+
             if (Configuration["AzureAD__ClientId"] != null && Configuration["AzureAD:ClientId"] == null)
             {
                 Configuration["AzureAD:ClientId"] = Configuration["AzureAD__ClientId"];
@@ -136,6 +138,7 @@ public class Startup
         // Cors
         if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
         {
+            Console.WriteLine("CORS enabled. Services Added.");
             services.AddCors();
         }
 
@@ -368,6 +371,8 @@ public class Startup
 
         if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
         {
+            Console.WriteLine("CORS enabled. Middleware Added.");
+
             app.UseCors(option =>
             {
                 option.WithHeaders(Configuration["CORS_HEADERS"]?.Split(',') ?? new[] { "*" });

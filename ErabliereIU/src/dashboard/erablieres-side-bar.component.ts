@@ -21,6 +21,7 @@ export class ErabliereSideBarComponent implements OnInit {
   erabliereSelectionnee?: Erabliere;
   idSelectionnee?: any
   @Input() showMenuSubject: Subject<boolean> = new Subject<boolean>();
+  @Input() thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
   private _authService: IAuthorisationSerivce
   loggedIn: Boolean = false;
   authDisabled: boolean = false;
@@ -103,6 +104,7 @@ export class ErabliereSideBarComponent implements OnInit {
         this.etat = "Chargement des erablieres terminé";
         this.erabliereSelectionnee = this.erablieres[0];
         this.idSelectionnee = this.erabliereSelectionnee.id;
+        this.thereIsAtLeastOneErabliereSubject.next(true);
 
         this.handleErabliereLiClick(this.erabliereSelectionnee.id);
       }

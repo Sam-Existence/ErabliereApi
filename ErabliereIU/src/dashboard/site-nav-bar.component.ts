@@ -1,17 +1,18 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
 import { NgFor, NgIf } from '@angular/common';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'site-nav-bar',
     template: `
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
-            <h2 class="ms-4 me-5">{{ title }}</h2>
+            <h2 class="ms-4 me-5">Érablière IU</h2>
             <button class="navbar-toggler" 
                     type="button" 
                     data-bs-toggle="collapse" 
@@ -53,32 +54,31 @@ import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } fro
     imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive]
 })
 export class SiteNavBarComponent implements OnInit {
-  title: string;
-  cacheMenuErabliere: boolean;
-  thereIsAtLeastOneErabliere: boolean;
   useAuthentication: boolean;
   isLoggedIn: boolean;
   urls: UrlModel[]
   tenantId?: string;
   idErabliereSelectionnee?: any;
-
   private _authService: IAuthorisationSerivce
+  @Input() thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
+  thereIsAtLeastOneErabliere: boolean = false;
 
   constructor(
       authFactoryService: AuthorisationFactoryService, 
       private environmentService: EnvironmentService, 
       private cdr: ChangeDetectorRef,
       private router: Router) {
-    this.title = 'Érablière IU'
-    this.cacheMenuErabliere = false
     this._authService = authFactoryService.getAuthorisationService()
     this.useAuthentication = environmentService.authEnable ?? false
-    this.thereIsAtLeastOneErabliere = true
+    this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
     this.urls = []
   }
   
   ngOnInit(): void {
+    this.thereIsAtLeastOneErabliereSubject.subscribe((val) => {
+      this.thereIsAtLeastOneErabliere = val;
+    });
     this._authService.isLoggedIn().then(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
@@ -111,9 +111,5 @@ export class SiteNavBarComponent implements OnInit {
 
   logout() {
     this._authService.logout();
-  }
-
-  onAfterRecieveingErablieres($event: any) {
-    this.thereIsAtLeastOneErabliere = $event;
   }
 }

@@ -13,14 +13,17 @@ import { Subject } from 'rxjs';
   template: `
     <div class="d-flex flex-column min-vh-100">
       <header>
-        <site-nav-bar></site-nav-bar>
-        <you-are-not-connected></you-are-not-connected>
+        <site-nav-bar 
+          [thereIsAtLeastOneErabliereSubject]="thereIsAtLeastOneErabliereSubject" />
+        <you-are-not-connected />
       </header>
       <div class="flex-fill">
         <div class="row">
           <div *ngIf="showMenu" class="col-lg-2">
             <aside>
-              <erablieres-side-bar [showMenuSubject]="showMenuSubject"></erablieres-side-bar>
+              <erablieres-side-bar 
+                [showMenuSubject]="showMenuSubject" 
+                [thereIsAtLeastOneErabliereSubject]="thereIsAtLeastOneErabliereSubject" />
             </aside>
           </div>
           <div class="{{ classes }}">
@@ -56,6 +59,8 @@ import { Subject } from 'rxjs';
 export class AppComponent {
   showMenuSubject: Subject<boolean> = new Subject<boolean>();
   showMenu: boolean = true;
+  thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
+  thereIsAtLeastOneErabliere: boolean = false;
   classes: string = "col-lg-10 col-md-12";
 
   constructor() {
@@ -69,6 +74,10 @@ export class AppComponent {
       else {
         this.classes = "col-12";
       }
+    });
+    this.thereIsAtLeastOneErabliereSubject.next(false);
+    this.thereIsAtLeastOneErabliereSubject.subscribe((val) => {
+      this.thereIsAtLeastOneErabliere = val;
     });
   }
 }
