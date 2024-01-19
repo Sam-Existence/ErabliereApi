@@ -2,7 +2,7 @@ import { FormUtil } from "cypress/util/formUtil"
 
 export class AlertesPage {
     getPageTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get('alerte-page.col-lg-10 > div > h3')
+        return cy.get('alerte-page > div > h3')
     }
     clickOnAddAlerteButton(): AlertesPage {
         FormUtil.clickButton("alerte-page", "ajouter-alerte-btn");

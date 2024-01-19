@@ -3,7 +3,7 @@ import { FormUtil } from "cypress/util/formUtil";
 export class NotesPage {
     
     getPageTitle(): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get('notes.col-lg-10 > h3');
+        return cy.get('notes > h3');
     }
 
     getAddButton(): Cypress.Chainable<JQuery<HTMLElement>> {
