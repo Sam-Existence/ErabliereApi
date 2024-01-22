@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup>
     <Version>3.1.0</Version>
-    <TargetFramework>.net8.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
@@ -10,19 +10,19 @@
   <ItemGroup>
     <PackageReference Include="IdentityServer4.AccessTokenValidation" Version="3.0.1" />
     <PackageReference Include="MailKit" Version="4.3.0" />
-    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.3" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0">
+    <PackageReference Include="Microsoft.AspNetCore.OData" Version="8.2.4" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.1">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.0" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Graph" Version="5.38.0" />
-    <PackageReference Include="Microsoft.Identity.Client" Version="4.58.1" />
-    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Graph" Version="5.39.0" />
+    <PackageReference Include="Microsoft.Identity.Client" Version="4.59.0" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="2.16.1" />
     <PackageReference Include="MiniProfiler.AspNetCore.Mvc" Version="4.3.8" />
     <PackageReference Include="MiniProfiler.EntityFrameworkCore" Version="4.3.8" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />

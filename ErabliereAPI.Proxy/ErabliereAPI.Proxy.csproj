@@ -1,13 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>.net8.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ErabliereAPI.Proxy</PackageId>
-    <Version>3.1.0</Version>
+    <Version>3.1.1</Version>
     <Authors>Frédéric Jacques</Authors>
     <Company>ErabliereAPI</Company>
     <PackageTags>ErabliereAPI;Erabliere</PackageTags>
@@ -17,7 +17,8 @@
       added to handle AzureAD authentication scenario.
     </Description>
     <ReleaseNotes>
-	  - Migrating to .NET 8.0
+      - Security Patch .NET 8.0.1
+	    - Migrating to .NET 8.0
       - Migrating to .NET 7.0
     </ReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
@@ -26,6 +27,6 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Caching.Abstractions" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="8.0.1" />
   </ItemGroup>
 </Project>

@@ -5,6 +5,7 @@ import { applicationConfig } from "@storybook/angular";
 import { provideNgxMask } from "ngx-mask";
 import { MSALInstanceFactory } from "src/app/app.module";
 import { EnvironmentService } from "src/environments/environment.service";
+import { MockErabliereApi } from "./MockErabliereApi";
 
 export class ModuleStoryHelper{
     static getErabliereApiStoriesApplicationConfig() {

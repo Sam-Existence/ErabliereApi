@@ -17,8 +17,18 @@ const meta: Meta<AjouterDocumentationComponent> = {
 export default meta;
 type Story = StoryObj<AjouterDocumentationComponent>;
 
-export const Primary: Story = {
+export const Display: Story = {
+  render: (args: AjouterDocumentationComponent) => ({
+    props: args,
+  }),
+  args: {
+    display: true,
+  }
+};
+
+export const Hidden: Story = {
   render: (args: AjouterDocumentationComponent) => ({
     props: args,
   }),
 };
+

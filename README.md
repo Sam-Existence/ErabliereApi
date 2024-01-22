@@ -58,7 +58,7 @@ Une librairie proxy est disponible sur nuget.org:
 
 .NET 8
 ```
-<PackageReference Include="ErabliereAPI.Proxy" Version="3.1.0" />
+<PackageReference Include="ErabliereAPI.Proxy" Version="3.1.1" />
 ```
 
 .NET 7
