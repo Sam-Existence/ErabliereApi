@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Note } from 'src/model/note';
 import { NgIf } from '@angular/common';
@@ -40,17 +40,14 @@ import { Subject } from 'rxjs';
     imports: [NgIf]
 })
 
-export class NoteComponent implements OnInit {
+export class NoteComponent {
+    @Input() note: Note;
+    @Input() noteToModifySubject?: Subject<Note | undefined>;
+    @Output() needToUpdate = new EventEmitter();
     
     constructor(private _api: ErabliereApi) {
         this.note = new Note();
     }
-
-    ngOnInit() { }
-
-    @Input() note: Note;
-
-    @Input() noteToModifySubject?: Subject<Note | undefined>;
 
     selectEditNote() {
         if (this.noteToModifySubject == null) {
@@ -68,6 +65,4 @@ export class NoteComponent implements OnInit {
             }
         );
     }
-
-    @Output() needToUpdate = new EventEmitter();
 }

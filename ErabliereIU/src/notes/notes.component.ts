@@ -16,19 +16,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class NotesComponent implements OnInit {
     @Input() idErabliereSelectionee: any
-
     @Input() notes?: Note[];
-
     @Output() needToUpdate = new EventEmitter();
-
     noteToModify?: Subject<Note | undefined> = new Subject<Note | undefined>();
-
     error?: string;
 
-    constructor(private _api: ErabliereApi, private route: ActivatedRoute) { }
+    constructor(private _api: ErabliereApi, private _route: ActivatedRoute) { }
 
     ngOnInit(): void {
-        this.route.paramMap.subscribe(params => {
+        this._route.paramMap.subscribe(params => {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
             if (this.idErabliereSelectionee) {
@@ -39,6 +35,7 @@ export class NotesComponent implements OnInit {
     }
 
     loadNotes() {
+        this.notes = undefined;
         this._api.getNotes(this.idErabliereSelectionee)
             .then(notes => {
                 notes.forEach(n => {
@@ -51,15 +48,24 @@ export class NotesComponent implements OnInit {
                 this.error = undefined;
             })
             .catch(errorBody => {
-                this.notes = undefined;
+                this.notes = [];
                 this.error = "";
-                for (let key in errorBody.errors) {
-                    this.error += errorBody[key];
+
+                console.log(errorBody)
+
+                if (errorBody.status == 404) {
+                    this.error = "Érablière '" + this.idErabliereSelectionee + "' introuvable";
+                }
+                else {
+                    if (errorBody.errors) {
+                        for (let key in errorBody.errors) {
+                            this.error += errorBody[key];
+                        }
+                    }
+                    else {
+                        this.error = errorBody;
+                    }
                 }
             });
-    }
-
-    updateNotes(event: any) {
-        this.loadNotes();
     }
 }

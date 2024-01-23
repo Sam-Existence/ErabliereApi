@@ -4,7 +4,7 @@ import { AuthResponse } from "src/model/authresponse";
 
 export interface IAuthorisationSerivce {
     type: string;
-    loginChanged:Observable<boolean>
+    loginChanged: Observable<boolean>
     login(): Promise<void>
     isLoggedIn(): Promise<boolean>
     completeLogin(): Promise<AppUser>

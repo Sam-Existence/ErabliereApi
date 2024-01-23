@@ -1,20 +1,25 @@
 <h3>Notes</h3>
-<span class="text-danger" *ngIf="error">{{error}}</span>
+<div class="mb-3">
+    <span class="text-danger" *ngIf="error">{{error}}</span>
+</div>
 <ajouter-note 
     [idErabliereSelectionee]="idErabliereSelectionee" 
-    (needToUpdate)="updateNotes($event)"></ajouter-note>
+    (needToUpdate)="loadNotes()"></ajouter-note>
 <modifier-note 
     [idErabliereSelectionee]="idErabliereSelectionee"
     [noteSubject]="noteToModify" 
-    (needToUpdate)="updateNotes($event)"></modifier-note>
+    (needToUpdate)="loadNotes()"></modifier-note>
 <div class="row me-1">
-    <div *ngIf="notes == undefined || notes.length == 0">
+    <div *ngIf="notes == undefined">
+        <p>Chargement des notes...</p>
+    </div>
+    <div *ngIf="notes?.length == 0">
         <p>Aucune note</p>
     </div>
     <div *ngFor="let note of notes">
         <note 
             [note]="note" 
             [noteToModifySubject]="noteToModify" 
-            (needToUpdate)="updateNotes($event)"></note>
+            (needToUpdate)="loadNotes()"></note>
     </div>
 </div>

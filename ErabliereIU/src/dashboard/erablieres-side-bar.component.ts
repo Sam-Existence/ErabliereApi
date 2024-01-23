@@ -28,8 +28,7 @@ export class ErabliereSideBarComponent implements OnInit {
 
   constructor(private _erabliereApi: ErabliereApi, 
       authFactory: AuthorisationFactoryService, 
-      private _router: Router,
-      private route: ActivatedRoute) {
+      private _router: Router) {
     this.erabliereSelectionnee = undefined;
     this._authService = authFactory.getAuthorisationService();
     if (this._authService.type == "AuthDisabled") {
@@ -50,10 +49,9 @@ export class ErabliereSideBarComponent implements OnInit {
   }
 
   async ngOnInit() {
+    this.loggedIn = await this._authService.isLoggedIn();
     // Set cacheMenuErabliere to true to cache the menu when the path start with /apropos
     this._router.events.subscribe((val) => {
-      console.log("router event");
-      console.log(this._router.url);
       if (this._router.url.split("/").length > 1) {
         let page = this._router.url.split("/")[1];
         if (page == "apropos") {
@@ -67,7 +65,6 @@ export class ErabliereSideBarComponent implements OnInit {
         this.showMenuSubject.next(true);
       }
     });
-    this.loggedIn = await this._authService.isLoggedIn();
     await this.loadErablieresPage();
   }
 
