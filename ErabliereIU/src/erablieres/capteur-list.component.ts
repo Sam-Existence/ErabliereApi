@@ -47,6 +47,19 @@ export class CapteurListComponent implements OnInit {
     }
 
     modifierCapteur(capteur: Capteur) {
+        const putCapteur = { ...capteur };
+        // putCapteur.nom = this.resolveName();
+        // putCapteur.symbole = this.resolveSymbole();
+        // putCapteur.afficherCapteurDashboard = this.resolveAfficherCapteurDashboard();
+        // putCapteur.ajouterDonneeDepuisInterface = this.resolveAjouterDonneeDepuisInterface();
+        this.erabliereApi.putCapteur(this.idErabliere, capteur).then(() => {
+            this.shouldRefreshCapteurs.emit();
+            if (capteur.id) {
+                this.displayEdits[capteur.id] = false;
+            }
+        }).catch(() => {
+            alert('Erreur lors de la modification du capteur');
+        });
     }
 
     async supprimerCapteur(capteur: Capteur) {

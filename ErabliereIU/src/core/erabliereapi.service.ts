@@ -88,6 +88,17 @@ export class ErabliereApi {
         return await this._httpClient.post<Capteur>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", capteur, { headers: headers }).toPromise();
     }
 
+    async putCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<Capteur>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", 
+            {
+                ... capteur,
+                idErabliere: idErabliereSelectionnee
+            }, 
+            { headers: headers }).toPromise();
+    }
+
     async deleteCapteur(idErabliereSelectionnee: any, capteur: DeleteCapteur) {
         const headers = await this.getHeaders();
         return await this._httpClient.delete<DeleteCapteur>(

@@ -14,16 +14,28 @@
     <tbody>
         <tr *ngFor="let capteur of capteurs">
             <td>
-                <table-form-input [value]="capteur.nom" [displayEdit]="resolveDisplayEdit(capteur.id)" />
+                <table-form-input 
+                    [value]="capteur.nom" 
+                    [displayEdit]="resolveDisplayEdit(capteur.id)"
+                    [type]="'text'"/>
             </td>
             <td>
-                <table-form-input [value]="capteur.symbole" [displayEdit]="resolveDisplayEdit(capteur.id)" />
+                <table-form-input 
+                    [value]="capteur.symbole" 
+                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                    [type]="'text'"/>
             </td>
             <td>
-                <table-form-input [value]="capteur.afficherCapteurDashboard" [displayEdit]="resolveDisplayEdit(capteur.id)" />
+                <table-form-input 
+                    [value]="capteur.afficherCapteurDashboard" 
+                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                    [type]="'checkbox'"/>
             </td>
             <td>
-                <table-form-input [value]="capteur.ajouterDonneeDepuisInterface" [displayEdit]="resolveDisplayEdit(capteur.id)" />
+                <table-form-input 
+                    [value]="capteur.ajouterDonneeDepuisInterface" 
+                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                    [type]="'checkbox'"/>
             </td>
             <td>
                 {{formatDateJour(capteur.dc)}}
@@ -33,7 +45,8 @@
                     *ngIf="!resolveDisplayEdit(capteur.id)"
                     type="button" 
                     class="btn btn-outline-primary btn-sm" 
-                    (click)="showModifierCapteur(capteur)" disabled>Modifier</button>
+                    (click)="showModifierCapteur(capteur)"
+                    disabled>Modifier</button>
                 <button 
                     *ngIf="resolveDisplayEdit(capteur.id)"
                     type="button" 
