@@ -1,73 +1,75 @@
 <!-- Une table qui liste les capteurs -->
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th scope="col">Nom</th>
-            <th scope="col">Symbole</th>
-            <th scope="col">Afficher le graphique</th>
-            <th scope="col">Saisi manuel</th>
-            <th scope="col">Date création</th>
-            <th scope="col"></th>
-            <th scope="col"></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let capteur of capteurs">
-            <td>
-                <table-form-input 
-                    [value]="capteur.nom" 
-                    [displayEdit]="resolveDisplayEdit(capteur.id)"
-                    [type]="'text'"
-                    (valueChange)="editName(capteur.id, $event)"/>
-            </td>
-            <td>
-                <table-form-input 
-                    [value]="capteur.symbole" 
-                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'text'"
-                    (valueChange)="editSymbol(capteur.id, $event)"/>
-            </td>
-            <td>
-                <table-form-input 
-                    [value]="capteur.afficherCapteurDashboard" 
-                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'checkbox'"
-                    (valueChange)="editAfficherCapteurDashboard(capteur.id, $event)"/>
-            </td>
-            <td>
-                <table-form-input 
-                    [value]="capteur.ajouterDonneeDepuisInterface" 
-                    [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'checkbox'"
-                    (valueChange)="editAjouterDonneeDepuisInterface(capteur.id, $event)"/>
-            </td>
-            <td>
-                {{formatDateJour(capteur.dc)}}
-            </td>
-            <td>
-                <button 
-                    *ngIf="!resolveDisplayEdit(capteur.id)"
-                    type="button" 
-                    class="btn btn-outline-primary btn-sm" 
-                    (click)="showModifierCapteur(capteur)">Modifier</button>
-                <button 
-                    *ngIf="resolveDisplayEdit(capteur.id)"
-                    type="button" 
-                    class="btn btn-primary btn-sm" 
-                    (click)="modifierCapteur(capteur)">Enregistrer</button>
-            </td>
-            <td>
-                <button 
-                    *ngIf="!resolveDisplayEdit(capteur.id)"
-                    type="button" 
-                    class="btn btn-outline-danger btn-sm" 
-                    (click)="supprimerCapteur(capteur)">Supprimer</button>
-                <button 
-                    *ngIf="resolveDisplayEdit(capteur.id)"
-                    type="button" 
-                    class="btn btn-outline-info btn-sm" 
-                    (click)="hideModifierCapteur(capteur)">Annulé</button>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Symbole</th>
+                <th scope="col">Afficher le graphique</th>
+                <th scope="col">Saisi manuel</th>
+                <th scope="col">Date création</th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let capteur of capteurs">
+                <td>
+                    <table-form-input 
+                        [value]="capteur.nom" 
+                        [displayEdit]="resolveDisplayEdit(capteur.id)"
+                        [type]="'text'"
+                        (valueChange)="editName(capteur.id, $event)"/>
+                </td>
+                <td>
+                    <table-form-input 
+                        [value]="capteur.symbole" 
+                        [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                        [type]="'text'"
+                        (valueChange)="editSymbol(capteur.id, $event)"/>
+                </td>
+                <td>
+                    <table-form-input 
+                        [value]="capteur.afficherCapteurDashboard" 
+                        [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                        [type]="'checkbox'"
+                        (valueChange)="editAfficherCapteurDashboard(capteur.id, $event)"/>
+                </td>
+                <td>
+                    <table-form-input 
+                        [value]="capteur.ajouterDonneeDepuisInterface" 
+                        [displayEdit]="resolveDisplayEdit(capteur.id)" 
+                        [type]="'checkbox'"
+                        (valueChange)="editAjouterDonneeDepuisInterface(capteur.id, $event)"/>
+                </td>
+                <td>
+                    {{formatDateJour(capteur.dc)}}
+                </td>
+                <td>
+                    <button 
+                        *ngIf="!resolveDisplayEdit(capteur.id)"
+                        type="button" 
+                        class="btn btn-outline-primary btn-sm" 
+                        (click)="showModifierCapteur(capteur)">Modifier</button>
+                    <button 
+                        *ngIf="resolveDisplayEdit(capteur.id)"
+                        type="button" 
+                        class="btn btn-primary btn-sm" 
+                        (click)="modifierCapteur(capteur)">Enregistrer</button>
+                </td>
+                <td>
+                    <button 
+                        *ngIf="!resolveDisplayEdit(capteur.id)"
+                        type="button" 
+                        class="btn btn-outline-danger btn-sm" 
+                        (click)="supprimerCapteur(capteur)">Supprimer</button>
+                    <button 
+                        *ngIf="resolveDisplayEdit(capteur.id)"
+                        type="button" 
+                        class="btn btn-outline-info btn-sm" 
+                        (click)="hideModifierCapteur(capteur)">Annulé</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
