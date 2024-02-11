@@ -84,7 +84,10 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
     },
     cache: {
       cacheLocation: BrowserCacheLocation.LocalStorage,
-      storeAuthStateInCookie: false,
+
+      // if the web browser used is safari, set storeAuthStateInCookie to true
+      // otherwise, set it to false
+      storeAuthStateInCookie: window.navigator.userAgent.indexOf("Safari") > -1,
     },
     system: {
       loggerOptions: {
