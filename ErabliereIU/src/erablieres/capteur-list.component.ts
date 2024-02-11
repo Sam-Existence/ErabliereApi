@@ -1,6 +1,4 @@
-// A component pour lister les capteurs
-
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, Input, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
 import { TableFormInputComponent } from "../formsComponents/table-form-input.component";
@@ -12,20 +10,17 @@ import { NgFor, NgIf } from "@angular/common";
     standalone: true,
     imports: [NgFor, TableFormInputComponent, NgIf]
 })
-export class CapteurListComponent implements OnInit {
-
+export class CapteurListComponent {
     @Input() idErabliere?: string;
     @Input() capteurs: Capteur[] = [];
 
     @Output() shouldRefreshCapteurs = new EventEmitter<void>();
 
     displayEdits: { [id: string]: boolean } = {};
+    editedCapteurs: { [id: string]: Capteur } = {};
 
     constructor(private readonly erabliereApi: ErabliereApi) {
 
-    }
-
-    ngOnInit(): void {
     }
 
     resolveDisplayEdit(capteurId: string | undefined) {
@@ -37,22 +32,26 @@ export class CapteurListComponent implements OnInit {
     }
 
     showModifierCapteur(capteur: Capteur) {
-        if (capteur.id)
+        if (capteur.id) {
             this.displayEdits[capteur.id] = true;
+            this.editedCapteurs[capteur.id] = { ...capteur };
+        }
     }
 
     hideModifierCapteur(capteur: Capteur) {
-        if (capteur.id)
+        if (capteur.id) {
             this.displayEdits[capteur.id] = false;
+            this.editedCapteurs[capteur.id] = { ...capteur };
+        }
     }
 
     modifierCapteur(capteur: Capteur) {
-        const putCapteur = { ...capteur };
-        // putCapteur.nom = this.resolveName();
-        // putCapteur.symbole = this.resolveSymbole();
-        // putCapteur.afficherCapteurDashboard = this.resolveAfficherCapteurDashboard();
-        // putCapteur.ajouterDonneeDepuisInterface = this.resolveAjouterDonneeDepuisInterface();
-        this.erabliereApi.putCapteur(this.idErabliere, capteur).then(() => {
+        if (!capteur.id) {
+            console.error("capteur.id is undefined in modifierCapteur()");
+            return;
+        }
+        const putCapteur = this.editedCapteurs[capteur.id];
+        this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
             this.shouldRefreshCapteurs.emit();
             if (capteur.id) {
                 this.displayEdits[capteur.id] = false;
@@ -83,5 +82,37 @@ export class CapteurListComponent implements OnInit {
             date = new Date(date);
         }
         return date.toLocaleDateString("fr-CA");
+    }
+
+    editAjouterDonneeDepuisInterface(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
+        if (!capteurId) {
+            return;
+        }
+
+        this.editedCapteurs[capteurId].ajouterDonneeDepuisInterface = newValue?.toString().trim().toLowerCase() === "true";
+    }
+
+    editAfficherCapteurDashboard(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
+        if (!capteurId) {
+            return;
+        }
+
+        this.editedCapteurs[capteurId].afficherCapteurDashboard = newValue?.toString().trim().toLowerCase() === "true";
+    }
+
+    editSymbol(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
+        if (!capteurId) {
+            return;
+        }
+
+        this.editedCapteurs[capteurId].symbole = newValue?.toString();
+    }
+
+    editName(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
+        if (!capteurId) {
+            return;
+        }
+
+        this.editedCapteurs[capteurId].nom = newValue?.toString();
     }
 }

@@ -1,5 +1,5 @@
-Write-Host "Running npx storybook@latest upgrade"
-npx storybook@latest upgrade
+Write-Host "Running npx storybook@latest upgrade --yes"
+"\n" | npx storybook@latest upgrade
 
 Write-Host "Running npm dedupe"
 npm dedupe

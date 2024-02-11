@@ -156,6 +156,11 @@ public class CapteursController : ControllerBase
             capteurEntity.Nom = capteur.Nom;
         }
 
+        if (string.IsNullOrWhiteSpace(capteur.Symbole) == false)
+        {
+            capteurEntity.Symbole = capteur.Symbole;
+        }
+
         _depot.Update(capteurEntity);
 
         await _depot.SaveChangesAsync(token);

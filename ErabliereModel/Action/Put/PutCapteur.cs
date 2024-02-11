@@ -18,6 +18,11 @@ public class PutCapteur
     public string? Nom { get; set; }
 
     /// <summary>
+    /// Le symbole du capteur
+    /// </summary>
+    public string? Symbole { get; set; }
+
+    /// <summary>
     /// L'id de l'érablière
     /// </summary>
     public Guid? IdErabliere { get; set; }

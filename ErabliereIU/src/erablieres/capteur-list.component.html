@@ -17,25 +17,29 @@
                 <table-form-input 
                     [value]="capteur.nom" 
                     [displayEdit]="resolveDisplayEdit(capteur.id)"
-                    [type]="'text'"/>
+                    [type]="'text'"
+                    (valueChange)="editName(capteur.id, $event)"/>
             </td>
             <td>
                 <table-form-input 
                     [value]="capteur.symbole" 
                     [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'text'"/>
+                    [type]="'text'"
+                    (valueChange)="editSymbol(capteur.id, $event)"/>
             </td>
             <td>
                 <table-form-input 
                     [value]="capteur.afficherCapteurDashboard" 
                     [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'checkbox'"/>
+                    [type]="'checkbox'"
+                    (valueChange)="editAfficherCapteurDashboard(capteur.id, $event)"/>
             </td>
             <td>
                 <table-form-input 
                     [value]="capteur.ajouterDonneeDepuisInterface" 
                     [displayEdit]="resolveDisplayEdit(capteur.id)" 
-                    [type]="'checkbox'"/>
+                    [type]="'checkbox'"
+                    (valueChange)="editAjouterDonneeDepuisInterface(capteur.id, $event)"/>
             </td>
             <td>
                 {{formatDateJour(capteur.dc)}}
@@ -45,8 +49,7 @@
                     *ngIf="!resolveDisplayEdit(capteur.id)"
                     type="button" 
                     class="btn btn-outline-primary btn-sm" 
-                    (click)="showModifierCapteur(capteur)"
-                    disabled>Modifier</button>
+                    (click)="showModifierCapteur(capteur)">Modifier</button>
                 <button 
                     *ngIf="resolveDisplayEdit(capteur.id)"
                     type="button" 
