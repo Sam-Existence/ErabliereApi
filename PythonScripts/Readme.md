@@ -1,6 +1,13 @@
 # PythonScripts
 
-Les scripts python sont installé sur des serveurs permettant d'interoger des appareils qui n'ont pas la capacité d'envoyer des requêtes http.
+Les scripts python sont installé sur des ordinateurs permettant d'interoger des appareils qui n'ont pas la capacité d'envoyer des requêtes http.
+
+### Installer les dépendances
+
+Sous windows:
+```
+pip install -r requirements.txt
+```
 
 ### Authentification
 
