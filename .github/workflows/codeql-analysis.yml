@@ -15,7 +15,10 @@ on:
   workflow_dispatch:
     inputs:
       tags:
-        description: 'Analyse du code'  
+        description: 'Analyse du code'
+# Trigger the flow base on a schedule, once per week
+  schedule:
+    - cron: '0 0 * * 0'
 
 jobs:
   analyze:
