@@ -23,7 +23,6 @@ import { WeatherForecase } from 'src/model/weatherforecast';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
-    
     private _authService: IAuthorisationSerivce
 
     constructor(private _httpClient: HttpClient,
@@ -309,6 +308,11 @@ export class ErabliereApi {
     async getConversations() {
         const headers = await this.getHeaders();
         return this._httpClient.get<any[]>(this._environmentService.apiUrl + "/ErabliereAI/Conversations?$expand=messages", { headers: headers }).toPromise();
+    }
+
+    async deleteConversation(id: any) {
+        const headers = await this.getHeaders();
+        return this._httpClient.delete<any>(this._environmentService.apiUrl + "/ErabliereAI/Conversations/" + id, { headers: headers }).toPromise();
     }
 
     async getOpenApiSpec(): Promise<any> {

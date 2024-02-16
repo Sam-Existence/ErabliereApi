@@ -6,6 +6,7 @@ using ErabliereModel.Action.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers;
 
@@ -71,8 +72,8 @@ public class ErabliereAIController : ControllerBase
     public async Task<IActionResult> EnvoyerPrompt([FromBody] PostPrompt prompt, CancellationToken cancellationToken)
     {
         var client = new OpenAIClient(
-            new Uri(_configuration["AzureOpenAIUri"]),
-            new AzureKeyCredential(_configuration["AzureOpenAIKey"])
+            new Uri(_configuration["AzureOpenAIUri"] ?? ""),
+            new AzureKeyCredential(_configuration["AzureOpenAIKey"] ?? "")
         );
 
         var completionResponse = await client.GetCompletionsAsync(
@@ -100,6 +101,8 @@ public class ErabliereAIController : ControllerBase
             {
                 UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value,
                 CreatedOn = DateTime.Now,
+                LastMessageDate = DateTime.Now,
+                Name = prompt.Prompt
             };
             _depot.Conversations.Add(conversation);
             await _depot.SaveChangesAsync(cancellationToken);
@@ -108,6 +111,11 @@ public class ErabliereAIController : ControllerBase
         else 
         {
             conversation = await _depot.Conversations.FindAsync([prompt.ConversationId], cancellationToken);
+
+            if (conversation != null) 
+            {
+                conversation.LastMessageDate = DateTime.Now;
+            }
         }
 
         // create the messages for the database
@@ -137,5 +145,23 @@ public class ErabliereAIController : ControllerBase
             Conversation = conversation,
             Response = response,
         });
+    }
+
+    /// <summary>
+    /// Delete a conversation
+    /// </summary>
+    [HttpDelete("Conversations/{id}")]
+    public async Task<IActionResult> DeleteConversation(Guid id, CancellationToken cancellationToken)
+    {
+        var conversation = await _depot.Conversations.Include(c => c.Messages).FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+        if (conversation == null)
+        {
+            return NoContent();
+        }
+
+        _depot.Conversations.Remove(conversation);
+        await _depot.SaveChangesAsync(cancellationToken);
+
+        return Ok();
     }
 }
