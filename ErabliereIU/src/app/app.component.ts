@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { EntraRedirectComponent } from './entra-redirect.component';
 import { RouterOutlet } from '@angular/router';
 import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
@@ -7,6 +7,11 @@ import { ErabliereSideBarComponent } from 'src/dashboard/erablieres-side-bar.com
 import { NgIf } from '@angular/common';
 import { EventEmitter } from 'stream';
 import { Subject } from 'rxjs';
+import { ErabliereAIComponent } from 'src/erabliereai/erabliereai-chat.component';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { MsalService } from '@azure/msal-angular';
+import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
+import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 
 @Component({
   selector: 'app-root',
@@ -31,6 +36,7 @@ import { Subject } from 'rxjs';
               <router-outlet></router-outlet>
               <entra-redirect></entra-redirect>
             </main>
+            <app-chat-widget *ngIf="erabliereAIEnable && erabliereAIUserRole"></app-chat-widget>
           </div>
         </div>
       </div>
@@ -53,17 +59,22 @@ import { Subject } from 'rxjs';
     SiteNavBarComponent, 
     YouAreNotConnectedComponent,
     ErabliereSideBarComponent,
+    ErabliereAIComponent,
     NgIf
   ]
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   showMenuSubject: Subject<boolean> = new Subject<boolean>();
   showMenu: boolean = true;
   thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
   thereIsAtLeastOneErabliere: boolean = false;
   classes: string = "col-lg-10 col-md-12";
+  erabliereAIEnable: boolean = false;
+  erabliereAIUserRole: boolean = false;
+  authService: IAuthorisationSerivce;
 
-  constructor() {
+  constructor(private api: ErabliereApi, authServiceFactory: AuthorisationFactoryService, private msalService: MsalService) {
+    this.authService = authServiceFactory.getAuthorisationService();
     this.showMenuSubject.next(true);
     this.showMenuSubject.subscribe((val) => {
       this.showMenu = val;
@@ -79,5 +90,33 @@ export class AppComponent {
     this.thereIsAtLeastOneErabliereSubject.subscribe((val) => {
       this.thereIsAtLeastOneErabliere = val;
     });
+  }
+  ngOnInit(): void {
+    this.api.getOpenApiSpec().then(spec => {
+        this.erabliereAIEnable = spec.paths['/ErabliereAI/Conversations'] !== undefined;
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+    // get the user role to see if it got the ErabliereAIUser role
+    // if so, enable the chat widget
+    if (this.authService.type == "AzureAD") {
+      this.authService.loginChanged.subscribe((val) => {
+        const account = this.msalService.instance.getActiveAccount();
+        if (account?.idTokenClaims) {
+          const roles = account?.idTokenClaims['roles'];
+          if (roles != null) {
+            this.erabliereAIUserRole = roles.includes("ErabliereAIUser");
+          }
+          else {
+            this.erabliereAIUserRole = false;
+          }
+        }
+        else {
+          this.erabliereAIUserRole = false;
+        }
+      });
+    }
   }
 }
