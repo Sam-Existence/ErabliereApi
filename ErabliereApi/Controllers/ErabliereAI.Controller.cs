@@ -81,7 +81,7 @@ public class ErabliereAIController : ControllerBase
             {
                 Prompts = { prompt.Prompt },
                 Temperature = (float)1,
-                MaxTokens = 100,
+                MaxTokens = 800,
                 NucleusSamplingFactor = (float)0.5,
                 FrequencyPenalty = (float)0,
                 PresencePenalty = (float)0,
