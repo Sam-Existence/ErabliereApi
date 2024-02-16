@@ -32,6 +32,7 @@ using MailKit;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Options;
 using ErabliereApi.Services.Emails;
+using ErabliereApi.ControllerFeatureProviders;
 
 namespace ErabliereApi;
 
@@ -72,7 +73,7 @@ public class Startup
             // This code is used to scan for controller using the StripeIntegrationToggleFiltrer
             // which is going to control if the stripe controller must be enabled or disabled
             manager.FeatureProviders.Clear();
-            manager.FeatureProviders.Add(new StripeIntegrationToggleFiltrer(Configuration));
+            manager.FeatureProviders.Add(new ErabliereAPIControllerFeatureProvider(Configuration));
         })
         .AddOData(o =>
         {

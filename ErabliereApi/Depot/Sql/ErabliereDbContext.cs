@@ -85,6 +85,16 @@ namespace ErabliereApi.Depot.Sql
         /// </summary>
         public DbSet<CustomerErabliere> CustomerErablieres { get; set; }
 
+        /// <summary>
+        /// Table des conversations
+        /// </summary>
+        public DbSet<Conversation> Conversations { get; set; }
+
+        /// <summary>
+        /// Table des messages
+        /// </summary>
+        public DbSet<Message> Messages { get; set; }
+
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

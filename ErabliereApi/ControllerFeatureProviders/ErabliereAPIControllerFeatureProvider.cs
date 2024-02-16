@@ -2,12 +2,12 @@ using System.Reflection;
 using ErabliereApi.Controllers;
 using Microsoft.AspNetCore.Mvc.Controllers;
 
-namespace ErabliereApi.StripeIntegration;
+namespace ErabliereApi.ControllerFeatureProviders;
 
 /// <summary>
 /// Classe de filtre pour le contrôleur de checkout
 /// </summary>
-public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
+public class ErabliereAPIControllerFeatureProvider : ControllerFeatureProvider
 {
     private readonly IConfiguration _config;
 
@@ -15,7 +15,7 @@ public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
     /// Build a ControllerFeatureProvider that will filter out Stripe integration controllers
     /// base on if there is an api key in the configuration. The key checked is 'Stripe.ApiKey'.
     /// </summary>
-    public StripeIntegrationToggleFiltrer(IConfiguration config)
+    public ErabliereAPIControllerFeatureProvider(IConfiguration config)
     {
         _config = config;
     }
@@ -28,6 +28,13 @@ public class StripeIntegrationToggleFiltrer : ControllerFeatureProvider
             var stripeEnabled = !string.IsNullOrWhiteSpace(_config["Stripe.ApiKey"]);
 
             return stripeEnabled;
+        }
+
+        if (typeInfo.Name == nameof(ErabliereAIController))
+        {
+            var aiEnable = !string.IsNullOrWhiteSpace(_config["AzureOpenAIUri"]);
+
+            return aiEnable;
         }
 
         return base.IsController(typeInfo);

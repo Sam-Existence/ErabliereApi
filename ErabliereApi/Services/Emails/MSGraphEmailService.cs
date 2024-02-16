@@ -45,7 +45,7 @@ public class MSGraphEmailService : IEmailService
             ClientSecretCredential credential = new(tenantId, clientId, clientSecret);
             GraphServiceClient graphClient = new(credential);
 
-            Message message = new()
+            Microsoft.Graph.Models.Message message = new()
             {
                 Subject = mimeMessage.Subject,
                 Body = new ItemBody
