@@ -84,4 +84,9 @@ export class ErabliereAIComponent {
             this.messages = [];
         }
     }
+
+    newChat() {
+        this.currentConversation = null;
+        this.messages = [];
+    }
 }
