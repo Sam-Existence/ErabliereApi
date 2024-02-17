@@ -94,12 +94,14 @@ export class ErabliereAIComponent {
     }
 
     deleteConversation(c: any) {
-        this.api.deleteConversation(c.id).then(() => {
-            if (c.id === this.currentConversation?.id) {
-                this.currentConversation = null;
-                this.messages = [];
-            }
-            this.fetchConversations();
-        });
+        if (confirm('Are you sure you want to delete this conversation?')) {
+            this.api.deleteConversation(c.id).then(() => {
+                if (c.id === this.currentConversation?.id) {
+                    this.currentConversation = null;
+                    this.messages = [];
+                }
+                this.fetchConversations();
+            });
+        }
     }
 }
