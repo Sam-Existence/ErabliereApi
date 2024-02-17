@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { formatDistanceToNow } from 'date-fns';
 import { HostListener } from '@angular/core';
+import { fr } from 'date-fns/locale';
 
 @Component({
     selector: 'app-chat-widget',
@@ -122,7 +123,7 @@ export class ErabliereAIComponent {
     }
 
     formatMessageDate(date: Date | string) {
-        return formatDistanceToNow(new Date(date), { addSuffix: true });
+        return formatDistanceToNow(new Date(date), { addSuffix: true, locale: fr });
     }
 
     @HostListener('document:keydown', ['$event'])
