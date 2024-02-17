@@ -71,28 +71,7 @@ public class ErabliereAIController : ControllerBase
     [ProducesResponseType(200, Type = typeof(PostPromptResponse))]
     public async Task<IActionResult> EnvoyerPrompt([FromBody] PostPrompt prompt, CancellationToken cancellationToken)
     {
-        var client = new OpenAIClient(
-            new Uri(_configuration["AzureOpenAIUri"] ?? ""),
-            new AzureKeyCredential(_configuration["AzureOpenAIKey"] ?? "")
-        );
-
-        var completionResponse = await client.GetCompletionsAsync(
-            deploymentOrModelName: _configuration["AzureOpenAIDeploymentModelName"],
-            new CompletionsOptions
-            {
-                Prompts = { prompt.Prompt },
-                Temperature = (float)1,
-                MaxTokens = 800,
-                NucleusSamplingFactor = (float)0.5,
-                FrequencyPenalty = (float)0,
-                PresencePenalty = (float)0,
-                GenerationSampleCount = 1,
-            }
-        );
-        var completion = completionResponse.Value;
-
-        string aiResponse = completion?.Choices?.FirstOrDefault()?.Text ?? "No response";
-        
+        // Premièrement ont obtient la conversation
         // if the convesation id is null, create a new conversation
         Conversation? conversation = null;
         if (prompt.ConversationId == null)
@@ -116,6 +95,70 @@ public class ErabliereAIController : ControllerBase
             {
                 conversation.LastMessageDate = DateTime.Now;
             }
+        }
+
+        // Ensuite ont envoie le prompt à l'IA
+        var client = new OpenAIClient(
+            new Uri(_configuration["AzureOpenAIUri"] ?? ""),
+            new AzureKeyCredential(_configuration["AzureOpenAIKey"] ?? "")
+        );
+
+        string aiResponse = "No response";
+
+        switch (prompt.PromptType)
+        {
+            case "Chat":
+                // Dans le prompt de type Chat, on obtient l'historique de la conversation
+                var messages = await _depot.Messages
+                    .Where(m => m.ConversationId == prompt.ConversationId)
+                    .OrderBy(m => m.CreatedAt)
+                    .ToListAsync(cancellationToken);
+
+                var chatCompletionsOptions = new ChatCompletionsOptions()
+                {
+                    Temperature = (float)0.7,
+                    MaxTokens = 800,
+                    NucleusSamplingFactor = (float)0.95,
+                    FrequencyPenalty = 0,
+                    PresencePenalty = 0
+                };
+
+                chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.System, "Vous êtes un acériculteur expérimenté avec des connaissance scientifique et pratique."));
+
+                foreach (var message in messages)
+                {
+                    chatCompletionsOptions.Messages.Add(new ChatMessage(message.IsUser ? ChatRole.User : ChatRole.Assistant, message.Content));
+                }
+
+                Response<ChatCompletions> responseWithoutStream = await client.GetChatCompletionsAsync(
+                    _configuration["AzureOpenAIDeploymentChatModelName"],
+                    chatCompletionsOptions
+                );
+
+                ChatCompletions responseChat = responseWithoutStream.Value;
+                aiResponse = responseChat?.Choices?.FirstOrDefault()?.Message?.Content ?? "No response";
+                break;
+            default:
+                var completionResponse = await client.GetCompletionsAsync(
+                    deploymentOrModelName: _configuration["AzureOpenAIDeploymentModelName"],
+                    new CompletionsOptions
+                    {
+                        Prompts = { prompt.Prompt },
+                        Temperature = (float)1,
+                        MaxTokens = 800,
+                        NucleusSamplingFactor = (float)0.5,
+                        FrequencyPenalty = (float)0,
+                        PresencePenalty = (float)0,
+                        GenerationSampleCount = 1,
+                    }
+                );
+                var completion = completionResponse.Value;
+
+                var localText = completion?.Choices?.FirstOrDefault()?.Text;
+                if (localText != null) {
+                    aiResponse = localText;
+                }
+                break;
         }
 
         // create the messages for the database
@@ -153,7 +196,10 @@ public class ErabliereAIController : ControllerBase
     [HttpDelete("Conversations/{id}")]
     public async Task<IActionResult> DeleteConversation(Guid id, CancellationToken cancellationToken)
     {
-        var conversation = await _depot.Conversations.Include(c => c.Messages).FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+        var conversation = await _depot.Conversations
+            .Include(c => c.Messages)
+            .FirstOrDefaultAsync(c => c.Id == id, cancellationToken);
+
         if (conversation == null)
         {
             return NoContent();
