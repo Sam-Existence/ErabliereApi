@@ -56,7 +56,7 @@
                 <div class="card-header d-flex justify-content-between p-3"
                   style="border-bottom: 1px solid rgba(255,255,255,.3);">
                   <p class="fw-bold mb-0">{{ message.isUser ? "Vous" : "ErabliereAI" }}</p>
-                  <p class="text-light small mb-0"><i class="far fa-clock"></i> {{ message.createdAt }}</p>
+                  <p class="text-light small mb-0"><i class="far fa-clock"></i> {{ formatMessageDate(message.createdAt) }}</p>
                 </div>
                 <div class="card-body">
                   <p class="mb-0" style="white-space: pre-wrap; word-wrap: break-word;">
@@ -65,6 +65,12 @@
                 </div>
               </div>
             </li>
+            <li *ngIf="aiIsThinking">
+              <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Pensif...</span>
+              </div>
+              <p>ErabliereAI réfléchit...</p>
+            </li>
             <li class="mb-3">
               <div class="form-outline form-white">
                 <textarea class="form-control" id="textAreaExample3" rows="4" (change)="updateNewMessage($event)">
@@ -72,10 +78,21 @@
                 <label class="form-label" for="textAreaExample3">Message</label>
               </div>
             </li>
-            <div class="btn-group float-end">
-              <button type="button" class="btn btn-light btn-lg btn-rounded" (click)="sendMessage()">Envoyer</button>
-              <button type="button" class="btn btn-light btn-lg btn-rounded" (click)="newChat()">Nouvelle Conversation</button>
-              <button type="button" class="btn btn-light btn-lg btn-rounded" (click)="toggleChat()">Fermer</button>
+            <div class="row">
+              <div class="col-4">
+                <label for="exampleFormControlSelect1" class="text-white form-label">Type de message</label>
+                <select class="form-select" id="exampleFormControlSelect1" (change)="updateMessageType($event)">
+                  <option value="Chat">Chat</option>
+                  <option value="Completion">Completion</option>
+                </select>
+              </div>
+              <div class="col-8">
+                <div class="btn-group float-end float-bottom">
+                  <button type="button" class="btn btn-light btn-rounded" (click)="sendMessage()">Envoyer</button>
+                  <button type="button" class="btn btn-light btn-rounded" (click)="newChat()">Nouvelle Conversation</button>
+                  <button type="button" class="btn btn-light btn-rounded" (click)="toggleChat()">Fermer</button>
+                </div>
+              </div>
             </div>
           </ul>
 

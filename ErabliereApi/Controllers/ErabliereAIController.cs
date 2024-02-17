@@ -130,6 +130,8 @@ public class ErabliereAIController : ControllerBase
                     chatCompletionsOptions.Messages.Add(new ChatMessage(message.IsUser ? ChatRole.User : ChatRole.Assistant, message.Content));
                 }
 
+                chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.User, prompt.Prompt));
+
                 Response<ChatCompletions> responseWithoutStream = await client.GetChatCompletionsAsync(
                     _configuration["AzureOpenAIDeploymentChatModelName"],
                     chatCompletionsOptions

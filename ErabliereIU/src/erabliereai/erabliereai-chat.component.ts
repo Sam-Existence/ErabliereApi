@@ -2,6 +2,8 @@ import { NgFor, NgIf } from '@angular/common';
 import { Component, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { formatDistanceToNow } from 'date-fns';
+import { HostListener } from '@angular/core';
 
 @Component({
     selector: 'app-chat-widget',
@@ -12,6 +14,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 })
 export class ErabliereAIComponent {
     chatOpen = false;
+    aiIsThinking = false;
 
     toggleChat() {
         this.chatOpen = !this.chatOpen;
@@ -24,10 +27,12 @@ export class ErabliereAIComponent {
     conversations: any[];
     currentConversation: any;
     messages: any[];
+    typePrompt: string;
 
     constructor(private api: ErabliereApi) {
         this.conversations = [];
         this.messages = [];
+        this.typePrompt = 'Chat';
     }
 
     fetchConversations() {
@@ -70,11 +75,17 @@ export class ErabliereAIComponent {
     sendMessage() {
         const prompt = {
             Prompt: this.newMessage,
-            ConversationId: this.currentConversation?.id
+            ConversationId: this.currentConversation?.id,
+            PromptType: this.typePrompt
         };
+        this.aiIsThinking = true;
         this.api.postPrompt(prompt).then((response: any) => {
             this.fetchConversations();
             this.newMessage = '';
+            this.aiIsThinking = false;
+        }).catch((error) => {
+            this.aiIsThinking = false;
+            alert('Error sending message ' + error);
         });
     }
 
@@ -102,6 +113,22 @@ export class ErabliereAIComponent {
                 }
                 this.fetchConversations();
             });
+        }
+    }
+
+    updateMessageType($event: Event) {
+        this.typePrompt = ($event.target as HTMLInputElement).value;
+        console.log(this.typePrompt);
+    }
+
+    formatMessageDate(date: Date | string) {
+        return formatDistanceToNow(new Date(date), { addSuffix: true });
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+        if (this.chatOpen && event.key === 'Escape') {
+            this.chatOpen = false;
         }
     }
 }
