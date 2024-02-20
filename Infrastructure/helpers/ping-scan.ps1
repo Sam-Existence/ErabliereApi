@@ -4,7 +4,7 @@ Remove-Item *.txt
 
 $ip = Get-CrossPlatformIpAddress
 
-Remove-LastIpOctet $ip
+$network = Remove-LastIpOctet $ip
 
 for ($i = 1; $i -le 254; $i++) {
     # ping the IP address
