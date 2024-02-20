@@ -58,6 +58,11 @@ public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
     public string? Nom { get; set; }
 
     /// <summary>
+    /// Indice de l'ordre du tri
+    /// </summary>
+    public int? IndiceOrdre { get; set; }
+
+    /// <summary>
     /// Le symbole qui représente l'unité observer par le capteur.
     /// </summary>
     /// <example>
