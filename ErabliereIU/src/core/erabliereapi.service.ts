@@ -35,7 +35,7 @@ export class ErabliereApi {
     async getErabliere(idErabliereSelectionee: any): Promise<Erabliere> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Erabliere[]>(
-            this._environmentService.apiUrl + '/erablieres?$filter=id eq ' + idErabliereSelectionee + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true)',
+            this._environmentService.apiUrl + '/erablieres?$filter=id eq ' + idErabliereSelectionee + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true;$orderby=indiceOrdre)',
             { headers: headers }).toPromise();
         
         if (rtn != null && rtn.length > 0) {
@@ -79,7 +79,7 @@ export class ErabliereApi {
 
     async getCapteurs(idErabliereSelectionnee:any): Promise<Capteur[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Capteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", { headers: headers }).toPromise();
+        const rtn = await this._httpClient.get<Capteur[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs?$orderby=indiceOrdre", { headers: headers }).toPromise();
         return rtn ?? [];
     }
 

@@ -51,6 +51,7 @@ export class CapteurListComponent {
             return;
         }
         const putCapteur = this.editedCapteurs[capteur.id];
+        console.log(putCapteur);
         this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
             this.shouldRefreshCapteurs.emit();
             if (capteur.id) {
@@ -114,5 +115,13 @@ export class CapteurListComponent {
         }
 
         this.editedCapteurs[capteurId].nom = newValue?.toString();
+    }
+
+    editIndice(capteurId: string|undefined, $newValue: string|number|boolean) {
+        if (!capteurId) {
+            return;
+        }
+
+        this.editedCapteurs[capteurId].indiceOrdre = parseInt($newValue.toString());
     }
 }

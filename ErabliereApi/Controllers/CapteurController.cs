@@ -9,6 +9,7 @@ using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers;
@@ -44,6 +45,7 @@ public class CapteursController : ControllerBase
     /// <response code="200">Une liste de capteurs.</response>
     [HttpGet]
     [ValiderOwnership("id")]
+    [EnableQuery]
     public async Task<IEnumerable<GetCapteurs>> Lister(Guid id, string? filtreNom, CancellationToken token)
     {
         return await _depot.Capteurs.AsNoTracking()
@@ -159,6 +161,11 @@ public class CapteursController : ControllerBase
         if (string.IsNullOrWhiteSpace(capteur.Symbole) == false)
         {
             capteurEntity.Symbole = capteur.Symbole;
+        }
+
+        if (capteur.IndiceOrdre != null) 
+        {
+            capteurEntity.IndiceOrdre = capteur.IndiceOrdre;
         }
 
         _depot.Update(capteurEntity);

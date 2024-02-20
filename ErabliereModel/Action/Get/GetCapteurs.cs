@@ -36,5 +36,11 @@ namespace ErabliereApi.Donnees.Action.Get
         /// La date de création de l'entité.
         /// </summary>
         public DateTimeOffset? DC { get; set; }
+
+        /// <summary>
+        /// L'indice du tri
+        /// </summary>
+        public int? IndiceOrdre { get; set; }
+
     }
 }

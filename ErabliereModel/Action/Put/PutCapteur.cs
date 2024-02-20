@@ -41,4 +41,9 @@ public class PutCapteur
     /// La date de création de l'entité.
     /// </summary>
     public DateTimeOffset? DC { get; set; }
+
+    /// <summary>
+    /// Indice du tri
+    /// </summary>
+    public int? IndiceOrdre { get; set; }
 }

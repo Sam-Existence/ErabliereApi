@@ -8,4 +8,5 @@ export class Capteur {
     ajouterDonneeDepuisInterface: boolean = false
     dc?: string;
     donnees?: DonneeCapteur[];
+    indiceOrdre?: number;
 }

@@ -3,6 +3,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col">Indice</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Symbole</th>
                 <th scope="col">Afficher le graphique</th>
@@ -14,6 +15,13 @@
         </thead>
         <tbody>
             <tr *ngFor="let capteur of capteurs">
+                <td>
+                    <table-form-input
+                        [value]="capteur.indiceOrdre"
+                        [displayEdit]="resolveDisplayEdit(capteur.id)"
+                        [type]="'number'"
+                        (valueChange)="editIndice(capteur.id, $event)" />
+                </td>
                 <td>
                     <table-form-input 
                         [value]="capteur.nom" 
