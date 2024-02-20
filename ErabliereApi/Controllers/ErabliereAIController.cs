@@ -2,11 +2,14 @@ using AutoMapper;
 using Azure;
 using Azure.AI.OpenAI;
 using ErabliereApi.Depot.Sql;
+using ErabliereApi.Donnees.Action.Patch;
 using ErabliereModel.Action.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Graph.DeviceAppManagement.ManagedAppRegistrations.GetUserIdsWithFlaggedAppRegistration;
+using System.Threading;
 
 namespace ErabliereApi.Controllers;
 
@@ -42,10 +45,9 @@ public class ErabliereAIController : ControllerBase
     [EnableQuery]
     public IActionResult GetConversation()
     {
-        // conversation should be filtered by the user
-        var userSub = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        var userId = UsersUtils.GetUniqueName(HttpContext.RequestServices.CreateScope(), HttpContext.User);
 
-        return Ok(_depot.Conversations.Where(c => c.UserId == userSub));
+        return Ok(_depot.Conversations.Where(c => c.UserId == userId));
     }
 
     /// <summary>
@@ -56,11 +58,11 @@ public class ErabliereAIController : ControllerBase
     public IActionResult GetMessages(Guid conversationId)
     {
         // conversation should be filtered by the user
-        var userSub = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value;
+        var userId = UsersUtils.GetUniqueName(HttpContext.RequestServices.CreateScope(), HttpContext.User);
 
 #nullable disable
         return Ok(_depot.Messages.Where(m => m.ConversationId == conversationId && 
-                                             m.Conversation.UserId == userSub));    
+                                             m.Conversation.UserId == userId));    
 #nullable enable             
     }
 
@@ -78,7 +80,7 @@ public class ErabliereAIController : ControllerBase
         {
             conversation = new Conversation
             {
-                UserId = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "sub")?.Value,
+                UserId = UsersUtils.GetUniqueName(HttpContext.RequestServices.CreateScope(), HttpContext.User),
                 CreatedOn = DateTime.Now,
                 LastMessageDate = DateTime.Now,
                 Name = prompt.Prompt
@@ -211,5 +213,45 @@ public class ErabliereAIController : ControllerBase
         await _depot.SaveChangesAsync(cancellationToken);
 
         return Ok();
+    }
+
+    /// <summary>
+    /// Liste les conversation en tant qu'administrteur
+    /// </summary>
+    [HttpGet("Admin/Conversations")]
+    [EnableQuery]
+    [Authorize(Roles = "administrateur")]
+    public IActionResult GetConversationAsAdmin()
+    {
+        return Ok(_depot.Conversations);
+    }
+
+    /// <summary>
+    /// Permet à un administrateur de modifier le userId d'une conversation
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="patch"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPatch("Conversations/{id}/UserId")]
+    [Authorize(Roles = "administrateur")]
+    public async Task<IActionResult> PatchConversation(Guid id, PatchConversation patch, CancellationToken token)
+    {
+        var conversation = await _depot.Conversations
+            .FirstOrDefaultAsync(c => c.Id == id, token);
+
+        if (conversation == null)
+        {
+            return NoContent();
+        }
+
+        if (patch.UserId != null)
+        {
+            conversation.UserId = patch.UserId;
+        }
+
+        await _depot.SaveChangesAsync(token);
+
+        return Ok(conversation);
     }
 }
