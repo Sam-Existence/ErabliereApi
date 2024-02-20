@@ -216,6 +216,17 @@ public class ErabliereAIController : ControllerBase
     }
 
     /// <summary>
+    /// Liste les conversation en tant qu'administrteur
+    /// </summary>
+    [HttpGet("Admin/Conversations")]
+    [EnableQuery]
+    [Authorize(Roles = "administrateur")]
+    public IActionResult GetConversationAsAdmin()
+    {
+        return Ok(_depot.Conversations);
+    }
+
+    /// <summary>
     /// Permet à un administrateur de modifier le userId d'une conversation
     /// </summary>
     /// <param name="id"></param>
@@ -223,7 +234,7 @@ public class ErabliereAIController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpPatch("Conversations/{id}/UserId")]
-    [Authorize("administrateur")]
+    [Authorize(Roles = "administrateur")]
     public async Task<IActionResult> PatchConversation(Guid id, PatchConversation patch, CancellationToken token)
     {
         var conversation = await _depot.Conversations
