@@ -16,8 +16,7 @@ import { WeatherForecastComponent } from './weatherforecast.component';
         <div class="row">
           <weather-forecast 
             *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
-            class="col-md-6"
-            [idErabliere]="initialErabliere?.id"></weather-forecast>
+            class="col-md-6"></weather-forecast>
           <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
               <graph-pannel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
