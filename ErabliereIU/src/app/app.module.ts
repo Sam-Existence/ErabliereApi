@@ -119,7 +119,9 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
     }
   };
 
-  return new PublicClientApplication(msalConfig);
+  var pca = new PublicClientApplication(msalConfig);
+
+  return pca;
 }
 
 @NgModule({

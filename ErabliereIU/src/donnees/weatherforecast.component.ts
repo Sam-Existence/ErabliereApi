@@ -18,15 +18,13 @@ import { ActivatedRoute } from '@angular/router';
                     {{error}}
                 </div>
             }
-            @else {
-              <div class="chart-wrapper">
+            
+            <div class="chart-wrapper">
                 <canvas 
                   id="weatherChart" 
                   class="chart">
                 </canvas>
             </div>
-            }
-            
         </div>
     </div>
   `,
@@ -48,6 +46,7 @@ WeatherForecastComponent implements OnInit {
       if (this.interval != null) {
         clearInterval(this.interval);
       }
+      this.chart?.destroy();
       this.idErabliere = params.get('idErabliereSelectionee');
       if (notNullOrWitespace(this.idErabliere)) {
           this.getWeatherData();
@@ -56,14 +55,12 @@ WeatherForecastComponent implements OnInit {
           }, 1000 * 60 * 60);
           return;
       }
-      else {
-        this.createChart();
-      }
     });
   }
 
   ngOnDestroy() {
     clearInterval(this.interval);
+    this.chart?.destroy();
   }
 
   getWeatherData() {
@@ -143,6 +140,6 @@ WeatherForecastComponent implements OnInit {
   }
 
   notNullOrWhitespace(arg0: any) {
-    return notNullOrWitespace(arg0);
+    return notNullOrWitespace(arg0?.toString());
   }
 }

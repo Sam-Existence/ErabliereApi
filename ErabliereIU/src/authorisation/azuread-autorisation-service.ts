@@ -11,10 +11,20 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
   private _loginChangedSubject = new Subject<boolean>();
   loginChanged = this._loginChangedSubject.asObservable();
   type: string = "AzureAD";
+  initialize: boolean = false;
 
   constructor(private _msalInstance: MsalService, private _environmentService: EnvironmentService) { }
 
   async login() {
+    console.log("login");
+    if (this.initialize == false) {
+      console.log("Initilize MSAL Instance");
+      await this._msalInstance.initialize().toPromise();
+      this.initialize = true;
+    }
+    else {
+      console.log("MSAL already initialize at login");
+    }
     const popupParam: PopupRequest = {
       scopes: this._environmentService.scopes?.split(' ') ?? [],
       prompt: "select_account"
@@ -25,31 +35,47 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     console.log("AppUser", appUser);
   }
 
-  isLoggedIn(): Promise<boolean> {
-    return new Promise(async (resolve, reject) => {
-      let user = this.getUser();
+  async isLoggedIn(): Promise<boolean> {
+    console.log("isLoggedIn");
+    if (this.initialize == false) {
+      console.log("Initilize MSAL Instance");
+      await this._msalInstance.initialize().toPromise();
+      this.initialize = true;
+    }
+    else {
+      console.log("MSAL already initialize at isLoggedIn");
+    }
+    
+    let user = this.getUser();
 
-      this._isLoggedIn = user != null;
+    this._isLoggedIn = user != null;
 
-      return resolve(this._isLoggedIn);
-    });
+    return this._isLoggedIn;
   }
 
-  completeLogin() {
-    return new Promise<AppUser>((resolve, reject) => {
-      const user = this.getUser();
-      if (user != null) {
-        this._isLoggedIn = true;
-        this._loginChangedSubject.next(true);
-        this._msalInstance.instance.setActiveAccount(user);
-        return resolve(new AppUser());
-      }
+  async completeLogin(): Promise<AppUser> {
+    console.log("completeLogin")
+    if (this.initialize == false) {
+      console.log("Initilize MSAL Instance");
+      await this._msalInstance.initialize().toPromise();
+      this.initialize = true;
+    }
+    else {
+      console.log("MSAL already initialize at completeLogin");
+    }
+    
+    const user = this.getUser();
+    if (user != null) {
+      this._isLoggedIn = true;
+      this._loginChangedSubject.next(true);
+      this._msalInstance.instance.setActiveAccount(user);
+      return new AppUser();
+    }
 
-      this._isLoggedIn = false;
-      this._loginChangedSubject.next(false);
-      this._msalInstance.instance.setActiveAccount(null);
-      return resolve(new AppUser());
-    });
+    this._isLoggedIn = false;
+    this._loginChangedSubject.next(false);
+    this._msalInstance.instance.setActiveAccount(null);
+    return new AppUser();
   }
 
   logout() {
@@ -67,7 +93,17 @@ export class AzureADAuthorisationService implements IAuthorisationSerivce {
     })
   }
 
-  getAccessToken(): Promise<String | null> {
+  async getAccessToken(): Promise<String | null> {
+    console.log("getAccessToken");
+    if (this.initialize == false) {
+      console.log("Initilize MSAL Instance");
+      await this._msalInstance.initialize().toPromise();
+      this.initialize = true;
+    }
+    else {
+      console.log("MSAL already initialize at getAccessToken");
+    }
+    
     var user = this.getUser();
     this._msalInstance.instance.setActiveAccount(user);
 

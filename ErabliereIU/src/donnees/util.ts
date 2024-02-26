@@ -19,5 +19,12 @@ export const calculerMoyenne = (data: ChartDataset) => {
 export const notNullOrWitespace = (arg0?: string) => {
     if (arg0 == null)
         return false;
-    return arg0.trim().length > 0;
+    try {
+        return arg0.trim().length > 0;
+    }
+    catch (error) {
+        console.log("error fr arg: " + arg0);
+        console.debug(error);
+        return false;
+    }
   }
