@@ -11,8 +11,7 @@ import { Erabliere } from 'src/model/erabliere';
       <div class="row">
           <weather-forecast 
             *ngIf="notNullOrWitespace(erabliere?.codePostal) && !erabliere?.afficherTrioDonnees"
-            class="col-md-6"
-            [idErabliere]="erabliere?.id"></weather-forecast>
+            class="col-md-6"></weather-forecast>
           <div class="border-top col-md-6" *ngFor="let capteur of capteurs">
               <graph-pannel [titre]="capteur.nom" 
                             [symbole]="capteur.symbole"
