@@ -4,6 +4,7 @@ import { BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { WeatherForecase } from 'src/model/weatherforecast';
 import { notNullOrWitespace } from './util';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'weather-forecast',
@@ -34,25 +35,31 @@ import { notNullOrWitespace } from './util';
 export class 
 WeatherForecastComponent implements OnInit {
   chart: any;
-  @Input() weatherData?: WeatherForecase;
+  weatherData?: WeatherForecase;
   text?: string;
   error: any;
-  @Input() idErabliere: any;
+  idErabliere: any;
   interval?: NodeJS.Timeout;
 
-  constructor(private api: ErabliereApi) { }
+  constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
 
   ngOnInit() {
-    if (notNullOrWitespace(this.idErabliere)) {
-        this.getWeatherData();
-        this.interval = setInterval(() => {
-            this.getWeatherData();
-        }, 1000 * 60 * 60);
-        return;
-    }
-    else {
-      this.createChart();
-    }
+    this.route.paramMap.subscribe(params => {
+      if (this.interval != null) {
+        clearInterval(this.interval);
+      }
+      this.idErabliere = params.get('idErabliereSelectionee');
+      if (notNullOrWitespace(this.idErabliere)) {
+          this.getWeatherData();
+          this.interval = setInterval(() => {
+              this.getWeatherData();
+          }, 1000 * 60 * 60);
+          return;
+      }
+      else {
+        this.createChart();
+      }
+    });
   }
 
   ngOnDestroy() {
