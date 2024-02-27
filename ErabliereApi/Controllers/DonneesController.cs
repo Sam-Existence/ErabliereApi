@@ -225,7 +225,7 @@ public class DonneesController : ControllerBase
     [HttpPut("{idDonnee}")]
     [ValiderIPRules]
     [ValiderOwnership("id")]
-    public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, PutDonnee donnee, CancellationToken token)
+    public async Task<IActionResult> Modifier(Guid id, Guid idDonnee, [FromBody] PutDonnee donnee, CancellationToken token)
     {
         if (id != donnee.IdErabliere)
         {
