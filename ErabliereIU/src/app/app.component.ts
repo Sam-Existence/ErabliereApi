@@ -94,6 +94,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.api.getOpenApiSpec().then(spec => {
         this.erabliereAIEnable = spec.paths['/ErabliereAI/Conversations'] !== undefined;
+        console.log("ErabliereAIEnable: " + this.erabliereAIEnable);
     })
     .catch(err => {
         console.error(err);
@@ -102,21 +103,28 @@ export class AppComponent implements OnInit {
     // get the user role to see if it got the ErabliereAIUser role
     // if so, enable the chat widget
     if (this.authService.type == "AzureAD") {
+      this.checkRoleErabliereAI();
       this.authService.loginChanged.subscribe((val) => {
-        const account = this.msalService.instance.getActiveAccount();
-        if (account?.idTokenClaims) {
-          const roles = account?.idTokenClaims['roles'];
-          if (roles != null) {
-            this.erabliereAIUserRole = roles.includes("ErabliereAIUser");
-          }
-          else {
-            this.erabliereAIUserRole = false;
-          }
-        }
-        else {
-          this.erabliereAIUserRole = false;
-        }
+        this.checkRoleErabliereAI();
       });
     }
+  }
+
+  private checkRoleErabliereAI() {
+    console.log("CheckRoleErabliereAI");
+    const account = this.msalService.instance.getActiveAccount();
+    if (account?.idTokenClaims) {
+      const roles = account?.idTokenClaims['roles'];
+      if (roles != null) {
+        this.erabliereAIUserRole = roles.includes("ErabliereAIUser");
+      }
+      else {
+        this.erabliereAIUserRole = false;
+      }
+    }
+    else {
+      this.erabliereAIUserRole = false;
+    }
+    console.log("ErabliereAIUserRole: " + this.erabliereAIUserRole);
   }
 }
