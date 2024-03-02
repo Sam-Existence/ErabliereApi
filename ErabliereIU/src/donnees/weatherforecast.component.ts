@@ -5,6 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { WeatherForecase } from 'src/model/weatherforecast';
 import { notNullOrWitespace } from './util';
 import { ActivatedRoute } from '@angular/router';
+import { set } from 'cypress/types/lodash';
 
 @Component({
   selector: 'weather-forecast',
@@ -30,8 +31,7 @@ import { ActivatedRoute } from '@angular/router';
   `,
   standalone: true,
 })
-export class 
-WeatherForecastComponent implements OnInit {
+export class WeatherForecastComponent implements OnInit {
   chart: any;
   weatherData?: WeatherForecase;
   text?: string;
@@ -47,13 +47,14 @@ WeatherForecastComponent implements OnInit {
         clearInterval(this.interval);
       }
       this.chart?.destroy();
+      this.chart = null;
       this.idErabliere = params.get('idErabliereSelectionee');
       if (notNullOrWitespace(this.idErabliere)) {
+        this.getWeatherData();
+        this.interval = setInterval(() => {
           this.getWeatherData();
-          this.interval = setInterval(() => {
-              this.getWeatherData();
-          }, 1000 * 60 * 60);
-          return;
+        }, 1000 * 60 * 60);
+        return;
       }
     });
   }
@@ -61,6 +62,7 @@ WeatherForecastComponent implements OnInit {
   ngOnDestroy() {
     clearInterval(this.interval);
     this.chart?.destroy();
+    this.chart = null;
   }
 
   getWeatherData() {
@@ -81,9 +83,9 @@ WeatherForecastComponent implements OnInit {
 
   createChart() {
     if (this.weatherData == null) {
-        return;
+      return;
     }
-    
+
     this.text = this.weatherData.Headline?.Text;
 
     const dataF = this.weatherData.DailyForecasts;
@@ -93,50 +95,55 @@ WeatherForecastComponent implements OnInit {
 
     if (this.chart != null) {
       try {
+        console.log("Try destroy previous chart");
         this.chart.destroy();
+        this.chart = null;
       } catch (error) {
+        console.log("Error destroy previous chart")
         console.log(error);
       }
     }
 
-    this.chart = new Chart('weatherChart', {
-      type: 'line',
-      data: {
-        labels: dates,
-        datasets: [
-          {
-            label: 'Min Temperature',
-            data: minTemperatures,
-            borderColor: 'blue',
-            fill: false
-          },
-          {
-            label: 'Max Temperature',
-            data: maxTemperatures,
-            borderColor: 'red',
-            fill: false
-          }
-        ]
-      },
-      options: {
-        maintainAspectRatio: false,
-        aspectRatio: 1.7,
-        scales: {
-          x: {
-            type: 'time',
-            time: {
-              unit: 'day'
+    setTimeout(() => {
+      this.chart = new Chart('weatherChart', {
+        type: 'line',
+        data: {
+          labels: dates,
+          datasets: [
+            {
+              label: 'Min Temperature',
+              data: minTemperatures,
+              borderColor: 'blue',
+              fill: false
+            },
+            {
+              label: 'Max Temperature',
+              data: maxTemperatures,
+              borderColor: 'red',
+              fill: false
             }
-          },
-          y: {
-            title: {
-              display: true,
-              text: 'Temperature (°C)'
+          ]
+        },
+        options: {
+          maintainAspectRatio: false,
+          aspectRatio: 1.7,
+          scales: {
+            x: {
+              type: 'time',
+              time: {
+                unit: 'day'
+              }
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Temperature (°C)'
+              }
             }
           }
         }
-      }
-    });
+      });
+    }, 0);
   }
 
   notNullOrWhitespace(arg0: any) {
