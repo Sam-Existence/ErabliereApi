@@ -34,9 +34,7 @@ export class StreamService {
     if (token == null) {
       throw new Error("Token is null");
     }
-    console.log("localUser", token, uuid);
     const uid = await this.rtc.client?.join(this.options.appId, this.options.channel, token, uuid);
-    console.log("after join", uid, 'uid');
     // Create an audio track from the audio sampled by a microphone.
     this.rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
     // Create a video track from the video captured by a camera.
@@ -48,15 +46,11 @@ export class StreamService {
     this.rtc.localVideoTrack.play("local-player");
     // channel for other users to subscribe to it.
     await this.rtc.client?.publish([this.rtc.localAudioTrack, this.rtc.localVideoTrack]);
-
-    console.log("*** done localUser ***");
   }
 
   agoraServerEvents(rtc: IRtc) {
     console.log('agoraserverevent', rtc);
     rtc.client?.on("user-published", async (user, mediaType) => {
-      console.log(user, mediaType, 'user-published');
-
       await rtc.client?.subscribe(user, mediaType);
       if (mediaType === "video") {
         const remoteVideoTrack = user.videoTrack;
@@ -68,14 +62,12 @@ export class StreamService {
       }
     });
     rtc.client?.on("user-unpublished", user => {
-      console.log(user, 'user-unpublished');
+      console.log(user, '********* TODO user-unpublished *************');
     });
-
     rtc.client?.on("user-joined", (user) => {
       let id = user.uid;
-      this.remoteUsers.push({ 'uid': +id });
+      this.remoteUsers.push({ 'uid': + id });
       this.updateUserInfo.next(id);
-      console.log("user-joined", user, this.remoteUsers, 'event1');
     });
   }
   // To leave channel-

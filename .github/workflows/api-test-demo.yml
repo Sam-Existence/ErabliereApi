@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: OIDC Login to Azure Public Cloud with AzPowershell (enableAzPSSession true)
-        uses: azure/login@v1
+        uses: azure/login@v2
         with: # Set Azure credentials secret as an input
           creds: ${{ secrets.AZURE_DEMO_CREDENTIALS }}
           enable-AzPSSession: true
@@ -38,7 +38,7 @@ jobs:
           reporters: '["cli","junit"]'
 
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
             node-version: '20'
 
@@ -48,7 +48,7 @@ jobs:
           npm install
 
       - name: Cypress run
-        uses: cypress-io/github-action@v4
+        uses: cypress-io/github-action@v6
         with:
           working-directory: ErabliereIU
           config: video=false,baseUrl=https://erabliereapi-demo.azurewebsites.net
