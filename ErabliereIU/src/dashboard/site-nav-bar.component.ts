@@ -46,7 +46,7 @@ import { MsalService } from '@azure/msal-angular';
                     </li>
                 </ul>
                 <span [hidden]="!useAuthentication">
-                    <agora-call-service *ngIf="callFeatureEnableForUser"></agora-call-service>
+                    <agora-call-service *ngIf="callFeatureEnable && callFeatureEnableForUser"></agora-call-service>
                     <button id="login-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
                     <button id="logout-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
                 </span>
