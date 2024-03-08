@@ -95,8 +95,6 @@ export class StreamService {
 
   // rtc token
   async generateTokenAndUid(uid: number) {
-    // use the nestjs backend here: https://github.com/freddycoder/LearnNestJS
-    let url = 'http://localhost:3000/accesstoken/' + uid + '?channel=' + this.options.channel;
     const data = await this.api.getCallAccessToken(uid, this.options.channel);
     console.log(data);
     return { 'uid': uid, token: data.accessToken }

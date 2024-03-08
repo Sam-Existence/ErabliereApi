@@ -23,13 +23,13 @@ import { Customer } from 'src/model/customer';
         <div [hidden]="!callIsStarted">
             <div id="video-container" class="row video-group">
                 <div class="col">
-                    <p id="local-player-name" class="player-name"></p>
+                <p id="local-player-name" class="player-name">Vous {{ userUid }}</p>
                 <div id="local-player" class="player"></div>
             </div>
-            <div class="w-100">Remote Users</div>
-                <div class="col" *ngFor="let i of stream.remoteUsers">
-                    <div id="{{ 'remote-playerlist' + i.uid }}" class="ui centered medium image" style="width: 200px; height: 200px;">{{i}}</div>
-                </div>
+            <div class="w-100">En appel</div>
+            <div class="col" *ngFor="let i of stream.remoteUsers">
+                <p class="player-name">{{ i.name ?? "Inconue " + i.uid  }}</p>
+                <div id="{{ 'remote-playerlist' + i.uid }}" class="ui centered medium image" style="width: 200px; height: 200px;"></div>
             </div>
         </div>
     `,
@@ -68,6 +68,7 @@ export class AgoraCallServiceComponent {
     userList: Customer[] = [];
     authService: IAuthorisationSerivce;
     callIsStarted: boolean = false;
+    userUid: number = 0;
 
     constructor(authFactoryService: AuthorisationFactoryService,
         private environmentService: EnvironmentService,
@@ -87,6 +88,7 @@ export class AgoraCallServiceComponent {
     async startCall() {
         this.stream.initOption();
         const uid = this.stream.generateUid();
+        this.userUid = uid;
         const rtcDetails = await this.stream.generateTokenAndUid(uid);
         this.stream.createRTCClient();
         this.stream.agoraServerEvents(this.stream.rtc);
