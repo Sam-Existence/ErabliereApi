@@ -12,6 +12,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
+import AgoraRTC from 'agora-rtc-sdk-ng';
 
 @Component({
   selector: 'app-root',

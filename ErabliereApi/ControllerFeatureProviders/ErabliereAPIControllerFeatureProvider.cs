@@ -37,6 +37,13 @@ public class ErabliereAPIControllerFeatureProvider : ControllerFeatureProvider
             return aiEnable;
         }
 
+        if (typeInfo.Name == nameof(CallsController))
+        {
+            var enableCalls = !string.IsNullOrWhiteSpace(_config["agora.localbackend"]);
+
+            return enableCalls;
+        }
+
         return base.IsController(typeInfo);
     }
 }
