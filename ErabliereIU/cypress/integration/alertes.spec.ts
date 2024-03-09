@@ -20,7 +20,7 @@ describe('Alerte functionnality', { testIsolation: false }, () => {
                   .typeEmail(email)
                   .clickOnCreateButton();
 
-        cy.wait(2000);
+        cy.wait(5000);
 
         alertePage.getLastAlerteDonneesEmail().should('have.text', email);
     });

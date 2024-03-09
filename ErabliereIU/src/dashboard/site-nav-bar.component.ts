@@ -58,7 +58,7 @@ import { MsalService } from '@azure/msal-angular';
     imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
 })
 export class SiteNavBarComponent implements OnInit {
-  useAuthentication: boolean;
+  useAuthentication: boolean = false;
   isLoggedIn: boolean;
   urls: UrlModel[]
   tenantId?: string;
