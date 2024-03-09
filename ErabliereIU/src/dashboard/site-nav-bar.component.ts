@@ -45,10 +45,10 @@ import { MsalService } from '@azure/msal-angular';
                         <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page">À Propos</a>
                     </li>
                 </ul>
-                <div class="d-flex gap-2" [hidden]="!useAuthentication">
+                <div *ngIf="useAuthentication" class="d-flex gap-2">
                     <agora-call-service *ngIf="callFeatureEnable && callFeatureEnableForUser"></agora-call-service>
-                    <button id="login-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
-                    <button id="logout-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
+                    <button id="login-button" class="btn btn-outline-success" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
+                    <button id="logout-button" class="btn btn-outline-success" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
                 </div>
             </div>
             </div>
@@ -77,7 +77,7 @@ export class SiteNavBarComponent implements OnInit {
       private api: ErabliereApi,
       private msalService: MsalService) {
     this._authService = authFactoryService.getAuthorisationService()
-    this.useAuthentication = environmentService.authEnable ?? false
+    this.useAuthentication = environmentService.authEnable ?? false;
     this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
     this.urls = []
