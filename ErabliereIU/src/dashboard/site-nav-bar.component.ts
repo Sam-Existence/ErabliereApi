@@ -45,11 +45,11 @@ import { MsalService } from '@azure/msal-angular';
                         <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page">À Propos</a>
                     </li>
                 </ul>
-                <span [hidden]="!useAuthentication">
+                <div class="d-flex gap-2" [hidden]="!useAuthentication">
                     <agora-call-service *ngIf="callFeatureEnable && callFeatureEnableForUser"></agora-call-service>
                     <button id="login-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()">Se connecter</button>
                     <button id="logout-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()">Déconnexion</button>
-                </span>
+                </div>
             </div>
             </div>
         </nav>
