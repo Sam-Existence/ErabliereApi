@@ -30,3 +30,12 @@ Set-Location ..
 
 code .
 
+# if the parent folder contains a folder name LearnNestJS, run 'start npm start' in this folder
+
+$learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS"
+if ($null -ne $learnNestJS) {
+    Set-Location $learnNestJS
+    Start-Process npm -ArgumentList "start"
+
+    Set-Location ..\ErabliereApi
+}

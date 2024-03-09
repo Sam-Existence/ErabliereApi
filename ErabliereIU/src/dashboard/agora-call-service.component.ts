@@ -1,12 +1,9 @@
 import { NgFor, NgIf } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import AgoraRTC, { IAgoraRTCClient } from 'agora-rtc-sdk-ng';
+import { Component } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { IRtc, StreamService } from 'src/core/stream.service';
-import { EnvironmentService } from 'src/environments/environment.service';
+import { StreamService } from 'src/core/stream.service';
 import { Customer } from 'src/model/customer';
 
 @Component({
@@ -36,13 +33,13 @@ import { Customer } from 'src/model/customer';
                 <button *ngIf="callIsStarted" class="btn btn-danger" (click)="logout()">Raccrocher</button>
             </div>
             <div id="video-container" [hidden]="!callIsStarted">
-                <div class="w-100">En appel</div>
-                <div class="col" *ngFor="let i of stream.remoteUsers">
+                <span>En appel</span>
+                <div class="col-4" *ngFor="let i of stream.remoteUsers">
                     <p class="player-name">{{ i.name ?? "Inconue " + i.uid  }}</p>
                     <div id="{{ 'remote-playerlist' + i.uid }}" class="player"></div>
                 </div>
-                <div class="row video-group">
-                    <div class="col">
+                <div class="video-group">
+                    <div class="col-2">
                         <p id="local-player-name" class="player-name">Vous {{ userUid }}</p>
                         <div id="local-player" style="width: 200px; height: 200px;">
                     </div>
@@ -56,10 +53,11 @@ import { Customer } from 'src/model/customer';
             bottom: 20px;
             right: 20px;
             max-height: 95%;
+            max-width: 95%;
             overflow: auto;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
             z-index: 2000;
-            background-color: rgba(169, 169, 169, 0.5);
+            background-color: rgba(129, 129, 129, 0.5);
             border-radius: 10px;
             border-width: 2px;
             border-color: black;
@@ -96,16 +94,12 @@ export class AgoraCallServiceComponent {
     showPhone: boolean = false;
 
     constructor(authFactoryService: AuthorisationFactoryService,
-        private environmentService: EnvironmentService,
-        private cdr: ChangeDetectorRef,
-        private router: Router,
         private api: ErabliereApi,
         public stream: StreamService) {
         this.authService = authFactoryService.getAuthorisationService();
     }
 
     showPhoneForm() {
-        console.log("ShowPhoneForm");
         this.showPhone = true;
         this.api.getCustomers().then((data) => {
             this.userList = data;
@@ -114,9 +108,7 @@ export class AgoraCallServiceComponent {
     }
 
     onChange(userId?: any) {
-        console.log("Event", userId);
         this.selectedUser = userId.value;
-        console.log("SelectedUser", this.selectedUser);
     }
 
     async startCall() {
