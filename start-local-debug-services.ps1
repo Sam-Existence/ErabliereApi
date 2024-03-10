@@ -30,12 +30,12 @@ Set-Location ..
 
 code .
 
-# if the parent folder contains a folder name LearnNestJS, run 'start npm start' in this folder
+# if the parent folder contains a folder name LearnNestJS, then start the NestJS server in a new process, also in watch mode
 
 $learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS"
 if ($null -ne $learnNestJS) {
     Set-Location $learnNestJS
-    Start-Process npm -ArgumentList "start"
+    Start-Process npm -ArgumentList "run", "start:dev"
 
     Set-Location ..\ErabliereApi
 }
