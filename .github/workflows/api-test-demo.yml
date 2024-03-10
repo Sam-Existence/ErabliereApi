@@ -28,7 +28,18 @@ jobs:
       - name: Reboot the webapp
         run: |
           az webapp restart --name erabliereapi-demo --resource-group erabliereapi-demo
-          sleep 35
+
+      - name: Ensure app as rebooted
+        run: |
+          while true; do
+            if az webapp log tail --name erabliereapi-demo --resource-group erabliereapi-demo | grep -q "Starting ErabliereApi"; then
+              echo "App has finished rebooting"
+              break
+            else
+              echo "Waiting for app to finish rebooting"
+              sleep 10
+            fi
+          done
 
       - uses: actions/checkout@master
       - uses: matt-ball/newman-action@master
