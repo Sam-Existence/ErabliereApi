@@ -5,6 +5,7 @@ import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service'
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { StreamService } from 'src/core/stream.service';
 import { Customer } from 'src/model/customer';
+import { Erabliere } from 'src/model/erabliere';
 
 @Component({
     selector: 'agora-call-service',
@@ -19,14 +20,14 @@ import { Customer } from 'src/model/customer';
         </div>
         <div *ngIf="showPhone">
             <div class="input-group">
-                <label class="input-group-text" for="inputGroupSelect01">Utilisateur</label>
+                <label class="input-group-text" for="inputGroupSelect01">Érablière</label>
                 <select class="form-select select-ellipsis" id="inputGroupSelect01" (change)="onChange($event.target)">
                     <option 
                         class="overflow"
-                        *ngFor="let user of userList" 
-                        [value]="user.id"
-                        [title]="user.name + ' (' + user.email + ')'">
-                            {{ user.name }} ({{ user.email }})
+                        *ngFor="let e of erablieres" 
+                        [value]="e.id"
+                        [title]="e.nom">
+                            {{ e.nom }}
                     </option>
                 </select>
                 <button *ngIf="!callIsStarted" class="btn btn-success" (click)="startCall()">Appeler</button>
@@ -86,8 +87,8 @@ import { Customer } from 'src/model/customer';
     imports: [NgFor, NgIf]
 })
 export class AgoraCallServiceComponent {
-    selectedUser?: string = "";
-    userList: Customer[] = [];
+    erabliereId?: string = "";
+    erablieres: Erabliere[] = [];
     authService: IAuthorisationSerivce;
     callIsStarted: boolean = false;
     userUid: number = 0;
@@ -101,14 +102,14 @@ export class AgoraCallServiceComponent {
 
     showPhoneForm() {
         this.showPhone = true;
-        this.api.getCustomers().then((data) => {
-            this.userList = data;
-            console.log("UserList", this.userList);
+        this.api.getErablieres(true).then((data) => {
+            this.erablieres = data;
         });
     }
 
-    onChange(userId?: any) {
-        this.selectedUser = userId.value;
+    onChange(erabliereId?: any) {
+        this.erabliereId = erabliereId.value;
+        this.stream.options.channel = this.erabliereId ?? "";
     }
 
     async startCall() {

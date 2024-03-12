@@ -36,7 +36,7 @@ export const Primary: Story = {
         props: args,
     }),
     args: {
-        userList: customers
+        erablieres: customers
     }
 };
 
@@ -45,7 +45,7 @@ export const AfterOneCick: Story = {
         props: args,
     }),
     args: {
-        userList: customers,
+        erablieres: customers,
         showPhone: true,
     }
 };
@@ -55,10 +55,10 @@ export const VideoChat: Story = {
         props: args,
     }),
     args: {
-        userList: customers,
+        erablieres: customers,
         showPhone: true,
         callIsStarted: true,
         userUid: 123,
-        selectedUser: 'Jane'
+        erabliereId: 'Jane'
     }
 };
