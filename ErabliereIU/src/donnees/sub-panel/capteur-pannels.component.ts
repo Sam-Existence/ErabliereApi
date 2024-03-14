@@ -1,9 +1,9 @@
+import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { Capteur } from 'src/model/capteur';
-import { GraphPannelComponent } from './graph-pannel.component';
-import { NgFor, NgIf } from '@angular/common';
-import { WeatherForecastComponent } from '../weatherforecast.component';
 import { Erabliere } from 'src/model/erabliere';
+import { WeatherForecastComponent } from '../weatherforecast.component';
+import { GraphPannelComponent } from './graph-pannel.component';
 
 @Component({
     selector: 'capteur-pannels',

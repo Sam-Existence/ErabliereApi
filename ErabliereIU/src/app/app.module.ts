@@ -48,6 +48,7 @@ import 'chartjs-adapter-date-fns';
 import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
 import { YouAreNotConnectedComponent } from 'src/dashboard/you-are-note-connected.component';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 declare global {
   interface Window { 
@@ -139,7 +140,8 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         },
         MsalService,
         provideNgxMask(),
-        provideRouter(routes, withComponentInputBinding())
+        provideRouter(routes, withComponentInputBinding()),
+        provideAnimationsAsync()
     ],
     imports: [
         BrowserModule,
