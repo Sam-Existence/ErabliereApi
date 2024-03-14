@@ -27,8 +27,8 @@ export class ErabliereApi {
 
     constructor(private _httpClient: HttpClient,
                 authFactoryService: AuthorisationFactoryService,
-                private _environmentService: EnvironmentService) 
-    { 
+                private _environmentService: EnvironmentService)
+    {
         this._authService = authFactoryService.getAuthorisationService();
     }
 
@@ -37,7 +37,7 @@ export class ErabliereApi {
         const rtn = await this._httpClient.get<Erabliere[]>(
             this._environmentService.apiUrl + '/erablieres?$filter=id eq ' + idErabliereSelectionee + '&$expand=Capteurs($filter=afficherCapteurDashboard eq true;$orderby=indiceOrdre)',
             { headers: headers }).toPromise();
-        
+
         if (rtn != null && rtn.length > 0) {
             return rtn[0];
         }
@@ -72,7 +72,7 @@ export class ErabliereApi {
     async getAlertesCapteur(idErabliereSelectionnee:any): Promise<AlerteCapteur[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<AlerteCapteur[]>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur?additionnalProperties=true&include=Capteur", 
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertesCapteur?additionnalProperties=true&include=Capteur",
             { headers: headers }).toPromise();
         return rtn ?? [];
     }
@@ -91,18 +91,18 @@ export class ErabliereApi {
     async putCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
         const headers = await this.getHeaders();
         return await this._httpClient.put<Capteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", 
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
             {
                 ... capteur,
                 idErabliere: idErabliereSelectionnee
-            }, 
+            },
             { headers: headers }).toPromise();
     }
 
     async deleteCapteur(idErabliereSelectionnee: any, capteur: DeleteCapteur) {
         const headers = await this.getHeaders();
         return await this._httpClient.delete<DeleteCapteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", 
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
             {
                 body: capteur,
                 headers: headers
@@ -112,8 +112,8 @@ export class ErabliereApi {
     async postAlerte(idErabliereSelectionnee:any, alerte:Alerte): Promise<any> {
         const headers = await this.getHeaders();
         return await this._httpClient.post<Alerte>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes", 
-            alerte, 
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes",
+            alerte,
             { headers: headers }).toPromise();
     }
 
@@ -175,10 +175,10 @@ export class ErabliereApi {
 
     async getDocumentations(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Documentation[]> {
         const headers = await this.getHeaders();
-        let odataOptions = "$select=id,idErabliere,created,title,text,fileExtension";
-        odataOptions += "&$skip=" + skip;
-        odataOptions += top ? "&$top=" + top : "";
-        const rtn = await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation?" + odataOptions, { headers: headers }).toPromise();
+        let odataOptions = "?$select=id,idErabliere,created,title,text,fileExtension";
+            odataOptions += "&$skip=" + skip;
+            odataOptions += top ? "&$top=" + top : "";
+        const rtn = await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation" + odataOptions, { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
