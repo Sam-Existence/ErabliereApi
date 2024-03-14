@@ -1,0 +1,7 @@
+<nav aria-label="Pages de la liste de documentations">
+    <ul class="pagination justify-content-center">
+        <li class="page-item"><button (click)="pagePrecedente()" type="button" class="btn btn-outline-primary me-2" [disabled]="pageActuelle === 1">Précédent</button></li>
+        <li class="page-item"><button (click)="pageSuivante()" type="button" class="btn btn-outline-primary" [disabled]="estDernierePage">Suivant</button></li>
+    </ul>
+    <p class="text-center">{{(1 + (pageActuelle - 1) * nombreParPage)}} - {{pageActuelle * nombreParPage}}</p>
+</nav>
