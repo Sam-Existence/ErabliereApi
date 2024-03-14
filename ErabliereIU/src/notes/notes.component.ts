@@ -7,16 +7,41 @@ import { ModifierNoteComponent } from './modifier-note.component';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ActivatedRoute } from '@angular/router';
+import {PaginationComponent} from "../pagination/pagination.component";
 
 @Component({
     selector: 'notes',
     templateUrl: "./notes.component.html",
     standalone: true,
-    imports: [AjouterNoteComponent, ModifierNoteComponent, NgIf, NgFor, NoteComponent]
+    imports: [
+        AjouterNoteComponent,
+        ModifierNoteComponent,
+        NgIf,
+        NgFor,
+        NoteComponent,
+        PaginationComponent
+    ]
 })
 export class NotesComponent implements OnInit {
     @Input() idErabliereSelectionee: any
     @Input() notes?: Note[];
+    private _nombreParPage: number = 5;
+    get nombreParPage() {
+        return this._nombreParPage;
+    }
+    set nombreParPage(value: number) {
+        if(value != this._nombreParPage) {
+            this._nombreParPage = value;
+            this.loadNotes();
+        }
+    }
+    private _pageActuelle: number = 1;
+    set pageActuelle(value: number) {
+        if(value != this._pageActuelle) {
+            this._pageActuelle = value;
+            this.loadNotes();
+        }
+    }
     @Output() needToUpdate = new EventEmitter();
     noteToModify?: Subject<Note | undefined> = new Subject<Note | undefined>();
     error?: string;
@@ -35,8 +60,7 @@ export class NotesComponent implements OnInit {
     }
 
     loadNotes() {
-        this.notes = undefined;
-        this._api.getNotes(this.idErabliereSelectionee)
+        this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(notes => {
                 notes.forEach(n => {
                     if (n.fileExtension == 'csv') {
