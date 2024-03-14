@@ -27,8 +27,23 @@ export class DocumentationComponent implements OnInit {
     imgTypes: Array<string> = ['png', 'jpg', 'jpeg', 'gif', 'bmp'];
 
     @Input() documentations?: Documentation[];
-    nombreParPage = 5;
-    pageActuelle = 1;
+    private _nombreParPage: number = 5;
+    get nombreParPage() {
+        return this._nombreParPage;
+    }
+    set nombreParPage(value: number) {
+        if(value != this._nombreParPage) {
+            this._nombreParPage = value;
+            this.loadDocumentations();
+        }
+    }
+    private _pageActuelle: number = 1;
+    set pageActuelle(value: number) {
+        if(value !== this._pageActuelle) {
+            this._pageActuelle = value;
+            this.loadDocumentations();
+        }
+    }
 
     @Output() needToUpdate = new EventEmitter();
 
@@ -52,7 +67,7 @@ export class DocumentationComponent implements OnInit {
     }
 
     loadDocumentations() {
-      this._api.getDocumentations(this.idErabliereSelectionee, (this.pageActuelle - 1) * this.nombreParPage, this.nombreParPage).then(documentations => {
+      this._api.getDocumentations(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage).then(documentations => {
           this.documentations = documentations;
         });
     }

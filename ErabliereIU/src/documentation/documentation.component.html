@@ -1,8 +1,8 @@
 <h3>Documentation</h3>
-<app-ajouter-documentation 
-    [idErabliereSelectionee]="idErabliereSelectionee" 
+<app-ajouter-documentation
+    [idErabliereSelectionee]="idErabliereSelectionee"
     (needToUpdate)="loadDocumentations()" />
-<modifier-documentation 
+<modifier-documentation
     [documentationSubject]="editDocumentationSubject"
     [idErabliereSelectionee]="idErabliereSelectionee"
     (needToUpdate)="loadDocumentations()" />
@@ -40,6 +40,6 @@
     <app-pagination
       [estDernierePage]="this.documentations ? this.documentations.length < this.nombreParPage : true"
       [nombreParPage]="this.nombreParPage"
-      (changementDePageEvent)="this.pageActuelle = $event; loadDocumentations()"
+      (changementDePageEvent)="this.pageActuelle = $event"
     />
 </div>
