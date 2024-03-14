@@ -194,9 +194,12 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation/" + idDocumentation, { headers: headers }).toPromise();
     }
 
-    async getNotes(idErabliereSelectionnee:any): Promise<Note[]> {
+    async getNotes(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Note[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes?$orderby=NoteDate desc", { headers: headers }).toPromise();
+        let odataOptions = "?$orderby=NoteDate desc";
+            odataOptions += "&$skip=" + skip;
+            odataOptions += top ? "&$top=" + top : "";
+        const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
