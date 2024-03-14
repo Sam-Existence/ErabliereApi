@@ -8,34 +8,39 @@ import { AjouterDocumentationComponent } from './ajouter-documentation.component
 import { ModifierDocumentationComponent } from './modifier-documentation.component';
 import { Subject } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { PaginationComponent } from "../pagination/pagination.component";
 
 @Component({
     selector: 'documentation',
     templateUrl: "./documentation.component.html",
     standalone: true,
     imports: [
-        AjouterDocumentationComponent, 
-        ModifierDocumentationComponent, 
-        NgIf, 
+        AjouterDocumentationComponent,
+        ModifierDocumentationComponent,
+        PaginationComponent,
+        NgIf,
         NgFor
     ]
 })
 export class DocumentationComponent implements OnInit {
     @Input() idErabliereSelectionee:any
-    imgTypes: Array<string> = ['png', 'jpg', 'jpeg', 'gif', 'bmp']
+    imgTypes: Array<string> = ['png', 'jpg', 'jpeg', 'gif', 'bmp'];
 
     @Input() documentations?: Documentation[];
+    nombreParPage = 5;
+    pageActuelle = 1;
 
     @Output() needToUpdate = new EventEmitter();
 
     editDocumentationSubject = new Subject<ErabliereApiDocument | undefined>();
-    
-    constructor (private _api: ErabliereApi, 
+
+    constructor (private _api: ErabliereApi,
         private _env: EnvironmentService,
         private route: ActivatedRoute) {
     }
 
     ngOnInit(): void {
+
         this.route.paramMap.subscribe(params => {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
@@ -47,10 +52,10 @@ export class DocumentationComponent implements OnInit {
     }
 
     loadDocumentations() {
-        this._api.getDocumentations(this.idErabliereSelectionee).then(documentations => {
+      this._api.getDocumentations(this.idErabliereSelectionee, (this.pageActuelle - 1) * this.nombreParPage, this.nombreParPage).then(documentations => {
           this.documentations = documentations;
         });
-      }
+    }
 
     isImageType(_t11: Documentation): boolean {
         return this.imgTypes.find(t => t == _t11.fileExtension) != null;
@@ -62,8 +67,8 @@ export class DocumentationComponent implements OnInit {
 
     /**
      * Download a file from the server and add the bearer token to the request
-     * 
-     * @param doc The document to download 
+     *
+     * @param doc The document to download
      */
     async downloadFile(doc: ErabliereApiDocument) {
         // Get the file from the server from base64 string
@@ -109,4 +114,6 @@ export class DocumentationComponent implements OnInit {
             this.loadDocumentations();
         }
     }
+
+  protected readonly console = console;
 }

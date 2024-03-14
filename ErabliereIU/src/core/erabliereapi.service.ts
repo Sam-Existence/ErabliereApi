@@ -173,9 +173,12 @@ export class ErabliereApi {
         return rtn ?? new HttpResponse();
     }
 
-    async getDocumentations(idErabliereSelectionnee:any): Promise<Documentation[]> {
+    async getDocumentations(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Documentation[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation?$select=id,idErabliere,created,title,text,fileExtension", { headers: headers }).toPromise();
+        let odataOptions = "$select=id,idErabliere,created,title,text,fileExtension";
+        odataOptions += "&$skip=" + skip;
+        odataOptions += top ? "&$top=" + top : "";
+        const rtn = await this._httpClient.get<Documentation[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/documentation?" + odataOptions, { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
