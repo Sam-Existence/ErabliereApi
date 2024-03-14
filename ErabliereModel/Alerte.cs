@@ -37,6 +37,13 @@ public class Alerte : IIdentifiable<Guid?, Alerte>, IErabliereOwnable
     public string? EnvoyerA { get; set; }
 
     /// <summary>
+    /// Une liste de numéros de téléphone séparés par des ';'
+    /// </summary>
+    /// <example>+14375327599;+15749375019</example>
+    [MaxLength(200)]
+    public string? TexterA { get; set; }
+
+    /// <summary>
     /// Si une temperature est reçu et que celle-ci est plus grande que cette valeur, cette validation sera évaluer à vrai.
     /// </summary>
     /// <example>0</example>
