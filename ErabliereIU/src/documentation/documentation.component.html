@@ -37,4 +37,9 @@
             </div>
         </div>
     </div>
+    <app-pagination
+      [estDernierePage]="this.documentations ? this.documentations.length < this.nombreParPage : true"
+      [nombreParPage]="this.nombreParPage"
+      (changementDePageEvent)="this.pageActuelle = $event; loadDocumentations()"
+    />
 </div>
