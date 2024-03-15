@@ -133,11 +133,12 @@ export class ErabliereSideBarComponent implements OnInit {
 
   @ViewChild(ModifierErabliereComponent) modifierErabliereComponent?: ModifierErabliereComponent;
 
-  openEditErabliereForm(erabliere: Erabliere) {
+  async openEditErabliereForm(erabliere: Erabliere) {
     if (this.modifierErabliereComponent != undefined) {
       if (this.modifierErabliereComponent.erabliereForm != undefined) {
         this.modifierErabliereComponent.erabliereForm.erabliere = { ...erabliere };
         this.modifierErabliereComponent.modifierAccesUtilisateurs?.refreashAccess(erabliere.id);
+        this.modifierErabliereComponent.erabliereForm.capteurs = await this._erabliereApi.getCapteurs(erabliere.id);
       }
       else {
         console.log("erabliereForm is undefined");
