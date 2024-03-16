@@ -329,6 +329,11 @@ export class ErabliereApi {
         return await this._httpClient.get<any>(this._environmentService.apiUrl + "/Calls/GetAppId", { headers: headers }).toPromise();
     }
 
+    async getImages(idErabliereSelectionnee: any, take: number) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take, { headers: headers }).toPromise();
+    }
+
     async getHeaders(): Promise<HttpHeaders> {
         const token = await this._authService.getAccessToken();
         return new HttpHeaders().set('Authorization', `Bearer ${token}`);

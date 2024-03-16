@@ -39,3 +39,13 @@ if ($null -ne $learnNestJS) {
 
     Set-Location ..\ErabliereApi
 }
+
+# if the parent folder contains a folder name EmailImagesObserver, then start the EmailImagesObserver server in a new process, also in watch mode
+
+$emailImagesObserver = Get-ChildItem -Path ..\ -Directory -Filter "EmailImagesObserver"
+if ($null -ne $emailImagesObserver) {
+    Set-Location "$emailImagesObserver\BlazorApp"
+    Start-Process dotnet -ArgumentList "watch", "run", "$PWD\BlazorApp.csproj", " --no-hot-reload"
+
+    Set-Location ..\..\ErabliereApi
+}
