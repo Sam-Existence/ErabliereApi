@@ -44,6 +44,13 @@ public class ErabliereAPIControllerFeatureProvider : ControllerFeatureProvider
             return enableCalls;
         }
 
+        if (typeInfo.Name == nameof(ImagesCapteurController))
+        {
+            var enableImages = !string.IsNullOrWhiteSpace(_config["EmailImageObserverUrl"]);
+
+            return enableImages;
+        }
+
         return base.IsController(typeInfo);
     }
 }
