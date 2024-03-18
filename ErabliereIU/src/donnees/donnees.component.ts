@@ -22,7 +22,7 @@ import { clear } from 'console';
           <div *ngIf="displayImages" class="col-md-6">
             <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
           </div>
-          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <graph-pannel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
                            [mean]="meanTemperature"
@@ -32,7 +32,7 @@ import { clear } from 'console';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
             </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <vaccium-graph-pannel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
@@ -42,7 +42,7 @@ import { clear } from 'console';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
             </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <graph-pannel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
