@@ -1,11 +1,12 @@
+import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
-import { ChartDataset, ChartOptions, ChartType, LinearScale, TickOptions } from 'chart.js';
+import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
-import { NgIf } from '@angular/common';
-import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
 import { calculerMoyenne } from '../util';
+import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
 
 @Component({
     selector: 'vaccium-graph-pannel',
@@ -16,6 +17,9 @@ import { calculerMoyenne } from '../util';
         NgIf,
         AjouterDonneeCapteurComponent,
         NgChartsModule,
+        CdkDrag,
+        CdkDragHandle,
+        CdkDropList,
     ],
 })
 export class VacciumGraphPannelComponent implements OnInit {
@@ -255,5 +259,14 @@ export class VacciumGraphPannelComponent implements OnInit {
 
     captureDateFin($event: SimpleChange) {
         this.dateFinFixRange = $event.currentValue;
+    }
+
+    dragEnd(event: CdkDragEnd) {
+        console.log(event);
+    }
+
+    drop(event: CdkDragDrop<VacciumGraphPannelComponent>) {
+        console.log(event);
+        
     }
 }

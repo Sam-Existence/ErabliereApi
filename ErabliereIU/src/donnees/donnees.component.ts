@@ -1,12 +1,12 @@
+import { NgIf } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
-import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
+import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
-import { NgIf } from '@angular/common';
 import { calculerMoyenne, notNullOrWitespace } from './util';
 import { WeatherForecastComponent } from './weatherforecast.component';
 
