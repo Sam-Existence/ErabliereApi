@@ -17,6 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser-esbuild",
           "options": {
+            "localize": true,
             "outputPath": "dist/ErabliereIU",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -36,7 +37,8 @@
             "extractLicenses": false,
             "buildOptimizer": false,
             "optimization": false,
-            "namedChunks": true
+            "namedChunks": true,
+            "i18nMissingTranslation": "error"
           },
           "configurations": {
             "production": {
@@ -64,6 +66,9 @@
                   "maximumError": "4kb"
                 }
               ]
+            },
+            "en": {
+              "localize": ["en"]
             }
           },
           "defaultConfiguration": ""
@@ -79,6 +84,9 @@
           "configurations": {
             "production": {
               "buildTarget": "ErabliereIU:build:production"
+            },
+            "en": {
+              "buildTarget": "ErabliereIU:build:production,en"
             }
           }
         },
@@ -144,6 +152,15 @@
             "browserTarget": "ErabliereIU:build",
             "compodoc": false,
             "outputDir": "storybook-static"
+          }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "fr",
+        "locales": {
+          "en": {
+            "translation": "src/locale/messages.en.xlf",
+            "baseHref": ""
           }
         }
       }
