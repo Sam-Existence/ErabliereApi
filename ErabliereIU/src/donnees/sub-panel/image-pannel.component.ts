@@ -145,11 +145,19 @@ export class ImagePanelComponent implements OnInit {
             this.idErabliereSelectionnee = params['idErabliereSelectionee'];
             this.fetchImages();
         });
-        this.fetchImages();
+        this.imageInterval = setInterval(() => {
+            this.fetchImages();
+        }, 1000 * 60 * 10);
     }
 
+    ngOnDestroy() {
+        clearInterval(this.imageInterval);
+    }
+
+    imageInterval: any;
+
     fetchImages() {
-        console.log("fetch image for", this.idErabliereSelectionnee)
+        console.log("fetch image for", this.idErabliereSelectionnee);
         this.api.getImages(this.idErabliereSelectionnee, 2).then(images => {
             this.images = images;
         });
