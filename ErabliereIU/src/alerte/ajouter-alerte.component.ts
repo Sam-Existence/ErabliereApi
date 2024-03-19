@@ -39,7 +39,8 @@ export class AjouterAlerteComponent implements OnInit {
     initializeForms() {
         this.alerteForm = this.fb.group({
             nom: '',
-            destinataire: '',
+            destinataireCourriel: '',
+            destinataireSMS: '',
             temperatureMin: '',
             temperatureMax: '',
             vacciumMin: '',
@@ -49,7 +50,8 @@ export class AjouterAlerteComponent implements OnInit {
         });
         this.alerteCapteurForm = this.fb.group({
             nom: '',
-            destinataire: '',
+            destinataireCourriel: '',
+            destinataireSMS: '',
             min: '',
             max: '',
             idCapteur: ''
@@ -99,7 +101,8 @@ export class AjouterAlerteComponent implements OnInit {
         if (this.alerte != undefined) {
             this.alerte.idErabliere = this.idErabliereSelectionee;
             this.alerte.nom = this.alerteForm.controls['nom'].value;
-            this.alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
+            this.alerte.envoyerA = this.alerteForm.controls['destinataireCourriel'].value;
+            this.alerte.texterA = this.alerteForm.controls['destinataireSMS'].value;
             this.alerte.temperatureThresholdLow = convertTenthToNormale(this.alerteForm.controls['temperatureMax'].value)
             this.alerte.temperatureThresholdHight = convertTenthToNormale(this.alerteForm.controls['temperatureMin'].value)
             this.alerte.vacciumThresholdLow = convertTenthToNormale(this.alerteForm.controls['vacciumMax'].value)
@@ -125,7 +128,8 @@ export class AjouterAlerteComponent implements OnInit {
         if (this.alerteCapteur != undefined) {
             this.alerteCapteur.idCapteur = this.alerteCapteurForm.controls['idCapteur'].value;
             this.alerteCapteur.nom = this.alerteCapteurForm.controls['nom'].value;
-            this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
+            this.alerteCapteur.envoyerA = this.alerteCapteurForm.controls['destinataireCourriel'].value;
+            this.alerteCapteur.texterA = this.alerteCapteurForm.controls['destinataireSMS'].value;
             if (this.alerteCapteurForm.controls['min'].value != "") {
                 this.alerteCapteur.minVaue = parseInt(convertTenthToNormale(this.alerteCapteurForm.controls['min'].value));
             } else {
