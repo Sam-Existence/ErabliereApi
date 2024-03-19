@@ -17,23 +17,22 @@ import { NgIf } from "@angular/common";
 export class ModifierAlerteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.alerteForm = this.fb.group({
-            id: '',
             nom: '',
-            destinataire: '',
+            destinataireCourriel: '',
+            destinataireSMS: '',
             temperatureMin: '',
             temperatureMax: '',
             vacciumMin: '',
             vacciumMax: '',
             niveauBassinMin: '',
-            niveauBassinMax: '',
-            isEnable: ''
+            niveauBassinMax: ''
         });
         this.alerteCapteurForm = this.fb.group({
-            destinataire: '',
             nom: '',
+            destinataireCourriel: '',
+            destinataireSMS: '',
             min: '',
-            max: '',
-            isEnable: ''
+            max: ''
         });
     }
     
@@ -42,16 +41,15 @@ export class ModifierAlerteComponent implements OnInit {
 
         if (alerte != undefined) {
             this.alerteForm.setValue({
-                id: alerte.id,
                 nom: alerte.nom,
-                destinataire: alerte.envoyerA,
+                destinataireCourriel: alerte.envoyerA,
+                destinataireSMS: alerte.texterA,
                 temperatureMin: divideByTen(alerte.temperatureThresholdHight),
                 temperatureMax: divideByTen(alerte.temperatureThresholdLow),
                 vacciumMin: divideByTen(alerte.vacciumThresholdHight),
                 vacciumMax: divideByTen(alerte.vacciumThresholdLow),
                 niveauBassinMin: alerte.niveauBassinThresholdHight,
-                niveauBassinMax: alerte.niveauBassinThresholdLow,
-                isEnable: alerte.isEnable
+                niveauBassinMax: alerte.niveauBassinThresholdLow
             });
         }
 
@@ -59,11 +57,11 @@ export class ModifierAlerteComponent implements OnInit {
 
         if (alerteCapteur != undefined) {
             this.alerteCapteurForm.setValue({
-                destinataire: alerteCapteur.envoyerA,
                 nom: alerteCapteur.nom,
+                destinataireCourriel: alerteCapteur.envoyerA,
+                destinataireSMS: alerteCapteur.texterA,
                 min: divideNByTen(alerteCapteur.minVaue),
-                max: divideNByTen(alerteCapteur.maxValue),
-                isEnable: alerteCapteur.isEnable
+                max: divideNByTen(alerteCapteur.maxValue)
             });
         }
     }
@@ -95,17 +93,18 @@ export class ModifierAlerteComponent implements OnInit {
     onButtonModifierClick() {
         let alerte = new Alerte();
 
-        alerte.id = this.alerteForm.controls['id'].value;
+        alerte.id = this.alerte?.id;
         alerte.idErabliere = this.idErabliereSelectionee;
         alerte.nom = this.alerteForm.controls['nom'].value;
-        alerte.envoyerA = this.alerteForm.controls['destinataire'].value;
+        alerte.envoyerA = this.alerteForm.controls['destinataireCourriel'].value;
+        alerte.texterA = this.alerteForm.controls['destinataireSMS'].value;
         alerte.temperatureThresholdLow = convertTenthToNormale(this.alerteForm.controls['temperatureMax'].value);
         alerte.temperatureThresholdHight = convertTenthToNormale(this.alerteForm.controls['temperatureMin'].value);
         alerte.vacciumThresholdLow = convertTenthToNormale(this.alerteForm.controls['vacciumMax'].value);
         alerte.vacciumThresholdHight = convertTenthToNormale(this.alerteForm.controls['vacciumMin'].value);
         alerte.niveauBassinThresholdLow = this.alerteForm.controls['niveauBassinMax'].value;
         alerte.niveauBassinThresholdHight = this.alerteForm.controls['niveauBassinMin'].value;
-        alerte.isEnable = this.alerteForm.controls['isEnable'].value;
+        alerte.isEnable = this.alerte?.isEnable;
         this._api.putAlerte(this.idErabliereSelectionee, alerte)
                  .then(r => {
                      this.displayEditFormSubject.next("");
@@ -121,9 +120,10 @@ export class ModifierAlerteComponent implements OnInit {
 
         alerte.id = this.alerteCapteur?.id;
         alerte.idCapteur = this.alerteCapteur?.idCapteur;
-        alerte.envoyerA = this.alerteCapteurForm.controls['destinataire'].value;
         alerte.nom = this.alerteCapteurForm.controls['nom'].value;
-        alerte.isEnable = this.alerteCapteurForm.controls['isEnable'].value;
+        alerte.envoyerA = this.alerteCapteurForm.controls['destinataireCourriel'].value;
+        alerte.texterA = this.alerteCapteurForm.controls['destinataireSMS'].value;
+        alerte.isEnable = this.alerteCapteur?.isEnable;
         var minInForm = this.alerteCapteurForm.controls['min'].value;
         if (minInForm != null && (minInForm !== "" || minInForm === 0)) {
             console.log('parseMin')

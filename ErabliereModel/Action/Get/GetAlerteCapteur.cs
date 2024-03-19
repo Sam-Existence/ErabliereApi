@@ -11,4 +11,9 @@ public class GetAlerteCapteur : AlerteCapteur
     /// La listes des courriels dans une liste
     /// </summary>
     public string[] Emails { get; set; } = Array.Empty<string>();
+
+    /// <summary>
+    /// Numéros de téléphone dans un tableau de chaîne de caractère
+    /// </summary>
+    public string[] Numeros { get; set; } = System.Array.Empty<string>();
 }

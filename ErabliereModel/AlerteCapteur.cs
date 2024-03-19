@@ -38,6 +38,13 @@ public class AlerteCapteur : IIdentifiable<Guid?, AlerteCapteur>, ILevelTwoOwnab
     public string? EnvoyerA { get; set; }
 
     /// <summary>
+    /// Une liste de numéros de téléphone séparés par des ';'
+    /// </summary>
+    /// <example>+14375327599;+15749375019</example>
+    [MaxLength(200)]
+    public string? TexterA { get; set; }
+
+    /// <summary>
     /// Date création
     /// </summary>
     public DateTime? DC { get; set; }
