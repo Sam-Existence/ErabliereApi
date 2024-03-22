@@ -26,6 +26,10 @@ export class NotesComponent implements OnInit {
     @Input() idErabliereSelectionee: any
     @Input() notes?: Note[];
     private _nombreParPage: number = 5;
+    private _nombreTotal: number = 0;
+    get nombreTotal() {
+        return this._nombreTotal;
+    }
     get nombreParPage() {
         return this._nombreParPage;
     }
@@ -53,6 +57,7 @@ export class NotesComponent implements OnInit {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
             if (this.idErabliereSelectionee) {
+                this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
                 this.loadNotes();
             }
         });
