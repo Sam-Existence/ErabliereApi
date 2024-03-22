@@ -31,6 +31,10 @@ export class DocumentationComponent implements OnInit {
     get nombreParPage() {
         return this._nombreParPage;
     }
+    private _nombreTotal: number = 0;
+    get nombreTotal() {
+        return this._nombreTotal;
+    }
     set nombreParPage(value: number) {
         if(value != this._nombreParPage) {
             this._nombreParPage = value;
@@ -58,8 +62,8 @@ export class DocumentationComponent implements OnInit {
 
         this.route.paramMap.subscribe(params => {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
-
             if (this.idErabliereSelectionee) {
+                this._api.getDocumentationCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
                 this.loadDocumentations();
             }
         });
