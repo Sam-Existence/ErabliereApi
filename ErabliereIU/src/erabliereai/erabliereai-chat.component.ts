@@ -42,7 +42,7 @@ export class ErabliereAIComponent {
                 if (this.currentConversation == null) {
                     this.conversations = conversations;
                     if (this.conversations.length > 0) {
-                        this.currentConversation = this.conversations[this.conversations.length - 1];
+                        this.currentConversation = this.conversations[0];
                         this.messages = this.currentConversation.messages;
                     }
                 }
@@ -90,8 +90,8 @@ export class ErabliereAIComponent {
         });
     }
 
-    selectConversation(_t16: any) {
-        this.currentConversation = _t16;
+    selectConversation(conversation: any) {
+        this.currentConversation = conversation;
         if (this.currentConversation) {
             this.messages = this.currentConversation.messages;
         }

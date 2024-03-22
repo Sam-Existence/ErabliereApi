@@ -306,7 +306,7 @@ export class ErabliereApi {
 
     async getConversations() {
         const headers = await this.getHeaders();
-        return this._httpClient.get<any[]>(this._environmentService.apiUrl + "/ErabliereAI/Conversations?$expand=messages", { headers: headers }).toPromise();
+        return this._httpClient.get<any[]>(this._environmentService.apiUrl + "/ErabliereAI/Conversations?$orderby=lastMessageDate desc&$expand=messages", { headers: headers }).toPromise();
     }
 
     async deleteConversation(id: any) {
