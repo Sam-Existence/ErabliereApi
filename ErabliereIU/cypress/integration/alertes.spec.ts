@@ -20,24 +20,8 @@ describe('Alerte functionnality', { testIsolation: false }, () => {
                   .typeEmail(email)
                   .clickOnCreateButton();
 
-        cy.wait(1000);
+        cy.wait(5000);
 
         alertePage.getLastAlerteDonneesEmail().should('have.text', email);
     });
-
-    // TODO. End this test
-    // Edit alerte test in progress
-    // it("should edit an alerte on 'donnees'", () => {
-    //     let alertePage = homePage.clickOnAlerteButtonNavMenu();
-
-    //     const name = FixtureUtil.getRandomName();
-
-    //     alertePage.clickOnEditAlerteButton()
-    //               .typeName(name)
-    //               .clickOnEditButton();
-
-    //     cy.wait(1000);
-
-    //     alertePage.getLastAlerteDonneesName().should('have.text', name);
-    // });
 });

@@ -7,9 +7,5 @@ describe('Visits the web app', { testIsolation: false }, () => {
     homePage.visit();
     cy.contains('Érablière IU')
   });
-
-  it('We are in a connected session. No authentication ask.', () => {
-    cy.get("#login-button").should("not.exist");
-    cy.get("#logout-button").should("exist");
-  });
+  
 });

@@ -6,6 +6,8 @@ import { GestionCapteursComponent } from './gestion-capteurs.component';
 import { NgIf, NgClass } from '@angular/common';
 import { InputErrorComponent } from '../formsComponents/input-error.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Capteur } from 'src/model/capteur';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
     selector: 'erabliere-form',
@@ -36,21 +38,25 @@ export class ErabliereFormComponent implements OnInit {
     plusOptionsButtonText: string = "Plus d'options";
     @Input() errorObj?: any
     @Input() generalError?: string
+    capteurs: Capteur[] = [];
 
-    constructor(private readonly auth: AuthorisationFactoryService) {
+    constructor(private readonly auth: AuthorisationFactoryService, private api: ErabliereApi) {
         
     }
 
-    ngOnInit() {
+    async ngOnInit() {
         if (this.auth.getAuthorisationService().type == "AuthDisabled") {
             this.erabliere.isPublic = true;
         }
     }
 
-    afficherPlusOptions() {
+    async afficherPlusOptions() {
         this.plusdOptions = !this.plusdOptions;
         if (this.plusdOptions) {
             this.plusOptionsButtonText = "Moins d'options";
+            if (this.erabliere.id != null) {
+                this.capteurs = await this.api.getCapteurs(this.erabliere.id);
+            }
         } else {
             this.plusOptionsButtonText = "Plus d'options";
         }
