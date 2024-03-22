@@ -1,4 +1,4 @@
-<h3>Notes</h3>
+<h3 i18n="notesTitre">Notes</h3>
 <div class="mb-3" *ngIf="error">
     <span class="text-danger">{{error}}</span>
 </div>
@@ -16,11 +16,11 @@
 <div class="row me-1">
     @if(notes === undefined) {
         <div>
-            <p>Chargement des notes...</p>
+            <p i18n="chargementNotes">Chargement des notes...</p>
         </div>
     } @else if (notes.length === 0) {
         <div>
-            <p>Aucune note</p>
+            <p i18n="aucuneNote">Aucune note</p>
         </div>
     }
 

@@ -96,22 +96,22 @@ export class ModifierNoteComponent implements OnInit {
                     else if (e.status == 404) {
                         this.errorObj = undefined;
                         this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "L'érablière n'existe pas."
+                        this.generalError = $localize `:erreurErabliereInexistante:L'érablière n'existe pas.`;
                     }
                     else if (e.status == 405) {
                         this.errorObj = undefined;
                         this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "L'API ne permet pas de modifier une note."
+                        this.generalError = $localize `:erreurAPIModificationNote:L'API ne permet pas de modifier une note.`;
                     }
                     else if (e.status == 413) {
                         this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = "Le fichier est trop gros."
+                        this.fileToLargeErrorMessage = $localize `:erreurFichierTropGros:Le fichier est trop gros.`;
                         this.generalError = undefined;
                     }
                     else {
                         this.errorObj = undefined;
                         this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "Une erreur est survenue."
+                        this.generalError = $localize `:erreurGenerique:Une erreur est survenue.`;
                     }
                 });
         }

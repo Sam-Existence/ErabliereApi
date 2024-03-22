@@ -7,19 +7,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'you-are-not-connected',
-    template: `
-        <div *ngIf="!isLoggedIn" class="container-fluid">
-            <div class="row">
-                <div class="col-12">
-                    <div class="alert alert-information" role="alert">
-                        <strong>Vous n'êtes pas connecté </strong> <button class="btn btn-link p-0" (click)="login()" style="vertical-align: top;">Cliquer ici pour vous connecter</button>
-                        <p *ngIf="tenantId == 'common'">Connectez-vous maintenant avec votre compte Microsoft.</p>
-                        <p>Pour obtenir un compte, communiquer à l'administrateur. Vous trouverez les informations dans la page À propos.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
+    template: 'you-are-note-connected.component.html',      
     standalone: true,
     imports: [NgFor, NgIf, ErabliereComponent_1]
 })

@@ -78,7 +78,7 @@ export class NotesComponent implements OnInit {
                 console.log(errorBody)
 
                 if (errorBody.status == 404) {
-                    this.error = "Érablière '" + this.idErabliereSelectionee + "' introuvable";
+                    this.error = $localize `:erabliereIntrouvale:Érablière '${this.idErabliereSelectionee}' introuvable`;
                 }
                 else {
                     if (errorBody.errors) {

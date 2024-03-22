@@ -26,39 +26,39 @@ export class EditAccessComponent implements OnInit {
     getAccessText(access?: number): string {
         switch (access) {
             case 0:
-                return "Aucun";
+                return $localize `:aucunAcces:Aucun`;
             case 1:
-                return "Lecture";
+                return $localize `:lectureAcces:Lecture`;
             case 2:
-                return "Création";
+                return $localize `:creationAcces:Création`;
             case 3:
-                return "Lecture et création"
+                return $localize `:lectureCreationAcces:Lecture et création`;
             case 4:
-                return "Modification";
+                return $localize `:modificaitonAcces:Modification`;
             case 5:
-                return "Lecture et modification";
+                return $localize `:lectureModificationAcces:Lecture et modification`;
             case 6:
-                return "Création et modification";
+                return $localize `:creationModificationAcces:Création et modification`;
             case 7:
-                return "Lecture, création et modification";
+                return $localize `:lectureCreationModificationAcces:Lecture, création et modification`;
             case 8:
-                return "Suppression";
+                return $localize `:suppressionAcces:Suppression`;
             case 9:
-                return "Lecture et suppression";
+                return $localize `:lectureSuppressionAcces:Lecture et suppression`;
             case 10:
-                return "Création et suppression";
+                return $localize `:creationSuppressionAcces:Création et suppression`;
             case 11:
-                return "Lecture, création et suppression";
+                return $localize `:lectureCreationSuppressionAcces:Lecture, création et suppression`;
             case 12:
-                return "Modification et suppression";
+                return $localize `:modificationSuppressionAcces:Modification et suppression`;
             case 13:
-                return "Lecture, modification et suppression";
+                return $localize `:lectureModificationSuppressionAcces:Lecture, modification et suppression`;
             case 14:
-                return "Création, modification et suppression";
+                return $localize `:creationModificationSuppressionAcces:Création, modification et suppression`;
             case 15:
-                return "Lecture, création, modification et suppression";
+                return $localize `:lectureCreationModificationSuppressionAcces:Lecture, création, modification et suppression`;
             default:
-                return "Aucun";
+                return $localize `:aucunAcces:Aucun`;
         }
     }
 

@@ -9,33 +9,7 @@ import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'ajouter-donnee-capteur',
-    template: `
-        <button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()">Ajouter</button>
-        <div *ngIf="display" class="border-top ms-3">
-            <h3>Ajouter une donnée</h3>
-            <form [formGroup]="donneeCapteurForm">
-                <div class="form-group">
-                    <span *ngIf="generalErrorMessage" class="text-danger">{{ generalErrorMessage }}</span>
-                </div>
-                <div class="form-group">
-                    <label for="valeur" class="form-label">Valeur</label>
-                    <einput type="number" id="valeur" name="valeur" [formGroup]="donneeCapteurForm" [symbole]="symbole" />
-                    <div *ngIf="this.donneeCapteurForm.controls['valeur'].errors">
-                        <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
-                    </div>
-                </div>
-                <div class="form-group mb-2">
-                    <label for="date" class="form-label">Date</label>
-                    <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
-                    <div *ngIf="this.donneeCapteurForm.controls['date'].errors">
-                        <span class="text-danger">{{ this.donneeCapteurForm.controls['date'].errors.message }}</span>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary me-2" (click)="ajouterDonnee()">Ajouter</button>
-                <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
-            </form>
-        </div>
-    `,
+    templateUrl: 'ajouter-donnee-capteur.component.html',
     styles: [`
         .border-top {
             border-top: 1px solid #ccc;
@@ -77,7 +51,7 @@ export class AjouterDonneeCapteurComponent implements OnInit {
         } catch (error) {
             this.donneeCapteurForm.controls['valeur'].setErrors({
                 'incorrect': true,
-                'message': 'Impossible de convertir la valeur en entier'
+                'message': $localize `:erreurConvertirValeur:Impossible de convertir la valeur en entier`
             })
             validationError = true;
         }
@@ -86,7 +60,7 @@ export class AjouterDonneeCapteurComponent implements OnInit {
         } catch (error) {
             this.donneeCapteurForm.controls['date'].setErrors({
                 'incorrect': true,
-                'message': "Impossible d'interpreter la date"
+                'message': $localize `:erreurConvertirDate:Impossible d'interpreter la date`
             })
             validationError = true;
         }
@@ -113,7 +87,7 @@ export class AjouterDonneeCapteurComponent implements OnInit {
                     }
                 }
                 else {
-                    this.generalErrorMessage = "Une erreur est survenue lors de l'ajout de la donnée";
+                    this.generalErrorMessage = $localize `:erreurAjoutDonnee:Une erreur est survenue lors de l'ajout de la donnée`;
                 }
             });
         }

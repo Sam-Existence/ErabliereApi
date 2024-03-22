@@ -1,25 +1,28 @@
 <div *ngIf="!display">
-    <button id="ajouter-documentation-btn" class="btn btn-primary" (click)="onButtonAjouterClick()">Ajouter</button>
+    <button id="ajouter-documentation-btn" class="btn btn-primary" (click)="onButtonAjouterClick()" i18n="boutonAjouter">Ajouter</button>
 </div>
 <div *ngIf="display">
     <span class="text-danger">{{generalError}}</span>
     <form [formGroup]="documentForm">
         <div class="form-group">
-            <label class="form-label">Titre: </label><input class="form-control" type="text" formControlName="title">
+            <label class="form-label" i18n="titreFormulaire">Titre: </label>
+            <input class="form-control" type="text" formControlName="title">
             <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
         </div>
         <div class="form-group">
-            <label class="form-label">Texte: </label><input class="form-control" type="text" formControlName="text">
+            <label class="form-label" i18n="texteFormulaire">Texte: </label>
+            <input class="form-control" type="text" formControlName="text">
             <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
         </div>
         <div class="form-group">
-            <label class="form-label">Fichier: </label><input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
+            <label class="form-label" i18n="fichierFormulaire">Fichier: </label>
+            <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
         </div>
         <input-error [errorObj]="errorObj" [controlName]="'file'"></input-error>
         <span class="text-danger">
             {{fileToLargeErrorMessage}}
         </span>
     </form>
-    <button id="creerDocument" class="btn btn-primary mt-3 mb-3 me-2" (click)="onButtonCreerClick()">Créer</button>
-    <button id="annuler-creer-document" class="btn btn-secondary mt-3 mb-3" (click)="onButtonAnnulerClick()">Annuler</button>
+    <button id="creerDocument" class="btn btn-primary mt-3 mb-3 me-2" (click)="onButtonCreerClick()" i18n="boutonCreer">Créer</button>
+    <button id="annuler-creer-document" class="btn btn-secondary mt-3 mb-3" (click)="onButtonAnnulerClick()" i18n="boutonAnnuler">Annuler</button>
 </div>

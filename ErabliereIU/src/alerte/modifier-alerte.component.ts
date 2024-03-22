@@ -111,7 +111,7 @@ export class ModifierAlerteComponent implements OnInit {
                      this.alerteEditFormSubject.next(r);
                  })
                  .catch(e => {
-                     this.generalError = "Erreur lors de la modification de l'alerte";
+                     this.generalError = $localize `:erreurModificationAlerte:Erreur lors de la modification de l'alerte`;
                 });
     }
 
@@ -144,7 +144,7 @@ export class ModifierAlerteComponent implements OnInit {
                      this.alerteCapteurEditFormSubject.next(r);
                  })
                  .catch(e => {
-                    this.generalError = "Erreur lors de la modification de l'alerte";
+                    this.generalError = $localize `:erreurModificationAlerte:Erreur lors de la modification de l'alerte`;
                  });
     }
 }

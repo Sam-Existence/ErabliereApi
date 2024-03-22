@@ -1,0 +1,39 @@
+<div class="border-top m-3">
+    <h3 i18n="barilsTitre">Barils</h3>
+    <h6><span i18n="idErabliere">Id érablière </span>{{ erabliereId }}</h6>
+    <span *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</span>
+    <table class="table">
+        <thead>
+            <tr>
+                <th i18n="numeroTable">
+                    Numéro
+                </th>
+                <th i18n="dateFermatureTable">
+                    Date fermeture
+                </th>
+                <th i18n="estimationTable">
+                    Estimation
+                </th>
+                <th i18n="resultatClassementTable">
+                    Résultat après classement
+                </th>
+            <tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let baril of barils">
+                <td>
+                    {{baril.id}}
+                </td>
+                <td>
+                    {{baril.df}}
+                </td>
+                <td>
+                    {{baril.qe}}
+                </td>
+                <td>
+                    {{baril.q}}
+                </td>
+            <tr>
+        </tbody>
+    </table>
+</div>

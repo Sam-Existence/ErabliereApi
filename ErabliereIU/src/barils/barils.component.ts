@@ -5,47 +5,7 @@ import { NgFor, NgIf } from '@angular/common';
 
 @Component({
     selector: 'barils-panel',
-    template: `
-        <div class="border-top m-3">
-            <h3>Barils</h3>
-            <h6>Id érablière {{ erabliereId }}</h6>
-            <span *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</span>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            Numéro
-                        </th>
-                        <th>
-                            Date fermeture
-                        </th>
-                        <th>
-                            Estimation
-                        </th>
-                        <th>
-                            Résultat après classement
-                        </th>
-                    <tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let baril of barils">
-                        <td>
-                            {{baril.id}}
-                        </td>
-                        <td>
-                            {{baril.df}}
-                        </td>
-                        <td>
-                            {{baril.qe}}
-                        </td>
-                        <td>
-                            {{baril.q}}
-                        </td>
-                    <tr>
-                </tbody>
-            </table>
-        </div>
-    `,
+    templateUrl: './barils.component.html',
     standalone: true,
     imports: [NgFor, NgIf]
 })

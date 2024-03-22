@@ -1,31 +1,31 @@
 <div class="m-3">
-    <h3>À Propos</h3>
+    <h3 i18n="aProposTitre">À Propos</h3>
     <hr />
 
     <div *ngIf="checkoutEnabled">
-        <h4>Obtenir une clé d'api</h4>
-        <p>Il est possible d'obtenir une clé d'api au tarif de 0.01$ par requête. Après l'achat de la clé, vous
+        <h4 i18n>Obtenir une clé d'api</h4>
+        <p i18n>Il est possible d'obtenir une clé d'api au tarif de 0.01$ par requête. Après l'achat de la clé, vous
             receverez un courriel avec la clé d'api à insérer dans les requêtes.</p>
-        <button class="btn btn-primary" (click)="buyApiKey()">Obtenir une clé d'api</button>
+        <button class="btn btn-primary" (click)="buyApiKey()" i18n>Obtenir une clé d'api</button>
     </div>
 
     <div *ngIf="!(supportEmail == '' || supportEmail == null) || tenantId == 'common'">
-        <h4 class="mt-4">Obtenir un compte</h4>
-        <p *ngIf="!(supportEmail == '' || supportEmail == null)">Envoyer un courriel à <a
+        <h4 class="mt-4" i18n>Obtenir un compte</h4>
+        <p *ngIf="!(supportEmail == '' || supportEmail == null)" i18n>Envoyer un courriel à <a
                 href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
-        <p *ngIf="tenantId == 'common'">Vous pouvez mainenant vous connecter avec votre compte microsoft sans demander
+        <p *ngIf="tenantId == 'common'" i18n>Vous pouvez mainenant vous connecter avec votre compte microsoft sans demander
             de compte.</p>
     </div>
 
-    <h4 class="mt-4">Spécification de l'api</h4>
+    <h4 class="mt-4" i18n>Spécification de l'api</h4>
     <a href="{{urlApi}}/api/index.html" target="_blank" rel="noopener noreferrer">Swagger</a>
 
-    <h4 class="mt-4">Érablière API</h4>
-    <p>Projet en développement, le but est de rendre ouvertes les données reliées aux érablières en fournissant des
+    <h4 class="mt-4" i18n>Érablière API</h4>
+    <p i18n>Projet en développement, le but est de rendre ouvertes les données reliées aux érablières en fournissant des
         mécanismes de monitorage, d'alerte et de partage de donnée entre multiples érablières.</p>
 
-    <h4 class="mt-4">Comment ça marche ?</h4>
-    <p>
+    <h4 class="mt-4" i18n>Comment ça marche ?</h4>
+    <p i18n>
         Des ordinateurs dans le nuage sont dédié et réceptionnent les données envoyées par divers équipements depuis des
         érablières. Les données peuvent ensuite être consultées à l'aide d'un navigateur web depuis un téléphone ou un
         ordinateur ayant accès à internet.
@@ -36,13 +36,13 @@
     </p>
 
     <div *ngIf="!(supportEmail == '' || supportEmail == null)">
-        <h4 class="mt-4">Recherche d'érablière à connecter</h4>
-        <p>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a
+        <h4 class="mt-4" i18n>Recherche d'érablière à connecter</h4>
+        <p i18n>Vous aimeriez participer au développement de ce projet ? Envoyer un courriel à <a
                 href="mailto:{{supportEmail}}">{{supportEmail}}</a>.</p>
     </div>
 
-    <h4 class="mt-4">Recherche des développeurs</h4>
-    <p>Vous aimeriez participer au développement de ce projet ? Parcourir le code source du programme sur <a
+    <h4 class="mt-4" i18n>Recherche des développeurs</h4>
+    <p i18n>Vous aimeriez participer au développement de ce projet ? Parcourir le code source du programme sur <a
             href="https://github.com/ErabliereApi/ErabliereApi" target="_blank">github</a>.</p>
 
 </div>

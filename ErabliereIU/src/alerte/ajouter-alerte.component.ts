@@ -116,7 +116,7 @@ export class AjouterAlerteComponent implements OnInit {
                          this.alertes?.push(r);
                      })
                      .catch(e => {
-                        this.generalError = "Erreur lors de la modification de l'alerte";
+                        this.generalError = $localize `:erreurCreationAlerte:Erreur lors de la création de l'alerte`;
                     });
         }
         else {
@@ -147,7 +147,7 @@ export class AjouterAlerteComponent implements OnInit {
                          this.alertesCapteur?.push(r);
                      })
                      .catch(e => {
-                        this.generalError = "Erreur lors de la modification de l'alerte";
+                        this.generalError = $localize `:erreurCreationAlerte:Erreur lors de la création de l'alerte`;
                      });
         }
         else {

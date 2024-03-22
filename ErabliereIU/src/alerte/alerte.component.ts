@@ -117,7 +117,7 @@ export class AlerteComponent implements OnInit {
   }
 
   onButtonDeleteClick(alerteId: any) {
-    if (confirm("Voulez-vous vraiment supprimer l'alerte " + alerteId + " ? ")) {
+    if (confirm($localize `Voulez-vous vraiment supprimer l'alerte ${alerteId} ?`)) {
       this._api.deleteAlerte(this.idErabliereSelectionee, alerteId)
         .then(a => {
           this._api.getAlertes(this.idErabliereSelectionee)
@@ -129,7 +129,7 @@ export class AlerteComponent implements OnInit {
   }
 
   onButtonDeleteAlerteCapteurClick(idCapteur: any, alerteId: any) {
-    if (confirm("Voulez-vous vraiment supprimer l'alerte capteur " + alerteId + " ? ")) {
+    if (confirm($localize `Voulez-vous vraiment supprimer l'alerte ${alerteId} ?`)) {
       this._api.deleteAlerteCapteur(idCapteur, alerteId)
         .then(a => {
           this._api.getAlertesCapteur(this.idErabliereSelectionee)

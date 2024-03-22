@@ -1,5 +1,5 @@
 <div>
-    <h3>Alertes</h3>
+    <h3 i18n="alertesTitre">Alertes</h3>
 </div>
 <ajouter-alerte-modal *ngIf="!displayEditForm" [idErabliereSelectionee]="idErabliereSelectionee" [alertes]="alertes"
     [alertesCapteur]="alertesCapteur">
@@ -12,36 +12,36 @@
 </modifier-alerte-modal>
 <div>
     <p *ngIf="alertes != null && alertes.length == 0 && alertesCapteur != null && alertesCapteur.length == 0">
-        Aucune alerte de configuré
+        Aucune alerte configurée
     </p>
 
     <div *ngIf="alertesCapteur != null && alertesCapteur.length > 0">
-        <h4>Alerte capteurs</h4>
+        <h4 i18n="alertesCapteur">Alertes de capteur</h4>
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>
+                    <th i18n="id">
                         Id
                     </th>
-                    <th>
+                    <th i18n="nom">
                         Nom
                     </th>
-                    <th>
+                    <th i18n="etat">
                         État
                     </th>
-                    <th>
+                    <th i18n="envoyerA">
                         Envoyer à
                     </th>
-                    <th>
+                    <th i18n="texterA">
                         Texter à
                     </th>
-                    <th>
+                    <th i18n="min">
                         Min.
                     </th>
-                    <th>
+                    <th i18n="max">
                         Max.
                     </th>
-                    <th>
+                    <th i18n="capteur">
                         Capteur
                     </th>
                     <th></th>
@@ -55,10 +55,10 @@
                     <td>
                         {{alerte.nom}}
                     </td>
-                    <td *ngIf="alerte.isEnable">
+                    <td *ngIf="alerte.isEnable" i18n="active">
                         Activé
                     </td>
-                    <td *ngIf="!alerte.isEnable">
+                    <td *ngIf="!alerte.isEnable" i18n="desactive">
                         Désactivé
                     </td>
                     <td>
@@ -79,13 +79,13 @@
                     <td>
                         <div class="d-grid gap-3">
                             <button *ngIf="alerte.isEnable" class="btn btn-outline-warning"
-                                (click)="onButtonDesactiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">désactiver</button>
+                                (click)="onButtonDesactiverAlerteCapteurClick(alerte.idCapteur, alerte.id)" i18n="boutonDesactiver">Désactiver</button>
                             <button *ngIf="!alerte.isEnable" class="btn btn-outline-success"
-                                (click)="onButtonActiverAlerteCapteurClick(alerte.idCapteur, alerte.id)">activer</button>
+                                (click)="onButtonActiverAlerteCapteurClick(alerte.idCapteur, alerte.id)" i18n="boutonActiver">Activer</button>
                             <button class="btn btn-info"
-                                (click)="onButtonModifierAlerteCapteurClick(alerte.id)">modifier</button>
+                                (click)="onButtonModifierAlerteCapteurClick(alerte.id)" i18n="boutonModifier">Modifier</button>
                             <button class="btn btn-danger"
-                                (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)">supprimer</button>
+                                (click)="onButtonDeleteAlerteCapteurClick(alerte.idCapteur, alerte.id)" i18n="boutonSupprimer">Supprimer</button>
 
                         </div>
                     </td>
@@ -95,41 +95,41 @@
     </div>
 
     <div *ngIf="alertes != null && alertes.length > 0">
-        <h4>Alerte trio données</h4>
+        <h4 i18n="AlertesTrioDonnees">Alertes de trio données</h4>
         <table *ngIf="alertes != null && alertes.length > 0" class="table table-striped">
             <thead>
                 <tr>
-                    <th>
+                    <th i18n="id">
                         Id
                     </th>
-                    <th>
+                    <th i18n="nom">
                         Nom
                     </th>
-                    <th>
+                    <th i18n="etat">
                         État
                     </th>
-                    <th>
+                    <th i18n="envoyerA">
                         Envoyer à
                     </th>
-                    <th>
+                    <th i18n="texterA">
                         Texter à
                     </th>
-                    <th>
-                        Temperature min.
+                    <th i18n="temperatureMin">
+                        Température min.
                     </th>
-                    <th>
-                        Temperature max.
+                    <th i18n="temperatureMax">
+                        Température max.
                     </th>
-                    <th>
-                        Vaccium min.
+                    <th i18n="vacuumMin">
+                        Vacuum min.
                     </th>
-                    <th>
-                        Vaccium max.
+                    <th i18n="vacuumMax">
+                        Vacuum max.
                     </th>
-                    <th>
+                    <th i18n="niveauBassinMin">
                         Niveau bassin min.
                     </th>
-                    <th>
+                    <th i18n="niveauBassinMax">
                         Niveau bassin max.
                     </th>
                     <th></th>
@@ -143,10 +143,10 @@
                     <td>
                         {{alerte.nom}}
                     </td>
-                    <td *ngIf="alerte.isEnable">
+                    <td *ngIf="alerte.isEnable" i18n="active">
                         Activé
                     </td>
-                    <td *ngIf="!alerte.isEnable">
+                    <td *ngIf="!alerte.isEnable" i18n="desactive">
                         Désactivé
                     </td>
                     <td>
@@ -176,11 +176,11 @@
                     <td>
                         <div class="d-grid gap-3">
                             <button *ngIf="alerte.isEnable" class="btn btn-outline-warning"
-                                (click)="onButtonDesactiverAlerteClick(alerte.id)">désactiver</button>
+                                (click)="onButtonDesactiverAlerteClick(alerte.id)" i18n="boutonDesactiver">Désactiver</button>
                             <button *ngIf="!alerte.isEnable" class="btn btn-outline-success"
-                                (click)="onButtonActiverAlerteClick(alerte.id)">activer</button>
-                            <button class="btn btn-info" (click)="onButtonModifierClick(alerte.id)">modifier</button>
-                            <button class="btn btn-danger" (click)="onButtonDeleteClick(alerte.id)">supprimer</button>
+                                (click)="onButtonActiverAlerteClick(alerte.id)" i18n="boutonActiver">Activer</button>
+                            <button class="btn btn-info" (click)="onButtonModifierClick(alerte.id)" i18n="boutonModifier">Modifier</button>
+                            <button class="btn btn-danger" (click)="onButtonDeleteClick(alerte.id)" i18n="boutonSupprimer">Supprimer</button>
                         </div>
                     </td>
                 <tr>

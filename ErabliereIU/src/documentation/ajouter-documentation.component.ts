@@ -85,13 +85,13 @@ export class AjouterDocumentationComponent implements OnInit {
                         }
                         else if (e.status == 413) {
                             this.errorObj = undefined;
-                            this.fileToLargeErrorMessage = "Le fichier est trop gros."
+                            this.fileToLargeErrorMessage = $localize `:erreurFichierTropGros:Le fichier est trop gros.`;
                             this.generalError = undefined;
                         }
                         else {
                             this.errorObj = undefined;
                             this.fileToLargeErrorMessage = undefined;
-                            this.generalError = "Une erreur est survenue."
+                            this.generalError = $localize `:erreurGenerique:Une erreur est survenue.`;
                         }
                       });
         }

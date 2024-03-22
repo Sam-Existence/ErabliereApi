@@ -1,0 +1,25 @@
+<button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()" i18n="boutonAjouter">Ajouter</button>
+<div *ngIf="display" class="border-top ms-3">
+    <h3 i18n="ajouterDonnee">Ajouter une donnée</h3>
+    <form [formGroup]="donneeCapteurForm">
+        <div class="form-group">
+            <span *ngIf="generalErrorMessage" class="text-danger">{{ generalErrorMessage }}</span>
+        </div>
+        <div class="form-group">
+            <label for="valeur" class="form-label" i18n="valeurFormulaire">Valeur: </label>
+            <einput type="number" id="valeur" name="valeur" [formGroup]="donneeCapteurForm" [symbole]="symbole" />
+            <div *ngIf="this.donneeCapteurForm.controls['valeur'].errors">
+                <span class="text-danger">{{ this.donneeCapteurForm.controls['valeur'].errors.message }}</span>
+            </div>
+        </div>
+        <div class="form-group mb-2">
+            <label for="date" class="form-label" i18n="dateFormulaire">Date: </label>
+            <input type="datetime-local" class="form-control" id="date" name="date" placeholder="Date" formControlName="date">
+            <div *ngIf="this.donneeCapteurForm.controls['date'].errors">
+                <span class="text-danger">{{ this.donneeCapteurForm.controls['date'].errors.message }}</span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary me-2" (click)="ajouterDonnee()" i18n="boutonAjouter">Ajouter</button>
+        <button type="button" class="btn btn-secondary" (click)="annuler()" i18n="boutonAnnuler">Annuler</button>
+    </form>
+</div>

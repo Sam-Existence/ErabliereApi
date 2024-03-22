@@ -123,7 +123,7 @@ export class DocumentationComponent implements OnInit {
     }
 
     async deleteDocumentation(document: ErabliereApiDocument) {
-        if (confirm("Voulez-vous vraiment supprimer ce document?")) {
+        if (confirm($localize `:confirmationSupprimerDocument:Voulez-vous vraiment supprimer ce document?`)) {
             await this._api.deleteDocumentation(document.idErabliere, document.id);
 
             this.loadDocumentations();

@@ -1,5 +1,5 @@
 <div *ngIf="!display">
-    <button id="ajouter-alerte-btn" class="btn btn-primary mb-2" (click)="onButtonAjouterClick()">Ajouter</button>
+    <button id="ajouter-alerte-btn" class="btn btn-primary mb-2" (click)="onButtonAjouterClick()" i18n="boutonAjouter">Ajouter</button>
 </div>
 <div *ngIf="display">
     <span class="text-danger">{{generalError}}</span>
@@ -7,10 +7,10 @@
       <div>
         <form [formGroup]="typeAlerteSelectListForm">
           <div class="form-group mb-2">
-            <label for="typeAlerteSelect" class="form-label">Type d'alerte</label>
+            <label for="typeAlerteSelect" class="form-label" i18n="typeAlerte">Type d'alerte</label>
             <select class="form-control" id="typeAlerteSelect" formControlName="state" (change)="onChangeAlerteType($event)">
-              <option value="1" [selected]="typeAlerte == 1">Alerte trio de donnée</option>
-              <option value="2" [selected]="typeAlerte == 2">Alerte de capteur</option>
+              <option value="1" [selected]="typeAlerte == 1" i18n="alerteTrio">Alerte de trio données</option>
+              <option value="2" [selected]="typeAlerte == 2" i18n="alerteCapteur">Alerte de capteur</option>
             </select>
           </div>
         </form>
@@ -19,43 +19,43 @@
     <div *ngIf="typeAlerte == 1">
       <form [formGroup]="alerteForm">
           <div class="form-group mb-2">
-            <label class="form-label">Nom: </label>
+            <label class="form-label" i18n="nomFormulaire">Nom: </label>
             <input class="form-control" type="text" formControlName="nom">
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Destinataires du courriel: </label>
+            <label class="form-label" i18n="destinatairesCourrielFormulaire">Destinataires du courriel: </label>
             <input class="form-control" type="text" formControlName="destinataireCourriel">
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Destinataires du SMS: </label>
+            <label class="form-label" i18n="destinatairesSMSFormulaire">Destinataires du SMS: </label>
             <input class="form-control" type="text" formControlName="destinataireSMS">
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Temperature Min.: </label>
+            <label class="form-label" i18n="temperatureMinFormulaire">Température Min.: </label>
             <einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Temperature Max.: </label>
+            <label class="form-label" i18n="temperatureMaxFormulaire">Température Max.: </label>
             <einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Vaccium Min.: </label>
+            <label class="form-label" i18n="vacuumMinFormulaire">Vacuum Min.: </label>
             <einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Vaccium Max.: </label>
+            <label class="form-label" i18n="vacuumMaxFormulaire">Vacuum Max.: </label>
             <einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Niveau Bassin Min.: </label>
+            <label class="form-label" i18n="niveauBassinMinFormulaire">Niveau Bassin Min.: </label>
             <einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Niveau Bassin Max.: </label>
+            <label class="form-label" i18n="niveauBassinMaxFormulaire">Niveau Bassin Max.: </label>
             <einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
           </div>
-        <button id="creer-alerte-donnees-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerClick()">Créer</button>
-        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
+        <button id="creer-alerte-donnees-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerClick()" i18n="boutonCreer">Créer</button>
+        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()" i18n="boutonAnnuler">Annuler</button>
         <div>
           <span class="text-danger">{{generalError}}</span>
         </div>
@@ -64,33 +64,33 @@
     <div *ngIf="typeAlerte == 2">
       <form [formGroup]="alerteCapteurForm">
           <div class="form-group">
-            <label class="form-label">Nom: </label>
+            <label class="form-label" i18n="nomFormulaire">Nom: </label>
             <input class="form-control" type="text" formControlName="nom">
           </div>
           <div class="form-group">
-            <label class="form-label">Capteur: </label>
+            <label class="form-label" i18n="capteurFormulaire">Capteur: </label>
             <select class="form-control" formControlName="idCapteur">
               <option *ngFor="let capteur of capteurs" [value]="capteur.id">{{capteur.nom}}</option>
             </select>
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Destinataires du courriel: </label>
+            <label class="form-label" i18n="destinatairesCourrielFormulaire">Destinataires du courriel: </label>
             <input class="form-control" type="text" formControlName="destinataireCourriel">
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Destinataires du SMS: </label>
+            <label class="form-label" i18n="destinatairesSMSFormulaire">Destinataires du SMS: </label>
             <input class="form-control" type="text" formControlName="destinataireSMS">
           </div>
           <div class="form-group">
-            <label class="form-label">Min.: </label>
+            <label class="form-label" i18n="minFormulaire">Min.: </label>
             <einput [formGroup]="alerteCapteurForm" name="min" symbole={{capteurSymbole()}} />
           </div>
           <div class="form-group mb-2">
-            <label class="form-label">Max.: </label>
+            <label class="form-label" i18n="maxFormulaire">Max.: </label>
             <einput [formGroup]="alerteCapteurForm" name="max" symbole={{capteurSymbole()}} />
           </div>
-        <button id="creer-alerte-capteur-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerAlerteCapteurClick()">Créer</button>
-        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
+        <button id="creer-alerte-capteur-btn" class="btn btn-primary mt-2 me-2 mb-3" (click)="onButtonCreerAlerteCapteurClick()" i18n="boutonCreer">Créer</button>
+        <button class="btn btn-secondary mt-2 mb-3" (click)="onButtonAnnuleClick()" i18n="boutonAnnuler">Annuler</button>
         <div>
           <span class="text-danger">{{generalError}}</span>
         </div>

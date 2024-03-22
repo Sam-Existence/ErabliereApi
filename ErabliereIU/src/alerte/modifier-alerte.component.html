@@ -1,36 +1,45 @@
 <div *ngIf="editAlerte">
     <span class="text-danger">{{generalError}}</span>
-    <p>Id: {{ alerte?.id }}</p>
+    <p><span i18n="idFormulaire">Id: </span>{{ alerte?.id }}</p>
     <form [formGroup]="alerteForm">
         <div class="form-group">
-          <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
+          <label class="form-label" i18n="nomFormualire">Nom: </label>
+          <input class="form-control" type="text" formControlName="nom">
         </div>
         <div class="form-group">
-          <label class="form-label">Destinataires du courriel: </label><input class="form-control" type="text" formControlName="destinataireCourriel">
+          <label class="form-label" i18n="destinatairesCourrielFormulaire">Destinataires du courriel: </label>
+          <input class="form-control" type="text" formControlName="destinataireCourriel">
         </div>
         <div class="form-group">
-          <label class="form-label">Destinataires du SMS: </label><input class="form-control" type="text" formControlName="destinataireSMS">
+          <label class="form-label" i18n="destinatairesSMSFormulaire">Destinataires du SMS: </label>
+          <input class="form-control" type="text" formControlName="destinataireSMS">
         </div>
         <div class="form-group">
-          <label class="form-label">Temperature Min.: </label><einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
+          <label class="form-label" i18n="temperatureMinFormulaire">Température Min.: </label>
+          <einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
         </div>
         <div class="form-group">
-          <label class="form-label">Temperature Max.: </label><einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
+          <label class="form-label" i18n="temperatureMaxFormulaire">Température Max.: </label>
+          <einput [formGroup]="alerteForm" name="temperatureMax" symbole="°C" />
         </div>
         <div class="form-group">
-          <label class="form-label">Vaccium Min.: </label><einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
+          <label class="form-label" i18n="vacuumMinFormulaire">Vacuum Min.: </label>
+          <einput [formGroup]="alerteForm" name="vacciumMin" symbole="HG" />
         </div>
         <div class="form-group">
-          <label class="form-label">Vaccium Max.: </label><einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
+          <label class="form-label" i18n="vacuumMaxFormulaire">Vacuum Max.: </label>
+          <einput [formGroup]="alerteForm" name="vacciumMax" symbole="HG" />
         </div>
         <div class="form-group">
-          <label class="form-label">Niveau Bassin Min.: </label><einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
+          <label class="form-label" i18n="niveauBassinMinFormulaire">Niveau Bassin Min.: </label>
+          <einput [formGroup]="alerteForm" name="niveauBassinMin" symbole="%" />
         </div>
         <div class="form-group">
-          <label class="form-label">Niveau Bassin Max.: </label><einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
+          <label class="form-label" i18n="niveauBassinMaxFormulaire">Niveau Bassin Max.: </label>
+          <einput [formGroup]="alerteForm" name="niveauBassinMax" symbole="%" />
         </div>
-      <button class="btn btn-primary" (click)="onButtonModifierClick()">Modifier</button>
-      <button class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      <button class="btn btn-primary" (click)="onButtonModifierClick()" i18n="boutonModifier">Modifier</button>
+      <button class="btn btn-secondary" (click)="onButtonAnnuleClick()" i18n="boutonAnnuler">Annuler</button>
       <div>
         <span class="text-danger">{{generalError}}</span>
       </div>
@@ -38,25 +47,30 @@
 </div>
 <div *ngIf="editAlerteCapteur">
   <span class="text-danger">{{generalError}}</span>
-  <p>Id: {{ alerteCapteur?.id }}</p>
+  <p><span i18n="idFormulaire">Id: </span>{{ alerteCapteur?.id }}</p>
   <form [formGroup]="alerteCapteurForm">
       <div class="form-group">
-        <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
+        <label class="form-label" i18n="nomFormualire">Nom: </label>
+        <input class="form-control" type="text" formControlName="nom">
       </div>
       <div class="form-group">
-        <label class="form-label">Destinataires du courriel: </label><input class="form-control" type="text" formControlName="destinataireCourriel">
+        <label class="form-label" i18n="destinatairesCourrielFormulaire">Destinataires du courriel: </label>
+        <input class="form-control" type="text" formControlName="destinataireCourriel">
       </div>
       <div class="form-group">
-        <label class="form-label">Destinataires du SMS: </label><input class="form-control" type="text" formControlName="destinataireSMS">
+        <label class="form-label" i18n="destinatairesSMSFormulaire">Destinataires du SMS: </label>
+        <input class="form-control" type="text" formControlName="destinataireSMS">
       </div>
       <div class="form-group">
-        <label class="form-label">Min.: </label><einput [formGroup]="alerteCapteurForm" name="min" [symbole]="alerteCapteur?.capteur?.symbole" />
+        <label class="form-label" i18n="minFormualire">Min.: </label>
+        <einput [formGroup]="alerteCapteurForm" name="min" [symbole]="alerteCapteur?.capteur?.symbole" />
       </div>
       <div class="form-group">
-        <label class="form-label">Max.: </label><einput [formGroup]="alerteCapteurForm" name="max" [symbole]="alerteCapteur?.capteur?.symbole" />
+        <label class="form-label" i18n="maxFormulaire">Max.: </label>
+        <einput [formGroup]="alerteCapteurForm" name="max" [symbole]="alerteCapteur?.capteur?.symbole" />
       </div>
-      <button class="btn btn-primary mt-3 mb-3" (click)="onButtonModifierAlerteCapteurClick()">Modifier</button>
-      <button class="btn btn-secondary mt-3 mb-3" (click)="onButtonAnnuleClick()">Annuler</button>
+      <button class="btn btn-primary mt-3 mb-3" (click)="onButtonModifierAlerteCapteurClick()" i18n="boutonModifier">Modifier</button>
+      <button class="btn btn-secondary mt-3 mb-3" (click)="onButtonAnnuleClick()" i18n="boutonAnnuler">Annuler</button>
     <div>
       <span class="text-danger">{{generalError}}</span>
     </div>

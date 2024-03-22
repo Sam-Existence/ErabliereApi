@@ -43,7 +43,7 @@ export class ErabliereSideBarComponent implements OnInit {
         this.erablieres = undefined;
         this.erabliereSelectionnee = undefined;
         this.idSelectionnee = undefined;
-        this.etat = "Vous n'êtes pas connecté";
+        this.etat = $localize `:pasConnecte:Vous n'êtes pas connecté`;
       }
     });
   }
@@ -69,7 +69,7 @@ export class ErabliereSideBarComponent implements OnInit {
   }
 
   async loadErablieresPage() {
-    const titreChargement = "Chargement des érablières...";
+    const titreChargement = $localize `:chargementErablieres:Chargement des érablières...`;
 
     if (this.etat == titreChargement) {
       return new Promise<void>((resolve, reject) => { });
@@ -79,7 +79,7 @@ export class ErabliereSideBarComponent implements OnInit {
 
     const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs(true).catch(err => {
       console.error(err);
-      this.etat = "Erreur lors du chargement des érablieres";
+      this.etat = $localize `:erreurChargementErablieres:Erreur lors du chargement des érablières`;
     }));
 
     if (erablieres != null) {
@@ -106,7 +106,7 @@ export class ErabliereSideBarComponent implements OnInit {
         this.handleErabliereLiClick(this.erabliereSelectionnee.id);
       }
       else {
-        this.etat = "Aucune erablière";
+        this.etat = $localize `:aucuneErabliere:Aucune erablière`;
       }
     }
   }
