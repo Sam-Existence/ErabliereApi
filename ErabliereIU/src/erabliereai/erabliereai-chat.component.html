@@ -51,7 +51,7 @@
         <div class="col-md-6 col-lg-7 col-xl-7">
 
           <ul class="list-unstyled text-white">
-            <li class="d-flex justify-content-between mb-4" *ngFor="let message of messages">
+            <li class="d-flex justify-content-between mb-4" *ngFor="let message of messages; index as i">
               <div class="card mask-custom">
                 <div class="card-header d-flex justify-content-between p-3"
                   style="border-bottom: 1px solid rgba(255,255,255,.3);">
@@ -59,9 +59,12 @@
                   <p class="text-light small mb-0"><i class="far fa-clock"></i> {{ formatMessageDate(message.createdAt) }}</p>
                 </div>
                 <div class="card-body">
-                  <p class="mb-0" style="white-space: pre-wrap; word-wrap: break-word;">
+                  <p class="mb-5" style="white-space: pre-wrap; word-wrap: break-word;">
                     {{ message.content }}
                   </p>
+                  <button class="btn btn-link" *ngIf="!message.isUser" (click)="traduire(message.content, i)">
+                    Traduire <span style="font-size: 1.2em;">🌐</span>
+                  </button>
                 </div>
               </div>
             </li>

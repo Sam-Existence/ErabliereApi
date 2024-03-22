@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Graph.DeviceAppManagement.ManagedAppRegistrations.GetUserIdsWithFlaggedAppRegistration;
+using System.Text;
+using System.Text.Json;
 using System.Threading;
 
 namespace ErabliereApi.Controllers;
@@ -192,6 +194,46 @@ public class ErabliereAIController : ControllerBase
             Conversation = conversation,
             Response = response,
         });
+    }
+
+    /// <summary>
+    /// Traduire un texte
+    /// </summary>
+    [HttpPost("Traduction")]
+    public async Task<IActionResult> Traduire(
+        [FromQuery] string from, [FromQuery] string to, [FromBody] PostTraduction traduction, CancellationToken token)
+    {
+        string key = _configuration["AzureTranslatorKey"] ?? "";
+        string endpoint = "https://api.cognitive.microsofttranslator.com";
+        string location = "eastus";
+
+        // Input and output languages are defined as parameters.
+        string route = $"/translate?api-version=3.0&from={from}&to={to}";
+        string textToTranslate = traduction.Text ?? "";
+        object[] body = [new { Text = textToTranslate }];
+        var requestBody = JsonSerializer.Serialize(body);
+ 
+        using (var client = new HttpClient())
+        using (var request = new HttpRequestMessage())
+        {
+            // Build the request.
+            request.Method = HttpMethod.Post;
+            request.RequestUri = new Uri(endpoint + route);
+            request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
+            request.Headers.Add("Ocp-Apim-Subscription-Key", key);
+            // location required if you're using a multi-service or regional (not global) resource.
+            request.Headers.Add("Ocp-Apim-Subscription-Region", location);
+ 
+            // Send the request and get response.
+            HttpResponseMessage response = await client.SendAsync(request, token).ConfigureAwait(false);
+            
+            // Read response as a object
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            var obj = JsonSerializer.Deserialize<List<object?>>(responseBody);
+
+            return Ok(obj);
+        }
     }
 
     /// <summary>

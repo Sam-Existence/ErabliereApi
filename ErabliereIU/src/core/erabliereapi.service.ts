@@ -23,7 +23,6 @@ import { WeatherForecase } from 'src/model/weatherforecast';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
-
     private _authService: IAuthorisationSerivce
 
     constructor(private _httpClient: HttpClient,
@@ -332,6 +331,11 @@ export class ErabliereApi {
     async getImages(idErabliereSelectionnee: any, take: number) {
         const headers = await this.getHeaders();
         return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take, { headers: headers }).toPromise();
+    }
+
+    async traduire(message: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + '/ErabliereAI/Traduction?from=en&to=fr', { text: message }, { headers: headers }).toPromise();
     }
 
     async getHeaders(): Promise<HttpHeaders> {

@@ -132,4 +132,12 @@ export class ErabliereAIComponent {
             this.chatOpen = false;
         }
     }
+
+    traduire(message: string, index: number) {
+        this.api.traduire(message).then((response: any) => {
+            this.messages[index].content = response[0].translations[0].text;
+        }).catch((error: any) => {
+            alert('Error sending message ' + JSON.stringify(error));
+        });
+    }
 }
