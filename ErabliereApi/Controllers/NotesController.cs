@@ -48,6 +48,17 @@ public class NotesController : ControllerBase
     }
 
     /// <summary>
+    /// Récupère la quantité de notes
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Quantite")]
+    [ProducesResponseType(200, Type = typeof(int))]
+    public int Compter()
+    {
+        return _depot.Notes.Count();
+    }
+
+    /// <summary>
     /// Action permettant d'ajouter une note
     /// </summary>
     /// <param name="id">Id de l'érablière</param>

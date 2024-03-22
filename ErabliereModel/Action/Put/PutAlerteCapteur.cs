@@ -34,6 +34,13 @@ public class PutAlerteCapteur
     public string? EnvoyerA { get; set; }
 
     /// <summary>
+    /// Une liste de numéros de téléphone séparés par des ';'
+    /// </summary>
+    /// <example>+14375327599;+15749375019</example>
+    [MaxLength(200)]
+    public string? TexterA { get; set; }
+
+    /// <summary>
     /// La valeur minimal de ce capteur
     /// </summary>
     public short? MinVaue { get; set; }

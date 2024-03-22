@@ -33,6 +33,9 @@
                         Envoyer à
                     </th>
                     <th>
+                        Texter à
+                    </th>
+                    <th>
                         Min.
                     </th>
                     <th>
@@ -60,6 +63,9 @@
                     </td>
                     <td>
                         <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
+                    </td>
+                    <td>
+                        <span *ngFor="let numero of alerte.numeros" class="feature_desc">{{numero}}</span>
                     </td>
                     <td>
                         {{formatNumber(alerte.minVaue, alerte.capteur?.symbole)}}
@@ -106,6 +112,9 @@
                         Envoyer à
                     </th>
                     <th>
+                        Texter à
+                    </th>
+                    <th>
                         Temperature min.
                     </th>
                     <th>
@@ -142,6 +151,9 @@
                     </td>
                     <td>
                         <span *ngFor="let email of alerte.emails" class="feature_desc">{{email}}</span>
+                    </td>
+                    <td>
+                        <span *ngFor="let numero of alerte.numeros" class="feature_desc">{{numero}}</span>
                     </td>
                     <td>
                         {{formatStringNumber(alerte.temperatureThresholdHight, "°C")}}

@@ -6,7 +6,10 @@
           <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
         </div>
         <div class="form-group">
-          <label class="form-label">Destinataires: </label><input class="form-control" type="text" formControlName="destinataire">
+          <label class="form-label">Destinataires du courriel: </label><input class="form-control" type="text" formControlName="destinataireCourriel">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Destinataires du SMS: </label><input class="form-control" type="text" formControlName="destinataireSMS">
         </div>
         <div class="form-group">
           <label class="form-label">Temperature Min.: </label><einput [formGroup]="alerteForm" name="temperatureMin" symbole="°C" />
@@ -41,7 +44,10 @@
         <label class="form-label">Nom: </label><input class="form-control" type="text" formControlName="nom">
       </div>
       <div class="form-group">
-        <label class="form-label">Destinataires: </label><input class="form-control" type="text" formControlName="destinataire">
+        <label class="form-label">Destinataires du courriel: </label><input class="form-control" type="text" formControlName="destinataireCourriel">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Destinataires du SMS: </label><input class="form-control" type="text" formControlName="destinataireSMS">
       </div>
       <div class="form-group">
         <label class="form-label">Min.: </label><einput [formGroup]="alerteCapteurForm" name="min" [symbole]="alerteCapteur?.capteur?.symbole" />

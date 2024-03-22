@@ -46,6 +46,17 @@ public class DocumentationController : ControllerBase
     }
 
     /// <summary>
+    /// Récupère la quantité de documentation
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Quantite")]
+    [ProducesResponseType(200, Type = typeof(int))]
+    public int Compter()
+    {
+        return _depot.Documentation.Count();
+    }
+
+    /// <summary>
     /// Action permettant de télécharger le fichier relié à la documentation
     /// </summary>
     /// <param name="id">id de l'érablière</param>
