@@ -30,7 +30,10 @@
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-end">
+                  <div class="d-flex justify-content-between">
+                    <span class="small text-white">
+                      {{ conversation.lastMessageDate != null ? formatMessageDate(conversation.lastMessageDate) : 'Inconnu' }}
+                    </span>
                     <span 
                       (click)="deleteConversation(conversation)" 
                       class="text-danger"

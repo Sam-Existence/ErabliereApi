@@ -304,9 +304,16 @@ export class ErabliereApi {
         return this._httpClient.post<any>(this._environmentService.apiUrl + "/ErabliereAI/Prompt", prompt, { headers: headers }).toPromise();
     }
 
-    async getConversations() {
+    async getConversations(top?: number, skip?: number) {
         const headers = await this.getHeaders();
-        return this._httpClient.get<any[]>(this._environmentService.apiUrl + "/ErabliereAI/Conversations?$orderby=lastMessageDate desc&$expand=messages", { headers: headers }).toPromise();
+        let url = this._environmentService.apiUrl + "/ErabliereAI/Conversations?$orderby=lastMessageDate desc&$expand=messages";
+        if (top) {
+            url += "&$top=" + top;
+        }
+        if (skip) {
+            url += "&$skip=" + skip;
+        }
+        return this._httpClient.get<any[]>(url, { headers: headers }).toPromise();
     }
 
     async deleteConversation(id: any) {
