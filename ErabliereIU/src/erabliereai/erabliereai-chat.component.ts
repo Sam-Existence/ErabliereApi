@@ -5,6 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { formatDistanceToNow } from 'date-fns';
 import { HostListener } from '@angular/core';
 import { fr } from 'date-fns/locale';
+import { PromptResponse } from 'src/model/conversation';
 
 @Component({
     selector: 'app-chat-widget',
@@ -16,6 +17,17 @@ import { fr } from 'date-fns/locale';
 export class ErabliereAIComponent {
     chatOpen = false;
     aiIsThinking = false;
+    top = 10;
+    skip = 0;
+    displaySearch = false;
+    search = '';
+    lastSearch = '';
+
+    constructor(private api: ErabliereApi) {
+        this.conversations = [];
+        this.messages = [];
+        this.typePrompt = 'Chat';
+    }
 
     toggleChat() {
         this.chatOpen = !this.chatOpen;
@@ -30,20 +42,20 @@ export class ErabliereAIComponent {
     messages: any[];
     typePrompt: string;
 
-    constructor(private api: ErabliereApi) {
-        this.conversations = [];
-        this.messages = [];
-        this.typePrompt = 'Chat';
-    }
-
     fetchConversations() {
-        this.api.getConversations().then((conversations) => {
+        this.api.getConversations(this.search, this.top, this.skip).then(async (conversations) => {
             if (conversations) {
-                if (this.currentConversation == null) {
+                if (this.currentConversation == null || this.search != this.lastSearch) {
                     this.conversations = conversations;
                     if (this.conversations.length > 0) {
                         this.currentConversation = this.conversations[0];
-                        this.messages = this.currentConversation.messages;
+                        const currentMessages = await this.api.getMessages(this.currentConversation.id);
+                        if (currentMessages) {
+                            this.messages = currentMessages;
+                        }
+                        else {
+                            this.messages = [];
+                        }
                     }
                 }
                 else {
@@ -52,7 +64,13 @@ export class ErabliereAIComponent {
                     });
                     if (newConversations) {
                         this.currentConversation = newConversations;
-                        this.messages = this.currentConversation.messages;
+                        const currentMessages = await this.api.getMessages(this.currentConversation.id);
+                        if (currentMessages) {
+                            this.messages = currentMessages;
+                        }
+                        else {
+                            this.messages = [];
+                        }
                     }
                     else {
                         this.conversations = conversations;
@@ -64,6 +82,7 @@ export class ErabliereAIComponent {
                 this.currentConversation = null;
                 this.messages = [];
             }
+            this.lastSearch = this.search;
         });
     }
 
@@ -80,20 +99,33 @@ export class ErabliereAIComponent {
             PromptType: this.typePrompt
         };
         this.aiIsThinking = true;
-        this.api.postPrompt(prompt).then((response: any) => {
-            this.fetchConversations();
+        this.api.postPrompt(prompt).then((response: PromptResponse) => {
             this.newMessage = '';
             this.aiIsThinking = false;
+            const newMessages = response.conversation?.messages;
+            if (newMessages) {
+                this.messages = newMessages;
+            }
+            if (this.currentConversation == null) {
+                this.currentConversation = response.conversation;
+                this.conversations.unshift(this.currentConversation);
+            }
         }).catch((error) => {
             this.aiIsThinking = false;
             alert('Error sending message ' + error);
         });
     }
 
-    selectConversation(conversation: any) {
+    async selectConversation(conversation: any) {
         this.currentConversation = conversation;
         if (this.currentConversation) {
-            this.messages = this.currentConversation.messages;
+            const currentMessages = await this.api.getMessages(this.currentConversation.id);
+            if (currentMessages) {
+                this.messages = currentMessages;
+            }
+            else {
+                this.messages = [];
+            }
         }
         else {
             this.messages = [];
@@ -139,5 +171,36 @@ export class ErabliereAIComponent {
         }).catch((error: any) => {
             alert('Error sending message ' + JSON.stringify(error));
         });
+    }
+
+    searchConversation($event: Event) {
+        this.skip = 0;
+        this.top = 10;
+        this.search = ($event.target as HTMLInputElement).value;
+    }
+
+    hideDisplaySearch() {
+        this.displaySearch = !this.displaySearch;
+
+        if (this.displaySearch == false) {
+            this.search = '';
+            this.fetchConversations();
+        }
+    }
+
+    loadMore() {
+        this.skip += this.top;
+        this.api.getConversations(this.search, this.top, this.skip).then((conversations) => {
+            this.conversations = this.conversations.concat(conversations);
+        });
+    }
+
+    elispseText(text: string, nbChar: number) {
+        if (text.length > nbChar) {
+            return text.substr(0, nbChar) + '...';
+        }
+        else {
+            return text;
+        }
     }
 }

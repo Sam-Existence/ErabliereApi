@@ -8,10 +8,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Graph.DeviceAppManagement.ManagedAppRegistrations.GetUserIdsWithFlaggedAppRegistration;
 using System.Text;
 using System.Text.Json;
-using System.Threading;
 
 namespace ErabliereApi.Controllers;
 
@@ -57,13 +55,13 @@ public class ErabliereAIController : ControllerBase
     /// </summary>
     [HttpGet("Conversations/{id}/Messages")]
     [EnableQuery]
-    public IActionResult GetMessages(Guid conversationId)
+    public IActionResult GetMessages(Guid id)
     {
         // conversation should be filtered by the user
         var userId = UsersUtils.GetUniqueName(HttpContext.RequestServices.CreateScope(), HttpContext.User);
 
 #nullable disable
-        return Ok(_depot.Messages.Where(m => m.ConversationId == conversationId && 
+        return Ok(_depot.Messages.Where(m => m.ConversationId == id && 
                                              m.Conversation.UserId == userId));    
 #nullable enable             
     }
