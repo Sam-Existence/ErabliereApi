@@ -17,7 +17,7 @@ import { PromptResponse } from 'src/model/conversation';
 export class ErabliereAIComponent {
     chatOpen = false;
     aiIsThinking = false;
-    top = 10;
+    top = 8;
     skip = 0;
     displaySearch = false;
     search = '';
@@ -175,7 +175,7 @@ export class ErabliereAIComponent {
 
     searchConversation($event: Event) {
         this.skip = 0;
-        this.top = 10;
+        this.top = 8;
         this.search = ($event.target as HTMLInputElement).value;
     }
 
