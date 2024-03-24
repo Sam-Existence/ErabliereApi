@@ -19,7 +19,7 @@
                 <label class="form-label text-white" for="form1">Rechercher une conversation</label>
                 <div class="input-group form-outline">
                   <input type="text" id="form1" class="form-control" (change)="searchConversation($event)">
-                  <button class="btn btn-light" type="button" id="button-addon2" (click)="searchConversation($event)">🔍</button>
+                  <button class="btn btn-light" type="button" id="button-addon2" (click)="fetchConversations()">🔍</button>
                 </div>
               </div>
             </div>
@@ -64,7 +64,7 @@
                       >X</span>
                   </div>
                 </li>
-                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;" *ngIf="conversations.length == top + skip">
+                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;" *ngIf="conversations.length >= top + skip">
                   <div class="d-flex justify-content-center">
                     <div class="d-flex justify-content-between link-light" (click)="loadMore()"
                     style="cursor: pointer;">
