@@ -7,6 +7,7 @@ import { Alerte } from 'src/model/alerte';
 import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
 import { Capteur } from 'src/model/capteur';
+import { Conversation, Message } from 'src/model/conversation';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
 import { DeleteCapteur } from 'src/model/deleteCapteur';
@@ -23,7 +24,6 @@ import { WeatherForecase } from 'src/model/weatherforecast';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
-
     private _authService: IAuthorisationSerivce
 
     constructor(private _httpClient: HttpClient,
@@ -325,9 +325,37 @@ export class ErabliereApi {
         return this._httpClient.post<any>(this._environmentService.apiUrl + "/ErabliereAI/Prompt", prompt, { headers: headers }).toPromise();
     }
 
-    async getConversations() {
+    async getConversations(search?: string, top?: number, skip?: number): Promise<Conversation[]> {
         const headers = await this.getHeaders();
-        return this._httpClient.get<any[]>(this._environmentService.apiUrl + "/ErabliereAI/Conversations?$expand=messages", { headers: headers }).toPromise();
+        let url = this._environmentService.apiUrl + "/ErabliereAI/Conversations?$orderby=lastMessageDate desc";
+        if (isNotNullOrWhitespace(search)) {
+            url += "&$filter=messages/any(m: contains(m/content, '" + search + "'))";
+        }
+        if (top) {
+            url += "&$top=" + top;
+        }
+        if (skip) {
+            url += "&$skip=" + skip;
+        }
+        const arr = await this._httpClient.get<Conversation[]>(url, { headers: headers }).toPromise();
+        if (arr) {
+            return arr;
+        }
+        else {
+            return [];
+        }
+    }
+
+    async getMessages(conversationId: any): Promise<Message[]> {
+        const headers = await this.getHeaders();
+        const url = this._environmentService.apiUrl + "/ErabliereAI/Conversations/" + conversationId + "/Messages";
+        const arr = await this._httpClient.get<Message[]>(url, { headers: headers }).toPromise();
+        if (arr) {
+            return arr;
+        }
+        else {
+            return [];
+        }
     }
 
     async deleteConversation(id: any) {
@@ -354,8 +382,17 @@ export class ErabliereApi {
         return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take, { headers: headers }).toPromise();
     }
 
+    async traduire(message: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + '/ErabliereAI/Traduction?from=en&to=fr', { text: message }, { headers: headers }).toPromise();
+    }
+
     async getHeaders(): Promise<HttpHeaders> {
         const token = await this._authService.getAccessToken();
         return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
+}
+
+function isNotNullOrWhitespace(search: string | undefined) {
+    return search != null && search.trim() !== '';
 }

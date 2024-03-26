@@ -25,7 +25,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Install node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
             node-version: '20'
 
@@ -35,7 +35,7 @@ jobs:
           npm install
 
       #👇 Adds Chromatic as a step in the workflow
-      - uses: chromaui/action@v1
+      - uses: chromaui/action@latest
         # Options required for Chromatic's GitHub Action
         with:
           workingDir: ./ErabliereIU
