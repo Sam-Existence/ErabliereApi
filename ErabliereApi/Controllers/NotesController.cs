@@ -53,9 +53,9 @@ public class NotesController : ControllerBase
     /// <returns></returns>
     [HttpGet("Quantite")]
     [ProducesResponseType(200, Type = typeof(int))]
-    public int Compter()
+    public async Task<IActionResult> Compter(Guid id, CancellationToken token)
     {
-        return _depot.Notes.Count();
+        return Ok(await _depot.Notes.CountAsync(n => n.IdErabliere == id, token));
     }
 
     /// <summary>
