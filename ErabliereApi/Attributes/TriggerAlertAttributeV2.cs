@@ -68,13 +68,17 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
                 var emailService = context.HttpContext.RequestServices.GetRequiredService<IEmailService>();
 
+                var smsConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<SMSConfig>>();
+
+                var smsService = context.HttpContext.RequestServices.GetRequiredService<ISMSService>();
+
                 var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur && a.IsEnable).ToArrayAsync();
 
                 for (int i = 0; i < alertes.Length; i++)
                 {
                     var alerte = alertes[i];
 
-                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value, emailService);
+                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value, emailService, smsConfig.Value, smsService);
                 }
             }
             catch (Exception e)
@@ -86,7 +90,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
+    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService, SMSConfig smsConfig, ISMSService smsService)
     {
         if (_donnee == null)
         {
@@ -118,7 +122,8 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
         if (conditionMet > 0)
         {
-            TriggerAlerte(alerte, logger, emailConfig, emailService);
+            TriggerAlerteCourriel(alerte, logger, emailConfig, emailService);
+            TriggerAlerteSMS(alerte, logger, smsConfig, smsService);
         }
         else
         {
@@ -128,7 +133,7 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private async void TriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
+    private async void TriggerAlerteCourriel(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
     {
         if (!emailConfig.IsConfigured)
         {
@@ -159,6 +164,33 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         catch (Exception e)
         {
             logger.LogCritical(new EventId(92837486, "TriggerAlertV2Attribute.TriggerAlerte"), e, "Une erreur imprévue est survenu lors de l'envoie de l'alerte.");
+        }
+    }
+
+    private async void TriggerAlerteSMS(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, SMSConfig smsConfig, ISMSService smsService)
+    {
+        if (!smsConfig.IsConfigured)
+        {
+            logger.LogWarning("Les configurations de SMS ne sont pas initialisé, la fonctionnalité d'alerte ne peut pas fonctionner.");
+
+            return;
+        }
+
+        try
+        {
+            if (alerte.TexterA != null)
+            {
+                var message = FormatTextMessage(alerte, _donnee);
+
+                foreach (var destinataire in alerte.TexterA.Split(';'))
+                {
+                    await smsService.SendSMSAsync(message, destinataire, CancellationToken.None);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            logger.LogCritical(new EventId(92837486, "TriggerAlertAttribute.TriggerAlerte"), e, "Une erreur imprévue est survenu lors de l'envoie de l'alerte.");
         }
     }
 

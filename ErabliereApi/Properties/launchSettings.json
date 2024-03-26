@@ -29,7 +29,7 @@
         "USE_SWAGGER_PKCE": "true",
 
         // IdentityServeur config
-        //"SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
+        // "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
         //"SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
         //"OIDC_CLIENT_ID": "swagger-dev",
         //"OIDC_CLIENT_PASSWORD": "",
@@ -38,20 +38,21 @@
         //"OIDC_AUTHORITY": "https://localhost:5005",
         //"OIDC_SCOPES": "erabliereapi",
 
-        // AzureAD config
-        //"SWAGGER_AUTHORIZATION_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize",
-        //"SWAGGER_TOKEN_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token",
-        //"OIDC_CLIENT_ID": "<swagger-client-id>",
-        //"OIDC_CLIENT_PASSWORD": "",
-        //"OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
-        //"OIDC_AUDIENCE": "api://<client-id>",
-        //"OIDC_AUTHORITY": "https://login.microsoftonline.com/<tenant-id>/",
-        //"OIDC_SCOPES": "api://<client-id>/ErabliereAPI",
-        //"AzureAD:ClientId": "<client-id>",
-        //"AzureAD:TenantId": "<tenant-id>",
+        // AzureAD config,
+        "SWAGGER_AUTHORIZATION_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize",
+        "SWAGGER_TOKEN_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token",
+        "OIDC_CLIENT_ID": "<swagger-client-id>",
+        "OIDC_CLIENT_PASSWORD": "",
+        "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
+        "OIDC_AUDIENCE": "api://<client-id>",
+        "OIDC_AUTHORITY": "https://login.microsoftonline.com/<tenant-id>/",
+        "OIDC_SCOPES": "api://<client-id>/ErabliereAPI",
+        "AzureAD:ClientId": "<client-id>",
+        "AzureAD:TenantId": "<tenant-id>",
 
         // Alerte fonctonnality
-        //"EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
+        "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
+        "SMS_CONFIG_PATH": "e:\\config\\smsConfig.json",
 
         // Profilage
         "MiniProfiler.Enable": "false",

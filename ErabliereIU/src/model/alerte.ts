@@ -3,6 +3,7 @@ export class Alerte {
   idErabliere: any;
   nom?: string;
   envoyerA?: string;
+  texterA?: string;
   temperatureThresholdLow?: string
   temperatureThresholdHight?: string
   vacciumThresholdLow?: string
@@ -11,4 +12,5 @@ export class Alerte {
   niveauBassinThresholdHight?: string
   isEnable?: boolean;
   emails?: string[];
+  numeros?: string[];
 }

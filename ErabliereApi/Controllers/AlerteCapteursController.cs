@@ -148,7 +148,7 @@ public class AlerteCapteursController : ControllerBase
             return BadRequest("L'id de la route ne concorde pas avec l'id de l'alerte à modifier.");
         }
 
-        var alerteCapteur = await _depot.AlerteCapteurs.FindAsync(alerte.Id);
+        var alerteCapteur = await _depot.AlerteCapteurs.Include(a => a.Capteur).FirstOrDefaultAsync(a => a.Id == alerte.Id, token);
 
         if (alerteCapteur == null)
         {
@@ -158,6 +158,7 @@ public class AlerteCapteursController : ControllerBase
         alerteCapteur.IdCapteur = alerte.IdCapteur;
         alerteCapteur.IsEnable = alerte.IsEnable;
         alerteCapteur.EnvoyerA = alerte.EnvoyerA;
+        alerteCapteur.TexterA = alerte.TexterA;
         alerteCapteur.MaxValue = alerte.MaxValue;
         alerteCapteur.MinVaue = alerte.MinVaue;
         alerteCapteur.Nom = alerte.Nom;

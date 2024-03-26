@@ -5,11 +5,12 @@ export class AlerteCapteur {
   idCapteur?: any;
   nom?: string;
   envoyerA?: string;
+  texterA?: string;
   minVaue?: number;
   maxValue?: number;
   dc?: string
   isEnable?: boolean;
   emails?: string[];
-
+  numeros?: string[];
   capteur?: Capteur;
 }

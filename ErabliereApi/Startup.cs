@@ -32,6 +32,7 @@ using MailKit;
 using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Options;
 using ErabliereApi.Services.Emails;
+using ErabliereApi.Services.SMS;
 using ErabliereApi.ControllerFeatureProviders;
 
 namespace ErabliereApi;
@@ -309,6 +310,42 @@ public class Startup
                 }
             }
         });
+
+        // SMS
+        services.AddTransient<TwilioSMSService>();
+        services.AddTransient<ISMSService, TwilioSMSService>();
+        services.Configure<SMSConfig>(o =>
+        {
+            var path = Configuration["SMS_CONFIG_PATH"];
+
+            if (string.IsNullOrWhiteSpace(path))
+            {
+                Console.WriteLine("La variable d'environment 'SMS_CONFIG_PATH' ne possédant pas de valeur, les configurations de SMS ne seront pas désérialisé.");
+            }
+            else
+            {
+                try
+                {
+                    var v = File.ReadAllText(path);
+
+                    var deserializedConfig = JsonSerializer.Deserialize<SMSConfig>(v);
+
+                    if (deserializedConfig != null)
+                    {
+                        o.Numero = deserializedConfig.Numero;
+                        o.AccountSid = deserializedConfig.AccountSid;
+                        o.AuthToken = deserializedConfig.AuthToken;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.Error.WriteLine("Erreur en désérialisant les configurations du SMS. La fonctionnalité des alertes ne pourra pas être utilisé.");
+                    Console.Error.WriteLine(e.Message);
+                    Console.Error.WriteLine(e.StackTrace);
+                }
+            }
+        });
+
 
         // Distributed cache
         if (string.Equals(Configuration["USE_DISTRIBUTED_CACHE"], TrueString, OrdinalIgnoreCase))
