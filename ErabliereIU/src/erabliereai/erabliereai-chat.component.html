@@ -1,5 +1,5 @@
 <div class="position-fixed bottom-0 end-0 m-3 btn-group">
-  <button type="button" class="btn btn-lg btn-outline-success rounded-circle" (click)="toggleChat()">
+  <button type="button" class="btn btn-lg btn-outline-success rounded-circle chat-button" (click)="toggleChat()">
     <!-- use to logo ico of the website -->
     <img src="/favicon.ico" alt="logo" width="30" height="30" class="d-inline-block align-text-top">
   </button>
@@ -7,30 +7,53 @@
 
 
 <div *ngIf="chatOpen" class="chat-window">
+  <button type="button" class="btn-close position-absolute top-0 end-0 mt-3 me-3" aria-label="Close" (click)="toggleChat()"></button>
   <section class="gradient-custom">
     <div class="container py-5">
-
       <div class="row">
-
         <div class="col-md-6 col-lg-5 col-xl-5 mb-4 mb-md-0">
-
-          <h5 class="font-weight-bold mb-3 text-center text-white">Conversation</h5>
-
+          <h5 class="font-weight-bold mb-3 text-center text-white">Conversation <span style="font-size: 1.2em; cursor: pointer;" (click)="hideDisplaySearch()">🔍</span></h5>
+          <div *ngIf="displaySearch" class="row">
+            <div class="col-12">
+              <div class="form-outline form-white mb-4">
+                <label class="form-label text-white" for="form1">Rechercher une conversation</label>
+                <div class="input-group form-outline">
+                  <input type="text" id="form1" class="form-control" (change)="searchConversation($event)">
+                  <button class="btn btn-light" type="button" id="button-addon2" (click)="fetchConversations()">🔍</button>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card mask-custom">
             <div class="card-body">
-
               <ul class="list-unstyled mb-0">
+                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;">
+                  <div class="d-flex justify-content-between link-light" (click)="selectConversation(null)"
+                    style="cursor: pointer;">
+                    <div class="d-flex flex-row">
+                      <div class="pt-1">
+                        <p class="small text-white" style="min-width: 250px;">📄 Nouvelle conversation</p>
+                      </div>
+                    </div>
+                  </div>
+                </li>
                 <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;"
                   *ngFor="let conversation of conversations">
                   <div class="d-flex justify-content-between link-light" (click)="selectConversation(conversation)"
                     style="cursor: pointer;">
                     <div class="d-flex flex-row">
                       <div class="pt-1">
-                        <p class="small text-white">{{ conversation.messages[0].content }}</p>
+                        <p 
+                          class="small text-white" style="white-space: pre-wrap; word-wrap: break-word;">
+                            {{ elispseText(conversation.name, 100) }}
+                        </p>
                       </div>
                     </div>
                   </div>
-                  <div class="d-flex justify-content-end">
+                  <div class="d-flex justify-content-between">
+                    <span class="small text-white">
+                      {{ conversation.lastMessageDate != null ? formatMessageDate(conversation.lastMessageDate) : 'Inconnu' }}
+                    </span>
                     <span 
                       (click)="deleteConversation(conversation)" 
                       class="text-danger"
@@ -41,17 +64,26 @@
                       >X</span>
                   </div>
                 </li>
+                <li class="p-2 border-bottom" style="border-bottom: 1px solid rgba(255,255,255,.3) !important;" *ngIf="conversations.length >= top + skip">
+                  <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-between link-light" (click)="loadMore()"
+                    style="cursor: pointer;">
+                    <div class="d-flex flex-row">
+                      <div class="pt-1">
+                        <p class="small text-white">Charger plus de conversation</p>
+                      </div>
+                    </div>
+                  </div>
+                  </div>
+                </li>
               </ul>
-
             </div>
           </div>
-
         </div>
 
         <div class="col-md-6 col-lg-7 col-xl-7">
-
           <ul class="list-unstyled text-white">
-            <li class="d-flex justify-content-between mb-4" *ngFor="let message of messages">
+            <li class="d-flex justify-content-between mb-4" *ngFor="let message of messages; index as i">
               <div class="card mask-custom">
                 <div class="card-header d-flex justify-content-between p-3"
                   style="border-bottom: 1px solid rgba(255,255,255,.3);">
@@ -59,9 +91,14 @@
                   <p class="text-light small mb-0"><i class="far fa-clock"></i> {{ formatMessageDate(message.createdAt) }}</p>
                 </div>
                 <div class="card-body">
-                  <p class="mb-0" style="white-space: pre-wrap; word-wrap: break-word;">
-                    {{ message.content }}
+                  <p 
+                    [className]="message.isUser ? '' : 'mb-5'" 
+                    style="white-space: pre-wrap; word-wrap: break-word;">
+                      {{ message.content }}
                   </p>
+                  <button class="btn btn-link" *ngIf="!message.isUser" (click)="traduire(message.content, i)">
+                    Traduire <span style="font-size: 1.2em;">🌐</span>
+                  </button>
                 </div>
               </div>
             </li>
@@ -81,25 +118,20 @@
             <div class="row">
               <div class="col-4">
                 <label for="exampleFormControlSelect1" class="text-white form-label">Type de message</label>
-                <select class="form-select" id="exampleFormControlSelect1" (change)="updateMessageType($event)">
+                <select class="form-select" id="exampleFormControlSelect1" (change)="updateMessageType($event)" style="min-width: fit-content;">
                   <option value="Chat">Chat</option>
                   <option value="Completion">Completion</option>
                 </select>
               </div>
               <div class="col-8">
                 <div class="btn-group float-end float-bottom">
-                  <button type="button" class="btn btn-light btn-rounded" (click)="sendMessage()">Envoyer</button>
-                  <button type="button" class="btn btn-light btn-rounded" (click)="newChat()">Nouvelle Conversation</button>
-                  <button type="button" class="btn btn-light btn-rounded" (click)="toggleChat()">Fermer</button>
+                  <button type="button" class="btn btn-light btn-rounded" (click)="sendMessage()">📤 Envoyer</button>
                 </div>
               </div>
             </div>
           </ul>
-
         </div>
-
       </div>
-
     </div>
   </section>
 </div>

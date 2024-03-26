@@ -1,4 +1,4 @@
-button {
+.chat-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -9,9 +9,11 @@ button {
   bottom: 20px;
   right: 20px;
   max-height: 95%;
-  overflow: auto;
+  overflow: scroll;
+  white-space: nowrap;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
   z-index: 1000;
+  max-width: 100%;
 }
 
 .gradient-custom {
@@ -32,4 +34,12 @@ button {
   border: 2px solid rgba(255, 255, 255, 0.05);
   background-clip: padding-box;
   box-shadow: 10px 10px 10px rgba(46, 54, 68, 0.03);
+}
+
+@media screen and (max-width: 600px) {
+  .chat-window {
+    width: 100%;
+    bottom: 0;
+    right: 0;
+  }
 }
