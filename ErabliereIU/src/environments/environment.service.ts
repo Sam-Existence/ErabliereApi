@@ -22,7 +22,7 @@ export class EnvironmentService {
   loadConfig() {
     this.getAdditionnalUrls();
 
-    return this._httpClient.get<OAuthConfig>("/assets/config/oauth-oidc-azuread-exemple.json").toPromise().then(c => {
+    return this._httpClient.get<OAuthConfig>("/assets/config/oauth-oidc.json").toPromise().then(c => {
       if (c == null) {
         return;
       }
