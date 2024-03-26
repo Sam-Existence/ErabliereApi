@@ -2,7 +2,7 @@
     <ul class="pagination justify-content-center">
         <li class="page-item"><button (click)="pagePrecedente()" type="button" class="btn btn-outline-primary me-2" [disabled]="estPremierePage">Précédent</button></li>
         @for(page of pages; track page) {
-            <li class="page-item{{ page === this.pageActuelle ? ' active' : null }}"><button (click)="changerPage(page)" type="button" class="btn btn-outline-primary me-2" >{{page}}</button></li>
+            <li class="page-item"><button (click)="changerPage(page)" type="button" class="btn btn-outline-primary me-2{{ page === this.pageActuelle ? ' active' : null }}" >{{page}}</button></li>
         }
         <li class="page-item"><button (click)="pageSuivante()" type="button" class="btn btn-outline-primary" [disabled]="estDernierePage">Suivant</button></li>
     </ul>
