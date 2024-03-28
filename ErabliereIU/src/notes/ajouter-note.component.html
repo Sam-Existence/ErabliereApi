@@ -26,8 +26,13 @@
         </span>
         <div class="form-group mb-3">
           <label class="form-label">Date de la note: </label>
-          <input class="form-control" type="text" formControlName="noteDate">
+          <input class="form-control" type="date" formControlName="noteDate">
           <input-error [errorObj]="errorObj" [controlName]="'noteDate'"></input-error>
+        </div>
+        <div class="form-group mb-3">
+          <label class="form-label">Date du rappel: </label>
+          <input class="form-control" type="date" formControlName="reminderDate">
+          <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
         </div>
       <button id="creerNote" class="btn btn-primary me-2" (click)="onButtonCreerClick()">Créer</button>
       <button id="annulerCreerNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>

@@ -27,6 +27,7 @@ export class AjouterNoteComponent implements OnInit {
             file: new FormControl(''),
             fileBase64: new FormControl(''),
             noteDate: new FormControl(''),
+            reminderDate: new FormControl(''),
         });
     }
     
@@ -73,6 +74,12 @@ export class AjouterNoteComponent implements OnInit {
             }
             else {
                 this.note.noteDate = undefined;
+            }
+            if (this.noteForm.controls['reminderDate'].value != "") {
+                this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+            }
+            else {
+                this.note.reminderDate = undefined;
             }
             this._api.postNote(this.idErabliereSelectionee, this.note)
                      .then(r => {
