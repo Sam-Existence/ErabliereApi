@@ -1,4 +1,11 @@
-<div class="container">
+<!-- add a button to display the following contrainer -->
+<div *ngIf="!displaySection" class="container">
+    <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-outline-secondary" (click)="changeDisplaySection()">Afficher les accès</button>
+    </div>
+</div>
+
+<div *ngIf="displaySection" class="container">
     <h5>Accès</h5>
     <!-- Si une erreur a eu lieu de du chargement des droits, afficher un message d'erreur -->
     <div *ngIf="erreurChargementDroits">

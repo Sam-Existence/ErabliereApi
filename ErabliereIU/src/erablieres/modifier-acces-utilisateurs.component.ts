@@ -28,12 +28,17 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
     erreurAjoutAcces: Boolean = false;
     displayNewLine: Boolean = false;
     displayEditAccess: Boolean = false;
+    displaySection: Boolean = false;
     newCustomerAccess: PutCustomerAccess = new PutCustomerAccess()
     @Input() idErabliere: any;
     constructor(private _api: ErabliereApi) { }
 
     ngOnInit() { 
         
+    }
+
+    changeDisplaySection() {
+        this.displaySection = !this.displaySection;
     }
 
     refreashAccess(idErabliere: any) {

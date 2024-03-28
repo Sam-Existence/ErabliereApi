@@ -9,7 +9,7 @@ export class AlertesPage {
         return this;
     }
     typeEmail(email: string): AlertesPage {
-        FormUtil.typeText(email, "alerte-page", "destinataire");
+        FormUtil.typeText(email, "alerte-page", "destinataireCourriel");
         return this;
     }
     typeName(name: string): AlertesPage {
