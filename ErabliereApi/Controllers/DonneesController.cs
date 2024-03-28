@@ -42,7 +42,7 @@ public class DonneesController : ControllerBase
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
     /// <param name="dd">Date de début</param>
-    /// <param name="df">Date de début</param>
+    /// <param name="df">Date de fin</param>
     /// <param name="q">Quantité de donnée demander</param>
     /// <param name="o">Doit être croissant "c" ou decroissant "d". Par défaut "c"</param>
     /// <param name="ddr">Date de la dernière données reçu. Permet au client d'optimiser le nombres de données reçu.</param>

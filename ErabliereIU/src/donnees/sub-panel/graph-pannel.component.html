@@ -1,62 +1,60 @@
-<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-    <div id="graph-pannel-{{idCapteur}}" class="border-top" cdkDrag (cdkDragEnded)="dragEnd($event)">
-        <h3>{{ titre }} {{ valeurActuel }} {{ symbole }} {{ mean }}</h3>
+<div id="graph-pannel-{{idCapteur}}" class="border-top" cdkDrag (cdkDragEnded)="dragEnd($event)">
+    <h3>{{ titre }} {{ valeurActuel }} {{ symbole }} {{ mean }}</h3>
 
-        <div class="container">
-            <div class="col-6 btn-group">
-                <div class="dropdown me-2">
-                    <button class="btn btn-secondary dropdown-toggle" 
-                    href="#" 
-                    role="button"
-                    data-bs-toggle="dropdown" 
-                    aria-haspopup="true" 
-                    aria-expanded="false">
-                        Durée {{ duree }}
-                </button>
+    <div class="container">
+        <div class="col-6 btn-group">
+            <div class="dropdown me-2">
+                <button class="btn btn-secondary dropdown-toggle" 
+                href="#" 
+                role="button"
+                data-bs-toggle="dropdown" 
+                aria-haspopup="true" 
+                aria-expanded="false">
+                    Durée {{ duree }}
+            </button>
 
-                <div class="dropdown-menu">
-                    <a class="dropdown-item" (click)="updateGraph(0, 12)">12h</a>
-                    <a class="dropdown-item" (click)="updateGraph(0, 24)">24h</a>
-                    <a class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</a>
-                    <a class="dropdown-item">
-                        Choisir interval
-                        <div>
-                            <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
-                            <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
-                        </div>
-                        <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="example-handle" cdkDragHandle>
-                <svg width="32px" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                </svg>
-            </div>
-
-
-            <div class="col-12">
-                <ajouter-donnee-capteur 
-                    *ngIf="ajouterDonneeDepuisInterface" 
-                    [idCapteur]="idCapteur" 
-                    (needToUpdate)="updateDonneesCapteur($event)"
-                    [symbole]="symbole" />
-                <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
+            <div class="dropdown-menu">
+                <a class="dropdown-item" (click)="updateGraph(0, 12)">12h</a>
+                <a class="dropdown-item" (click)="updateGraph(0, 24)">24h</a>
+                <a class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</a>
+                <a class="dropdown-item">
+                    Choisir interval
+                    <div>
+                        <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
+                        <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
+                    </div>
+                    <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
+                </a>
             </div>
         </div>
 
+        <div class="example-handle" cdkDragHandle>
+            <svg width="32px" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                <path d="M0 0h24v24H0z" fill="none"></path>
+            </svg>
         </div>
-        <div class="chart-wrapper">
-            <canvas baseChart class="chart"
-                [datasets]="datasets" 
-                [labels]="timeaxes" 
-                [options]="lineChartOptions"
-                [legend]="lineChartLegend" 
-                [plugins]="lineChartPlugins"
-                [type]="lineChartType">
-            </canvas>
+
+
+        <div class="col-12">
+            <ajouter-donnee-capteur 
+                *ngIf="ajouterDonneeDepuisInterface" 
+                [idCapteur]="idCapteur" 
+                (needToUpdate)="updateDonneesCapteur($event)"
+                [symbole]="symbole" />
+            <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
         </div>
+    </div>
+
+    </div>
+    <div class="chart-wrapper">
+        <canvas baseChart class="chart"
+            [datasets]="datasets" 
+            [labels]="timeaxes" 
+            [options]="lineChartOptions"
+            [legend]="lineChartLegend" 
+            [plugins]="lineChartPlugins"
+            [type]="lineChartType">
+        </canvas>
     </div>
 </div>

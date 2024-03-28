@@ -263,10 +263,10 @@ export class VacciumGraphPannelComponent implements OnInit {
 
     dragEnd(event: CdkDragEnd) {
         console.log(event);
+
     }
 
     drop(event: CdkDragDrop<VacciumGraphPannelComponent>) {
         console.log(event);
-        
     }
 }

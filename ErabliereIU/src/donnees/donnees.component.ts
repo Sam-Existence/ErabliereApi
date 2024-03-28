@@ -419,4 +419,8 @@ export class DonneesComponent implements OnInit {
   notNullOrWitespace(arg0?: string): any {
     return notNullOrWitespace(arg0);
   }
+
+  updateGraphPosition($event: any) {
+    
+  }
 }

@@ -153,6 +153,12 @@ export class ErabliereApi {
         return rtn ?? new HttpResponse();
     }
 
+    async postDonnee(idErabliereSelectionnee:any, donnee:Donnee): Promise<Donnee> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.post<Donnee>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/donnees", donnee, { headers: headers }).toPromise();
+        return rtn ?? new Donnee();
+    }
+
     async getDonneesCapteur(idCapteur:any, debutFiltre:string, finFiltre: string, xddr?: any): Promise<HttpResponse<DonneeCapteur[]>> {
         let headers = await this.getHeaders();
         if (xddr != null) {

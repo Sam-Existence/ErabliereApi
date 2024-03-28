@@ -95,5 +95,6 @@ export class BarPannelComponent {
     }
     dragEnd(event: CdkDragEnd) {
         console.log(event);
+        
     }
 }
