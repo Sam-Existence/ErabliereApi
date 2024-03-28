@@ -26,6 +26,7 @@ export class ModifierNoteComponent implements OnInit {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
+                    this.noteForm.controls['reminderDate'].setValue(this.note.reminderDate ? this.note.reminderDate.toString().split('T')[0] : '');
                 }
             }
         });
@@ -38,6 +39,7 @@ export class ModifierNoteComponent implements OnInit {
             file: new FormControl(''),
             fileBase64: new FormControl(''),
             noteDate: new FormControl(''),
+            reminderDate: new FormControl(''),
         });
     }
 
@@ -76,6 +78,12 @@ export class ModifierNoteComponent implements OnInit {
             }
             else {
                 this.note.noteDate = undefined;
+            }
+            if (this.noteForm.controls['reminderDate'].value != "") {
+                this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+            }
+            else {
+                this.note.reminderDate = undefined;
             }
             this._api.putNote(this.idErabliereSelectionee, this.note)
                 .then(r => {
