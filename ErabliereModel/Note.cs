@@ -64,6 +64,11 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     [MaxLength(100)]
     public string? NotificationFilter { get; set; }
 
+    /// <summary>
+    /// Date de rappel de la note
+    /// </summary>
+    public DateTimeOffset? ReminderDate { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(Note? other)
     {
