@@ -4,6 +4,8 @@ import { Capteur } from "src/model/capteur";
 import { CapteurListComponent } from "./capteur-list.component";
 import { AjouterCapteurComponent } from "./ajouter-capteur.component";
 import { NgIf } from "@angular/common";
+import { ActivatedRoute } from "@angular/router";
+import { Subject } from "rxjs";
 
 @Component({
     selector: 'gestion-capteurs',
@@ -12,17 +14,15 @@ import { NgIf } from "@angular/common";
     imports: [NgIf, AjouterCapteurComponent, CapteurListComponent]
 })
 export class GestionCapteursComponent implements OnInit {
-
-    @Input() idErabliere?: string;
-
     constructor(private readonly erabliereApi: ErabliereApi) {
     }
 
-    capteurs: Capteur[] = [];
+    @Input() idErabliere?: any;
+    @Input() capteurs: Capteur[] = [];
     afficherSectionAjouterCapteur: boolean = false;
 
     async ngOnInit(): Promise<void> {
-        this.capteurs = await this.erabliereApi.getCapteurs(this.idErabliere);
+        
     }
 
     showAjouterCapteur() {

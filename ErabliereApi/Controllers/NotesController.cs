@@ -48,6 +48,17 @@ public class NotesController : ControllerBase
     }
 
     /// <summary>
+    /// Récupère la quantité de notes
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Quantite")]
+    [ProducesResponseType(200, Type = typeof(int))]
+    public async Task<IActionResult> Compter(Guid id, CancellationToken token)
+    {
+        return Ok(await _depot.Notes.CountAsync(n => n.IdErabliere == id, token));
+    }
+
+    /// <summary>
     /// Action permettant d'ajouter une note
     /// </summary>
     /// <param name="id">Id de l'érablière</param>

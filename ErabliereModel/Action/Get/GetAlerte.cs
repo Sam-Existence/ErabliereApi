@@ -9,4 +9,9 @@ public class GetAlerte : Alerte
     /// Adresse couriels dans un tableau de chaîne de caractère
     /// </summary>
     public string[] Emails { get; set; } = System.Array.Empty<string>();
+
+    /// <summary>
+    /// Numéros de téléphone dans un tableau de chaîne de caractère
+    /// </summary>
+    public string[] Numeros { get; set; } = System.Array.Empty<string>();
 }

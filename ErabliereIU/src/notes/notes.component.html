@@ -1,25 +1,42 @@
 <h3>Notes</h3>
-<div class="mb-3">
-    <span class="text-danger" *ngIf="error">{{error}}</span>
+<div class="mb-3" *ngIf="error">
+    <span class="text-danger">{{error}}</span>
 </div>
-<ajouter-note 
-    [idErabliereSelectionee]="idErabliereSelectionee" 
-    (needToUpdate)="loadNotes()"></ajouter-note>
-<modifier-note 
-    [idErabliereSelectionee]="idErabliereSelectionee"
-    [noteSubject]="noteToModify" 
-    (needToUpdate)="loadNotes()"></modifier-note>
+<div class="mb-3">
+    <ajouter-note
+        [idErabliereSelectionee]="idErabliereSelectionee"
+        (needToUpdate)="loadNotes()"
+    />
+    <modifier-note
+        [idErabliereSelectionee]="idErabliereSelectionee"
+        [noteSubject]="noteToModify"
+        (needToUpdate)="loadNotes()"
+    />
+</div>
 <div class="row me-1">
-    <div *ngIf="notes == undefined">
-        <p>Chargement des notes...</p>
-    </div>
-    <div *ngIf="notes?.length == 0">
-        <p>Aucune note</p>
-    </div>
-    <div *ngFor="let note of notes">
-        <note 
-            [note]="note" 
-            [noteToModifySubject]="noteToModify" 
-            (needToUpdate)="loadNotes()"></note>
-    </div>
+    @if(notes === undefined) {
+        <div>
+            <p>Chargement des notes...</p>
+        </div>
+    } @else if (notes.length === 0) {
+        <div>
+            <p>Aucune note</p>
+        </div>
+    }
+
+    @for(note of notes; track note.id) {
+        <div>
+            <note
+                [note]="note"
+                [noteToModifySubject]="noteToModify"
+                (needToUpdate)="loadNotes()"
+            />
+        </div>
+    }
+
+    <app-pagination
+        [nombreParPage]="this.nombreParPage"
+        [nombreElements]="this.nombreTotal"
+        (changementDePageEvent)="this.pageActuelle = $event"
+    />
 </div>

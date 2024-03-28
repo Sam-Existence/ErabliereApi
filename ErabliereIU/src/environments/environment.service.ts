@@ -35,9 +35,9 @@ export class EnvironmentService {
       this.stsAuthority = c.stsAuthority;
       this.authEnable = c.authEnable;
     })
-      .catch((err: any) => {
-        console.error(err);
-      });;
+    .catch((err: any) => {
+      console.error(err);
+    });
   }
 
   getAdditionnalUrls() {
