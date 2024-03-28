@@ -51,5 +51,10 @@ namespace ErabliereApi.Donnees.Action.Post
         /// La date de la note
         /// </summary>
         public DateTimeOffset? NoteDate { get; set; }
+
+        /// <summary>
+        /// Date de rappel de la note
+        /// </summary>
+        public DateTimeOffset? ReminderDate { get; set; }
     }
 }
