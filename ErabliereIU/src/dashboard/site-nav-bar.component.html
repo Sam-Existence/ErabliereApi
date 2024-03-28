@@ -30,10 +30,11 @@
                 <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page" i18n="aProposTitre">À Propos</a>
             </li>
         </ul>
-        <span [hidden]="!useAuthentication">
-            <button id="login-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="!isLoggedIn" (click)="login()" i18n="boutonSeConnecter">Se connecter</button>
-            <button id="logout-button" class="btn btn-outline-success my-2 my-sm-0" *ngIf="isLoggedIn" (click)="logout()" i18n="boutonSeDeconnecter">Se déconnecter</button>
-        </span>
+        <div *ngIf="useAuthentication" class="d-flex gap-2">
+            <agora-call-service *ngIf="callFeatureEnable && callFeatureEnableForUser"></agora-call-service>
+            <button id="login-button" class="btn btn-outline-success" *ngIf="!isLoggedIn" (click)="login()" i18n="boutonSeConnecter">Se connecter</button>
+            <button id="logout-button" class="btn btn-outline-success" *ngIf="isLoggedIn" (click)="logout()" i18n="boutonSeDeconnecter">Se déconnecter</button>
+        </div>
     </div>
     </div>
 </nav>

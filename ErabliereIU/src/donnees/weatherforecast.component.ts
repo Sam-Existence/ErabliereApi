@@ -1,11 +1,9 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js';
-import { BaseChartDirective } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { WeatherForecase } from 'src/model/weatherforecast';
 import { notNullOrWitespace } from './util';
 import { ActivatedRoute } from '@angular/router';
-import { set } from 'cypress/types/lodash';
 
 @Component({
   selector: 'weather-forecast',

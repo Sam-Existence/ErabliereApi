@@ -1,7 +1,11 @@
 <nav aria-label="Pages de la liste de documentations">
     <ul class="pagination justify-content-center">
-        <li class="page-item"><button (click)="pagePrecedente()" type="button" class="btn btn-outline-primary me-2" [disabled]="pageActuelle === 1" i18n="precedent">Précédent</button></li>
-        <li class="page-item"><button (click)="pageSuivante()" type="button" class="btn btn-outline-primary" [disabled]="estDernierePage" i18n="suivant">Suivant</button></li>
+        <li class="page-item"><button (click)="pagePrecedente()" type="button" class="btn btn-outline-primary me-2" [disabled]="estPremierePage">Précédent</button></li>
+        @for(page of pages; track page) {
+            <li class="page-item"><button (click)="changerPage(page)" type="button" class="btn btn-outline-primary me-2{{ page === this.pageActuelle ? ' active' : null }}" >{{page}}</button></li>
+        }
+        <li class="page-item"><button (click)="pageSuivante()" type="button" class="btn btn-outline-primary" [disabled]="estDernierePage">Suivant</button></li>
     </ul>
-    <p class="text-center">{{(1 + (pageActuelle - 1) * nombreParPage)}} - {{pageActuelle * nombreParPage}}</p>
+
+    <p class="text-center">{{this.numeroPremierElementDeLaPage}} - {{this.numeroDernierElementDeLaPage}}</p>
 </nav>

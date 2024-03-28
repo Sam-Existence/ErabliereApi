@@ -35,8 +35,8 @@
     }
 
     <app-pagination
-        [estDernierePage]="this.notes ? this.notes.length < this.nombreParPage : true"
         [nombreParPage]="this.nombreParPage"
+        [nombreElements]="this.nombreTotal"
         (changementDePageEvent)="this.pageActuelle = $event"
     />
 </div>

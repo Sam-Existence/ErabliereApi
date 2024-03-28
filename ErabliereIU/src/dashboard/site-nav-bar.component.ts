@@ -6,15 +6,18 @@ import { UrlModel } from '../model/urlModel';
 import { NgFor, NgIf } from '@angular/common';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { Subject } from 'rxjs';
+import { AgoraCallServiceComponent } from './agora-call-service.component';
+import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { MsalService } from '@azure/msal-angular';
 
 @Component({
     selector: 'site-nav-bar',
-    templateUrl: 'site-nav-bar.component.html',
+    template: 'site-nav-bar.component.html',
     standalone: true,
-    imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive]
+    imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
 })
 export class SiteNavBarComponent implements OnInit {
-  useAuthentication: boolean;
+  useAuthentication: boolean = false;
   isLoggedIn: boolean;
   urls: UrlModel[]
   tenantId?: string;
@@ -22,14 +25,18 @@ export class SiteNavBarComponent implements OnInit {
   private _authService: IAuthorisationSerivce
   @Input() thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
   thereIsAtLeastOneErabliere: boolean = false;
+  callFeatureEnableForUser: boolean = false;
+  callFeatureEnable: boolean = false;
 
   constructor(
       authFactoryService: AuthorisationFactoryService, 
       private environmentService: EnvironmentService, 
       private cdr: ChangeDetectorRef,
-      private router: Router) {
+      private router: Router,
+      private api: ErabliereApi,
+      private msalService: MsalService) {
     this._authService = authFactoryService.getAuthorisationService()
-    this.useAuthentication = environmentService.authEnable ?? false
+    this.useAuthentication = environmentService.authEnable ?? false;
     this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
     this.urls = []
@@ -63,6 +70,8 @@ export class SiteNavBarComponent implements OnInit {
         }
       }
     });
+
+    this.checkApiCallFeatureEnable();
   }
 
   login() {
@@ -71,5 +80,46 @@ export class SiteNavBarComponent implements OnInit {
 
   logout() {
     this._authService.logout();
+  }
+
+  checkApiCallFeatureEnable() {
+    // look at the openapi spec to see if the call endpoint is enable
+    this.api.getOpenApiSpec().then(spec => {
+      this.callFeatureEnable = spec.paths['/Calls/GetAppId'] !== undefined;
+      console.log("CallFeatureEnable: " + this.callFeatureEnable);
+    })
+    .catch(err => {
+        console.error(err);
+    });
+
+    this.checkUserRollForFeatureCall();
+  }
+
+  checkUserRollForFeatureCall() {
+    // look at the user roll to see if the call feature is enable
+    if (this._authService.type == "AzureAD") {
+      this.checkRoleErabliereCalls();
+      this._authService.loginChanged.subscribe((val) => {
+        this.checkRoleErabliereCalls();
+      });
+    }
+  }
+
+  private checkRoleErabliereCalls() {
+    console.log("checkRoleErabliereCalls");
+    const account = this.msalService.instance.getActiveAccount();
+    if (account?.idTokenClaims) {
+      const roles = account?.idTokenClaims['roles'];
+      if (roles != null) {
+        this.callFeatureEnableForUser = roles.includes("ErabliereCalls");
+      }
+      else {
+        this.callFeatureEnableForUser = false;
+      }
+    }
+    else {
+      this.callFeatureEnableForUser = false;
+    }
+    console.log("callFeatureEnableForUser: " + this.callFeatureEnableForUser);
   }
 }

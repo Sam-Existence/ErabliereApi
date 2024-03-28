@@ -112,7 +112,8 @@ export class AjouterAlerteComponent implements OnInit {
             this._api.postAlerte(this.idErabliereSelectionee, this.alerte)
                      .then(r => {
                          this.display = false;
-                         r.emails = r.envoyerA.split(";");
+                         r.emails = r?.envoyerA?.split(";");
+                         r.numeros = r?.texterA?.split(";");
                          this.alertes?.push(r);
                      })
                      .catch(e => {
@@ -144,6 +145,7 @@ export class AjouterAlerteComponent implements OnInit {
                      .then(r => {
                          this.display = false;
                          r.emails = r?.envoyerA?.split(";");
+                         r.numeros = r?.texterA?.split(";");
                          this.alertesCapteur?.push(r);
                      })
                      .catch(e => {

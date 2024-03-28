@@ -99,7 +99,7 @@ $"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location}?apikey={
 
             await _cache.SetStringAsync(cacheKey , responseBody, new DistributedCacheEntryOptions
             {
-                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
             });
 
             var res = JsonSerializer.Deserialize(responseBody, typeof(object));
