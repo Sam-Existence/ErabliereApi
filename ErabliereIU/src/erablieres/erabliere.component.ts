@@ -8,6 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Erabliere } from 'src/model/erabliere';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
 import { Subject } from 'rxjs';
+import { ImagePanelComponent } from 'src/donnees/sub-panel/image-pannel.component';
 
 @Component({
     selector: 'erablieres',
@@ -18,7 +19,8 @@ import { Subject } from 'rxjs';
       NgFor, 
       DonneesComponent,
       CapteurPannelsComponent,
-      BarilsComponent
+      BarilsComponent,
+      ImagePanelComponent
     ]
 })
 export class ErabliereComponent {

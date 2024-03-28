@@ -9,6 +9,8 @@ import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.co
 import { NgIf } from '@angular/common';
 import { calculerMoyenne, notNullOrWitespace } from './util';
 import { WeatherForecastComponent } from './weatherforecast.component';
+import { ImagePanelComponent } from './sub-panel/image-pannel.component';
+import { clear } from 'console';
 
 @Component({
   selector: 'donnees-panel',
@@ -17,7 +19,10 @@ import { WeatherForecastComponent } from './weatherforecast.component';
           <weather-forecast 
             *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
             class="col-md-6"></weather-forecast>
-          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+          <div *ngIf="displayImages" class="col-md-6">
+            <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
+          </div>
+          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <graph-pannel [titre]="titre_temperature" 
                            [valeurActuel]="temperatureValueActuel"
                            [mean]="meanTemperature"
@@ -27,7 +32,7 @@ import { WeatherForecastComponent } from './weatherforecast.component';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
             </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <vaccium-graph-pannel [titre]="titre_vaccium" 
                            [valeurActuel]="vacciumValueActuel"
                            [symbole]="vacciumSymbole"
@@ -37,7 +42,7 @@ import { WeatherForecastComponent } from './weatherforecast.component';
                            (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
                            [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
             </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-6">
+            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
               <graph-pannel [titre]="titre_niveaubassin" 
                            [valeurActuel]="niveauBassinValueActuel"
                            [symbole]="niveauBassinSymbole"
@@ -56,7 +61,14 @@ import { WeatherForecastComponent } from './weatherforecast.component';
         </div>
     `,
   standalone: true,
-  imports: [NgIf, GraphPannelComponent, VacciumGraphPannelComponent, BarPannelComponent, WeatherForecastComponent]
+  imports: [
+    NgIf, 
+    GraphPannelComponent, 
+    VacciumGraphPannelComponent, 
+    BarPannelComponent, 
+    WeatherForecastComponent,
+    ImagePanelComponent
+  ]
 })
 export class DonneesComponent implements OnInit {
   @ViewChild('temperatureGraphPannel') temperatureGraphPannel?: GraphPannelComponent
@@ -65,6 +77,7 @@ export class DonneesComponent implements OnInit {
   @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
 
   intervalRequetes?: any
+  intervalImages?: any
 
   @Input() initialErabliere?: Erabliere
   @Input() erabliereSubject: Subject<Erabliere> = new Subject<Erabliere>()
@@ -107,6 +120,8 @@ export class DonneesComponent implements OnInit {
   erabliereAfficherTrioDonnees: boolean | undefined;
   erabliereAfficherSectionDompeux: boolean | undefined;
   erabliereId: any;
+
+  displayImages: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi) { }
 
@@ -157,10 +172,23 @@ export class DonneesComponent implements OnInit {
         this.doHttpCallDompeux();
       }
     }, 1000 * 60);
+
+    this.intervalImages = setInterval(() => {
+      console.log("DonneesComponent getImages", this.erabliereId)
+      this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
+        this.displayImages = images.length > 0;
+      });
+    }, 1000 * 60 * 10);
+
+    console.log("DonneesComponent getImages", this.erabliereId)
+    this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
+      this.displayImages = images.length > 0;
+    });
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalRequetes);
+    clearInterval(this.intervalImages);
   }
 
   doHttpCallDompeux() {

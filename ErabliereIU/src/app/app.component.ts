@@ -5,7 +5,6 @@ import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
 import { YouAreNotConnectedComponent } from 'src/dashboard/you-are-note-connected.component';
 import { ErabliereSideBarComponent } from 'src/dashboard/erablieres-side-bar.component';
 import { NgIf } from '@angular/common';
-import { EventEmitter } from 'stream';
 import { Subject } from 'rxjs';
 import { ErabliereAIComponent } from 'src/erabliereai/erabliereai-chat.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';

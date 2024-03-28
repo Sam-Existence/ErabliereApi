@@ -46,6 +46,18 @@ public class DocumentationController : ControllerBase
     }
 
     /// <summary>
+    /// Récupère la quantité de documentation
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("Quantite")]
+    [ProducesResponseType(200, Type = typeof(int))]
+    public async Task<IActionResult> Compter(Guid id, CancellationToken token)
+    {
+
+        return Ok(await _depot.Documentation.CountAsync(d => d.IdErabliere == id, token));
+    }
+
+    /// <summary>
     /// Action permettant de télécharger le fichier relié à la documentation
     /// </summary>
     /// <param name="id">id de l'érablière</param>
