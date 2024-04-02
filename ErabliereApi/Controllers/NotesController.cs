@@ -90,11 +90,6 @@ public class NotesController : ControllerBase
             postNote.NoteDate = DateTimeOffset.Now;
         }
 
-        if (postNote.ReminderDate == null)
-        {
-            postNote.ReminderDate = DateTimeOffset.Now;
-        }
-
         var entite = await _depot.Notes.AddAsync(_mapper.Map<Note>(postNote), token);
 
         await _depot.SaveChangesAsync(token);
