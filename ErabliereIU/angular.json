@@ -1,158 +1,171 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1,
-  "newProjectRoot": "projects",
-  "projects": {
-    "ErabliereIU": {
-      "projectType": "application",
-      "schematics": {
-        "@schematics/angular:application": {
-          "strict": true
-        }
-      },
-      "root": "",
-      "sourceRoot": "src",
-      "prefix": "app",
-      "architect": {
-        "build": {
-          "builder": "@angular-devkit/build-angular:browser-esbuild",
-          "options": {
-            "outputPath": "dist/ErabliereIU",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": ["zone.js"],
-            "tsConfig": "tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "src/styles.css",
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css"
-            ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
-            ],
-            "extractLicenses": false,
-            "buildOptimizer": false,
-            "optimization": false,
-            "namedChunks": true
-          },
-          "configurations": {
-            "production": {
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+    "version": 1,
+    "newProjectRoot": "projects",
+    "projects": {
+        "ErabliereIU": {
+            "projectType": "application",
+            "schematics": {
+                "@schematics/angular:application": {
+                    "strict": true
                 }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "buildOptimizer": true,
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "3mb",
-                  "maximumError": "4mb"
+            },
+            "root": "",
+            "sourceRoot": "src",
+            "prefix": "app",
+            "architect": {
+                "build": {
+                    "builder": "@angular-devkit/build-angular:browser-esbuild",
+                    "options": {
+                        "outputPath": "dist/ErabliereIU",
+                        "index": "src/index.html",
+                        "main": "src/main.ts",
+                        "polyfills": ["zone.js"],
+                        "tsConfig": "tsconfig.app.json",
+                        "assets": [
+                            "src/favicon.ico",
+                            "src/assets"
+                        ],
+                        "styles": [
+                            "src/styles.css",
+                            "./node_modules/bootstrap/dist/css/bootstrap.min.css"
+                        ],
+                        "scripts": [
+                            "./node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+                        ],
+                        "extractLicenses": false,
+                        "buildOptimizer": false,
+                        "optimization": false,
+                        "namedChunks": true
+                    },
+                    "configurations": {
+                        "production": {
+                            "fileReplacements": [
+                                {
+                                    "replace": "src/environments/environment.ts",
+                                    "with": "src/environments/environment.prod.ts"
+                                }
+                            ],
+                            "optimization": true,
+                            "outputHashing": "all",
+                            "sourceMap": false,
+                            "namedChunks": false,
+                            "extractLicenses": true,
+                            "buildOptimizer": true,
+                            "budgets": [
+                                {
+                                    "type": "initial",
+                                    "maximumWarning": "3mb",
+                                    "maximumError": "4mb"
+                                },
+                                {
+                                    "type": "anyComponentStyle",
+                                    "maximumWarning": "2kb",
+                                    "maximumError": "4kb"
+                                }
+                            ]
+                        },
+                        "development": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true
+                        }
+                    },
+
+                    "defaultConfiguration": ""
                 },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "2kb",
-                  "maximumError": "4kb"
+                "serve": {
+                    "builder": "@angular-devkit/build-angular:dev-server",
+                    "options": {
+                        "ssl": true,
+                        "sslCert": "localconfig/localhost.crt",
+                        "sslKey": "localconfig/localhost.key",
+                        "buildTarget": "ErabliereIU:build"
+                    },
+                    "configurations": {
+                        "production": {
+                            "buildTarget": "ErabliereIU:build:production"
+                        },
+                        "development": {
+                            "buildTarget": "ErabliereIU:build:development"
+                        }
+                    },
+                    "defaultConfiguration": "development"
+                },
+                "extract-i18n": {
+                    "builder": "@angular-devkit/build-angular:extract-i18n",
+                    "options": {
+                        "buildTarget": "ErabliereIU:build"
+                    }
+                },
+                "e2e": {
+                    "builder": "@cypress/schematic:cypress",
+                    "options": {
+                        "devServerTarget": "ErabliereIU:serve",
+                        "watch": true,
+                        "headless": false
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "ErabliereIU:serve:production"
+                        }
+                    }
+                },
+                "cypress-run": {
+                    "builder": "@cypress/schematic:cypress",
+                    "options": {
+                        "devServerTarget": "ErabliereIU:serve"
+                    },
+                    "configurations": {
+                        "production": {
+                            "devServerTarget": "ErabliereIU:serve:production"
+                        }
+                    }
+                },
+                "cypress-open": {
+                    "builder": "@cypress/schematic:cypress",
+                    "options": {
+                        "watch": true,
+                        "headless": false
+                    }
+                },
+                "lint": {
+                    "builder": "@angular-eslint/builder:lint",
+                    "options": {
+                        "lintFilePatterns": [
+                            "src/**/*.ts",
+                            "src/**/*.html"
+                        ]
+                    }
+                },
+                "storybook": {
+                    "builder": "@storybook/angular:start-storybook",
+                    "options": {
+                        "configDir": ".storybook",
+                        "browserTarget": "ErabliereIU:build",
+                        "compodoc": false,
+                        "port": 6006
+                    }
+                },
+                "build-storybook": {
+                    "builder": "@storybook/angular:build-storybook",
+                    "options": {
+                        "configDir": ".storybook",
+                        "browserTarget": "ErabliereIU:build",
+                        "compodoc": false,
+                        "outputDir": "storybook-static"
+                    }
                 }
-              ]
             }
-          },
-          "defaultConfiguration": ""
-        },
-        "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
-          "options": {
-            "ssl": true,
-            "sslCert": "localconfig/localhost.crt",
-            "sslKey": "localconfig/localhost.key",
-            "buildTarget": "ErabliereIU:build"
-          },
-          "configurations": {
-            "production": {
-              "buildTarget": "ErabliereIU:build:production"
-            }
-          }
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "buildTarget": "ErabliereIU:build"
-          }
-        },
-        "e2e": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "ErabliereIU:serve",
-            "watch": true,
-            "headless": false
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "ErabliereIU:serve:production"
-            }
-          }
-        },
-        "cypress-run": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "devServerTarget": "ErabliereIU:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "ErabliereIU:serve:production"
-            }
-          }
-        },
-        "cypress-open": {
-          "builder": "@cypress/schematic:cypress",
-          "options": {
-            "watch": true,
-            "headless": false
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
-          }
-        },
-        "storybook": {
-          "builder": "@storybook/angular:start-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "ErabliereIU:build",
-            "compodoc": false,
-            "port": 6006
-          }
-        },
-        "build-storybook": {
-          "builder": "@storybook/angular:build-storybook",
-          "options": {
-            "configDir": ".storybook",
-            "browserTarget": "ErabliereIU:build",
-            "compodoc": false,
-            "outputDir": "storybook-static"
-          }
         }
-      }
+    },
+    "cli": {
+        "analytics": "b3fe315f-ce77-4507-9a31-0465c334daf9",
+        "schematicCollections": [
+            "@angular-eslint/schematics"
+        ]
     }
-  },
-  "cli": {
-    "analytics": "b3fe315f-ce77-4507-9a31-0465c334daf9",
-    "schematicCollections": [
-      "@angular-eslint/schematics"
-    ]
-  }
 }
