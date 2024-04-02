@@ -85,8 +85,9 @@ export class AjouterNoteComponent implements OnInit {
             else {
                 this.note.noteDate = undefined;
             }
-            if (this.noteForm.controls['reminderDate'].value != "") {
-                this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+            if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
+                let date = new Date(this.noteForm.controls['reminderDate'].value);
+                this.note.reminderDate = date.toISOString();
             }
             else {
                 this.note.reminderDate = undefined;
