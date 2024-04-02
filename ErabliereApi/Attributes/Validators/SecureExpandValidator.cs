@@ -5,8 +5,12 @@ using Microsoft.AspNetCore.OData.Query.Validator;
 
 namespace ErabliereApi.Attributes.Validators
 {
+    /// <summary>
+    /// Validator qui vérifie que la requête Expand ne contient pas Aletes, Documentations ou Notes.
+    /// </summary>
     public class SecureExpandValidator : SelectExpandQueryValidator
     {
+        /// <inheritdoc />
         public override void Validate(SelectExpandQueryOption selectExpandQueryOption, ODataValidationSettings validationSettings)
         {
             string expand = selectExpandQueryOption.RawExpand;
