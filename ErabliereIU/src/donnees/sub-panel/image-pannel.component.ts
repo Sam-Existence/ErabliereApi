@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -6,34 +7,44 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 @Component({
     selector: 'image-panel',
     template: `
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Images</h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-6" *ngFor="let image of images">
-                        <img 
-                            src="data:image/png;base64,{{ image.images }}" 
-                            class="img-thumbnail trigger-modal" 
-                            alt="image" 
-                            style="width: 100%; height: 100%;" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#imageModal" 
-                            (click)="selectedImage = image.images">
+        <div class="border-top" cdkDrag (cdkDragEnded)="dragEnd($event)">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Images</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6" *ngFor="let image of images">
+                            <img 
+                                src="data:image/png;base64,{{ image.images }}" 
+                                class="img-thumbnail trigger-modal" 
+                                alt="image" 
+                                style="width: 100%; height: 100%;" 
+                                data-bs-toggle="modal" 
+                                data-bs-target="#imageModal" 
+                                (click)="selectedImage = image.images">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                <div class="modal-body">
-                    <img 
-                        [src]="'data:image/png;base64,' + selectedImage" 
-                        class="img-fluid modal-image-content" 
-                        alt="Selected Image">
-                </div>
+
+            <div class="example-handle" cdkDragHandle>
+                <svg width="32px" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
+                    <path d="M0 0h24v24H0z" fill="none"></path>
+                </svg>
+            </div>
+            
+            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content">
+                    <div class="modal-body">
+                        <img 
+                            [src]="'data:image/png;base64,' + selectedImage" 
+                            class="img-fluid modal-image-content" 
+                            alt="Selected Image">
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +139,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
         }
     `],
     standalone: true,
-    imports: [NgFor, NgIf]
+    imports: [NgFor, NgIf, CdkDrag, CdkDragHandle]
 })
 export class ImagePanelComponent implements OnInit {
     
@@ -161,5 +172,9 @@ export class ImagePanelComponent implements OnInit {
         this.api.getImages(this.idErabliereSelectionnee, 2).then(images => {
             this.images = images;
         });
+    }
+    
+    dragEnd(event: CdkDragEnd) {
+        console.log(event);
     }
 }

@@ -5,6 +5,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Capteur } from 'src/model/capteur';
 import { Erabliere } from 'src/model/erabliere';
 import { WeatherForecastComponent } from '../weatherforecast.component';
+import { GraphPannelComponent } from './graph-pannel.component';
 import { ImagePanelComponent } from './image-pannel.component';
 
 @Component({
