@@ -61,7 +61,6 @@ export class NotesComponent implements OnInit {
                 this.loadNotes();
             }
         });
-        this.loadNotes();
     }
 
     loadNotes() {
