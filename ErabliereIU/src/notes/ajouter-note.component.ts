@@ -18,6 +18,9 @@ export class AjouterNoteComponent implements OnInit {
     
     ngOnInit(): void {
         this.initializeForm();
+        this.noteForm.controls['reminderEnabled'].valueChanges.subscribe((value) => {
+            this.displayReminder = value;
+        });
     }
 
     initializeForm() {
@@ -27,11 +30,14 @@ export class AjouterNoteComponent implements OnInit {
             file: new FormControl(''),
             fileBase64: new FormControl(''),
             noteDate: new FormControl(''),
+            reminderEnabled: new FormControl(false),
             reminderDate: new FormControl(''),
         });
     }
     
     display:boolean = false;
+
+    displayReminder:boolean = false;
 
     error: string | null = null;
 
@@ -53,6 +59,10 @@ export class AjouterNoteComponent implements OnInit {
 
     onSubmit() {
 
+    }
+
+    toggleReminder() {
+        this.displayReminder = this.noteForm.controls['reminderEnabled'].value;
     }
 
     onButtonAjouterClick() {
