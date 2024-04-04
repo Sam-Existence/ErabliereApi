@@ -93,7 +93,7 @@ public class CustomersController : ControllerBase
     [HttpGet]
     [EnableQuery]
     [Route("/admin/customers")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public IQueryable<Customer> GetCustomersAdmin()
     {
         return _context.Customers;
@@ -109,7 +109,7 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpPut]
     [Route("/admin/customers/{id}/customeraccess")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> PutAdminCustomerAccess(Guid id, PutAdminCustomerAccess putAdminCustomerAccess, CancellationToken token)
     {
         var access = await _context.CustomerErablieres
@@ -145,7 +145,7 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpDelete]
     [Route("/admin/customers/{id}")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> DeleteCustomerAdmin(Guid id, CancellationToken token)
     {
         var customer = await _context.Customers
@@ -172,7 +172,7 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpDelete]
     [Route("/admin/customeraccess/{id}")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> DeleteCustomerAccessAdmin(Guid id, CancellationToken token)
     {
         var customer = await _context.CustomerErablieres
