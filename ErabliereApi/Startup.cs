@@ -34,6 +34,9 @@ using Microsoft.Extensions.Options;
 using ErabliereApi.Services.Emails;
 using ErabliereApi.Services.SMS;
 using ErabliereApi.ControllerFeatureProviders;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using ErabliereApi.Authorization.Policies.Requirements;
+using ErabliereApi.Authorization.Policies.Handlers;
 
 namespace ErabliereApi;
 
@@ -114,6 +117,15 @@ public class Startup
 
             if (string.IsNullOrWhiteSpace(Configuration["AzureAD:ClientId"]) == false)
             {
+                services.AddSingleton<IAuthorizationHandler, TenantIdHandler>();
+                services.AddAuthorization(options =>
+                {
+                    options.AddPolicy("TenantIdPrincipal", policy =>
+                    {
+                        policy.Requirements.Add(new TenantIdRequirement(Configuration["AzureAD:TenantIdPrincipal"] ?? ""));
+                    });
+                });
+
                 services.AddMicrosoftIdentityWebApiAuthentication(Configuration);
             }
             else
