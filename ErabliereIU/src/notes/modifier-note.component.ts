@@ -61,6 +61,8 @@ export class ModifierNoteComponent implements OnInit {
 
     generalError?: string;
 
+    today = new Date().toISOString().split('T')[0];
+
     onSubmit() {
 
     }
