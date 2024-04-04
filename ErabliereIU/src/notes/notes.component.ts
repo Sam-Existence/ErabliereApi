@@ -66,6 +66,7 @@ export class NotesComponent implements OnInit {
     loadNotes() {
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(notes => {
+                // test rappels notes
                 const today = new Date();
                 today.setUTCHours(0, 0, 0, 0);
 
@@ -74,6 +75,7 @@ export class NotesComponent implements OnInit {
                         n.decodedTextFile = atob(n.file ?? "");
                     }
 
+                    // test rappels notes
                     const reminderDate = n.reminderDate ? new Date(n.reminderDate) : new Date(0);
                     reminderDate.setUTCHours(0, 0, 0, 0); 
 
