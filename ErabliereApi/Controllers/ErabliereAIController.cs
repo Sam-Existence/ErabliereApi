@@ -18,7 +18,7 @@ namespace ErabliereApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = "ErabliereAIUser")]
+[Authorize(Roles = "ErabliereAIUser", Policy = "TenantIdPrincipal")]
 public class ErabliereAIController : ControllerBase 
 {
     private readonly ErabliereDbContext _depot;
@@ -260,7 +260,7 @@ public class ErabliereAIController : ControllerBase
     /// </summary>
     [HttpGet("Admin/Conversations")]
     [EnableQuery]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public IActionResult GetConversationAsAdmin()
     {
         return Ok(_depot.Conversations);
@@ -274,7 +274,7 @@ public class ErabliereAIController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpPatch("Conversations/{id}/UserId")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> PatchConversation(Guid id, PatchConversation patch, CancellationToken token)
     {
         var conversation = await _depot.Conversations

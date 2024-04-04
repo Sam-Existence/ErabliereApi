@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Chart } from 'chart.js';
+import { Chart, plugins, Tooltip, TooltipItem } from 'chart.js';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { WeatherForecase } from 'src/model/weatherforecast';
 import { notNullOrWitespace } from './util';
@@ -11,7 +11,7 @@ import { ActivatedRoute } from '@angular/router';
     <div>
         <div id="graph-pannel-weather-forecast" class="border-top">
             <h3>Prévision 5 jours</h3>
-            <span>{{ text }}</span>
+            <span data-bs-toggle="tooltip" title="{{ weatherData?.Headline?.Category }}" data-bs-placement="top">{{ text }}</span>
             @if (notNullOrWhitespace(error)){
                 <div class="alert alert-danger" role="alert">
                     {{error}}
@@ -109,17 +109,19 @@ export class WeatherForecastComponent implements OnInit {
           labels: dates,
           datasets: [
             {
-              label: 'Min Temperature',
-              data: minTemperatures,
-              borderColor: 'blue',
-              fill: false
-            },
-            {
-              label: 'Max Temperature',
+              label: 'Maximum',
               data: maxTemperatures,
               borderColor: 'red',
-              fill: false
-            }
+              fill: false,
+              pointRadius: 5,
+            },
+            {
+              label: 'Minimum',
+              data: minTemperatures,
+              borderColor: 'blue',
+              fill: false,
+              pointRadius: 5
+            },
           ]
         },
         options: {
@@ -136,6 +138,32 @@ export class WeatherForecastComponent implements OnInit {
               title: {
                 display: true,
                 text: 'Temperature (°C)'
+              }
+            },
+          },
+          interaction: {
+            intersect: false,
+            mode: 'index',
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                title: (tti: TooltipItem<"line">[]) => {
+                  const i = tti[0].dataIndex;
+                  let dt = this.weatherData?.DailyForecasts?.[i].Day.IconPhrase;
+                  let nt = this.weatherData?.DailyForecasts?.[i].Night.IconPhrase;
+                  return `Jour: ${dt} - Nuit: ${nt}`;
+                },
+                label: function (context: any) {
+                  var label = context.dataset.label || '';
+                  if (label) {
+                    label += ': ';
+                  }
+                  if (context.parsed.y !== null) {
+                    label += context.parsed.y.toFixed(2) + '°C';
+                  }
+                  return label;
+                }
               }
             }
           }
