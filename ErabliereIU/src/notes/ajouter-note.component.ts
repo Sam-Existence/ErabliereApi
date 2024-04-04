@@ -39,6 +39,8 @@ export class AjouterNoteComponent implements OnInit {
 
     displayReminder:boolean = false;
 
+    today = new Date().toISOString().split('T')[0];
+
     error: string | null = null;
 
     note:Note = new Note();
