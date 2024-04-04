@@ -43,12 +43,14 @@ public class AlerteCapteurControllerTest
         var alerteCapteur = context.AlerteCapteurs.GetRandom();
 
         Assert.Single(alerteCapteur.EnvoyerA.Split(';'));
+        Assert.Single(alerteCapteur.TexterA.Split(';'));
 
         var response = await controller.Modifier(
             alerteCapteur.IdCapteur.Value,
             new Donnees.Action.Put.PutAlerteCapteur
             {
                 EnvoyerA = "test@test.com;test1@test.com",
+                TexterA = "+10123456789;+11234567890",
                 Id = alerteCapteur.Id,
                 IdCapteur = alerteCapteur.IdCapteur,
                 IsEnable = alerteCapteur.IsEnable,
@@ -64,5 +66,6 @@ public class AlerteCapteurControllerTest
         var alerteCapteurResponse = Assert.IsType<GetAlerteCapteur>(result.Value);
 
         Assert.Equal(2, alerteCapteurResponse.Emails.Length);
+        Assert.Equal(2, alerteCapteurResponse.Numeros.Length);
     }
 }
