@@ -14661,9 +14661,6 @@ const novemberDatas = [
 ]
 
 export const OneFullMounth: Story = {
-  render: (args: DonneesComponent) => ({
-    props: args,
-  }),
   args: {
     erabliereId: 'some-guid',
     initialErabliere: {
