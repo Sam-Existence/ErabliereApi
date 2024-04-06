@@ -1,3 +1,7 @@
 [
-  
+  {
+    "href": "https://localhost:5101/imageanalysis",
+    "text": "Images",
+    "forRole": "administrateur"
+  }
 ]
