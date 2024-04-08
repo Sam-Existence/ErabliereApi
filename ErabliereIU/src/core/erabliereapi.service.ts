@@ -377,9 +377,9 @@ export class ErabliereApi {
         return await this._httpClient.get<any>(this._environmentService.apiUrl + "/Calls/GetAppId", { headers: headers }).toPromise();
     }
 
-    async getImages(idErabliereSelectionnee: any, take: number) {
+    async getImages(idErabliereSelectionnee: any, take: number, skip: number = 0) {
         const headers = await this.getHeaders();
-        return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take, { headers: headers }).toPromise();
+        return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take + "&skip=" + skip, { headers: headers }).toPromise();
     }
 
     async traduire(message: string) {

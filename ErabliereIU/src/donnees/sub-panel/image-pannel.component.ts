@@ -12,7 +12,13 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6" *ngFor="let image of images">
+                    <!-- Previous Button -->
+                    <button *ngIf="skip" class="btn btn-light btn-sm position-absolute top-50 start-0 translate-middle-y" (click)="previousImage()" style="width: 5%;">&lt;</button>
+
+                    <!-- Next Button -->
+                    <button class="btn btn-light btn-sm position-absolute top-50 end-0 translate-middle-y" (click)="nextImage()" style="width: 5%;">&gt;</button>
+
+                    <div class="col-md-6" *ngFor="let image of images; let ls = index">
                         <img 
                             src="data:image/png;base64,{{ image.images }}" 
                             class="img-thumbnail trigger-modal" 
@@ -20,7 +26,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
                             style="width: 100%; height: 100%;" 
                             data-bs-toggle="modal" 
                             data-bs-target="#imageModal" 
-                            (click)="selectedImage = image.images">
+                            (click)="selectImage(image, ls)">
                     </div>
                 </div>
             </div>
@@ -29,6 +35,12 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
                 <div class="modal-body">
+                    <!-- Previous Button -->
+                    <button class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="modalPreviousImage()">&lt;</button>
+
+                    <!-- Next Button -->
+                    <button class="btn btn-light position-absolute top-50 end-0 translate-middle-y" (click)="modalNextImage()">&gt;</button>
+
                     <img 
                         [src]="'data:image/png;base64,' + selectedImage" 
                         class="img-fluid modal-image-content" 
@@ -131,7 +143,7 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
     imports: [NgFor, NgIf]
 })
 export class ImagePanelComponent implements OnInit {
-    
+  
     constructor(private api: ErabliereApi, private route: ActivatedRoute) {
 
     }
@@ -139,6 +151,10 @@ export class ImagePanelComponent implements OnInit {
     @Input() idErabliereSelectionnee: any;
     images: any[] = [];
     selectedImage?: string;
+    take: number = 2;
+    skip: number = 0;
+    modalTake: number = 1;
+    modalSkip: number = 0;
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -158,8 +174,52 @@ export class ImagePanelComponent implements OnInit {
 
     fetchImages() {
         console.log("fetch image for", this.idErabliereSelectionnee);
-        this.api.getImages(this.idErabliereSelectionnee, 2).then(images => {
+        this.api.getImages(this.idErabliereSelectionnee, this.take, this.skip).then(images => {
             this.images = images;
         });
+    }
+    
+    nextImage() {
+        console.log("next image");
+        this.take = 2;
+        this.skip += this.take;
+        this.fetchImages();
+    }
+        
+    previousImage() {
+        console.log("previous image");
+        this.take = 2;
+        this.skip -= this.take;
+        this.fetchImages();
+    }
+
+    modalNextImage() {
+        console.log("modal next image");
+        this.modalTake = 1;
+        this.modalSkip += this.modalTake;
+        this.fetchModalImages();
+    }
+        
+    modalPreviousImage() {
+        console.log("modal previous image");
+        this.modalTake = 1;
+        this.modalSkip -= this.modalTake;
+        this.fetchModalImages();
+    }
+
+    fetchModalImages() {
+        console.log("fetch image for", this.idErabliereSelectionnee);
+        this.api.getImages(this.idErabliereSelectionnee, this.modalTake, this.modalSkip).then(images => {
+            this.selectedImage = images[0].images;
+        });
+    }
+
+    selectImage(image: any, localSkip: number) {
+        this.selectedImage = image.images
+        this.modalTake = 1;
+        this.modalSkip = this.take + localSkip - 2;
+        if (this.modalSkip < 0) {
+            this.modalSkip = 0;
+        }
     }
 }
