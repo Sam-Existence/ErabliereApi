@@ -53,6 +53,8 @@ describe('Graph pannel test', { testIsolation: false }, () => {
     it('Should see that the data is added', () => {
         var graphPannel = homePage.getGraphPannel(tauxSucreId);
 
+        cy.wait(5000);
+
         var title = graphPannel.find('h3');
         title.should('exist');
         title.should('contain', baseValue);
