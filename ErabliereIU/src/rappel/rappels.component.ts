@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Note } from 'src/model/note';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 
@@ -11,13 +12,15 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 export class RappelsComponent implements OnInit {
   todayNotes: Note[] = [];
 
-  constructor(private erabliereapiService: ErabliereApi) { }
+  constructor(private erabliereapiService: ErabliereApi, private _route: ActivatedRoute) { }
 
   async ngOnInit() {
-    const idErabliereSelectionnee: any = null; // Replace null with the actual value
-    const skip: number = 0; // Replace 0 with the actual value
-    const top: number | undefined = undefined; // Replace undefined with the actual value
-    this.todayNotes = await this.getTodaysReminders(idErabliereSelectionnee, skip, top);
+    this._route.paramMap.subscribe(params => {
+      const idErabliereSelectionnee = params.get('idErabliereSelectionnee');
+      if (idErabliereSelectionnee) {
+        this.getTodaysReminders(idErabliereSelectionnee).then(notes => this.todayNotes = notes);
+      }
+    });
   }
 
   async getTodaysReminders(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Note[]> {
