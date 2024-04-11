@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ErabliereApi.Controllers;
@@ -67,5 +67,32 @@ public class CallsController : ControllerBase
         var tokenResponse = await client.GetAsync($"{localBackend}/accessToken/{uid}?channel={channel}&tokenType={tokenType}", token);
 
         return Ok(await tokenResponse.Content.ReadFromJsonAsync(typeof(object), token));
+    }
+
+    /// <summary>
+    /// Starts the recording of call
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="channel"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<IActionResult> StartRecording([FromQuery] int uid, [FromQuery] string channel, CancellationToken cancellationToken)
+    {
+        using var client = new HttpClient();
+
+        var localBackend = _config["agora.localbackend"]?.Trim();
+
+        if (localBackend != null && localBackend.EndsWith('/'))
+        {
+            localBackend = localBackend.Remove(localBackend.Length - 1);
+        }
+
+        var resourceIdResponse = await client.GetAsync($"{localBackend}/recording/acquire/{channel}?uid={uid}", cancellationToken);
+
+        var resourceId = resourceIdResponse.Content.ReadFromJsonAsync(typeof(string), cancellationToken);
+
+        var recordingResponse = await client.GetAsync($"{localBackend}/recording/start/{channel}?uid={uid}&resourceId={resourceId}");
+
+        return Ok(recordingResponse.Content.ReadFromJsonAsync(typeof(object), cancellationToken));
     }
 }
