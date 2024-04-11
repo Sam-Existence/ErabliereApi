@@ -18,15 +18,10 @@ export default meta;
 type Story = StoryObj<DocumentationComponent>;
 
 export const Primary: Story = {
-  render: (args: DocumentationComponent) => ({
-    props: args,
-  }),
+
 };
 
 export const WithData: Story = {
-  render: (args: DocumentationComponent) => ({
-    props: args,
-  }),
   args: {
     documentations: [
       {

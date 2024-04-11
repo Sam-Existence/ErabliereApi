@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<TableFormInputComponent>;
 
 export const Primary: Story = {
-  render: (args: TableFormInputComponent) => ({
-    props: args,
-  }),
+
 };

@@ -18,15 +18,10 @@ export default meta;
 type Story = StoryObj<AproposComponent>;
 
 export const Default: Story = {
-  render: (args: AproposComponent) => ({
-    props: args,
-  }),
+
 };
 
 export const EveryOptions: Story = {
-  render: (args: AproposComponent) => ({
-    props: args,
-  }),
   args: {
     supportEmail: 'example@domain.com',
     checkoutEnabled: true,
@@ -34,18 +29,12 @@ export const EveryOptions: Story = {
 };
 
 export const StripeEnabled: Story = {
-  render: (args: AproposComponent) => ({
-    props: args,
-  }),
   args: {
     checkoutEnabled: true,
   },
 };
 
 export const WithEmailSupport: Story = {
-  render: (args: AproposComponent) => ({
-    props: args,
-  }),
   args: {
     supportEmail: 'exemple@domain.com',
   },

@@ -1,4 +1,4 @@
-import { type Meta, type StoryObj } from '@storybook/angular';
+import type { Meta, StoryObj } from '@storybook/angular';
 import { AjouterAlerteComponent } from 'src/alerte/ajouter-alerte.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
@@ -18,15 +18,10 @@ export default meta;
 type Story = StoryObj<AjouterAlerteComponent>;
 
 export const Button: Story = {
-  render: (args: AjouterAlerteComponent) => ({
-    props: args,
-  }),
+  
 };
 
 export const FormAlerteCapteur: Story = {
-  render: (args: AjouterAlerteComponent) => ({
-    props: args,
-  }),
   args: {
     display: true,
     typeAlerte: 1,
@@ -34,9 +29,6 @@ export const FormAlerteCapteur: Story = {
 };
 
 export const FormAlerteTrioDonnees: Story = {
-  render: (args: AjouterAlerteComponent) => ({
-    props: args,
-  }),
   args: {
     display: true,
     typeAlerte: 2,

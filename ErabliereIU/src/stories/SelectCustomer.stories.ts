@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<SelectCustomerComponent>;
 
 export const Primary: Story = {
-  render: (args: SelectCustomerComponent) => ({
-    props: args,
-  }),
+
 };

@@ -18,9 +18,6 @@ export default meta;
 type Story = StoryObj<CapteurPannelsComponent>;
 
 export const Primary: Story = {
-  render: (args: CapteurPannelsComponent) => ({
-    props: args,
-  }),
   args: {
     capteurs: [
       {
