@@ -73,13 +73,13 @@ public class CallsController : ControllerBase
     }
 
     /// <summary>
-    /// Starts the recording of call
+    /// Starts the recording of call and returns an object with the resourceId and sid
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="channel"></param>
     /// <returns></returns>
-    [HttpGet]
-    public async Task<IActionResult> StartRecording([FromQuery] int uid, [FromQuery] string channel, CancellationToken cancellationToken)
+    [HttpPost]
+    public async Task<IActionResult> PostStartRecording([FromQuery] int uid, [FromQuery] string channel, CancellationToken cancellationToken)
     {
         using var client = new HttpClient();
 
@@ -100,13 +100,13 @@ public class CallsController : ControllerBase
     }
 
     /// <summary>
-    /// Stops the recording of call
+    /// Stops the recording of call and returns an object with the resourceId, sid and list of files info
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="channel"></param>
     /// <returns></returns>
-    [HttpGet]
-    public async Task<IActionResult> StopRecording(
+    [HttpPost]
+    public async Task<IActionResult> PostStopRecording(
         [FromQuery] int uid, 
         [FromQuery] string channel, 
         [FromQuery] string resourceId, 
@@ -135,7 +135,7 @@ public class CallsController : ControllerBase
     /// <param name="channel"></param>
     /// <returns></returns>
     [HttpGet]
-    public async Task<IActionResult> QueryRecording(
+    public async Task<IActionResult> GetRecordingStatus(
         [FromQuery] string sid,
         [FromQuery] string resourceId,
         CancellationToken cancellationToken
