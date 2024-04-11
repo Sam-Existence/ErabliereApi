@@ -378,6 +378,21 @@ export class ErabliereApi {
         return await this._httpClient.get<any>(this._environmentService.apiUrl + "/Calls/GetAppId", { headers: headers }).toPromise();
     }
 
+    async postStartRecording(uid: number, channel: string): Promise<{ resourceId: string, sid: string }> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + `/Calls/PostStartRecording?uid=${uid}&channel=${channel}`, { headers: headers }).toPromise();
+    }
+
+    async postStopRecording(uid: number, channel: string, resourceId: string, sid: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<any>(this._environmentService.apiUrl + `/Calls/PostStopRecording?uid=${uid}&channel=${channel}&resourceId=${resourceId}&sid=${sid}`, { headers: headers }).toPromise();
+    }
+
+    async getRecordingStatus(resourceId: string, sid: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.get<any>(this._environmentService.apiUrl + `/Calls/GetRecordingStatus?resourceId=${resourceId}&sid=${sid}`, { headers: headers }).toPromise();
+    }
+
     async getImages(idErabliereSelectionnee: any, take: number, skip: number = 0, search?: string): Promise<GetImageInfo[]> {
         const headers = await this.getHeaders();
         let url = this._environmentService.apiUrl + 
