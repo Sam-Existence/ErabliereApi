@@ -51,6 +51,7 @@ public class DocumentationController : ControllerBase
     /// <returns></returns>
     [HttpGet("Quantite")]
     [ProducesResponseType(200, Type = typeof(int))]
+    [ValiderOwnership("id")]
     public async Task<IActionResult> Compter(Guid id, CancellationToken token)
     {
 
