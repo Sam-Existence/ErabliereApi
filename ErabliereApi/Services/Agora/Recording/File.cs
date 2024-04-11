@@ -1,4 +1,4 @@
-﻿namespace ErabliereApi.Services.Agora.Recording.Stop
+﻿namespace ErabliereApi.Services.Agora.Recording
 {
     public class File
     {
