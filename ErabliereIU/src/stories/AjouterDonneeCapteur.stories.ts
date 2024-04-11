@@ -18,15 +18,9 @@ export default meta;
 type Story = StoryObj<AjouterDonneeCapteurComponent>;
 
 export const Button: Story = {
-  render: (args: AjouterDonneeCapteurComponent) => ({
-    props: args,
-  }),
 };
 
 export const Form: Story = {
-  render: (args: AjouterDonneeCapteurComponent) => ({
-    props: args,
-  }),
   args: {
     display: true
   }

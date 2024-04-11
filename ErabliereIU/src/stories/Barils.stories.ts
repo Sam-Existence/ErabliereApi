@@ -18,9 +18,6 @@ export default meta;
 type Story = StoryObj<BarilsComponent>;
 
 export const Primary: Story = {
-  render: (args: BarilsComponent) => ({
-    props: args,
-  }),
   args: {
     errorMessage: undefined
   }

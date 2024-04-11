@@ -19,9 +19,6 @@ export default meta;
 type Story = StoryObj<ErabliereAIComponent>;
 
 export const Primary: Story = {
-  render: (args: ErabliereAIComponent) => ({
-    props: args,
-  }),
   args: {
     chatOpen: true
   }
