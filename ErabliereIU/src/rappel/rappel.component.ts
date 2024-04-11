@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { th } from 'date-fns/locale';
 import { Note } from 'src/model/note';
 
 @Component({
