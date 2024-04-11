@@ -1,3 +1,7 @@
+
+<div class="row">
+    <app-rappels [idErabliereSelectionnee]="erabliere?.id"></app-rappels>
+</div>
 <div class="row">
     <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
                 [initialErabliere]="erabliere"
