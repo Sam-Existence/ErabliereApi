@@ -95,6 +95,11 @@ namespace ErabliereApi.Depot.Sql
         /// </summary>
         public DbSet<Message> Messages { get; set; }
 
+        /// <summary>
+        /// Table de la position des graphique
+        /// </summary>
+        public DbSet<PositionGraph> PositionGraph { get; set; }
+
         /// <inheritdoc />
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

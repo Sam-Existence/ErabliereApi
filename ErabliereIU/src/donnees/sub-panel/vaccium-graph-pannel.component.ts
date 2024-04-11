@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
@@ -261,12 +261,11 @@ export class VacciumGraphPannelComponent implements OnInit {
         this.dateFinFixRange = $event.currentValue;
     }
 
-    dragEnd(event: CdkDragEnd) {
-        console.log(event);
-
+    dragEnd($event: CdkDragEnd) {
+        console.log($event);
     }
 
-    drop(event: CdkDragDrop<VacciumGraphPannelComponent>) {
-        console.log(event);
+    envoyerPosition() {
+        console.log("envoyerPosition");
     }
 }

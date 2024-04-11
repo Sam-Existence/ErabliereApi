@@ -47,6 +47,7 @@ public static class RegisterExtension
             config.CreateMap<Baril, GetBaril>().ReverseMap();
             config.CreateMap<GetErabliereDashboard, Erabliere>().ReverseMap();
             config.CreateMap<DonneeCapteur, GetDonneesCapteur>().ReverseMap();
+            config.CreateMap<PositionGraph, GetPositonGraph>().ReverseMap();
 
             config.CreateMap<PostErabliere, Erabliere>()
                   .ForMember(e => e.IpRule, a => a.MapFrom(p => p.IpRules))
@@ -66,6 +67,7 @@ public static class RegisterExtension
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
             config.CreateMap<Note, PostNoteMultipartResponse>()
                   .ReverseMap();
+            config.CreateMap<PostPositionGraph, PositionGraph>();
 
             config.CreateMap<PutAlerteCapteur, AlerteCapteur>();
 
