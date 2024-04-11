@@ -1,26 +1,49 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import { NgFor } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Note } from 'src/model/note';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { RappelComponent } from './rappel.component';
 
 @Component({
   selector: 'app-rappels',
   standalone: true,
-  imports: [],
+  imports: [
+    NgFor,
+    RappelComponent
+  ],
   templateUrl: './rappels.component.html'
 })
 export class RappelsComponent implements OnInit {
-  todayNotes: Note[] = [];
+  @Input() idErabliereSelectionnee: any;
+  todayReminders: Note[] = [];
 
   constructor(private erabliereapiService: ErabliereApi, private _route: ActivatedRoute) { }
 
-  async ngOnInit() {
-    this._route.paramMap.subscribe(params => {
-      const idErabliereSelectionnee = params.get('idErabliereSelectionnee');
-      if (idErabliereSelectionnee) {
-        this.getTodaysReminders(idErabliereSelectionnee).then(notes => this.todayNotes = notes);
+  async ngOnChanges(changes: SimpleChanges) {
+    console.log('ngOnChanges called');
+    if (changes.idErabliereSelectionnee && changes.idErabliereSelectionnee.currentValue) {
+      console.log('idErabliereSelectionnee changed', this.idErabliereSelectionnee);
+      try {
+        this.todayReminders = await this.getTodaysReminders(this.idErabliereSelectionnee);
+        console.log('todayReminders', this.todayReminders);
+      } catch (error) {
+        console.error('Error getting today\'s reminders', error);
       }
-    });
+    }
+  }
+  
+  async ngOnInit() {
+    console.log('ngOnInit called');
+    if (this.idErabliereSelectionnee) {
+      console.log('idErabliereSelectionnee', this.idErabliereSelectionnee);
+      try {
+        this.todayReminders = await this.getTodaysReminders(this.idErabliereSelectionnee);
+        console.log('todayReminders', this.todayReminders);
+      } catch (error) {
+        console.error('Error getting today\'s reminders', error);
+      }
+    }
   }
 
   async getTodaysReminders(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Note[]> {
@@ -41,6 +64,8 @@ export class RappelsComponent implements OnInit {
       return false;
     });
 
+    console.log('todayNotes', todayNotes);
+    console.log('ohohohohoho');
     return todayNotes;
   }
 
