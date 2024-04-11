@@ -91,7 +91,10 @@ export class AgoraCallServiceComponent {
     erablieres: Erabliere[] = [];
     authService: IAuthorisationSerivce;
     callIsStarted: boolean = false;
+    recordingIsStarted: boolean = false;
     userUid: number = 0;
+    recordingResourceId: string = "";
+    recordingSId: string = "";
     showPhone: boolean = false;
 
     constructor(authFactoryService: AuthorisationFactoryService,
@@ -126,5 +129,21 @@ export class AgoraCallServiceComponent {
     async logout() {
         await this.stream.leaveCall();
         this.callIsStarted = false;
+    }
+
+    async startRecording() {
+        if(this.callIsStarted && this.erabliereId) {
+            let response = await this.stream.startRecordingCall(this.userUid, this.erabliereId);
+            this.recordingResourceId = response.resourceId;
+            this.recordingSId = response.sid;
+            this.recordingIsStarted = true;
+        }
+    }
+
+    async stopRecording() {
+        if(this.recordingIsStarted && this.erabliereId) {
+            await this.stream.stopRecordingCall(this.userUid, this.erabliereId, this.recordingResourceId, this.recordingSId);
+            this.recordingIsStarted = false
+        }
     }
 }
