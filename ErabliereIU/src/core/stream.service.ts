@@ -98,6 +98,20 @@ export class StreamService {
     return randomNo;
   }
 
+    async startRecordingCall(uid: number, channel: string) {
+        const data = await this.api.postStartRecording(uid, channel);
+        console.log(data);
+        console.log("Recording started");
+        return(data);
+    }
+
+    async stopRecordingCall(uid: number, channel: string, resourceId: string, sid: string) {
+        const data = await this.api.postStopRecording(uid, channel, resourceId, sid);
+        console.log(data);
+        console.log("Recording stopped");
+        return(data);
+    }
+
   async initOption() {
     const data = await this.api.getCallAppId();
     console.log(data);
