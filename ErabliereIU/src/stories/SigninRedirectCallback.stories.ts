@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<SigninRedirectCallbackComponent>;
 
 export const Primary: Story = {
-  render: (args: SigninRedirectCallbackComponent) => ({
-    props: args,
-  }),
+
 };

@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<ErabliereComponent>;
 
 export const Primary: Story = {
-  render: (args: ErabliereComponent) => ({
-    props: args,
-  }),
+
 };

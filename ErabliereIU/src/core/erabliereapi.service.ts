@@ -17,6 +17,7 @@ import { Donnee } from 'src/model/donnee';
 import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
 import { Erabliere } from 'src/model/erabliere';
 import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
+import { GetImageInfo } from 'src/model/imageInfo';
 import { Note } from 'src/model/note';
 import { PutCapteur } from 'src/model/putCapteur';
 import { PutCustomerAccess } from 'src/model/putCustomerAccess';
@@ -377,9 +378,21 @@ export class ErabliereApi {
         return await this._httpClient.get<any>(this._environmentService.apiUrl + "/Calls/GetAppId", { headers: headers }).toPromise();
     }
 
-    async getImages(idErabliereSelectionnee: any, take: number) {
+    async getImages(idErabliereSelectionnee: any, take: number, skip: number = 0, search?: string): Promise<GetImageInfo[]> {
         const headers = await this.getHeaders();
-        return await this._httpClient.get<any>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/ImagesCapteur?take=" + take, { headers: headers }).toPromise();
+        let url = this._environmentService.apiUrl + 
+            '/erablieres/' + idErabliereSelectionnee + 
+            "/ImagesCapteur?take=" + take + 
+            "&skip=" + skip;
+
+        if (isNotNullOrWhitespace(search)) {
+            url += "&search=" + search;
+        }
+
+        return await this._httpClient.get<any>(
+            url, 
+            { headers: headers })
+            .toPromise();
     }
 
     async traduire(message: string) {

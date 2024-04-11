@@ -18,9 +18,6 @@ export default meta;
 type Story = StoryObj<CapteurListComponent>;
 
 export const Default: Story = {
-  render: (args: CapteurListComponent) => ({
-    props: args,
-  }),
   args: {
     capteurs: [
       {
@@ -52,7 +49,5 @@ export const Default: Story = {
 };
 
 export const Empty: Story = {
-  render: (args: CapteurListComponent) => ({
-    props: args,
-  }),
+
 };

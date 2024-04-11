@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<ModifierAccesUtilisateursComponent>;
 
 export const Primary: Story = {
-  render: (args: ModifierAccesUtilisateursComponent) => ({
-    props: args,
-  }),
+
 };
