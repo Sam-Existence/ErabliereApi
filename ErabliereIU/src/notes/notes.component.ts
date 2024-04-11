@@ -67,8 +67,8 @@ export class NotesComponent implements OnInit {
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(notes => {
                 // test rappels notes
-                const today = new Date();
-                today.setUTCHours(0, 0, 0, 0);
+                // const today = new Date();
+                // today.setUTCHours(0, 0, 0, 0);
 
                 notes.forEach(n => {
                     if (n.fileExtension == 'csv') {
@@ -76,12 +76,12 @@ export class NotesComponent implements OnInit {
                     }
 
                     // test rappels notes
-                    const reminderDate = n.reminderDate ? new Date(n.reminderDate) : new Date(0);
-                    reminderDate.setUTCHours(0, 0, 0, 0); 
+                    // const reminderDate = n.reminderDate ? new Date(n.reminderDate) : new Date(0);
+                    // reminderDate.setUTCHours(0, 0, 0, 0); 
 
-                    if (+reminderDate === +today) {
-                        alert(`Reminder: ${n.title}`);
-                    }
+                    // if (+reminderDate === +today) {
+                    //     alert(`Reminder: ${n.title}`);
+                    // }
                 });
 
                 this.notes = notes;
