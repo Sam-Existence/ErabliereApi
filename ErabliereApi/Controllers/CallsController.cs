@@ -1,4 +1,5 @@
-using ErabliereApi.Services.Agora.Recording.Stop;
+using Stop = ErabliereApi.Services.Agora.Recording.Stop;
+using Query = ErabliereApi.Services.Agora.Recording.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
@@ -124,6 +125,33 @@ public class CallsController : ControllerBase
 
         var stopResponse = await client.GetAsync($"{localBackend}/recording/stop/{channel}?uid={uid}&resourceId={resourceId}&sid={sid}");
 
-        return Ok(stopResponse.Content.ReadFromJsonAsync(typeof(Reponse), cancellationToken));
+        return Ok(stopResponse.Content.ReadFromJsonAsync(typeof(Stop.Response), cancellationToken));
+    }
+
+    /// <summary>
+    /// Query info about the recording
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="channel"></param>
+    /// <returns></returns>
+    [HttpGet]
+    public async Task<IActionResult> QueryRecording(
+        [FromQuery] string sid,
+        [FromQuery] string resourceId,
+        CancellationToken cancellationToken
+    )
+    {
+        using var client = new HttpClient();
+
+        var localBackend = _config["agora.localbackend"]?.Trim();
+
+        if (localBackend != null && localBackend.EndsWith('/'))
+        {
+            localBackend = localBackend.Remove(localBackend.Length - 1);
+        }
+
+        var queryResponse = await client.GetAsync($"{localBackend}/recording/query/{resourceId}?sid={sid}");
+
+        return base.Ok(queryResponse.Content.ReadFromJsonAsync(typeof(Query.Response), cancellationToken));
     }
 }

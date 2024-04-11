@@ -1,6 +1,6 @@
 ﻿namespace ErabliereApi.Services.Agora.Recording.Stop
 {
-    public class Reponse
+    public class Response
     {
         public string resourceId { get; set; }
         public string sid { get; set; }
