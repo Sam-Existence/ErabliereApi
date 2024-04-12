@@ -15,7 +15,7 @@ export class RappelComponent {
     this.note = new Note();
    }
 
-   getExcerpt(text: string, length: number = 100): string {
-    return text.length > length ? text.slice(0, length) + '...' : text;
+   getExcerpt(text: string | undefined, length: number = 100): string {
+    return text && text.length > length ? text.slice(0, length) + '...' : text || '';
   }
 }
