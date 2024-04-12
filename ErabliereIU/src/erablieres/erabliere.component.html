@@ -1,12 +1,13 @@
-
 <div class="row">
-    <app-rappels [idErabliereSelectionnee]="erabliere?.id"></app-rappels>
-</div>
-<div class="row">
-    <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
-                [initialErabliere]="erabliere"
-                [erabliereSubject]="resetErabliere"></donnees-panel>
-    <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
-    <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
-                [erabliereId]="erabliere?.id"></barils-panel>
+    <div class="col-md-10">
+        <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
+                    [initialErabliere]="erabliere"
+                    [erabliereSubject]="resetErabliere"></donnees-panel>
+        <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
+        <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
+                    [erabliereId]="erabliere?.id"></barils-panel>
+    </div>
+    <div class="col-md-2">
+        <app-rappels [idErabliereSelectionnee]="erabliere?.id"></app-rappels>
+    </div>
 </div>
