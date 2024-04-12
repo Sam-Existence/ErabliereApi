@@ -11,6 +11,7 @@ import { RappelComponent } from './rappel.component';
     NgFor,
     RappelComponent
   ],
+  styleUrls: ['./rappels.component.css'] ,
   templateUrl: './rappels.component.html'
 })
 export class RappelsComponent {
