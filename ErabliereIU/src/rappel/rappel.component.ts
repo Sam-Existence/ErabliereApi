@@ -6,6 +6,7 @@ import { Note } from 'src/model/note';
   selector: 'app-rappel',
   standalone: true,
   imports: [],
+  styleUrls: ['./rappel.component.css'],
   templateUrl: './rappel.component.html'
 })
 export class RappelComponent {
