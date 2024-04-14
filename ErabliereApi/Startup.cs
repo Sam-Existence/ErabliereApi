@@ -29,11 +29,12 @@ using ErabliereApi.Models;
 using ErabliereApi.Donnees;
 using MailKit.Net.Smtp;
 using MailKit;
-using Microsoft.Extensions.Hosting.Internal;
 using Microsoft.Extensions.Options;
 using ErabliereApi.Services.Emails;
 using ErabliereApi.Services.SMS;
 using ErabliereApi.ControllerFeatureProviders;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace ErabliereApi;
 
@@ -56,11 +57,38 @@ public class Startup
         Configuration = configuration;
     }
 
+    const string enUSCulture = "en-US";
+    const string enCACulture = "en-CA";
+    const string frCACulture = "fr-CA";
+
     /// <summary>
     /// Méthodes ConfigureServices
     /// </summary>
     public void ConfigureServices(IServiceCollection services)
     {
+        // Localization
+        services.AddLocalization(options => options.ResourcesPath = "Resources");
+
+        services.Configure<RequestLocalizationOptions>(options =>
+        {
+            var supportedCultures = new[]
+            {
+                new CultureInfo(enUSCulture),
+                new CultureInfo(enCACulture),
+                new CultureInfo(frCACulture)
+            };
+
+            options.DefaultRequestCulture = new RequestCulture(frCACulture, frCACulture);
+            options.SupportedCultures = supportedCultures;
+            options.SupportedUICultures = supportedCultures;
+
+            options.AddInitialRequestCultureProvider(new CustomRequestCultureProvider(async context =>
+            {
+                // My custom request culture logic
+                return await Task.FromResult(new ProviderCultureResult(frCACulture));
+            }));
+        });
+
         // contrôleur
         services.AddControllers(o =>
         {
@@ -405,6 +433,9 @@ public class Startup
         app.UseDefaultFiles();
         app.UseStaticFiles();
 
+        var localizeOption = app.ApplicationServices.GetRequiredService<IOptions<RequestLocalizationOptions>>();
+        app.UseRequestLocalization(localizeOption.Value);
+
         app.UseRouting();
 
         if (string.Equals(Configuration["USE_CORS"], TrueString, OrdinalIgnoreCase))
@@ -413,9 +444,9 @@ public class Startup
 
             app.UseCors(option =>
             {
-                option.WithHeaders(Configuration["CORS_HEADERS"]?.Split(',') ?? new[] { "*" });
-                option.WithMethods(Configuration["CORS_METHODS"]?.Split(',') ?? new[] { "*" });
-                option.WithOrigins(Configuration["CORS_ORIGINS"]?.Split(',') ?? new[] { "*" });
+                option.WithHeaders(Configuration["CORS_HEADERS"]?.Split(',') ?? ["*"]);
+                option.WithMethods(Configuration["CORS_METHODS"]?.Split(',') ?? ["*"]);
+                option.WithOrigins(Configuration["CORS_ORIGINS"]?.Split(',') ?? ["*"]);
             });
         }
 
@@ -466,7 +497,7 @@ public class Startup
 
         app.UseSpa(spa =>
         {
-            
+        
         });
     }
 }
