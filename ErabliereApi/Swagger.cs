@@ -16,6 +16,8 @@ namespace ErabliereApi;
 /// </summary>
 public static class Swagger
 {
+    static string? SwaggerJsonCache = null;
+
     /// <summary>
     /// Ajout de swagger
     /// </summary>
@@ -138,13 +140,11 @@ public static class Swagger
         app.Use(async (context, next) => {
             if (context.Request.Path.StartsWithSegments("/api/v1/swagger.json"))
             {
-                var cache = context.RequestServices.GetRequiredService<IDistributedCache>();
-                var swagger = await cache.GetStringAsync("swagger");
-                if (swagger != null)
+                if (SwaggerJsonCache != null)
                 {
                     context.Response.StatusCode = 200;
                     context.Response.ContentType = "application/json";
-                    await context.Response.WriteAsync(swagger ?? "");
+                    await context.Response.WriteAsync(SwaggerJsonCache ?? "");
                     return;
                 }
                 else {
@@ -160,10 +160,7 @@ public static class Swagger
                         responseBody.Seek(0, SeekOrigin.Begin);
                         var reader = new StreamReader(responseBody);
                         var swaggerJson = await reader.ReadToEndAsync();
-                        await cache.SetStringAsync("swagger", swaggerJson, new DistributedCacheEntryOptions
-                        {
-                            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-                        });
+                        SwaggerJsonCache = swaggerJson;
                     }
                     // copy the response stream to the original stream
                     context.Response.Body.Seek(0, SeekOrigin.Begin);
