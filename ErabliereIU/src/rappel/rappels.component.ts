@@ -34,14 +34,11 @@ export class RappelsComponent {
   }
 
   async getTodaysReminders(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Note[]> {
-    // Get all notes
     const notes = await this.erabliereapiService.getNotes(idErabliereSelectionnee, skip, top);
 
-    // Get today's date
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    // Filter notes whose reminder date is today
     const todayNotes = notes.filter(note => {
       const reminderDate = note.reminderDate ? new Date(note.reminderDate) : undefined;
       if (reminderDate) {
@@ -50,9 +47,6 @@ export class RappelsComponent {
       }
       return false;
     });
-
-    console.log('todayNotes', todayNotes);
-    console.log('ohohohohoho');
     return todayNotes;
   }
 
