@@ -31,7 +31,15 @@ export class RappelComponent implements AfterViewInit {
     }
 
     openModal(): void {
-        this.modalRappelComponent.openModal();
+        if (!this.modalInstance && this.modalRappelComponent && this.modalRappelComponent.modalRappel) {
+            const modalElement = this.modalRappelComponent.modalRappel.nativeElement;
+            this.modalInstance = new Modal(modalElement);
+        }
+        if (this.modalInstance) {
+            this.modalRappelComponent.openModal();
+        } else {
+            console.error('ModalRappelComponent or modalRappel is not defined');
+        }
     }
   getExcerpt(text: string | undefined, length: number = 100): string {
     return text && text.length > length ? text.slice(0, length) + '...' : text || '';
