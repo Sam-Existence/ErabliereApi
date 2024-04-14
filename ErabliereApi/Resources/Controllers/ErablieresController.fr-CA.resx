@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="NomVide" xml:space="preserve">
+        <value>Le nom de l'érablière ne peut pas être vide.</value>
+    </data>
+    <data name="NomExiste" xml:space="preserve">
+        <value>L'érablière nommé '{0}' existe déjà.</value>
+    </data>
+    <data name="IdExiste" xml:space="preserve">
+        <value>L'érablière avec l'id '{0}' existe déjà.</value>
+    </data>
+    <data name="EnforceIsPublic" xml:space="preserve">
+        <value>Impossible de créer une érablière non pubique sans authentification. Veillez assigner la propriété IsPublic à true.</value>
+    </data>
+</root>

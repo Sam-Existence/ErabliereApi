@@ -76,7 +76,7 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         piiLoggingEnabled: false
       },
       windowHashTimeout: 60000,
-      iframeHashTimeout: 6000,
+      iframeHashTimeout: 10000,
       loadFrameTimeout: 0,
       asyncPopups: false
     }
