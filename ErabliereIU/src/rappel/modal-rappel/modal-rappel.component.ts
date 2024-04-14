@@ -20,15 +20,23 @@ export class ModalRappelComponent implements AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        const modalElement = this.modalRappel.nativeElement;
-        this.modalInstance = new Modal(modalElement);
+        if (this.modalRappel) {
+            const modalElement = this.modalRappel.nativeElement;
+            this.modalInstance = new Modal(modalElement);
+        } else {
+            console.error('modalRappel is not defined');
+        }
     }
 
     openModal(): void {
+        if (!this.modalInstance && this.modalRappel) {
+            const modalElement = this.modalRappel.nativeElement;
+            this.modalInstance = new Modal(modalElement);
+        }
         if (this.modalInstance) {
-        this.modalInstance.show();
-    } else {
-        console.error('Modal instance is not defined');
+            this.modalInstance.show();
+        } else {
+            console.error('Modal instance is not defined');
+        }
     }
-}
 }
