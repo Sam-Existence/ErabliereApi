@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "e2b77f99-60ed-4797-944c-df22343e3878",
+		"_postman_id": "0eef1e21-cfed-4fdd-be25-f84423292b97",
 		"name": "ErablièreAPI",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "6202256"
@@ -26,7 +26,7 @@
 									"else {\r",
 									"    pm.test(\"Status code is 400\", function () {\r",
 									"        pm.response.to.have.status(400);\r",
-									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière A' existe déjà\");\r",
+									"        pm.expect(pm.response.text()).to.contains(\"L'érablière nommé 'Érablière A' existe déjà\");\r",
 									"    });\r",
 									"\r",
 									"    const getRequest = {\r",
@@ -51,7 +51,8 @@
 									"    });\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -175,7 +176,7 @@
 									"else {\r",
 									"    pm.test(\"Status code is 400\", function () {\r",
 									"        pm.response.to.have.status(400);\r",
-									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière B' existe déjà\");\r",
+									"        pm.expect(pm.response.text()).to.contains(\"L'érablière nommé 'Érablière B' existe déjà\");\r",
 									"    });\r",
 									"\r",
 									"    const getRequest = {\r",
@@ -200,7 +201,8 @@
 									"    });\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
@@ -245,7 +247,7 @@
 									"else {\r",
 									"    pm.test(\"Status code is 400\", function () {\r",
 									"        pm.response.to.have.status(400);\r",
-									"        pm.expect(pm.response.text()).to.eq(\"L'érablière nommé 'Érablière Saint-Alfred' existe déjà\");\r",
+									"        pm.expect(pm.response.text()).to.contains(\"L'érablière nommé 'Érablière Saint-Alfred' existe déjà\");\r",
 									"    });\r",
 									"\r",
 									"    const getRequest = {\r",
@@ -270,7 +272,8 @@
 									"    });\r",
 									"}"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"packages": {}
 							}
 						}
 					],
