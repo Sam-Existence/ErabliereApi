@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
-
-namespace Depot.Sql.Migrations
+namespace ErabliereApi.Depot.Sql.Migrations
 {
-    /// <inheritdoc />
+    /// <summary>
+    /// Ajout de la table pour suavegarder les positions des graphiques
+    /// </summary>
     public partial class AddTablePositionGraph : Migration
     {
         /// <inheritdoc />
@@ -15,32 +15,26 @@ namespace Depot.Sql.Migrations
                 name: "PositionGraph",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    D = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    PX = table.Column<short>(type: "smallint", nullable: true),
-                    PY = table.Column<short>(type: "smallint", nullable: true),
+                    Id = table.Column<int>(type: "int", nullable: false),
                     IdErabliere = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    ErabliereId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    D = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    PX = table.Column<int>(type: "int", nullable: true),
+                    PY = table.Column<int>(type: "int", nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PositionGraph", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PositionGraph_Erabliere_ErabliereId",
-                        column: x => x.ErabliereId,
+                        name: "FK_PositionGraph_Erabliere_IdErabliere",
+                        column: x => x.IdErabliere,
                         principalTable: "Erabliere",
                         principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "D_Index",
+                name: "IX_PositionGraphs_IdErabliere",
                 table: "PositionGraph",
-                column: "D");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PositionGraph_ErabliereId",
-                table: "PositionGraph",
-                column: "ErabliereId");
+                column: "IdErabliere");
         }
 
         /// <inheritdoc />

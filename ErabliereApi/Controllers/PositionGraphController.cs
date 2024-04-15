@@ -42,7 +42,6 @@ namespace ErabliereApi.Controllers
         /// Lister les donne 
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
-        /// <response code="200">Une liste de position potentiellement vide.</response>
         [ProducesResponseType(200, Type = typeof(GetPositonGraph))]
         [HttpGet]
         [Produces(MediaTypeNames.Application.Json, MediaTypeNames.Text.Plain, "text/json", "text/csv")]
@@ -77,27 +76,22 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="donneeRecu">La donnée à ajouter</param>
-        /// <response code="200">La position a été correctement ajouté.</response>
-        /// <response code="400">L'id de l'erabliere ne concorde pas avec l'id donne.</response>
+        /// <param name="token">Token d'annulation</param>
         [HttpPost]
-        [ValiderIPRules]
+        [ProducesResponseType(200, Type = typeof(PositionGraph))]
         [ValiderOwnership("id")]
-        [TriggerAlert]
-        public async Task<IActionResult> Ajouter(Guid id, [FromBody] PostPositionGraph donneeRecu)
+        public async Task<IActionResult> Ajouter(Guid id, [FromBody] PostPositionGraph donneeRecu, CancellationToken token)
         {
             if (id != donneeRecu.IdErabliere)
             {
                 return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donneeRecu.IdErabliere}'.");
             }
+            
+            donneeRecu.D = DateTimeOffset.Now;
 
-            if (donneeRecu.D == default || donneeRecu.D.Equals(DateTimeOffset.MinValue))
-            {
-                donneeRecu.D = DateTimeOffset.Now;
-            }
+            var entity = await _context.PositionGraph.AddAsync(_mapper.Map<PositionGraph>(donneeRecu), token);
 
-            var entity = await _context.PositionGraph.AddAsync(_mapper.Map<PositionGraph>(donneeRecu));
-
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync(token);
 
             return Ok(new { id = entity.Entity.Id }); 
         }

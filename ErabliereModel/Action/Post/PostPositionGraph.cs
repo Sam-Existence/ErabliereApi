@@ -8,6 +8,11 @@ namespace ErabliereApi.Donnees.Action.Post
     /// </summary>
     public class PostPositionGraph
     {
+        ///<summary>
+        /// L'id de l'occurence
+        /// </summary>
+        public int? Id { get; set; }
+
         /// <summary>
         /// Date de la transaction
         /// </summary>

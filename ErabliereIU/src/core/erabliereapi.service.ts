@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { EnvironmentService } from 'src/environments/environment.service';
+import { PositionGraph, PostPositionGraph } from 'src/model/PositionGraph';
 import { Alerte } from 'src/model/alerte';
 import { AlerteCapteur } from 'src/model/alerteCapteur';
 import { Baril } from 'src/model/baril';
@@ -390,6 +391,19 @@ export class ErabliereApi {
     async getHeaders(): Promise<HttpHeaders> {
         const token = await this._authService.getAccessToken();
         return new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    }
+
+    async getPositionsGraph(idErabliereSelectionnee: any): Promise<HttpResponse<PositionGraph[]>> {
+        const headers = await this.getHeaders();
+        var httpCall = this._httpClient.get<PositionGraph[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/positionsGraph", { headers: headers, observe: 'response' });
+        const rtn = await httpCall.toPromise();
+        return rtn ?? new HttpResponse();
+    }
+
+    async postPositionGraph(idErabliereSelectionnee: any, positionsGraph: PostPositionGraph): Promise<PostPositionGraph> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.post<PostPositionGraph>(this._environmentService.apiUrl + '/Erablieres/' + idErabliereSelectionnee + "/PositionGraph", positionsGraph, { headers: headers }).toPromise();
+        return rtn ?? new PostPositionGraph();
     }
 }
 

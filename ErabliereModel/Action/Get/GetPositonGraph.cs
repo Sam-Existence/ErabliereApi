@@ -10,7 +10,7 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// L'id de l'occurence
         /// </summary>
-        public Guid? Id { get; set; }
+        public int? Id { get; set; }
 
         /// <summary>
         /// Date de la transaction

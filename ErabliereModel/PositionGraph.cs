@@ -7,12 +7,12 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Modèle position graph.
 /// </summary>
-public class PositionGraph : IIdentifiable<Guid?, PositionGraph>, IErabliereOwnable
+public class PositionGraph : IIdentifiable<int?, PositionGraph>, IErabliereOwnable
 {
     /// <summary>
     /// L'id de l'occurence
     /// </summary>
-    public Guid? Id { get; set; }
+    public int? Id { get; set; }
 
     /// <summary>
     /// Date de la transaction

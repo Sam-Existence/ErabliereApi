@@ -1,9 +1,11 @@
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { PostPositionGraph } from 'src/model/PositionGraph';
 import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
 import { calculerMoyenne } from '../util';
 import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
@@ -60,12 +62,12 @@ export class GraphPannelComponent implements OnInit {
     @Input() textActuel?: string | undefined | null;
     @Input() ajouterDonneeDepuisInterface: boolean = false;
 
-    constructor(private _api: ErabliereApi) { 
+    constructor(private _api: ErabliereApi, private route: ActivatedRoute) { 
         this.chart = undefined;
     }
 
     @Input() idCapteur?: any;
-
+    @Input() idErabliere?: any;
     interval?: any
 
     ngOnInit(): void {
@@ -78,6 +80,9 @@ export class GraphPannelComponent implements OnInit {
                 }
             }, 1000 * 60);
         }
+        this.route.params.subscribe(params => {
+            this.idErabliere = params['idErabliereSelectionee'];
+        });
     }
 
     ngOnDestroy() {
@@ -259,11 +264,23 @@ export class GraphPannelComponent implements OnInit {
         this.dateFinFixRange = $event.currentValue;
     }
 
-    dragEnd(event: CdkDragEnd) {
-        console.log(event);
-    }
+    dragEnd($event: CdkDragEnd) {
+        const element = $event.source.getRootElement() as HTMLElement;
+        const rect = element.getBoundingClientRect();
+        const posX: number = rect.left;
+        const posY: number = rect.top;
+        
+        let position = new PostPositionGraph();
+        position.id = 1;
+        position.d = "2024-04-15T14:58:10.604Z";
+        position.px = Math.floor(posX);
+        position.py = posY;
+        position.idErabliere = this.idErabliere;
 
-    drop(event: CdkDragDrop<GraphPannelComponent>) {
-        console.log(event);
+        console.log(position);
+
+        this._api.postPositionGraph(this.idErabliere, position).then(resp => {
+            console.log(resp);
+        });
     }
 }

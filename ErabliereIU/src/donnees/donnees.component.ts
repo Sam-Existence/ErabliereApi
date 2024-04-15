@@ -6,11 +6,10 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
+import { ImagePanelComponent } from './sub-panel/image-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
 import { calculerMoyenne, notNullOrWitespace } from './util';
 import { WeatherForecastComponent } from './weatherforecast.component';
-import { ImagePanelComponent } from './sub-panel/image-pannel.component';
-import { clear } from 'console';
 
 @Component({
   selector: 'donnees-panel',
@@ -446,9 +445,5 @@ export class DonneesComponent implements OnInit {
 
   notNullOrWitespace(arg0?: string): any {
     return notNullOrWitespace(arg0);
-  }
-
-  updateGraphPosition($event: any) {
-    
   }
 }

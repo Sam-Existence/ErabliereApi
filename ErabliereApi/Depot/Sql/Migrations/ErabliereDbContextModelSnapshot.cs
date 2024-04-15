@@ -517,9 +517,11 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.PositionGraph", b =>
                 {
-                    b.Property<Guid?>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
                     b.Property<DateTimeOffset?>("D")
                         .HasColumnType("datetimeoffset");
