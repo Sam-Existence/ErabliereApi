@@ -21,14 +21,14 @@ namespace ErabliereApi.Donnees.Action.Post
         /// <summary>
         /// Le titre de la note
         /// </summary>
-        [MaxLength(200)]
-        [Required]
+        [MaxLength(200, ErrorMessage = "Le titre de la note ne peut pas dépasser 200 caractères.")]
+        [Required(ErrorMessage = "Le titre de la note est requis.")]
         public string? Title { get; set; }
 
         /// <summary>
         /// Le text de la note
         /// </summary>
-        [MaxLength(2000)]
+        [MaxLength(2000, ErrorMessage = "Le texte de la note ne peut pas dépasser 2000 caractères.")]
         public string? Text { get; set; }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace ErabliereApi.Donnees.Action.Post
         /// <summary>
         /// L'extension du fichier
         /// </summary>
-        [MaxLength(20)]
+        [MaxLength(20, ErrorMessage = "L'extension du fichier ne peut pas dépasser 20 caractères.")]
         public string? FileExtension { get; set; }
 
         /// <summary>

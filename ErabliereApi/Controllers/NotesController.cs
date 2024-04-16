@@ -38,6 +38,7 @@ public class NotesController : ControllerBase
     /// <summary>
     /// Lister les notes avec les fonctionnalité de OData
     /// </summary>
+    /// <param name="id">Id de l'érablière</param>
     /// <returns></returns>
     [HttpGet]
     [EnableQuery]
@@ -45,6 +46,44 @@ public class NotesController : ControllerBase
     public IQueryable<Note> Lister(Guid id)
     {
         return _depot.Notes.AsNoTracking().Where(n => n.IdErabliere == id);
+    }
+
+    /// <summary>
+    /// Obetenir l'image d'une note
+    /// </summary>
+    /// <param name="id">Id de l'érablière</param>
+    /// <param name="noteId">Id de la note</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    /// <response code="200">Retourne l'image de la note</response>
+    /// <response code="404">La note n'existe pas</response>
+    /// <response code="500">Erreur interne</response>
+    /// <response code="400">L'érablière ne possède pas la note</response>
+    /// <response code="401">Non autorisé</response>
+    /// <response code="403">Interdit</response>
+    [HttpGet("{noteId}/Image")]
+    [ProducesResponseType(200, Type = typeof(FileStreamResult))]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> ObtenirImage(Guid id, Guid noteId, CancellationToken token)
+    {
+        var note = await _depot.Notes.FindAsync([noteId], token);
+
+        if (note == null)
+        {
+            return NotFound();
+        }
+
+        if (note.IdErabliere != id)
+        {
+            return BadRequest("L'érablière ne possède pas la note");
+        }
+
+        if (note.File == null)
+        {
+            return NoContent();
+        }
+
+        return File(note.File, $"image/{note.FileExtension ?? "jpg"}");
     }
 
     /// <summary>
@@ -202,7 +241,7 @@ public class NotesController : ControllerBase
     [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid noteId, CancellationToken token)
     {
-        var entity = await _depot.Notes.FindAsync(new object?[] { noteId }, token);
+        var entity = await _depot.Notes.FindAsync([noteId], token);
 
         if (entity != null && entity.IdErabliere == id)
         {
