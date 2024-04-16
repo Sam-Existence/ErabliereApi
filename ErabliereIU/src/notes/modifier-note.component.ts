@@ -61,7 +61,12 @@ export class ModifierNoteComponent implements OnInit {
 
     generalError?: string;
 
-    today = new Date().toISOString().split('T')[0];
+    // today = new Date().toISOString().split('T')[0];
+    date = new Date();
+    day = ("0" + this.date.getDate()).slice(-2);
+    month = ("0" + (this.date.getMonth() + 1)).slice(-2);
+    year = this.date.getFullYear();
+    today = `${this.year}-${this.month}-${this.day}`;
 
     onSubmit() {
 

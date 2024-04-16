@@ -15,7 +15,7 @@ export class AjouterNoteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
-    
+
     ngOnInit(): void {
         this.initializeForm();
         this.noteForm.controls['reminderEnabled'].valueChanges.subscribe((value) => {
@@ -34,12 +34,16 @@ export class AjouterNoteComponent implements OnInit {
             reminderDate: new FormControl(''),
         });
     }
-    
+
     display:boolean = false;
 
     displayReminder:boolean = false;
 
-    today = new Date().toISOString().split('T')[0];
+    date = new Date();
+    day = ("0" + this.date.getDate()).slice(-2);
+    month = ("0" + (this.date.getMonth() + 1)).slice(-2);
+    year = this.date.getFullYear();
+    today = `${this.year}-${this.month}-${this.day}`;
 
     error: string | null = null;
 
