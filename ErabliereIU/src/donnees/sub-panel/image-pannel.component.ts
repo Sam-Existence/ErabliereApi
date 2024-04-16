@@ -15,8 +15,8 @@ import { GetImageInfo } from 'src/model/imageInfo';
                         <input 
                             type="text" 
                             class="form-control form-control-sm" 
-                            placeholder="Search" 
-                            aria-label="Search" 
+                            placeholder="Rechercher" 
+                            aria-label="Rechercher" 
                             aria-describedby="basic-addon1"
                             (keyup)="searchFromInput($event)">
                     </span>
@@ -24,10 +24,7 @@ import { GetImageInfo } from 'src/model/imageInfo';
             </div>
             <div class="card-body">
                 <div class="row">
-                    <!-- Previous Button -->
                     <button *ngIf="skip" class="btn btn-light btn-sm position-absolute top-50 start-0 translate-middle-y" (click)="previousImage()" style="width: 5%;">&lt;</button>
-
-                    <!-- Next Button -->
                     <button class="btn btn-light btn-sm position-absolute top-50 end-0 translate-middle-y" (click)="nextImage()" style="width: 5%;">&gt;</button>
 
                     <div class="col-md-6" *ngFor="let image of images; let ls = index">
@@ -46,13 +43,15 @@ import { GetImageInfo } from 'src/model/imageInfo';
         <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
                 <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ modalTitle }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
                     <div class="modal-body">
-                        <!-- Previous Button -->
                         <button *ngIf="modalSkip" class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="modalPreviousImage()">&lt;</button>
-
-                        <!-- Next Button -->
                         <button *ngIf="modalHasNext" class="btn btn-light position-absolute top-50 end-0 translate-middle-y" (click)="modalNextImage()">&gt;</button>
-
                         <img 
                             [src]="'data:image/png;base64,' + selectedImage" 
                             class="img-fluid modal-image-content" 
@@ -174,6 +173,7 @@ export class ImagePanelComponent implements OnInit {
     modalTake: number = 1;
     modalSkip: number = 0;
     modalHasNext: boolean = true;
+    modalTitle: string = "Image";
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -219,12 +219,13 @@ export class ImagePanelComponent implements OnInit {
 
     fetchModalImages() {
         console.log("fetch image for", this.idErabliereSelectionnee);
-        this.api.getImages(this.idErabliereSelectionnee, this.modalTake, this.modalSkip).then(images => {
+        this.api.getImages(this.idErabliereSelectionnee, this.modalTake, this.modalSkip, this.search).then(images => {
             if (images.length > 0) {
                 this.selectedImage = images[0].images;
                 this.selectedImageMetadata = images[0];
                 this.azureImageAPIInfo = JSON.stringify(JSON.parse(images[0].azureImageAPIInfo ?? ""), null, 2);
                 this.modalHasNext = true;
+                this.modalTitle = images[0].name ?? "Image";
             }
             else {
                 this.modalHasNext = false;
@@ -259,6 +260,7 @@ export class ImagePanelComponent implements OnInit {
         if (this.modalSkip < 0) {
             this.modalSkip = 0;
         }
+        this.modalTitle = image.name ?? "Image";
     }
 
     searchFromInput(event: any) {
