@@ -207,6 +207,7 @@ export class ErabliereApi {
         let odataOptions = "?$orderby=NoteDate desc";
             odataOptions += "&$skip=" + skip;
             odataOptions += top ? "&$top=" + top : "";
+            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter";
         const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
         return rtn ?? [];
     }
@@ -216,6 +217,11 @@ export class ErabliereApi {
         headers = headers.set('Accept', 'application/json');
         const rtn = await this._httpClient.get<number>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/quantite", { headers: headers }).toPromise();
         return rtn ?? 0;
+    }
+
+    async getNoteImage(idErabliere: any, id: any) {
+        let headers = await this.getHeaders();
+        return await this._httpClient.get(this._environmentService.apiUrl + '/erablieres/' + idErabliere + "/notes/" + id + "/image", { headers: headers, responseType: 'arraybuffer' }).toPromise();
     }
 
     async postNote(idErabliereSelectionnee:any, note:Note): Promise<Note> {

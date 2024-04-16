@@ -71,6 +71,22 @@ export class NotesComponent implements OnInit {
                     if (n.fileExtension == 'csv') {
                         n.decodedTextFile = atob(n.file ?? "");
                     }
+                    else {
+                        this._api.getNoteImage(n.idErabliere, n.id).then((data?: ArrayBuffer) => {
+                            if (data) {
+                                let binary = '';
+                                let bytes = new Uint8Array(data);
+                                let len = bytes.byteLength;
+                                for (let i = 0; i < len; i++) {
+                                    binary += String.fromCharCode(bytes[i]);
+                                }
+                                n.file = btoa(binary);
+                            }
+
+                        }).catch(error => {
+                            console.error(error);
+                        });
+                    }
                 });
 
                 this.notes = notes;
