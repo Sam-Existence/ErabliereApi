@@ -114,7 +114,7 @@ public class NotesController : ControllerBase
             return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
         }
 
-        if (postNote.File != null && !postNote.File.IsValidBase64())
+        if (postNote.File != null && !postNote.IsValidBase64())
         {
             return BadRequest("Le fichier n'est pas en base64 valide");
         }
@@ -132,6 +132,8 @@ public class NotesController : ControllerBase
         var entite = await _depot.Notes.AddAsync(_mapper.Map<Note>(postNote), token);
 
         await _depot.SaveChangesAsync(token);
+
+        entite.Entity.File = null;
 
         return Ok(entite.Entity);
     }

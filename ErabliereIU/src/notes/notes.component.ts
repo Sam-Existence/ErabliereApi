@@ -57,7 +57,6 @@ export class NotesComponent implements OnInit {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
             if (this.idErabliereSelectionee) {
-                this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
                 this.loadNotes();
             }
         });
@@ -65,6 +64,7 @@ export class NotesComponent implements OnInit {
     }
 
     loadNotes() {
+        this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(notes => {
                 notes.forEach(n => {
