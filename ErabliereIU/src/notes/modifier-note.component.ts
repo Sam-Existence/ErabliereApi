@@ -61,11 +61,10 @@ export class ModifierNoteComponent implements OnInit {
 
     generalError?: string;
 
-    // today = new Date().toISOString().split('T')[0];
     date = new Date();
-    day = ("0" + this.date.getDate()).slice(-2);
-    month = ("0" + (this.date.getMonth() + 1)).slice(-2);
-    year = this.date.getFullYear();
+    year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(this.date);
+    month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.date);
+    day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.date);
     today = `${this.year}-${this.month}-${this.day}`;
 
     onSubmit() {
