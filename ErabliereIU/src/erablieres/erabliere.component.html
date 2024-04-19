@@ -1,10 +1,10 @@
 <div class="row">
     <div class="col-md-10 order-2 order-md-1">
-        <donnees-panel *ngIf="erabliere?.afficherTrioDonnees == true || erabliere?.afficherSectionDompeux == true" 
+        <donnees-panel *ngIf="erabliere?.afficherTrioDonnees === true || erabliere?.afficherSectionDompeux === true"
                     [initialErabliere]="erabliere"
                     [erabliereSubject]="resetErabliere"></donnees-panel>
         <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
-        <barils-panel *ngIf="erabliere?.afficherSectionBaril == true" 
+        <barils-panel *ngIf="erabliere?.afficherSectionBaril === true" 
                     [erabliereId]="erabliere?.id"></barils-panel>
     </div>
     <div class="col-md-2 order-1 order-md-2">
