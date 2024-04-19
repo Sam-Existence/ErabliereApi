@@ -8,67 +8,67 @@
       "applicationUrl": "https://0.0.0.0:5001;http://0.0.0.0:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        //"USE_CORS": "True",
-        //"CORS_HEADERS": "*",
-        //"CORS_METHODS": "*",
-        //"CORS_ORIGINS": "*",
-        //"USE_SQL": "true",
-        //"SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPIV2;Trusted_Connection=True;",
-        //"SQL_USE_STARTUP_MIGRATION": "true",
-        //"DEBUG_HEADERS": "false",
-        //"LOG_SQL": "-", // Console, -
+        "USE_CORS": "True",
+        "CORS_HEADERS": "*",
+        "CORS_METHODS": "*",
+        "CORS_ORIGINS": "*",
+        "USE_SQL": "true",
+        "SQL_CONNEXION_STRING": "Server=(localdb)\\mssqllocaldb;Database=ErabliereAPIV2;Trusted_Connection=True;",
+        "SQL_USE_STARTUP_MIGRATION": "true",
+        "DEBUG_HEADERS": "false",
+        "LOG_SQL": "-", // Console, -
 
-        //// Swagger
-        ////"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
+        // Swagger
+        //"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
 
-        //// Utiliser l'authentification
-        //"USE_AUTHENTICATION": "true",
+        // Utiliser l'authentification
+        "USE_AUTHENTICATION": "true",
 
-        //// Configuration swagger active avec USE_AUTHENTICATION: true
-        //"USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
-        //"USE_SWAGGER_PKCE": "true",
+        // Configuration swagger active avec USE_AUTHENTICATION: true
+        "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
+        "USE_SWAGGER_PKCE": "true",
 
-        //// IdentityServeur config
-        //// "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
-        ////"SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
-        ////"OIDC_CLIENT_ID": "swagger-dev",
-        ////"OIDC_CLIENT_PASSWORD": "",
-        ////"OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
-        ////"OIDC_AUDIENCE": "http://erabliere-api",
-        ////"OIDC_AUTHORITY": "https://localhost:5005",
-        ////"OIDC_SCOPES": "erabliereapi",
+        // IdentityServeur config
+        // "SWAGGER_AUTHORIZATION_URL": "https://localhost:5005/connect/authorize",
+        //"SWAGGER_TOKEN_URL": "https://localhost:5005/connect/token",
+        //"OIDC_CLIENT_ID": "swagger-dev",
+        //"OIDC_CLIENT_PASSWORD": "",
+        //"OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
+        //"OIDC_AUDIENCE": "http://erabliere-api",
+        //"OIDC_AUTHORITY": "https://localhost:5005",
+        //"OIDC_SCOPES": "erabliereapi",
 
-        //// AzureAD config,
-        //// "SWAGGER_AUTHORIZATION_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize",
-        //// "SWAGGER_TOKEN_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token",
-        //// "OIDC_CLIENT_ID": "<swagger-client-id>",
-        //// "OIDC_CLIENT_PASSWORD": "",
-        //// "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
-        //// "OIDC_AUDIENCE": "api://<client-id>",
-        //// "OIDC_AUTHORITY": "https://login.microsoftonline.com/<tenant-id>/",
-        //// "OIDC_SCOPES": "api://<client-id>/ErabliereAPI",
-        //// "AzureAD:ClientId": "<client-id>",
-        //// "AzureAD:TenantId": "<tenant-id>",
-        //// "AzureAD:TenantIdPrincipal": "",
+        // AzureAD config,
+        // "SWAGGER_AUTHORIZATION_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/authorize",
+        // "SWAGGER_TOKEN_URL": "https://login.microsoftonline.com/<tenant-id>/oauth2/v2.0/token",
+        // "OIDC_CLIENT_ID": "<swagger-client-id>",
+        // "OIDC_CLIENT_PASSWORD": "",
+        // "OAUTH2_REDIRECT_URL": "https://localhost:5001/api/oauth2-redirect.html",
+        // "OIDC_AUDIENCE": "api://<client-id>",
+        // "OIDC_AUTHORITY": "https://login.microsoftonline.com/<tenant-id>/",
+        // "OIDC_SCOPES": "api://<client-id>/ErabliereAPI",
+        // "AzureAD:ClientId": "<client-id>",
+        // "AzureAD:TenantId": "<tenant-id>",
+        // "AzureAD:TenantIdPrincipal": "",
 
-        //// Alerte fonctonnality
-        //// "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
-        //// "SMS_CONFIG_PATH": "e:\\config\\smsConfig.json",
+        // Alerte fonctonnality
+        // "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
+        // "SMS_CONFIG_PATH": "e:\\config\\smsConfig.json",
 
-        //// Profilage
-        //"MiniProfiler.Enable": "false",
-        //"MiniProlifer.EntityFramework.Enable": "false",
+        // Profilage
+        "MiniProfiler.Enable": "false",
+        "MiniProlifer.EntityFramework.Enable": "false",
 
-        //// Kestrel
-        //"Kestrel:Limits:MaxRequestHeaderCount": "80",
-        //"Kestrel:Limits:MinRequestBodyDataRate:BytesPerSecond": "300",
+        // Kestrel
+        "Kestrel:Limits:MaxRequestHeaderCount": "80",
+        "Kestrel:Limits:MinRequestBodyDataRate:BytesPerSecond": "300",
 
-        //// Stripe
-        ////"Stripe:ApiKey": ""
+        // Stripe
+        //"Stripe:ApiKey": ""
 
-        //// ChaosEngineering
-        //"USE_CHAOS_ENGINEERING": "false",
-        //"ChaosEngineeringPercent": "0.1"
+        // ChaosEngineering
+        "USE_CHAOS_ENGINEERING": "false",
+        "ChaosEngineeringPercent": "0.1"
       }
     }
   }
