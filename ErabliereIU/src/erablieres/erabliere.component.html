@@ -4,7 +4,7 @@
                     [initialErabliere]="erabliere"
                     [erabliereSubject]="resetErabliere"></donnees-panel>
         <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
-        <barils-panel *ngIf="erabliere?.afficherSectionBaril === true" 
+        <barils-panel *ngIf="erabliere?.afficherSectionBaril === true"
                     [erabliereId]="erabliere?.id"></barils-panel>
     </div>
     <div class="col-md-2 order-1 order-md-2">
