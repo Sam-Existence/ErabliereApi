@@ -1,4 +1,4 @@
-﻿{
+{
   "$schema": "http://json.schemastore.org/launchsettings.json",
   "profiles": {
     "ErabliereApi": {
@@ -49,6 +49,7 @@
         // "OIDC_SCOPES": "api://<client-id>/ErabliereAPI",
         // "AzureAD:ClientId": "<client-id>",
         // "AzureAD:TenantId": "<tenant-id>",
+        // "AzureAD:TenantIdPrincipal": "",
 
         // Alerte fonctonnality
         // "EMAIL_CONFIG_PATH": "e:\\config\\emailConfig.json",
