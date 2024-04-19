@@ -25,7 +25,7 @@ export class RappelComponent {
         this.modalInstance = modalInstance;
     }
 
-    getExcerpt(text: string | undefined, length: number = 100): string {
+    getExcerpt(text: string, length: number = 100): string {
     return text && text.length > length ? text.slice(0, length) + '...' : text || '';
     }
 }

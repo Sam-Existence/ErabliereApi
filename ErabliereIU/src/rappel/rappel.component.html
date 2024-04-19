@@ -1,7 +1,7 @@
 <div class="card rappel h-100 text-decoration-none text-dark" [attr.data-bs-toggle]="'modal'" [attr.data-bs-target]="'#modalRappel' + index">
 <h5 class="card-header">{{note.title}}</h5>
     <div class="card-body">
-        <p class="card-text">{{getExcerpt(note.text)}}</p>
+        <p class="card-text" *ngIf="note.text && note.text.length > 0">{{getExcerpt(note.text)}}</p>
     </div>
 </div>
 
