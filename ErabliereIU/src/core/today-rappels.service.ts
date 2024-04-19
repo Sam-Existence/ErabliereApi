@@ -12,13 +12,12 @@ export class RappelService {
         const notes = await this.erabliereapiService.getNotes(idErabliereSelectionnee, skip, top);
 
         const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
+        const todayStr = today.toISOString().split('T')[0];
         const todayNotes = notes.filter(note => {
-            const reminderDate = note.reminderDate ? new Date(note.reminderDate) : undefined;
+            const reminderDate = note.reminderDate ? new Date(note.reminderDate) : null;
             if (reminderDate) {
-                reminderDate.setHours(0, 0, 0, 0);
-                return reminderDate.getTime() === today.getTime();
+                const reminderDateStr = reminderDate.toISOString().split('T')[0];
+                return reminderDateStr === todayStr;
             }
             return false;
         });
