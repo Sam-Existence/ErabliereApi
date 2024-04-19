@@ -96,7 +96,7 @@ export class AjouterNoteComponent implements OnInit {
                 this.note.reminderDate = date.toISOString();
             }
             else {
-                this.note.reminderDate = undefined;
+                this.note.reminderDate = "";
             }
             this._api.postNote(this.idErabliereSelectionee, this.note)
                      .then(r => {
