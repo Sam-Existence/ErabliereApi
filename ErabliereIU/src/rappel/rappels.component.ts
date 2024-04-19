@@ -21,12 +21,9 @@ export class RappelsComponent {
   constructor(private erabliereapiService: ErabliereApi) { }
 
   async ngOnChanges(changes: SimpleChanges) {
-    console.log('ngOnChanges called');
     if (changes.idErabliereSelectionnee && changes.idErabliereSelectionnee.currentValue) {
-      console.log('idErabliereSelectionnee changed', this.idErabliereSelectionnee);
       try {
         this.todayReminders = await this.getTodaysReminders(this.idErabliereSelectionnee);
-        console.log('todayReminders', this.todayReminders);
       } catch (error) {
         console.error('Error getting today\'s reminders', error);
       }
