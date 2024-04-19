@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Localization;
 
 namespace ErabliereApi.Controllers;
 
@@ -30,6 +31,7 @@ public class ErablieresController : ControllerBase
     private readonly IConfiguration _config;
     private readonly IDistributedCache _cache;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IStringLocalizer<ErablieresController> _localizer;
 
     /// <summary>
     /// Constructeur par initialisation
@@ -39,18 +41,21 @@ public class ErablieresController : ControllerBase
     /// <param name="config">Permet d'accéder au configuration de l'api</param>
     /// <param name="cache">Cache distribué</param>
     /// <param name="serviceProvider">Service scope</param>
+    /// <param name="localizer">Localisateur de ressource</param>
     public ErablieresController(
         ErabliereDbContext context, 
         IMapper mapper, 
         IConfiguration config, 
         IDistributedCache cache,
-        IServiceProvider serviceProvider)
+        IServiceProvider serviceProvider,
+        IStringLocalizer<ErablieresController> localizer)
     {
         _context = context;
         _mapper = mapper;
         _config = config;
         _cache = cache;
         _serviceProvider = serviceProvider;
+        _localizer = localizer;
     }
 
     private const int TakeErabliereNbMax = 20;
@@ -159,16 +164,22 @@ public class ErablieresController : ControllerBase
     {
         if (string.IsNullOrWhiteSpace(postErabliere.Nom))
         {
-            return BadRequest($"Le nom de l'érablière ne peut pas être vide.");
+            ModelState.AddModelError(nameof(postErabliere.Nom), _localizer["NomVide"]);
+
+            return BadRequest(new ValidationProblemDetails(ModelState));
         }
         if (await _context.Erabliere.AnyAsync(e => e.Nom == postErabliere.Nom, token))
         {
-            return BadRequest($"L'érablière nommé '{postErabliere.Nom}' existe déjà");
+            ModelState.AddModelError(nameof(postErabliere.Nom), string.Format(_localizer["NomExiste"], postErabliere.Nom));
+
+            return BadRequest(new ValidationProblemDetails(ModelState));
         }
         if (postErabliere.Id != null &&
-            (await _context.Erabliere.FindAsync([postErabliere.Id], token)) != null) {
-                
-            return Conflict($"L'érablière avec l'id '{postErabliere.Id}' existe déjà");
+            (await _context.Erabliere.FindAsync([postErabliere.Id], token)) != null) 
+        {                
+            ModelState.AddModelError(nameof(postErabliere.Id), string.Format(_localizer["IdExiste"], postErabliere.Id));
+        
+            return Conflict(new ValidationProblemDetails(ModelState));
         }
 
         var erabliere = _mapper.Map<Erabliere>(postErabliere);
@@ -190,7 +201,9 @@ public class ErablieresController : ControllerBase
             
             if (postErabliere.IsPublic != erabliere.IsPublic)
             {
-                return BadRequest("Impossible de créer une érablière non pubique sans authentification. Veillez assigner la propriété IsPublic à true.");
+                ModelState.AddModelError("IsPublic", _localizer["EnforceIsPublic"]);
+
+                return BadRequest(new ValidationProblemDetails(ModelState));
             }
         }
 

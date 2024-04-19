@@ -27,19 +27,19 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     /// <summary>
     /// Le titre de la note
     /// </summary>
-    [MaxLength(200)]
+    [MaxLength(200, ErrorMessage = "Le titre de la note ne peut pas dépasser 200 caractères.")]
     public string? Title { get; set; }
 
     /// <summary>
     /// Le text de la note
     /// </summary>
-    [MaxLength(2000)]
+    [MaxLength(2000, ErrorMessage = "Le text de la note ne peut pas dépasser 2000 caractères.")]
     public string? Text { get; set; }
 
     /// <summary>
     /// L'extension du fichier
     /// </summary>
-    [MaxLength(20)]
+    [MaxLength(20, ErrorMessage = "L'extension du fichier ne peut pas dépasser 20 caractères.")]
     public string? FileExtension { get; set; }
 
     /// <summary>
@@ -61,7 +61,7 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     /// Filtre de notification. Permet à la note d'afficher comme une notification
     /// si le filtre est évaluer à vrai.
     /// </summary>
-    [MaxLength(100)]
+    [MaxLength(100, ErrorMessage = "Le filtre de notification ne peut pas dépasser 100 caractères.")]
     public string? NotificationFilter { get; set; }
 
     /// <inheritdoc />

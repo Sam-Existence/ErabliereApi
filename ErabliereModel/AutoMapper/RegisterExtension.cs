@@ -61,7 +61,7 @@ public static class RegisterExtension
                   .ReverseMap()
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
             config.CreateMap<PostNote, Note>()
-                  .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.FromBase64String(p.File) : null))
+                  .ForMember(d => d.File, o => o.MapFrom(p => p.FileBytes != null ? p.FileBytes : p.File != null ? Convert.FromBase64String(p.File) : null))
                   .ReverseMap()
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
             config.CreateMap<Note, PostNoteMultipartResponse>()

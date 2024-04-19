@@ -57,7 +57,6 @@ export class NotesComponent implements OnInit {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
             if (this.idErabliereSelectionee) {
-                this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
                 this.loadNotes();
             }
         });
@@ -65,11 +64,28 @@ export class NotesComponent implements OnInit {
     }
 
     loadNotes() {
+        this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(notes => {
                 notes.forEach(n => {
                     if (n.fileExtension == 'csv') {
                         n.decodedTextFile = atob(n.file ?? "");
+                    }
+                    else {
+                        this._api.getNoteImage(n.idErabliere, n.id).then((data?: ArrayBuffer) => {
+                            if (data) {
+                                let binary = '';
+                                let bytes = new Uint8Array(data);
+                                let len = bytes.byteLength;
+                                for (let i = 0; i < len; i++) {
+                                    binary += String.fromCharCode(bytes[i]);
+                                }
+                                n.file = btoa(binary);
+                            }
+
+                        }).catch(error => {
+                            console.error(error);
+                        });
                     }
                 });
 
