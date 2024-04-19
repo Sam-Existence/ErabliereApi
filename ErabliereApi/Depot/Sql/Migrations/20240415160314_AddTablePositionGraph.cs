@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace ErabliereApi.Depot.Sql.Migrations
+namespace Depot.Sql.Migrations
 {
     /// <summary>
     /// Ajout de la table pour suavegarder les positions des graphiques
