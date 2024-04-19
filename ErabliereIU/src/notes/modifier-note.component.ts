@@ -26,8 +26,7 @@ export class ModifierNoteComponent implements OnInit {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
-                    this.noteForm.controls['reminderDate'].setValue(this.note.reminderDate ? this.note.reminderDate.toString().split('T')[0] : '');
-                }
+                    this.noteForm.controls['reminderDate'].setValue(this.note.reminderDate ? new Date(this.note.reminderDate).toISOString().split('T')[0] : '');                }
             }
         });
     }
@@ -85,7 +84,7 @@ export class ModifierNoteComponent implements OnInit {
             else {
                 this.note.noteDate = undefined;
             }
-            if (this.noteForm.controls['reminderDate'].value != "") {
+            if (this.noteForm.controls['reminderDate'].value !== "") {
                 this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
             }
             else {
