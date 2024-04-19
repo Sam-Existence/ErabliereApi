@@ -70,7 +70,7 @@ public class ErablieresController : ControllerBase
     /// <param name="token">Jeton d'annulation de la requête</param>
     /// <returns>Une liste d'érablière</returns>
     [HttpGet]
-    [EnableQuery(MaxTop = TakeErabliereNbMax)]
+    [SecureEnableQuery(MaxTop = TakeErabliereNbMax)]
     [AllowAnonymous]
     public async Task<IQueryable<Erabliere>> ListerAsync([FromQuery] bool my, CancellationToken token)
     {

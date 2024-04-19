@@ -8,7 +8,7 @@ namespace ErabliereApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]/[action]")]
-[Authorize(Roles = "ErabliereCalls")]
+[Authorize(Roles = "ErabliereCalls", Policy = "TenantIdPrincipal")]
 public class CallsController : ControllerBase
 {
     private readonly IConfiguration _config;
