@@ -89,7 +89,7 @@ export class ModifierNoteComponent implements OnInit {
                 this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
             }
             else {
-                this.note.reminderDate = undefined;
+                this.note.reminderDate = "";
             }
             this._api.putNote(this.idErabliereSelectionee, this.note)
                 .then(r => {
