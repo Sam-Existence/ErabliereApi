@@ -22,7 +22,9 @@ export class RappelsComponent {
     constructor(private rappelService: RappelService) { }
 
     async ngOnChanges(changes: SimpleChanges) {
-        if (changes.idErabliereSelectionnee && changes.idErabliereSelectionnee.currentValue) {
+        if (changes.idErabliereSelectionnee &&
+            changes.idErabliereSelectionnee.currentValue !== changes.idErabliereSelectionnee.previousValue &&
+            changes.idErabliereSelectionnee.currentValue) {
             try {
                 this.todayReminders = await this.rappelService.getTodaysReminders(this.idErabliereSelectionnee);
             } catch (error) {
