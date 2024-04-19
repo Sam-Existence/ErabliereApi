@@ -1,4 +1,12 @@
-import {Component, ElementRef, Input, ViewChild, OnInit, AfterViewInit} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    ViewChild,
+    AfterContentChecked,
+    Output,
+    EventEmitter
+} from '@angular/core';
 import { Note } from 'src/model/note';
 import { Modal } from "bootstrap";
 
@@ -9,34 +17,22 @@ import { Modal } from "bootstrap";
   templateUrl: './modal-rappel.component.html',
   styleUrl: './modal-rappel.component.css'
 })
-export class ModalRappelComponent implements AfterViewInit {
+export class ModalRappelComponent implements AfterContentChecked {
     @Input() note: Note;
     @ViewChild('modalRappel') modalRappel!: ElementRef;
     private modalInstance: any;
     @Input() index!: number;
+    @Output() modalInitialized = new EventEmitter<Modal>();
 
     constructor() {
         this.note = new Note();
     }
 
-    ngAfterViewInit(): void {
-        if (this.modalRappel) {
+    ngAfterContentChecked(): void {
+        if (this.modalRappel && !this.modalInstance) {
             const modalElement = this.modalRappel.nativeElement;
             this.modalInstance = new Modal(modalElement);
-        } else {
-            console.error('modalRappel is not defined');
-        }
-    }
-
-    openModal(): void {
-        if (!this.modalInstance && this.modalRappel) {
-            const modalElement = this.modalRappel.nativeElement;
-            this.modalInstance = new Modal(modalElement);
-        }
-        if (this.modalInstance) {
-            this.modalInstance.show();
-        } else {
-            console.error('Modal instance is not defined');
+            this.modalInitialized.emit(this.modalInstance);
         }
     }
 }
