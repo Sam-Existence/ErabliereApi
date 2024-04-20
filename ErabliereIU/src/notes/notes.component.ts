@@ -67,6 +67,9 @@ export class NotesComponent implements OnInit {
         this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(async notes => {
+                this.notes = notes;
+                this.error = undefined;
+
                 for (let i = 0; i < notes.length; i++) {
                     let n = notes[i];
                     if (n.fileExtension == 'csv') {
@@ -91,9 +94,6 @@ export class NotesComponent implements OnInit {
                         }
                     }
                 }
-
-                this.notes = notes;
-                this.error = undefined;
             })
             .catch(errorBody => {
                 this.notes = [];
