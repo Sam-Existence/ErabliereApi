@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ActivatedRoute } from '@angular/router';
 import {PaginationComponent} from "../pagination/pagination.component";
+import { ca } from 'date-fns/locale';
 
 @Component({
     selector: 'notes',
@@ -65,13 +66,16 @@ export class NotesComponent implements OnInit {
     loadNotes() {
         this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
-            .then(notes => {
-                notes.forEach(n => {
+            .then(async notes => {
+                for (let i = 0; i < notes.length; i++) {
+                    let n = notes[i];
                     if (n.fileExtension == 'csv') {
                         n.decodedTextFile = atob(n.file ?? "");
                     }
                     else {
-                        this._api.getNoteImage(n.idErabliere, n.id).then((data?: ArrayBuffer) => {
+                        try {
+                            let data = await this._api.getNoteImage(n.idErabliere, n.id);
+
                             if (data) {
                                 let binary = '';
                                 let bytes = new Uint8Array(data);
@@ -81,12 +85,12 @@ export class NotesComponent implements OnInit {
                                 }
                                 n.file = btoa(binary);
                             }
-
-                        }).catch(error => {
-                            console.error(error);
-                        });
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
                     }
-                });
+                }
 
                 this.notes = notes;
                 this.error = undefined;
