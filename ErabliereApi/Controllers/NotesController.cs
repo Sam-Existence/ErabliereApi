@@ -82,6 +82,8 @@ public class NotesController : ControllerBase
         {
             return NoContent();
         }
+        
+        Response.Headers.Append("Cache-Control", "private, max-age=2592000");
 
         return File(note.File, $"image/{note.FileExtension ?? "jpg"}");
     }
