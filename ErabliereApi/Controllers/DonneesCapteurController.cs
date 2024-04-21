@@ -9,6 +9,7 @@ using ErabliereApi.Donnees.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace ErabliereApi.Controllers;
 
@@ -62,9 +63,13 @@ public class DonneesCapteurController : ControllerBase
         {
             if (ddr.HasValue)
             {
-                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString());
+                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString("s", CultureInfo.InvariantCulture));
             }
-            HttpContext.Response.Headers.Append("x-dde", donnees[^1].D.ToString());
+
+            if (donnees[^1].D.HasValue)
+            {
+                HttpContext.Response.Headers.Append("x-dde", donnees[^1].D!.Value.ToString("s", CultureInfo.InvariantCulture));
+            }
         }
 
         return donnees;

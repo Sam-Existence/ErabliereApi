@@ -11,6 +11,7 @@ using ErabliereApi.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 using System.Net.Mime;
 
 namespace ErabliereApi.Controllers;
@@ -101,9 +102,13 @@ public class DonneesController : ControllerBase
         {
             if (ddr.HasValue)
             {
-                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString());
+                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString("s", CultureInfo.InvariantCulture));
             }
-            HttpContext.Response.Headers.Append("x-dde", list[^1].D.ToString());
+
+            if (list[^1].D.HasValue)
+            {
+                HttpContext.Response.Headers.Append("x-dde", list[^1].D!.Value.ToString("s", CultureInfo.InvariantCulture));
+            }
         }
 
         return list;
