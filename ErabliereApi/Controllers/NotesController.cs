@@ -213,6 +213,12 @@ public class NotesController : ControllerBase
                 entity.NoteDate = putNote.NoteDate;
             }
 
+            if (putNote.ReminderDate != null)
+            {
+                entity.ReminderDate = putNote.ReminderDate;
+            }
+
+
             if (putNote.Text != null)
             {
                 entity.Text = putNote.Text;

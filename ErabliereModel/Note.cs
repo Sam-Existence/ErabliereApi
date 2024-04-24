@@ -64,6 +64,11 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     [MaxLength(100, ErrorMessage = "Le filtre de notification ne peut pas dépasser 100 caractères.")]
     public string? NotificationFilter { get; set; }
 
+    /// <summary>
+    /// Date de rappel de la note
+    /// </summary>
+    public DateTimeOffset? ReminderDate { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(Note? other)
     {
