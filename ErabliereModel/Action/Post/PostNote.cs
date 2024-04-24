@@ -59,32 +59,9 @@ namespace ErabliereApi.Donnees.Action.Post
         /// </summary>
         public DateTimeOffset? NoteDate { get; set; }
 
-
         /// <summary>
-        /// Validation du fichier en base64 avec stockage des bytes
-        /// sur la propriété FileBytes
+        /// Date de rappel de la note
         /// </summary>
-        public bool IsValidBase64()
-        {
-            if (File == null)
-            {
-                FileBytes = null;
-
-                return false;
-            }
-
-            try
-            {
-                FileBytes = Convert.FromBase64String(File);
-
-                return true;
-            }
-            catch
-            {
-                FileBytes = null;
-
-                return false;
-            }
-        }
+        public DateTimeOffset? ReminderDate { get; set; }
     }
 }

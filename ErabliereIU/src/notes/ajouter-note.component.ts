@@ -4,6 +4,7 @@ import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, Reactive
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { NgIf } from "@angular/common";
+import * as console from "node:console";
 
 @Component({
     selector: 'ajouter-note',
@@ -12,12 +13,18 @@ import { NgIf } from "@angular/common";
     imports: [NgIf, ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
+    set displayReminder(value: boolean) {
+        this._displayReminder = value;
+    }
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
-    
+
     ngOnInit(): void {
         this.initializeForm();
+        this.noteForm.controls['reminderEnabled'].valueChanges.subscribe((value) => {
+            this._displayReminder = value;
+        });
     }
 
     initializeForm() {
@@ -27,10 +34,20 @@ export class AjouterNoteComponent implements OnInit {
             file: new FormControl(''),
             fileBase64: new FormControl(''),
             noteDate: new FormControl(''),
+            reminderEnabled: new FormControl(false),
+            reminderDate: new FormControl(''),
         });
     }
-    
+
     display:boolean = false;
+
+    private _displayReminder:boolean = false;
+
+    date = new Date();
+    year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(this.date);
+    month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.date);
+    day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.date);
+    today = `${this.year}-${this.month}-${this.day}`;
 
     error: string | null = null;
 
@@ -54,6 +71,13 @@ export class AjouterNoteComponent implements OnInit {
 
     }
 
+    // toggleReminder() {
+    //     this.displayReminder = this.noteForm.controls['reminderEnabled'].value;
+    // }
+    get displayReminder(): boolean {
+        return this.noteForm.controls['reminderEnabled'].value;
+    }
+
     onButtonAjouterClick() {
         this.display = true;
     }
@@ -73,6 +97,13 @@ export class AjouterNoteComponent implements OnInit {
             }
             else {
                 this.note.noteDate = undefined;
+            }
+            if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
+                let date = new Date(this.noteForm.controls['reminderDate'].value);
+                this.note.reminderDate = date.toISOString();
+            }
+            else {
+                this.note.reminderDate = "";
             }
             this._api.postNote(this.idErabliereSelectionee, this.note)
                      .then(r => {
