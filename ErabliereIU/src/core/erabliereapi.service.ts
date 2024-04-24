@@ -207,7 +207,7 @@ export class ErabliereApi {
         let odataOptions = "?$orderby=NoteDate desc";
             odataOptions += "&$skip=" + skip;
             odataOptions += top ? "&$top=" + top : "";
-            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter";
+            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter,reminderDate";
         const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
         return rtn ?? [];
     }
