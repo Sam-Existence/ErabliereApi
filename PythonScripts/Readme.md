@@ -69,3 +69,11 @@ ex:
 ```
 python3 getweather.py /home/ubuntu/.erabliereapi/acuweather.key 1365711 https://erabliereapi.freddycoder.com 00000000-0000-0000-0000-000000000000
 ```
+
+## image2textapi.py
+
+Documentation à venir
+
+```python
+
+```

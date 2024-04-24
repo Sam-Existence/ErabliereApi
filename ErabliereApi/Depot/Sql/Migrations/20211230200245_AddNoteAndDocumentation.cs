@@ -40,8 +40,7 @@ namespace Depot.Sql.Migrations
                     Text = table.Column<string>(type: "nvarchar(2000)", maxLength: 2000, nullable: true),
                     File = table.Column<byte[]>(type: "varbinary(max)", nullable: true),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    NoteDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    ReminderDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
+                    NoteDate = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true)
                 },
                 constraints: table =>
                 {
