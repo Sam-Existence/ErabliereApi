@@ -1,9 +1,11 @@
 ﻿using ErabliereApi.Extensions;
 using ErabliereApi.OperationFilter;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 using static System.Boolean;
 using static System.StringComparison;
 
@@ -14,6 +16,8 @@ namespace ErabliereApi;
 /// </summary>
 public static class Swagger
 {
+    static string? SwaggerJsonCache = null;
+
     /// <summary>
     /// Ajout de swagger
     /// </summary>
@@ -132,6 +136,42 @@ public static class Swagger
     /// </summary>
     public static IApplicationBuilder UtiliserSwagger(this IApplicationBuilder app, IConfiguration config)
     {
+        // add a middleware that will save the first swagger document in cache and then return it for subsequent request
+        app.Use(async (context, next) => {
+            if (context.Request.Path.StartsWithSegments("/api/v1/swagger.json"))
+            {
+                if (SwaggerJsonCache != null)
+                {
+                    context.Response.StatusCode = 200;
+                    context.Response.ContentType = "application/json";
+                    await context.Response.WriteAsync(SwaggerJsonCache ?? "");
+                    return;
+                }
+                else {
+                    // create a memory stream to store the response
+                    var originalBodyStream = context.Response.Body;
+                    using var responseBody = new MemoryStream();
+                    context.Response.Body = responseBody;
+                    await next(context);
+                    if (context.Response.StatusCode == 200 && 
+                        context.Request.Path.StartsWithSegments("/api/v1/swagger.json"))
+                    {
+                        // save the response in cache
+                        responseBody.Seek(0, SeekOrigin.Begin);
+                        var reader = new StreamReader(responseBody);
+                        var swaggerJson = await reader.ReadToEndAsync();
+                        SwaggerJsonCache = swaggerJson;
+                    }
+                    // copy the response stream to the original stream
+                    context.Response.Body.Seek(0, SeekOrigin.Begin);
+                    await context.Response.Body.CopyToAsync(originalBodyStream);
+                    context.Response.Body = originalBodyStream;
+                    return;
+                }
+            }
+            await next(context);
+        });
+
         app.UseSwagger(c =>
         {
             c.RouteTemplate = "api/{documentName}/swagger.json";
@@ -144,6 +184,7 @@ public static class Swagger
             c.DocumentTitle = "ÉrablièreAPI - Swagger";
             c.ConfigObject.DisplayRequestDuration = true;
             c.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.None);
+            c.EnableTryItOutByDefault();
 
             if (string.Equals(config["USE_SWAGGER_DARK_THEME"], TrueString, OrdinalIgnoreCase))
             {

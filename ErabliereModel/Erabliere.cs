@@ -19,14 +19,14 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// <summary>
     /// Le nom de l'érablière
     /// </summary>
-    [Required]
-    [MaxLength(50)]
+    [Required(ErrorMessage = "Le nom de l'érablière est requis.")]
+    [MaxLength(50, ErrorMessage = "Le nom de l'érablière ne peut pas dépasser 50 caractères.")]
     public string? Nom { get; set; }
 
     /// <summary>
     /// Addresse IP alloué à faire des opération d'écriture
     /// </summary>
-    [MaxLength(50)]
+    [MaxLength(50, ErrorMessage = "L'adresse IP ne peut pas dépasser 50 caractères.")]
     public string? IpRule { get; set; }
 
     /// <summary>
@@ -37,7 +37,7 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// <summary>
     /// Code postal, utiliser pour les fonctions de prédiction météo
     /// </summary>
-    [MaxLength(30)]
+    [MaxLength(30, ErrorMessage = "Le code postal ne peut pas dépasser 30 caractères.")]
     public string? CodePostal { get; set; }
 
     /// <summary>

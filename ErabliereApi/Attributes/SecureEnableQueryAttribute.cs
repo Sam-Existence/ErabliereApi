@@ -10,7 +10,10 @@ public class SecureEnableQueryAttribute : EnableQueryAttribute
     /// <inheritdoc />
     public override void ValidateQuery(HttpRequest request, ODataQueryOptions queryOpts)
     {
-        queryOpts.SelectExpand.Validator = new SecureExpandValidator();
+        if (queryOpts.SelectExpand is not null)
+        {
+            queryOpts.SelectExpand.Validator = new SecureExpandValidator();
+        }
         base.ValidateQuery(request, queryOpts);
     }
 }

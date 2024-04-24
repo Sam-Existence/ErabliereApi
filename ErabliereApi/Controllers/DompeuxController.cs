@@ -6,6 +6,7 @@ using ErabliereApi.Donnees.Action.Get;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace ErabliereApi.Controllers;
 
@@ -72,9 +73,13 @@ public class DompeuxController : ControllerBase
         {
             if (ddr.HasValue)
             {
-                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString());
+                HttpContext.Response.Headers.Append("x-ddr", ddr.Value.ToString("s", CultureInfo.InvariantCulture));
             }
-            HttpContext.Response.Headers.Append("x-dde", list[^1].T.ToString());
+
+            if (list[^1].T.HasValue)
+            {
+                HttpContext.Response.Headers.Append("x-dde", list[^1].T!.Value.ToString("s", CultureInfo.InvariantCulture));
+            }
         }
 
         return list;
