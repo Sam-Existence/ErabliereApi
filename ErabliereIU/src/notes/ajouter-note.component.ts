@@ -4,7 +4,6 @@ import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, Reactive
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { NgIf } from "@angular/common";
-import * as console from "node:console";
 
 @Component({
     selector: 'ajouter-note',
