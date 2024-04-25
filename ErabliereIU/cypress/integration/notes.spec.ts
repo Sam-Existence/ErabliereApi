@@ -49,14 +49,16 @@ describe("Notes page", { testIsolation: false }, () => {
         const content = `Note content ${Math.floor(Math.random() * 1000)}`;
         const date = new Date();
 
-        notesPage.addNote(title, content, toISO8601(date));
+        const dstring = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`;
+
+        notesPage.addNote(title, content, dstring);
 
         cy.wait(1000);
 
         // validate that note is added
         notesPage.getNoteTitle().should('have.text', title);
         notesPage.getNoteDescription().should('have.text', content);
-        notesPage.getNoteDate().should('have.text', toISO8601(date));
+        notesPage.getNoteDate().should('have.text', dstring);
     });
 
     function toISO8601(date: Date): string {
