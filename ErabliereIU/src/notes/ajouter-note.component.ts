@@ -116,7 +116,7 @@ export class AjouterNoteComponent implements OnInit {
                         if (e.status == 400) {
                             this.errorObj = e
                             this.fileToLargeErrorMessage = undefined;
-                            this.generalError = undefined;
+                            this.generalError = this.errorObj.error.errors['postNote'];
                         }
                         else if (e.status == 413) {
                             this.errorObj = undefined;
@@ -126,7 +126,7 @@ export class AjouterNoteComponent implements OnInit {
                         else {
                             this.errorObj = undefined;
                             this.fileToLargeErrorMessage = undefined;
-                            this.generalError = "Une erreur est survenue."
+                            this.generalError = "Une erreur est survenue. " + this.errorObj.error.errors['postNote'];
                         }
                       });
         }

@@ -37,8 +37,8 @@
         <div class="form-group mb-3" *ngIf="displayReminder">
             <label class="form-label">Date du rappel: </label>
             <input class="form-control" type="date" formControlName="reminderDate" [min]="today">
-            <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
         </div>
+        <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
       <button id="creerNote" class="btn btn-primary me-2" (click)="onButtonCreerClick()">Créer</button>
       <button id="annulerCreerNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>

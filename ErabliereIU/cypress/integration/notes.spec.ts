@@ -49,7 +49,7 @@ describe("Notes page", { testIsolation: false }, () => {
         const content = `Note content ${Math.floor(Math.random() * 1000)}`;
         const date = new Date();
 
-        const dstring = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay()}`;
+        const dstring = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 
         notesPage.addNote(title, content, dstring);
 
