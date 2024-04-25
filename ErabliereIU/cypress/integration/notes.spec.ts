@@ -32,7 +32,7 @@ describe("Notes page", { testIsolation: false }, () => {
         // validate that note is added
         notesPage.getNoteTitle().should('have.text', title);
         notesPage.getNoteDescription().should('have.text', content);
-        notesPage.getNoteDate().should('have.text', dstring);
+        notesPage.getNoteDate().should('have.text', dstring + "T00:00:00+00:00");
     });
 
     it("should click on cancel button", () => {
