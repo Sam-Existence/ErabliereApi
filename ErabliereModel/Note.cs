@@ -69,6 +69,11 @@ public class Note : IIdentifiable<Guid?, Note>, IErabliereOwnable
     /// </summary>
     public DateTimeOffset? ReminderDate { get; set; }
 
+    /// <summary>
+    /// Le rappel associé à la note
+    /// </summary>
+    public Rappel? Rappel { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(Note? other)
     {
