@@ -60,6 +60,17 @@ namespace ErabliereApi.Donnees.Action.Post
         public DateTimeOffset? NoteDate { get; set; }
 
         /// <summary>
+        /// La date du rappel
+        /// </summary>
+        public DateTimeOffset? DateRappel { get; set; }
+
+        /// <summary>
+        /// La périodicité du rappel
+        /// </summary>
+        [MaxLength(20, ErrorMessage = "La périodicité du rappel ne peut pas dépasser 20 caractères.")]
+        public string? Periodicite { get; set; }
+
+        /// <summary>
         /// Validation du fichier en base64 avec stockage des bytes
         /// sur la propriété FileBytes
         /// </summary>
