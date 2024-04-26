@@ -1,0 +1,309 @@
+{
+	"info": {
+		"_postman_id": "09f1892f-a766-4009-9922-f4d0bf50a845",
+		"name": "Agora API calls",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30917317"
+	},
+	"item": [
+		{
+			"name": "Acquire",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let result = pm.response.json();\r",
+							"pm.globals.set('ResourceID', result.resourceId);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cname\": \"{{AccessChannel}}\",\r\n    \"uid\": \"{{RecordingUID}}\",\r\n    \"clientRequest\": {}\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.agora.io/v1/apps/f5935655287645ed97b8bec0c604f7df/cloud_recording/acquire",
+					"protocol": "https",
+					"host": [
+						"api",
+						"agora",
+						"io"
+					],
+					"path": [
+						"v1",
+						"apps",
+						"f5935655287645ed97b8bec0c604f7df",
+						"cloud_recording",
+						"acquire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Start",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let result = pm.response.json();\r",
+							"pm.globals.set('SID', result.sid);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cname\": \"{{AccessChannel}}\",\r\n    \"uid\": \"{{RecordingUID}}\",\r\n    \"clientRequest\": {\r\n        \"token\": \"{{AccessToken}}\",\r\n        \"recordingConfig\": {\r\n            \"streamMode\": \"standard\",\r\n            \"transcodingConfig\": {\r\n                \"width\": 1920,\r\n                \"height\": 1080,\r\n                \"bitrate\": 2000,\r\n                \"mixedVideoLayout\": 1,\r\n                \"fps\": 15\r\n            }\r\n        },\r\n        \"recordingFileConfig\": {\r\n            \"avFileType\": [\r\n                \"hls\",\r\n                \"mp4\"\r\n            ]\r\n        },\r\n        \"storageConfig\": {\r\n            \"vendor\": {{Vendor}}, // Microsoft Azure,\r\n            \"accessKey\": \"{{AccessKey}}\",\r\n            \"secretKey\": \"{{SecretKey}}\",\r\n            \"bucket\": \"{{Bucket}}\",\r\n            \"fileNamePrefix\": [\r\n                \"8777e21bf16a44803c1e08dc5b1b1fef\"\r\n            ],\r\n            \"region\": {{StorageRegion}}\r\n        }\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.agora.io/v1/apps/f5935655287645ed97b8bec0c604f7df/cloud_recording/resourceid/:resourceId/mode/mix/start",
+					"protocol": "https",
+					"host": [
+						"api",
+						"agora",
+						"io"
+					],
+					"path": [
+						"v1",
+						"apps",
+						"f5935655287645ed97b8bec0c604f7df",
+						"cloud_recording",
+						"resourceid",
+						":resourceId",
+						"mode",
+						"mix",
+						"start"
+					],
+					"variable": [
+						{
+							"key": "resourceId",
+							"value": "{{ResourceID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.agora.io/v1/apps/f5935655287645ed97b8bec0c604f7df/cloud_recording/resourceid/:resourceId/sid/:sid/mode/mix/query",
+					"protocol": "https",
+					"host": [
+						"api",
+						"agora",
+						"io"
+					],
+					"path": [
+						"v1",
+						"apps",
+						"f5935655287645ed97b8bec0c604f7df",
+						"cloud_recording",
+						"resourceid",
+						":resourceId",
+						"sid",
+						":sid",
+						"mode",
+						"mix",
+						"query"
+					],
+					"variable": [
+						{
+							"key": "resourceId",
+							"value": "{{ResourceID}}"
+						},
+						{
+							"key": "sid",
+							"value": "{{SID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stop",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cname\": \"{{AccessChannel}}\",\r\n    \"uid\": \"{{RecordingUID}}\",\r\n    \"clientRequest\": {\r\n        \"async_stop\": false // Détermine si la requête doit être asynchrone ou non\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.agora.io/v1/apps/:appid/cloud_recording/resourceid/:resourceId/sid/:sid/mode/mix/stop",
+					"protocol": "https",
+					"host": [
+						"api",
+						"agora",
+						"io"
+					],
+					"path": [
+						"v1",
+						"apps",
+						":appid",
+						"cloud_recording",
+						"resourceid",
+						":resourceId",
+						"sid",
+						":sid",
+						"mode",
+						"mix",
+						"stop"
+					],
+					"variable": [
+						{
+							"key": "appid",
+							"value": "{{AppID}}"
+						},
+						{
+							"key": "resourceId",
+							"value": "{{ResourceID}}"
+						},
+						{
+							"key": "sid",
+							"value": "{{SID}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "{{CustomerSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "{{CustomerKey}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "AccessKey",
+			"value": "erabliereapi",
+			"type": "string"
+		},
+		{
+			"key": "SecretKey",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "Bucket",
+			"value": "YourAzureStorageContainer",
+			"type": "string"
+		},
+		{
+			"key": "Vendor",
+			"value": "5",
+			"type": "string"
+		},
+		{
+			"key": "StorageRegion",
+			"value": "0",
+			"type": "string"
+		},
+		{
+			"key": "AccessChannel",
+			"value": "YourErabliereID",
+			"type": "string"
+		},
+		{
+			"key": "RecordingUID",
+			"value": "999999",
+			"type": "string"
+		},
+		{
+			"key": "ResourceID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "SID",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "AccessToken",
+			"value": "YourTemporaryAgoraAccessToken",
+			"type": "string"
+		},
+		{
+			"key": "CustomerSecret",
+			"value": "YourAgoraCustomerSecret",
+			"type": "string"
+		},
+		{
+			"key": "CustomerKey",
+			"value": "YourAgoraCustomerKey",
+			"type": "string"
+		},
+		{
+			"key": "AppID",
+			"value": "YourAgoraAppID",
+			"type": "string"
+		}
+	]
+}
