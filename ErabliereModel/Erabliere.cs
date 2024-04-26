@@ -95,6 +95,11 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// </summary>
     public List<Alerte> Alertes { get; set; } = new();
 
+    /// <summary>
+    /// Liste de jonction entre l'utilisateurs et ses érablières
+    /// </summary>
+    public List<CustomerErabliere>? CustomerErablieres { get; set; }
+
     /// <inheritdoc />
     public int CompareTo([AllowNull] Erabliere other)
     {
