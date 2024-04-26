@@ -144,6 +144,13 @@ public class Startup
         else
         {
             services.AddSingleton<IAuthorizationHandler, AllowAnonymous>();
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("TenantIdPrincipal", policy =>
+                {
+                    policy.Requirements.Add(new TenantIdRequirement(""));
+                });
+            });
         }
 
         // Swagger
