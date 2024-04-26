@@ -40,7 +40,8 @@ public static class RegisterExtension
                   .ReverseMap();
             config.CreateMap<Capteur, GetCapteurs>().ReverseMap();
             config.CreateMap<Customer, GetCustomer>().ReverseMap();
-            config.CreateMap<CustomerErabliere, GetCustomerAccess>().ReverseMap();
+            config.CreateMap<CustomerErabliere, GetCustomerAccess>();
+            config.CreateMap<Erabliere, GetCustomerAccessErabliere>().ReverseMap();
             config.CreateMap<Customer, GetCustomerAccessCustomer>().ReverseMap();
             config.CreateMap<Dompeux, GetDompeux>().ReverseMap();
             config.CreateMap<Donnee, GetDonnee>().ReverseMap();

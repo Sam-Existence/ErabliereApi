@@ -101,6 +101,34 @@ public class CustomersController : ControllerBase
 
     /// <summary>
     /// Point de terminaison d'administration pour 
+    /// récupérer les accès d'un utilisateur
+    /// </summary>
+    /// <param name="id">Id de l'utilisateur</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("/admin/customers/{id}/customeraccess")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
+    public async Task<IActionResult> GetAdminCustomerAccess(Guid id, CancellationToken token)
+    {
+        var customer = await _context.Customers.FindAsync([id], cancellationToken: token);
+
+        if (customer == null)
+        {
+            return NotFound();
+        }
+
+        var erablieres = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdCustomer == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(erablieres);
+    }
+
+    /// <summary>
+    /// Point de terminaison d'administration pour 
     /// modifier les accès d'un utilisateur
     /// </summary>
     /// <param name="id">Id de l'utilisateur</param>

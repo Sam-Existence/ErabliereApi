@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Get;
 
@@ -16,6 +17,11 @@ public class GetCustomerAccess
     /// Id de l'érablière
     /// </summary>
     public Guid? IdErabliere { get; set; }
+
+    /// <summary>
+    /// Information sur l'érablière
+    /// </summary>
+    public GetCustomerAccessErabliere? Erabliere { get; set; }
 
     /// <summary>
     /// Id de l'utilisateur
@@ -51,4 +57,17 @@ public class GetCustomerAccessCustomer
     /// Un courriel pour identifier l'utilisateur
     /// </summary>
     public string Email { get; set; } = "";
+}
+
+/// <summary>
+/// An érbalière à l'intérieur d'un <see cref="GetCustomerAccess"/>
+/// </summary>
+public class GetCustomerAccessErabliere
+{
+    /// <summary>
+    /// Le nom de l'érablière
+    /// </summary>
+    [MaxLength(50)]
+    [Required(ErrorMessage = "Le nom de l'érablière ne peut pas être vide.")]
+    public string? Nom { get; set; }
 }
