@@ -60,11 +60,6 @@ namespace ErabliereApi.Donnees.Action.Post
         public DateTimeOffset? NoteDate { get; set; }
 
         /// <summary>
-        /// Date de rappel de la note
-        /// </summary>
-        public DateTimeOffset? ReminderDate { get; set; }
-
-        /// <summary>
         /// Validation du fichier en base64 avec stockage des bytes
         /// sur la propriété FileBytes
         /// </summary>
