@@ -32,7 +32,7 @@ code .
 
 # if the parent folder contains a folder name LearnNestJS, then start the NestJS server in a new process, also in watch mode
 
-$learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS"
+$learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS" | Select -expand FullName
 if ($null -ne $learnNestJS) {
     Set-Location $learnNestJS
     Start-Process npm -ArgumentList "run", "start:dev"
