@@ -1,4 +1,4 @@
-﻿namespace ErabliereApi.Services.Agora.Recording.Query
+namespace ErabliereApi.Services.Agora.Recording.Query
 {
     public class ServerResponse
     {

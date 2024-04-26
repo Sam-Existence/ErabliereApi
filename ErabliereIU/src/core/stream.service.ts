@@ -112,10 +112,11 @@ export class StreamService {
         return(data);
     }
 
-  async initOption() {
+  async initOption(channel: string) {
     const data = await this.api.getCallAppId();
     console.log(data);
     this.options.appId = data.appId;
+    this.options.channel = channel;
     console.log('appId is:', this.options.appId);
   }
 }

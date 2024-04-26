@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import {Component, OnInit, SimpleChanges} from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -14,7 +14,7 @@ import { Erabliere } from 'src/model/erabliere';
             <div>
                 <div class="input-group">
                     <label class="input-group-text" for="inputGroupSelect01">Érablière</label>
-                    <select class="form-select select-ellipsis" id="inputGroupSelect01" (change)="onChange($event.target)">
+                    <select class="form-select select-ellipsis" id="inputGroupSelect01" (change)="changeErabliereSelected($event)">
                         @for(e of erablieres; track e.id) {
                             <option
                                 class="overflow"
@@ -32,7 +32,7 @@ import { Erabliere } from 'src/model/erabliere';
                         }
                         <button class="btn btn-danger" (click)="logout()">Raccrocher</button>
                     } @else {
-                        <button class="btn btn-success" (click)="startCall()">Appeler</button>
+                        <button class="btn btn-success" (click)="startCall(erabliereId ?? '')">Appeler</button>
                     }
 
 
@@ -57,7 +57,7 @@ import { Erabliere } from 'src/model/erabliere';
         }
         @else {
             <div>
-                <button type="button" class="btn btn-success" (click)="showPhoneForm()">
+                <button type="button" class="btn btn-success" (click)="showPhone = true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
                         <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"></path>
                     </svg>
@@ -104,7 +104,7 @@ import { Erabliere } from 'src/model/erabliere';
     standalone: true,
     imports: [NgFor, NgIf]
 })
-export class AgoraCallServiceComponent {
+export class AgoraCallServiceComponent implements OnInit {
     erabliereId?: string = "";
     erablieres: Erabliere[] = [];
     authService: IAuthorisationSerivce;
@@ -121,20 +121,15 @@ export class AgoraCallServiceComponent {
         this.authService = authFactoryService.getAuthorisationService();
     }
 
-    showPhoneForm() {
-        this.showPhone = true;
+    ngOnInit() {
         this.api.getErablieres(true).then((data) => {
             this.erablieres = data;
+            this.erabliereId = this.erablieres.length !== 0 ? this.erablieres[0].id : '';
         });
     }
 
-    onChange(erabliereId?: any) {
-        this.erabliereId = erabliereId.value;
-        this.stream.options.channel = this.erabliereId ?? "";
-    }
-
-    async startCall() {
-        this.stream.initOption();
+    async startCall(channel: string) {
+        await this.stream.initOption(channel);
         const uid = this.stream.generateUid();
         this.userUid = uid;
         const rtcDetails = await this.stream.generateTokenAndUid(uid);
@@ -163,5 +158,8 @@ export class AgoraCallServiceComponent {
             await this.stream.stopRecordingCall(this.userUid, this.erabliereId, this.recordingResourceId, this.recordingSId);
             this.recordingIsStarted = false
         }
+    }
+    changeErabliereSelected(event: Event) {
+        this.erabliereId = (<HTMLInputElement> event.target).value;
     }
 }
