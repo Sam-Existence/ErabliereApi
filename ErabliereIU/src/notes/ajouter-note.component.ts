@@ -1,15 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
-import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
+import {
+    UntypedFormGroup,
+    UntypedFormBuilder,
+    FormControl,
+    Validators,
+    ReactiveFormsModule
+} from "@angular/forms";
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
-import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'ajouter-note',
     templateUrl: 'ajouter-note.component.html',
     standalone: true,
-    imports: [NgIf, ReactiveFormsModule, InputErrorComponent]
+    imports: [ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
     set displayReminder(value: boolean) {
@@ -92,7 +97,7 @@ export class AjouterNoteComponent implements OnInit {
               this.note.title = this.noteForm.controls['title'].value;
               this.note.text = this.noteForm.controls['text'].value;
               this.note.file = this.noteForm.controls['fileBase64'].value;
-              if (this.noteForm.controls['noteDate'].value != "") {
+              if (this.noteForm.controls['noteDate'].value !== "") {
                 this.note.noteDate = this.noteForm.controls['noteDate'].value;
               }
               else {
