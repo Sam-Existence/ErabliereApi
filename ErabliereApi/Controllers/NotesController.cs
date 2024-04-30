@@ -297,6 +297,11 @@ public class NotesController : ControllerBase
 
         if (entity != null && entity.IdErabliere == id)
         {
+            if (entity.Rappel != null)
+            {
+                _depot.Rappels.Remove(entity.Rappel);
+            }
+
             _depot.Notes.Remove(entity);
 
             await _depot.SaveChangesAsync(token);
