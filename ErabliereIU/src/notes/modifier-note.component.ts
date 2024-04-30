@@ -20,9 +20,9 @@ export class ModifierNoteComponent implements OnInit {
     ngOnInit(): void {
         this.noteSubject?.subscribe(note => {
             this.initializeForm();
-            if (note != null) {
+            if (!!note) {
                 this.note = { ... note };
-                if (this.note != null) {
+                if (!!this.note) {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
@@ -71,18 +71,18 @@ export class ModifierNoteComponent implements OnInit {
     }
 
     onButtonAnnuleClick() {
-        this.note = undefined;
+        this.note = null;
     }
 
     onButtonModifierClick() {
-        if (this.note != undefined) {
+        if (!!this.note) {
             this.note.title = this.noteForm.controls['title'].value;
             this.note.text = this.noteForm.controls['text'].value;
             if (this.noteForm.controls['noteDate'].value != "") {
                 this.note.noteDate = this.noteForm.controls['noteDate'].value;
             }
             else {
-                this.note.noteDate = undefined;
+              this.note.noteDate = null;
             }
             if (this.noteForm.controls['reminderDate'].value !== "") {
                 this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
@@ -91,45 +91,45 @@ export class ModifierNoteComponent implements OnInit {
                 this.note.reminderDate = "";
             }
             this._api.putNote(this.idErabliereSelectionee, this.note)
-                .then(r => {
-                    this.errorObj = undefined;
-                    this.fileToLargeErrorMessage = undefined;
-                    this.generalError = undefined;
-                    this.noteForm.reset();
-                    this.needToUpdate.emit();
-                    this.noteSubject?.next(undefined);
-                    this.note = undefined;
-                })
-                .catch(e => {
-                    if (e.status == 400) {
-                        this.errorObj = e
-                        this.fileToLargeErrorMessage = undefined;
-                        this.generalError = undefined;
-                    }
-                    else if (e.status == 404) {
-                        this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "L'érablière n'existe pas."
-                    }
-                    else if (e.status == 405) {
-                        this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "L'API ne permet pas de modifier une note."
-                    }
-                    else if (e.status == 413) {
-                        this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = "Le fichier est trop gros."
-                        this.generalError = undefined;
-                    }
-                    else {
-                        this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = undefined;
-                        this.generalError = "Une erreur est survenue."
-                    }
-                });
+              .then(r => {
+                this.errorObj = null;
+                this.fileToLargeErrorMessage = null;
+                this.generalError = null;
+                this.noteForm.reset();
+                this.needToUpdate.emit();
+                this.noteSubject?.next(null);
+                this.note = null;
+              })
+              .catch(e => {
+                if (e.status == 400) {
+                  this.errorObj = e
+                  this.fileToLargeErrorMessage = null;
+                  this.generalError = null;
+                }
+                else if (e.status == 404) {
+                  this.errorObj = null;
+                  this.fileToLargeErrorMessage = null;
+                  this.generalError = "L'érablière n'existe pas."
+                }
+                else if (e.status == 405) {
+                  this.errorObj = null;
+                  this.fileToLargeErrorMessage = null;
+                  this.generalError = "L'API ne permet pas de modifier une note."
+                }
+                else if (e.status == 413) {
+                  this.errorObj = null;
+                  this.fileToLargeErrorMessage = "Le fichier est trop gros."
+                  this.generalError = null;
+                }
+                else {
+                  this.errorObj = null;
+                  this.fileToLargeErrorMessage = null;
+                  this.generalError = "Une erreur est survenue."
+                }
+              });
         }
         else {
-            console.log("this.note is undefined");
+            console.log("this.note is null");
         }
     }
 
