@@ -33,7 +33,7 @@ public class PutNote
     /// <summary>
     /// Rappel associé à la note
     /// </summary>
-    public PostRappel? Rappel { get; set; }
+    public PutRappel? Rappel { get; set; }
 
     /// <summary>
     /// Filtre de notification. Permet à la note d'afficher comme une notification
