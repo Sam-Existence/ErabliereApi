@@ -62,9 +62,9 @@ export class AjouterNoteComponent implements OnInit {
 
     errorObj: any;
 
-    fileToLargeErrorMessage?: string;
+    fileToLargeErrorMessage?: string | null;
 
-    generalError?: string;
+    generalError?: string | null;
 
     onSubmit() {
 
@@ -86,49 +86,53 @@ export class AjouterNoteComponent implements OnInit {
     }
 
     onButtonCreerClick() {
-        if (this.note != undefined) {
-            this.note.idErabliere = this.idErabliereSelectionee;
-            this.note.title = this.noteForm.controls['title'].value;
-            this.note.text = this.noteForm.controls['text'].value;
-            this.note.file = this.noteForm.controls['fileBase64'].value;
-            if (this.noteForm.controls['noteDate'].value != "") {
+        if (!!this.note) {
+            if(this.noteForm.valid) {
+              this.note.idErabliere = this.idErabliereSelectionee;
+              this.note.title = this.noteForm.controls['title'].value;
+              this.note.text = this.noteForm.controls['text'].value;
+              this.note.file = this.noteForm.controls['fileBase64'].value;
+              if (this.noteForm.controls['noteDate'].value != "") {
                 this.note.noteDate = this.noteForm.controls['noteDate'].value;
-            }
-            else {
-                this.note.noteDate = undefined;
-            }
-            if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
+              }
+              else {
+                this.note.noteDate = null;
+              }
+              if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
                 let date = new Date(this.noteForm.controls['reminderDate'].value);
                 this.note.reminderDate = date.toISOString();
+              }
+              else {
+                this.note.reminderDate = null;
+              }
+              this._api.postNote(this.idErabliereSelectionee, this.note)
+                .then(r => {
+                  this.errorObj = null;
+                  this.fileToLargeErrorMessage = null;
+                  this.generalError = null;
+                  this.noteForm.reset();
+                  this.needToUpdate.emit();
+                })
+                .catch(e => {
+                  if (e.status == 400) {
+                    this.errorObj = e
+                    this.fileToLargeErrorMessage = null;
+                    this.generalError = this.errorObj.error.errors['postNote'];
+                  }
+                  else if (e.status == 413) {
+                    this.errorObj = null;
+                    this.fileToLargeErrorMessage = "Le fichier est trop gros."
+                    this.generalError = null;
+                  }
+                  else {
+                    this.errorObj = null;
+                    this.fileToLargeErrorMessage = null;
+                    this.generalError = "Une erreur est survenue. " + this.errorObj.error.errors['postNote'];
+                  }
+                });
+            } else {
+              this.onSubmitForm();
             }
-            else {
-                this.note.reminderDate = undefined;
-            }
-            this._api.postNote(this.idErabliereSelectionee, this.note)
-                     .then(r => {
-                        this.errorObj = undefined;
-                        this.fileToLargeErrorMessage = undefined;
-                        this.generalError = undefined;
-                        this.noteForm.reset();
-                        this.needToUpdate.emit();
-                      })
-                      .catch(e => {
-                        if (e.status == 400) {
-                            this.errorObj = e
-                            this.fileToLargeErrorMessage = undefined;
-                            this.generalError = this.errorObj.error.errors['postNote'];
-                        }
-                        else if (e.status == 413) {
-                            this.errorObj = undefined;
-                            this.fileToLargeErrorMessage = "Le fichier est trop gros."
-                            this.generalError = undefined;
-                        }
-                        else {
-                            this.errorObj = undefined;
-                            this.fileToLargeErrorMessage = undefined;
-                            this.generalError = "Une erreur est survenue. " + this.errorObj.error.errors['postNote'];
-                        }
-                      });
         }
         else {
             console.log("this.note is undefined");
