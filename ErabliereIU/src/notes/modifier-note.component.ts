@@ -32,21 +32,51 @@ export class ModifierNoteComponent implements OnInit {
     }
 
     initializeForm() {
-        this.noteForm = this.fb.group({
-            title: ['', Validators.required],
-            text: new FormControl(''),
-            file: new FormControl(''),
-            fileBase64: new FormControl(''),
-            noteDate: new FormControl(''),
-            reminderDate: new FormControl(''),
-        });
+      this.noteForm = this.fb.group({
+        title: new FormControl(
+          '',
+          {
+            validators: [Validators.required, Validators.maxLength(200)],
+            updateOn: 'blur'
+          }),
+        text: new FormControl(
+          '',
+          {
+            validators: [Validators.maxLength(2000)],
+            updateOn: 'blur'
+          }),
+        file: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        fileBase64: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        noteDate: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        reminderDate: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+      });
     }
 
     error: string | null = null;
 
-    @Input() noteSubject?: Subject<Note | undefined>;
+    @Input() noteSubject?: Subject<Note | null>;
 
-    note?: Note;
+    note?: Note | null;
 
     @Input() idErabliereSelectionee: any
 
@@ -56,18 +86,16 @@ export class ModifierNoteComponent implements OnInit {
 
     errorObj: any;
 
-    fileToLargeErrorMessage?: string;
+    fileToLargeErrorMessage?: string | null;
 
-    generalError?: string;
+    generalError?: string | null;
 
-    date = new Date();
-    year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(this.date);
-    month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.date);
-    day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.date);
-    today = `${this.year}-${this.month}-${this.day}`;
+    today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 
-    onSubmit() {
-
+    validateForm() {
+      const form = document.getElementById('modifier-note');
+      this.noteForm.updateValueAndValidity();
+      form?.classList.add('was-validated');
     }
 
     onButtonAnnuleClick() {
@@ -76,19 +104,20 @@ export class ModifierNoteComponent implements OnInit {
 
     onButtonModifierClick() {
         if (!!this.note) {
+          if(this.noteForm.valid) {
             this.note.title = this.noteForm.controls['title'].value;
             this.note.text = this.noteForm.controls['text'].value;
             if (this.noteForm.controls['noteDate'].value != "") {
-                this.note.noteDate = this.noteForm.controls['noteDate'].value;
+              this.note.noteDate = this.noteForm.controls['noteDate'].value;
             }
             else {
               this.note.noteDate = null;
             }
             if (this.noteForm.controls['reminderDate'].value !== "") {
-                this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+              this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
             }
             else {
-                this.note.reminderDate = "";
+              this.note.reminderDate = "";
             }
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
@@ -127,6 +156,9 @@ export class ModifierNoteComponent implements OnInit {
                   this.generalError = "Une erreur est survenue."
                 }
               });
+          } else {
+            this.validateForm();
+          }
         }
         else {
             console.log("this.note is null");
