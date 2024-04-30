@@ -131,7 +131,28 @@ public class NotesController : ControllerBase
             postNote.NoteDate = DateTimeOffset.Now;
         }
 
-        var entite = await _depot.Notes.AddAsync(_mapper.Map<Note>(postNote), token);
+        var note = _mapper.Map<Note>(postNote);
+
+        // Creer un rappel si le rappel est présent
+        if (postNote.Rappel != null)
+        {
+            var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien" };
+            if (!allowedPeriodiciteValues.Contains(postNote.Rappel.Periodicite))
+            {
+                return BadRequest("Periodicité invalide. Doit être : Annuel, Mensuel, Hebdo, Quotidien");
+            }
+
+            note.Rappel = new Rappel
+            {
+                IdErabliere = postNote.IdErabliere,
+                DateRappel = postNote.Rappel.DateRappel,
+                Periodicite = postNote.Rappel.Periodicite,
+
+                NoteId = note.Id
+            };
+        }
+
+        var entite = await _depot.Notes.AddAsync(note, token);
 
         await _depot.SaveChangesAsync(token);
 
