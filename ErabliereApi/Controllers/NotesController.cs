@@ -45,7 +45,7 @@ public class NotesController : ControllerBase
     [ValiderOwnership("id")]
     public IQueryable<Note> Lister(Guid id)
     {
-        return _depot.Notes.AsNoTracking().Where(n => n.IdErabliere == id);
+        return _depot.Notes.AsNoTracking().Include(n => n.Rappel).Where(n => n.IdErabliere == id);
     }
 
     /// <summary>
@@ -242,6 +242,28 @@ public class NotesController : ControllerBase
             if (putNote.Title != null)
             {
                 entity.Title = putNote.Title;
+            }
+
+            // Update rappel si le rappel est présent
+            if (putNote.Rappel != null)
+            {
+                var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien" };
+                if (!allowedPeriodiciteValues.Contains(putNote.Rappel.Periodicite))
+                {
+                    return BadRequest("Periodicité invalide. Valeurs acceptées: annuel, mensuel, hebdo, quotidien");
+                }
+
+                if (entity.Rappel == null)
+                {
+                    entity.Rappel = new Rappel
+                    {
+                        NoteId = entity.Id,
+                        IdErabliere = id
+                    };
+                }
+
+                entity.Rappel.DateRappel = putNote.Rappel.DateRappel;
+                entity.Rappel.Periodicite = putNote.Rappel.Periodicite;
             }
 
             await _depot.SaveChangesAsync(token);
