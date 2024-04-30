@@ -15,6 +15,11 @@ namespace ErabliereApi.Donnees
         public Guid? Id { get; set; }
 
         /// <summary>
+        /// Indique si le rappel est actif
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// La clé étrangère de l'érablière
         /// </summary>
         public Guid? IdErabliere { get; set; }
