@@ -17,18 +17,12 @@ import { InputErrorComponent } from "../formsComponents/input-error.component";
     imports: [ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
-    set displayReminder(value: boolean) {
-        this._displayReminder = value;
-    }
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
 
     ngOnInit(): void {
         this.initializeForm();
-        this.noteForm.controls['reminderEnabled'].valueChanges.subscribe((value) => {
-            this._displayReminder = value;
-        });
     }
 
     initializeForm() {
@@ -75,9 +69,7 @@ export class AjouterNoteComponent implements OnInit {
         });
     }
 
-    display:boolean = false;
-
-    private _displayReminder:boolean = false;
+    display: boolean = false;
 
     today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 
@@ -99,13 +91,6 @@ export class AjouterNoteComponent implements OnInit {
 
     generalError?: string | null;
 
-    onSubmit() {
-
-    }
-
-    // toggleReminder() {
-    //     this.displayReminder = this.noteForm.controls['reminderEnabled'].value;
-    // }
     get displayReminder(): boolean {
         return this.noteForm.controls['reminderEnabled'].value;
     }
@@ -164,7 +149,7 @@ export class AjouterNoteComponent implements OnInit {
                   }
                 });
             } else {
-              this.onSubmitForm();
+              this.validateForm();
             }
         }
         else {
@@ -181,7 +166,7 @@ export class AjouterNoteComponent implements OnInit {
         };
     }
 
-    onSubmitForm() {
+    validateForm() {
       const form = document.getElementById('ajouter-note');
       this.noteForm.updateValueAndValidity();
       form?.classList.add('was-validated');

@@ -23,9 +23,7 @@
               {{fileToLargeErrorMessage}}
             </span>
         }
-
       </div>
-
       <div [class]="'form-group mb-3' + (noteForm.controls['noteDate'].touched ? ' was-validated' : '')">
         <label class="form-label" for="ajouter-note-noteDate">Date de la note: </label>
         <input class="form-control" type="date" formControlName="noteDate" id="ajouter-note-noteDate" />
