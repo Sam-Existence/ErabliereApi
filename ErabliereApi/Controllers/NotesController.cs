@@ -293,13 +293,14 @@ public class NotesController : ControllerBase
     [ValiderOwnership("id")]
     public async Task<IActionResult> Supprimer(Guid id, Guid noteId, CancellationToken token)
     {
-        var entity = await _depot.Notes.FindAsync([noteId], token);
+        var entity = await _depot.Notes.Include(n => n.Rappel).FirstOrDefaultAsync(n => n.Id == noteId, token);
 
         if (entity != null && entity.IdErabliere == id)
         {
             if (entity.Rappel != null)
             {
                 _depot.Rappels.Remove(entity.Rappel);
+                await _depot.SaveChangesAsync(token);
             }
 
             _depot.Notes.Remove(entity);
