@@ -3,21 +3,20 @@
     <span class="text-danger">
         {{generalError}}
     </span>
-    <form [formGroup]="noteForm">
-        <div class="form-group">
-          <label class="form-label">Titre: </label>
-          <input class="form-control" type="text" formControlName="title">
-          <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Texte: </label>
-          <input class="form-control" type="text" formControlName="text">
-          <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Fichier: </label>
-          <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)">
-        </div>
+    <form [formGroup]="noteForm" id="ajouter-note" novalidate>
+      <div [class]="'form-group mb-3' + (noteForm.controls['title'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="ajouter-note-title">Titre&nbsp;: </label>
+        <input [class]="'form-control'" type="text" formControlName="title" id="ajouter-note-title" />
+        <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
+      </div>
+      <div [class]="'form-group mb-3' + (noteForm.controls['text'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="ajouter-note-text">Texte : </label>
+        <input class="form-control" type="text" formControlName="text" id="ajouter-note-text" />
+        <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
+      </div>
+      <div [class]="'form-group mb-3' + (noteForm.controls['file'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="ajouter-note-file">Fichier: </label>
+        <input class="form-control" type="file" formControlName="file" (change)="convertToBase64($event)" id="ajouter-note-file" />
         <input-error [errorObj]="errorObj" [controlName]="'file'"></input-error>
         @if(!fileToLargeErrorMessage) {
           <span class="text-danger">

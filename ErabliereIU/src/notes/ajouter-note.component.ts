@@ -33,13 +33,45 @@ export class AjouterNoteComponent implements OnInit {
 
     initializeForm() {
         this.noteForm = this.fb.group({
-            title: ['', Validators.required],
-            text: new FormControl(''),
-            file: new FormControl(''),
-            fileBase64: new FormControl(''),
-            noteDate: new FormControl(''),
-            reminderEnabled: new FormControl(false),
-            reminderDate: new FormControl(''),
+            title: new FormControl(
+              '',
+              {
+                validators: [Validators.required, Validators.maxLength(200)],
+                updateOn: 'blur'
+            }),
+            text: new FormControl(
+              '',
+              {
+                validators: [Validators.maxLength(2000)],
+                updateOn: 'blur'
+              }),
+            file: new FormControl(
+              '',
+              {
+                updateOn: 'blur'
+              }
+            ),
+            fileBase64: new FormControl(
+              '',
+              {
+                updateOn: 'blur'
+              }
+            ),
+            noteDate: new FormControl(
+              '',
+              {
+                updateOn: 'blur'
+              }
+            ),
+            reminderEnabled: new FormControl(
+              false
+            ),
+            reminderDate: new FormControl(
+              '',
+              {
+                updateOn: 'blur'
+              }
+            ),
         });
     }
 
@@ -151,5 +183,11 @@ export class AjouterNoteComponent implements OnInit {
         reader.onload = () => {
             this.noteForm.controls['fileBase64'].setValue(reader.result?.toString().split(',')[1]);
         };
+    }
+
+    onSubmitForm() {
+      const form = document.getElementById('ajouter-note');
+      this.noteForm.updateValueAndValidity();
+      form?.classList.add('was-validated');
     }
 }
