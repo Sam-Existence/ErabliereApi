@@ -145,9 +145,9 @@ public class NotesController : ControllerBase
             note.Rappel = new Rappel
             {
                 IdErabliere = postNote.IdErabliere,
+                IsActive = true,
                 DateRappel = postNote.Rappel.DateRappel,
                 Periodicite = postNote.Rappel.Periodicite,
-
                 NoteId = note.Id
             };
         }
@@ -258,6 +258,7 @@ public class NotesController : ControllerBase
                 {
                     rappel.DateRappel = putNote.Rappel.DateRappel;
                     rappel.Periodicite = putNote.Rappel.Periodicite;
+                    rappel.IsActive = putNote.Rappel.IsActive;
                 }
                 else
                 {
@@ -265,6 +266,7 @@ public class NotesController : ControllerBase
                     {
                         NoteId = entity.Id,
                         IdErabliere = id,
+                        IsActive = putNote.Rappel.IsActive,
                         DateRappel = putNote.Rappel.DateRappel,
                         Periodicite = putNote.Rappel.Periodicite
                     };
