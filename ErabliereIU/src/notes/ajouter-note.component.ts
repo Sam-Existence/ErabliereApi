@@ -79,11 +79,7 @@ export class AjouterNoteComponent implements OnInit {
 
     private _displayReminder:boolean = false;
 
-    date = new Date();
-    year = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(this.date);
-    month = new Intl.DateTimeFormat('en', { month: '2-digit' }).format(this.date);
-    day = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(this.date);
-    today = `${this.year}-${this.month}-${this.day}`;
+    today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 
     error: string | null = null;
 
