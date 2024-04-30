@@ -172,7 +172,9 @@ public class ConsentController : Controller
         }
         else
         {
-            _logger.LogError(NoConsentRequestMatichingRequest, Uri.EscapeDataString(returnUrl));
+            var logMessage = Uri.EscapeDataString(returnUrl);
+            logMessage = logMessage.Replace("\n", "").Replace("\r", "");
+            _logger.LogError(NoConsentRequestMatichingRequest, logMessage);
         }
 
         return null;

@@ -35,6 +35,7 @@ public class WeatherForecastController
     /// <response code="404">Érablière non trouvée</response>
     /// <response code="500">Erreur interne du serveur</response>
     [HttpGet]
+    [ProducesResponseType(200, Type = typeof(WeatherForecastResponse))]
     public async Task<IActionResult> GetWeatherForecast(Guid id, string lang = "fr-ca")
     {
         // Résoudre l'érablière

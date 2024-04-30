@@ -174,12 +174,16 @@ public class ErablieresController : ControllerBase
 
             return BadRequest(new ValidationProblemDetails(ModelState));
         }
-        if (postErabliere.Id != null &&
-            (await _context.Erabliere.FindAsync([postErabliere.Id], token)) != null) 
-        {                
-            ModelState.AddModelError(nameof(postErabliere.Id), string.Format(_localizer["IdExiste"], postErabliere.Id));
+        if (postErabliere.Id != null) 
+        {
+            var e = await _context.Erabliere.FindAsync([postErabliere.Id], token);
+
+            if (e != null) 
+            {
+                ModelState.AddModelError(nameof(postErabliere.Id), string.Format(_localizer["IdExiste"], postErabliere.Id));
         
-            return Conflict(new ValidationProblemDetails(ModelState));
+                return Conflict(new ValidationProblemDetails(ModelState));
+            }
         }
 
         var erabliere = _mapper.Map<Erabliere>(postErabliere);

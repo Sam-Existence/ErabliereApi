@@ -33,9 +33,19 @@ jobs:
         run: |
           cd ErabliereIU
           npm install
+          echo ${{ github.event_name }}
+          echo ${{ github.repository }}
+
+      - name: Build the storybook
+        if: ${{ github.event_name == 'pull_request' && github.repository != 'ErabliereAPI/ErabliereAPI' }}
+        run: |
+          cd ErabliereIU
+          npm run build-storybook
 
       #👇 Adds Chromatic as a step in the workflow
+      # if the action run from a pull request of a forked repository skip this step
       - uses: chromaui/action@latest
+        if: ${{ github.event_name != 'pull_request' || github.repository == 'ErabliereAPI/ErabliereAPI' }}
         # Options required for Chromatic's GitHub Action
         with:
           workingDir: ./ErabliereIU
