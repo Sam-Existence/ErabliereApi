@@ -11,6 +11,11 @@ namespace ErabliereApi.Donnees.Action.Put
         public Guid IdErabliere { get; set; }
 
         /// <summary>
+        /// Indique si le rappel est actif
+        /// </summary>
+        public bool IsActive { get; set; }
+
+        /// <summary>
         /// La date du rappel
         /// </summary>
         public DateTimeOffset? DateRappel { get; set; }
