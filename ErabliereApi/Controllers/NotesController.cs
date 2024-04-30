@@ -253,18 +253,23 @@ public class NotesController : ControllerBase
                     return BadRequest("Periodicité invalide. Valeurs acceptées: annuel, mensuel, hebdo, quotidien");
                 }
 
-                if (entity.Rappel == null)
+                var rappel = await _depot.Rappels.FirstOrDefaultAsync(r => r.NoteId == entity.Id, token);
+                if (rappel != null)
+                {
+                    rappel.DateRappel = putNote.Rappel.DateRappel;
+                    rappel.Periodicite = putNote.Rappel.Periodicite;
+                }
+                else
                 {
                     entity.Rappel = new Rappel
                     {
                         NoteId = entity.Id,
-                        IdErabliere = id
+                        IdErabliere = id,
+                        DateRappel = putNote.Rappel.DateRappel,
+                        Periodicite = putNote.Rappel.Periodicite
                     };
                 }
-
-                entity.Rappel.DateRappel = putNote.Rappel.DateRappel;
-                entity.Rappel.Periodicite = putNote.Rappel.Periodicite;
-            }
+            } 
 
             await _depot.SaveChangesAsync(token);
 
