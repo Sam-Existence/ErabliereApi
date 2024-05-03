@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -7,7 +7,6 @@ import { Erabliere } from 'src/model/erabliere';
 import { NgIf, NgFor } from '@angular/common';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
-import { Subject } from 'rxjs';
 
 @Component({
     selector: 'erablieres-side-bar',
@@ -16,20 +15,21 @@ import { Subject } from 'rxjs';
     imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor]
 })
 export class ErabliereSideBarComponent implements OnInit {
-  erablieres?: Array<Erabliere>;
+  erablieres?: Array<Erabliere> | null;
   etat: string = "";
-  erabliereSelectionnee?: Erabliere;
-  idSelectionnee?: any
-  @Input() showMenuSubject: Subject<boolean> = new Subject<boolean>();
-  @Input() thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
+  @Input() idSelectionne?: string;
+  @Output() idSelectionneChange = new EventEmitter<string>();
+  erabliereSelectionnee?: Erabliere | null;
+  @Input() thereIsAtLeastOneErabliere: boolean = false;
+  @Output() thereIsAtLeastOneErabliereChange = new EventEmitter<boolean>();
   private _authService: IAuthorisationSerivce
-  loggedIn: Boolean = false;
+  loggedIn: boolean = false;
   authDisabled: boolean = false;
 
-  constructor(private _erabliereApi: ErabliereApi, 
-      authFactory: AuthorisationFactoryService, 
+  constructor(private _erabliereApi: ErabliereApi,
+      authFactory: AuthorisationFactoryService,
       private _router: Router) {
-    this.erabliereSelectionnee = undefined;
+    this.erabliereSelectionnee = null;
     this._authService = authFactory.getAuthorisationService();
     if (this._authService.type == "AuthDisabled") {
       this.authDisabled = true;
@@ -40,9 +40,8 @@ export class ErabliereSideBarComponent implements OnInit {
         this.loadErablieresPage();
       }
       else {
-        this.erablieres = undefined;
-        this.erabliereSelectionnee = undefined;
-        this.idSelectionnee = undefined;
+        this.erablieres = null;
+        this.erabliereSelectionnee = null;
         this.etat = "Vous n'êtes pas connecté";
       }
     });
@@ -50,21 +49,7 @@ export class ErabliereSideBarComponent implements OnInit {
 
   async ngOnInit() {
     this.loggedIn = await this._authService.isLoggedIn();
-    // Set cacheMenuErabliere to true to cache the menu when the path start with /apropos
-    this._router.events.subscribe((val) => {
-      if (this._router.url.split("/").length > 1) {
-        let page = this._router.url.split("/")[1];
-        if (page == "apropos") {
-          this.showMenuSubject.next(false);
-        }
-        else {
-          this.showMenuSubject.next(true);
-        }
-      }
-      else {
-        this.showMenuSubject.next(true);
-      }
-    });
+
     await this.loadErablieresPage();
   }
 
@@ -99,35 +84,41 @@ export class ErabliereSideBarComponent implements OnInit {
 
       if (this.erablieres.length > 0) {
         this.etat = "Chargement des erablieres terminé";
-        this.erabliereSelectionnee = this.erablieres[0];
-        this.idSelectionnee = this.erabliereSelectionnee.id;
-        this.thereIsAtLeastOneErabliereSubject.next(true);
 
-        this.handleErabliereLiClick(this.erabliereSelectionnee.id);
+        this.erabliereSelectionnee = this.erablieres.find(e => e.id === this.idSelectionne);
+        if(!this.erabliereSelectionnee) {
+          this.erabliereSelectionnee = this.erablieres[0];
+          this.handleErabliereLiClick(this.erabliereSelectionnee.id);
+        }
+        this.thereIsAtLeastOneErabliere = true;
+        this.thereIsAtLeastOneErabliereChange.emit(true);
       }
       else {
         this.etat = "Aucune erablière";
+        this.thereIsAtLeastOneErabliere = false;
+        this.thereIsAtLeastOneErabliereChange.emit(false);
       }
     }
   }
 
   handleErabliereLiClick(idErabliere: number) {
-    if (this.erablieres == null || this.erablieres == undefined) {
+    if (!this.erablieres){
       return;
     }
 
     this.erabliereSelectionnee = this.erablieres.find(e => e.id === idErabliere);
 
-    this.idSelectionnee = this.erabliereSelectionnee?.id;
+    this.idSelectionne = this.erabliereSelectionnee!.id;
+    this.idSelectionneChange.emit(this.idSelectionne);
 
-    console.log(this._router.url);
-    if (this._router.url.split("/").length > 3) {
-      let page = this._router.url.split("/")[3];
-      console.log(page);
-      this._router.navigate(["/e", idErabliere, page]);
-    }
-    else {
-      this._router.navigate(["/e", idErabliere, "graphiques"]);
+    const urlParts = this._router.url.split("/");
+    if (urlParts.length > 1 && urlParts[1] == "e") {
+      if (urlParts.length > 3) {
+        let page = this._router.url.split("/")[3];
+        this._router.navigate(["/e", idErabliere, page]);
+      } else {
+        this._router.navigate(["/e", idErabliere, "graphiques"]);
+      }
     }
   }
 
