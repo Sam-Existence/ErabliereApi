@@ -15,7 +15,7 @@
             [(thereIsAtLeastOneErabliere)]="thereIsAtLeastOneErabliere" />
         </aside>
       </div>
-      <div class="showMenu ? col-lg-10 col-md-12 : col-12">
+      <div [class]="showMenu ? 'col-lg-10 col-md-12' : 'col-12'">
         <main>
           <router-outlet></router-outlet>
           <entra-redirect></entra-redirect>

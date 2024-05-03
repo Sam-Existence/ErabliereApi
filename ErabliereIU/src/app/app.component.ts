@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import { EntraRedirectComponent } from './entra-redirect.component';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
 import { YouAreNotConnectedComponent } from 'src/dashboard/you-are-note-connected.component';
 import { ErabliereSideBarComponent } from 'src/dashboard/erablieres-side-bar.component';
-import { NgIf } from '@angular/common';
-import { Subject } from 'rxjs';
+import { NgIf} from '@angular/common';
 import { ErabliereAIComponent } from 'src/erabliereai/erabliereai-chat.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
