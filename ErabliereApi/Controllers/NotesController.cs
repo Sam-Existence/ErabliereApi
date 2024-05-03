@@ -349,8 +349,14 @@ public class NotesController : ControllerBase
 
     private bool IsPeriodiciteDue(Rappel rappel, DateTimeOffset today)
     {
+        // Si la périodicité est vide, on compare la date de rappel avec la date d'aujourd'hui
+        if (string.IsNullOrEmpty(rappel.Periodicite))
+        {
+            return rappel.DateRappel.Value.Date <= today.Date;
+        }
+
         DateTime nextRappelDate;
-        DateTime todayDateTime = today.DateTime; // Convert DateTimeOffset to DateTime
+        DateTime todayDateTime = today.DateTime; 
 
         switch (rappel.Periodicite)
         {
@@ -370,7 +376,7 @@ public class NotesController : ControllerBase
                 return false;
         }
 
-        return nextRappelDate <= todayDateTime; // Compare with the converted DateTime
+        return nextRappelDate <= todayDateTime; 
     }
 
 }
