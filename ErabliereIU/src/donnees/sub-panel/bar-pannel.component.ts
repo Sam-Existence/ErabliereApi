@@ -6,7 +6,7 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 @Component({
     selector: 'bar-pannel',
     template: `
-        <div class="border-top" cdkDrag (cdkDragEnded)="dragEnd($event)">
+        <div class="border-top">
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
 
             <div class="btn-group">
@@ -95,6 +95,5 @@ export class BarPannelComponent {
     }
     dragEnd(event: CdkDragEnd) {
         console.log(event);
-        
     }
 }

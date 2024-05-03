@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    [Migration("20240415221622_AddTablePositionGraph")]
-    partial class AddTablePositionGraph
+    [Migration("20240415221603_InitialSchema")]
+    partial class InitialSchema
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

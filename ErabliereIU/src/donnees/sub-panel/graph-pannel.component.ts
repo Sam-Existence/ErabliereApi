@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -21,7 +21,6 @@ import { DateTimeSelectorComponent } from './userinput/date-time-selector.compon
         NgChartsModule,
         CdkDrag,
         CdkDragHandle,
-        CdkDropList,
     ],
 })
 export class GraphPannelComponent implements OnInit {

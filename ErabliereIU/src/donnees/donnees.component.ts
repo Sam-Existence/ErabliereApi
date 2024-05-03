@@ -1,5 +1,6 @@
-import { NgIf } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragMove, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -13,60 +14,22 @@ import { WeatherForecastComponent } from './weatherforecast.component';
 
 @Component({
   selector: 'donnees-panel',
-  template: `
-        <div class="row">
-          <weather-forecast 
-            *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
-            class="col-md-6"></weather-forecast>
-          <div *ngIf="displayImages" class="col-md-6">
-            <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
-          </div>
-          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <graph-pannel [titre]="titre_temperature" 
-                           [valeurActuel]="temperatureValueActuel"
-                           [mean]="meanTemperature"
-                           [symbole]="temperatureSymbole"
-                           [timeaxes]="timeaxes" 
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <vaccium-graph-pannel [titre]="titre_vaccium" 
-                           [valeurActuel]="vacciumValueActuel"
-                           [symbole]="vacciumSymbole"
-                           [timeaxes]="timeaxes"
-                           [mean]="meanVaccium"
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <graph-pannel [titre]="titre_niveaubassin" 
-                           [valeurActuel]="niveauBassinValueActuel"
-                           [symbole]="niveauBassinSymbole"
-                           [timeaxes]="timeaxes" 
-                           [mean]="meanNiveauBassin"
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherSectionDompeux" class="col-md-6">
-              <bar-pannel [titre]="titre_dompeux" 
-                         [timeaxes]="timeaxes_dompeux" 
-                         [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-pannel>
-            <div>
-        </div>
-    `,
+  templateUrl: './donnees.component.html',
+  styleUrls: ['./donnees.component.css'],
   standalone: true,
   imports: [
     NgIf, 
+    NgFor,
     GraphPannelComponent, 
     VacciumGraphPannelComponent, 
     BarPannelComponent, 
     WeatherForecastComponent,
-    ImagePanelComponent
+    ImagePanelComponent,
+    CdkDropListGroup,
+    CdkDropList,
+    CdkDrag,
+    NgSwitch,
+    NgSwitchCase,
   ]
 })
 export class DonneesComponent implements OnInit {
@@ -74,7 +37,8 @@ export class DonneesComponent implements OnInit {
   @ViewChild('vacciumGraphPannel') vacciumGraphPannel?: GraphPannelComponent
   @ViewChild('niveaubassinGraphPannel') niveaubassinGraphPannel?: GraphPannelComponent
   @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
-
+  @ViewChild('dropListContainer') dropListContainer?: ElementRef;
+  
   intervalRequetes?: any
   intervalImages?: any
 
@@ -121,6 +85,15 @@ export class DonneesComponent implements OnInit {
   erabliereId: any;
 
   displayImages: boolean = false;
+
+  public items: Array<string> = ['Temperature', 'Vaccium', 'Niveau Bassin', 'Dompeux', 'Weather', 'Images'];
+
+  dropListReceiverElement?: HTMLElement;
+  dragDropInfo?: {
+    dragIndex: number;
+    dropIndex: number;
+  };
+
 
   constructor(private _erabliereApi: ErabliereApi) { }
 
@@ -446,4 +419,81 @@ export class DonneesComponent implements OnInit {
   notNullOrWitespace(arg0?: string): any {
     return notNullOrWitespace(arg0);
   }
+
+  dragEnd($event: CdkDragEnd) {
+    // const element = $event.source.getRootElement() as HTMLElement;
+    // const rect = element.getBoundingClientRect();
+    // const posX: number = rect.left;
+    // const posY: number = rect.top;
+    
+    // let position = new PostPositionGraph();
+    // position.id = 1;
+    // position.d = "2024-04-15T14:58:10.604Z";
+    // position.px = Math.floor(posX);
+    // position.py = posY;
+    // position.idErabliere = this.idErabliere;
+
+    // console.log(position);
+
+    // this._api.postPositionGraph(this.idErabliere, position).then(resp => {
+    //     console.log(resp);
+    // });
+    console.log("dragEnd")
+    console.log(this.items)
+  }
+
+  dragEntered(event: CdkDragEnter<number>) {
+    const drag = event.item;
+    const dropList = event.container;
+    const dragIndex = drag.data;
+    const dropIndex = dropList.data;
+
+    this.dragDropInfo = { dragIndex, dropIndex };
+    console.log('dragEntered', { dragIndex, dropIndex });
+
+    const phContainer = dropList.element.nativeElement;
+    const phElement = phContainer.querySelector('.cdk-drag-placeholder');
+
+    if (phElement) {
+      try {
+        phContainer.removeChild(phElement);
+      } catch (e) {}
+      phContainer.parentElement?.insertBefore(phElement, phContainer);
+
+      moveItemInArray(this.items, dragIndex, dropIndex);
+    }
+  }
+
+  dragMoved(event: CdkDragMove<number>) {
+    if (!this.dropListContainer || !this.dragDropInfo) return;
+
+    const placeholderElement =
+      this.dropListContainer.nativeElement.querySelector(
+        '.cdk-drag-placeholder'
+      );
+
+    const receiverElement =
+      this.dragDropInfo.dragIndex > this.dragDropInfo.dropIndex
+        ? placeholderElement?.nextElementSibling
+        : placeholderElement?.previousElementSibling;
+
+    if (!receiverElement) {
+      return;
+    }
+
+    receiverElement.style.display = 'none';
+    this.dropListReceiverElement = receiverElement;
+  }
+
+  dragDropped(event: CdkDragDrop<number>) {
+    if (!this.dropListReceiverElement) {
+      return;
+    }
+
+    this.dropListReceiverElement.style.removeProperty('display');
+    this.dropListReceiverElement = undefined;
+    this.dragDropInfo = undefined;
+  }
 }
+
+

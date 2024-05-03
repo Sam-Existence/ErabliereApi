@@ -1,11 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+
+#nullable disable
 
 namespace Depot.Sql.Migrations
 {
-    /// <summary>
-    /// Ajout de la table pour suavegarder les positions des graphiques
-    /// </summary>
+    /// <inheritdoc />
     public partial class AddTablePositionGraph : Migration
     {
         /// <inheritdoc />
@@ -16,10 +15,10 @@ namespace Depot.Sql.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
-                    IdErabliere = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     D = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
                     PX = table.Column<int>(type: "int", nullable: true),
                     PY = table.Column<int>(type: "int", nullable: true),
+                    IdErabliere = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
                 {

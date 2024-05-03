@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragEnd, CdkDragHandle, CdkDropList } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
@@ -19,7 +19,6 @@ import { DateTimeSelectorComponent } from './userinput/date-time-selector.compon
         NgChartsModule,
         CdkDrag,
         CdkDragHandle,
-        CdkDropList,
     ],
 })
 export class VacciumGraphPannelComponent implements OnInit {
@@ -261,11 +260,31 @@ export class VacciumGraphPannelComponent implements OnInit {
         this.dateFinFixRange = $event.currentValue;
     }
 
-    dragEnd($event: CdkDragEnd) {
-        console.log($event);
-    }
-
     envoyerPosition() {
         console.log("envoyerPosition");
     }
+
+    dragEnd($event: CdkDragEnd) {
+        console.log("dragEnd");
+    }
+
+    // dragEnd($event: CdkDragEnd) {
+    //     const element = $event.source.getRootElement() as HTMLElement;
+    //     const rect = element.getBoundingClientRect();
+    //     const posX: number = rect.left;
+    //     const posY: number = rect.top;
+        
+    //     let position = new PostPositionGraph();
+    //     position.id = 1;
+    //     position.d = "2024-04-15T14:58:10.604Z";
+    //     position.px = Math.floor(posX);
+    //     position.py = posY;
+    //     position.idErabliere = this.idErabliere;
+
+    //     console.log(position);
+
+    //     this._api.postPositionGraph(this.idErabliere, position).then(resp => {
+    //         console.log(resp);
+    //     });
+    // }
 }

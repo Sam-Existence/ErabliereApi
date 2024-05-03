@@ -1,0 +1,116 @@
+<div #dropListContainer class="container" cdkDropListGroup>
+  <div *ngFor="let item of items; let i = index" cdkDropList [cdkDropListData]="i">
+      <div [ngSwitch]="item">
+        <div *ngSwitchCase="'Weather'" cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <weather-forecast 
+            *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
+            class="col-md-6"></weather-forecast>
+        </div>
+        <div *ngSwitchCase="'Images'" cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <div *ngIf="displayImages">
+            <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
+          </div>
+        </div>
+        <div *ngSwitchCase="'Vaccium'"  cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <div *ngIf="initialErabliere?.afficherTrioDonnees">
+            <vaccium-graph-pannel
+                [titre]="titre_vaccium"
+                [valeurActuel]="vacciumValueActuel"
+                [symbole]="vacciumSymbole"
+                [timeaxes]="timeaxes"
+                [mean]="meanVaccium"
+                (updateGraphCallback)="updateGraph($event)"
+                (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                [datasets]="vaccium" #vacciumGraphPannel />
+          </div>
+        </div>
+        <div *ngSwitchCase="'Niveau Bassin'"  cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <div *ngIf="initialErabliere?.afficherTrioDonnees">
+            <graph-pannel
+                [titre]="titre_niveaubassin"
+                [valeurActuel]="niveauBassinValueActuel"
+                [symbole]="niveauBassinSymbole"
+                [timeaxes]="timeaxes"
+                [mean]="meanNiveauBassin"
+                (updateGraphCallback)="updateGraph($event)"
+                (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                [datasets]="niveaubassin" #niveaubassinGraphPannel />
+          </div>
+        </div>
+        <div *ngSwitchCase="'Temperature'"  cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <div *ngIf="initialErabliere?.afficherTrioDonnees">
+            <graph-pannel
+                [titre]="titre_temperature"
+                [valeurActuel]="temperatureValueActuel"
+                [mean]="meanTemperature"
+                [symbole]="temperatureSymbole"
+                [timeaxes]="timeaxes"
+                (updateGraphCallback)="updateGraph($event)"
+                (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                [datasets]="temperature" #temperatureGraphPannel />
+          </div>
+        </div>
+        <div *ngSwitchCase="'Dompeux'"  cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+          <div *ngIf="initialErabliere?.afficherSectionDompeux">
+            <bar-pannel 
+              [titre]="titre_dompeux" 
+              [timeaxes]="timeaxes_dompeux" 
+              [datasets]="dompeux"
+              [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-pannel>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+<!-- <div class="row">
+  <weather-forecast 
+    *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
+    class="col-md-6"></weather-forecast>
+  <div *ngIf="displayImages" class="col-md-6">
+    <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
+  </div>
+  <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
+      <graph-pannel [titre]="titre_temperature" 
+                   [valeurActuel]="temperatureValueActuel"
+                   [mean]="meanTemperature"
+                   [symbole]="temperatureSymbole"
+                   [timeaxes]="timeaxes" 
+                   (updateGraphCallback)="updateGraph($event)"
+                   (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                   [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
+    </div>
+    <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
+      <vaccium-graph-pannel [titre]="titre_vaccium" 
+                   [valeurActuel]="vacciumValueActuel"
+                   [symbole]="vacciumSymbole"
+                   [timeaxes]="timeaxes"
+                   [mean]="meanVaccium"
+                   (updateGraphCallback)="updateGraph($event)"
+                   (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                   [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
+    </div>
+    <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
+      <graph-pannel [titre]="titre_niveaubassin" 
+                   [valeurActuel]="niveauBassinValueActuel"
+                   [symbole]="niveauBassinSymbole"
+                   [timeaxes]="timeaxes" 
+                   [mean]="meanNiveauBassin"
+                   (updateGraphCallback)="updateGraph($event)"
+                   (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                   [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
+    </div>
+    <div *ngIf="initialErabliere?.afficherSectionDompeux" class="col-md-6">
+      <bar-pannel [titre]="titre_dompeux" 
+                 [timeaxes]="timeaxes_dompeux" 
+                 [datasets]="dompeux"
+                 [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-pannel>
+    <div>
+</div> -->
