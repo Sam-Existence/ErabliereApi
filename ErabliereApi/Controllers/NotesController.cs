@@ -49,6 +49,31 @@ public class NotesController : ControllerBase
     }
 
     /// <summary>
+    /// Get toutes les notes avec un rappel actif et la périodicité est due
+    /// </summary>
+    /// <param name="id">Id de l'erabliere</param>
+    /// <param name="token"></param>
+    /// <returns>Retournes les notes avec un rappel actif et la périodicité est due</returns>
+    [HttpGet("ActiveRappelsNotes")]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<Note>))]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> GetNotesWithActiveRappels(Guid id, CancellationToken token)
+    {
+        var today = DateTimeOffset.Now;
+
+        var notesWithRappel = await _depot.Notes
+            .Include(n => n.Rappel)
+            .Where(n => n.IdErabliere == id && n.Rappel != null && n.Rappel.IsActive)
+            .ToListAsync(token);
+
+        var notes = notesWithRappel
+            .Where(n => IsPeriodiciteDue(n.Rappel, today))
+            .ToList();
+
+        return Ok(notes);
+    }
+
+    /// <summary>
     /// Obetenir l'image d'une note
     /// </summary>
     /// <param name="id">Id de l'érablière</param>
@@ -82,7 +107,7 @@ public class NotesController : ControllerBase
         {
             return NoContent();
         }
-        
+
         Response.Headers.Append("Cache-Control", "private, max-age=2592000");
 
         return File(note.File, $"image/{note.FileExtension ?? "jpg"}");
@@ -171,9 +196,10 @@ public class NotesController : ControllerBase
     [HttpPost("multipart")]
     [ProducesResponseType(200, Type = typeof(PostNoteMultipartResponse))]
     [ValiderOwnership("id")]
-    public async Task<IActionResult> AjouterMultipart(Guid id, CancellationToken token, [FromForm] PostNoteMultipart postNoteMultipart)
+    public async Task<IActionResult> AjouterMultipart(Guid id, CancellationToken token,
+        [FromForm] PostNoteMultipart postNoteMultipart)
     {
-        if (postNoteMultipart.File == null) 
+        if (postNoteMultipart.File == null)
         {
             return BadRequest("Le fichier est manquant");
         }
@@ -215,9 +241,11 @@ public class NotesController : ControllerBase
         {
             return BadRequest("L'id de la route ne concorde pas avec l'érablière possédant la note");
         }
+
         if (noteId != putNote.Id)
         {
-            return BadRequest("L'id de la note dans la route ne concorde pas avec l'id de la note dans le corps du message.");
+            return BadRequest(
+                "L'id de la note dans la route ne concorde pas avec l'id de la note dans le corps du message.");
         }
 
         var entity = await _depot.Notes.FindAsync([noteId], token);
@@ -271,7 +299,7 @@ public class NotesController : ControllerBase
                         Periodicite = putNote.Rappel.Periodicite
                     };
                 }
-            } 
+            }
 
             await _depot.SaveChangesAsync(token);
 
@@ -318,4 +346,31 @@ public class NotesController : ControllerBase
             return NotFound();
         }
     }
+
+    private bool IsPeriodiciteDue(Rappel rappel, DateTimeOffset today)
+    {
+        DateTime nextRappelDate;
+        DateTime todayDateTime = today.DateTime; // Convert DateTimeOffset to DateTime
+
+        switch (rappel.Periodicite)
+        {
+            case "annuel":
+                nextRappelDate = rappel.DateRappel.Value.DateTime.AddYears(1);
+                break;
+            case "mensuel":
+                nextRappelDate = rappel.DateRappel.Value.DateTime.AddMonths(1);
+                break;
+            case "hebdo":
+                nextRappelDate = rappel.DateRappel.Value.DateTime.AddDays(7);
+                break;
+            case "quotidien":
+                nextRappelDate = rappel.DateRappel.Value.DateTime.AddDays(1);
+                break;
+            default:
+                return false;
+        }
+
+        return nextRappelDate <= todayDateTime; // Compare with the converted DateTime
+    }
+
 }
