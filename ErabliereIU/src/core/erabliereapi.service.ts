@@ -207,8 +207,17 @@ export class ErabliereApi {
         let odataOptions = "?$orderby=NoteDate desc";
             odataOptions += "&$skip=" + skip;
             odataOptions += top ? "&$top=" + top : "";
-            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter,reminderDate";
+            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter";
+            odataOptions += "&$expand=rappel";
         const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getActiveRappelNotes(idErabliereSelectionee: any): Promise<Note[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Note[]>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + "/ActiveRappelNotes",
+            { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
@@ -386,9 +395,9 @@ export class ErabliereApi {
 
     async getImages(idErabliereSelectionnee: any, take: number, skip: number = 0, search?: string): Promise<GetImageInfo[]> {
         const headers = await this.getHeaders();
-        let url = this._environmentService.apiUrl + 
-            '/erablieres/' + idErabliereSelectionnee + 
-            "/ImagesCapteur?take=" + take + 
+        let url = this._environmentService.apiUrl +
+            '/erablieres/' + idErabliereSelectionnee +
+            "/ImagesCapteur?take=" + take +
             "&skip=" + skip;
 
         if (isNotNullOrWhitespace(search)) {
@@ -396,7 +405,7 @@ export class ErabliereApi {
         }
 
         return await this._httpClient.get<any>(
-            url, 
+            url,
             { headers: headers })
             .toPromise();
     }
