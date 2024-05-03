@@ -13,7 +13,7 @@ import { Subject } from 'rxjs';
 
 export class NoteComponent {
     @Input() note: Note;
-    @Input() noteToModifySubject?: Subject<Note | undefined>;
+    @Input() noteToModifySubject?: Subject<Note | null>;
     @Output() needToUpdate = new EventEmitter();
 
     constructor(private _api: ErabliereApi) {
@@ -21,7 +21,7 @@ export class NoteComponent {
     }
 
     selectEditNote() {
-        if (this.noteToModifySubject == null) {
+        if (this.noteToModifySubject === null) {
             console.error("noteToModifySubject is null");
             return;
         }
