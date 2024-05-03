@@ -5,6 +5,7 @@ import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { NgIf } from "@angular/common";
 import { Subject } from "rxjs";
+import {Rappel} from "../model/Rappel";
 
 @Component({
     selector: 'modifier-note',
@@ -26,7 +27,11 @@ export class ModifierNoteComponent implements OnInit {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
-                    this.noteForm.controls['reminderDate'].setValue(this.note.reminderDate ? new Date(this.note.reminderDate).toISOString().split('T')[0] : '');                }
+                  if (this.note.rappel) {
+                    this.noteForm.controls['dateRappel'].setValue(this.note.rappel.dateRappel ? new Date(this.note.rappel.dateRappel).toISOString().split('T')[0] : '');
+                    this.noteForm.controls['periodicite'].setValue(this.note.rappel.periodicite);
+                  }
+                }
             }
         });
     }
@@ -63,7 +68,13 @@ export class ModifierNoteComponent implements OnInit {
             updateOn: 'blur'
           }
         ),
-        reminderDate: new FormControl(
+        dateRappel: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        periodicite: new FormControl(
           '',
           {
             updateOn: 'blur'
@@ -113,12 +124,13 @@ export class ModifierNoteComponent implements OnInit {
             else {
               this.note.noteDate = null;
             }
-            if (this.noteForm.controls['reminderDate'].value !== "") {
-              this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+            // Update the Rappel object and set its properties using the form values
+            if (!this.note.rappel) {
+              this.note.rappel = new Rappel();
             }
-            else {
-              this.note.reminderDate = "";
-            }
+            this.note.rappel.dateRappel = this.noteForm.controls['dateRappel'].value;
+            this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
                 this.errorObj = null;

@@ -9,6 +9,7 @@ import {
 } from "@angular/forms";
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
+import {Rappel} from "../model/Rappel";
 
 @Component({
     selector: 'ajouter-note',
@@ -60,11 +61,17 @@ export class AjouterNoteComponent implements OnInit {
             reminderEnabled: new FormControl(
               false
             ),
-            reminderDate: new FormControl(
-              '',
-              {
-                updateOn: 'blur'
-              }
+            dateRappel: new FormControl(
+                '',
+                {
+                    updateOn: 'blur'
+                }
+            ),
+            periodicite: new FormControl(
+                '',
+                {
+                    updateOn: 'blur'
+                }
             ),
         });
     }
@@ -116,12 +123,14 @@ export class AjouterNoteComponent implements OnInit {
               else {
                 this.note.noteDate = null;
               }
-              if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
-                let date = new Date(this.noteForm.controls['reminderDate'].value);
-                this.note.reminderDate = date.toISOString();
+              if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['dateRappel'].value) {
+                  this.note.rappel = new Rappel();
+                  let date = new Date(this.noteForm.controls['dateRappel'].value);
+                  this.note.rappel.dateRappel = date.toISOString();
+                  this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
               }
               else {
-                this.note.reminderDate = null;
+
               }
               this._api.postNote(this.idErabliereSelectionee, this.note)
                 .then(r => {

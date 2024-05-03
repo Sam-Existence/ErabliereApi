@@ -8,7 +8,10 @@
 
         <p class="noteDate card-text"><small class="text-muted">{{ note.noteDate }}</small></p>
 
-        <p *ngIf="note.reminderDate !== null" class="noteReminder card-text"><small class="text-muted">Rappel: {{ note.reminderDate }}</small></p>
+      <p *ngIf="note.rappel && note.rappel.dateRappel" class="noteReminder card-text"><small class="text-muted">Date Rappel: {{ note.rappel.dateRappel }}</small></p>
+
+      <p *ngIf="note.rappel && note.rappel.periodicite" class="noteReminder card-text"><small class="text-muted">Periodicite: {{ note.rappel.periodicite }}</small></p>
+
 
         <div class="btn-group me-2">
             <button class="btn btn-info btn-sm" (click)="selectEditNote()">Modifier</button>
