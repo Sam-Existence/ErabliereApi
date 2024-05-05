@@ -500,6 +500,9 @@ namespace Depot.Sql.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<DateTimeOffset?>("ReminderDate")
+                        .HasColumnType("datetimeoffset");
+
                     b.Property<string>("Text")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");

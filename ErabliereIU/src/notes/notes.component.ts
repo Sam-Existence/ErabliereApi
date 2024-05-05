@@ -8,6 +8,7 @@ import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ActivatedRoute } from '@angular/router';
 import {PaginationComponent} from "../pagination/pagination.component";
+import { ca } from 'date-fns/locale';
 
 @Component({
     selector: 'notes',
@@ -47,8 +48,8 @@ export class NotesComponent implements OnInit {
         }
     }
     @Output() needToUpdate = new EventEmitter();
-    noteToModify?: Subject<Note | undefined> = new Subject<Note | undefined>();
-    error?: string;
+    noteToModify?: Subject<Note | null> = new Subject<Note | null>();
+    error?: string | null;
 
     constructor(private _api: ErabliereApi, private _route: ActivatedRoute) { }
 
@@ -57,24 +58,42 @@ export class NotesComponent implements OnInit {
             this.idErabliereSelectionee = params.get('idErabliereSelectionee');
 
             if (this.idErabliereSelectionee) {
-                this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
                 this.loadNotes();
             }
         });
-        this.loadNotes();
     }
 
     loadNotes() {
+        this._api.getNotesCount(this.idErabliereSelectionee).then(count => this._nombreTotal = count);
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
-            .then(notes => {
-                notes.forEach(n => {
+            .then(async notes => {
+                this.notes = notes;
+                this.error = null;
+
+                for (let i = 0; i < notes.length; i++) {
+                    let n = notes[i];
                     if (n.fileExtension == 'csv') {
                         n.decodedTextFile = atob(n.file ?? "");
                     }
-                });
+                    else {
+                        try {
+                            let data = await this._api.getNoteImage(n.idErabliere, n.id);
 
-                this.notes = notes;
-                this.error = undefined;
+                            if (data) {
+                                let binary = '';
+                                let bytes = new Uint8Array(data);
+                                let len = bytes.byteLength;
+                                for (let i = 0; i < len; i++) {
+                                    binary += String.fromCharCode(bytes[i]);
+                                }
+                                n.file = btoa(binary);
+                            }
+                        }
+                        catch (e) {
+                            console.error(e);
+                        }
+                    }
+                }
             })
             .catch(errorBody => {
                 this.notes = [];

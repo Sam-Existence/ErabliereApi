@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello_world():
-    return "<p>Welcome to the image2text api!</p><p>Send POST request to /image2text with the images in the body of the request</p>"
+    return "<p>Welcome to the image2text api!</p><p>Send POST request to /image2text with the images in the body of the request</p>" + "<form action='/image2text' method='post' enctype='multipart/form-data'>" + "<input type='file' name='file'>" + "<input type='submit'>" + "</form>"
 
 @app.route("/image2text", methods = ['POST'])
 def image2text():

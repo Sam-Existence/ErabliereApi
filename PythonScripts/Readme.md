@@ -69,3 +69,9 @@ ex:
 ```
 python3 getweather.py /home/ubuntu/.erabliereapi/acuweather.key 1365711 https://erabliereapi.freddycoder.com 00000000-0000-0000-0000-000000000000
 ```
+
+## image2textapi.py
+
+```docker
+docker run -d -p 39000:5000 erabliereapi/extraireinfohmi:latest flask run --host=0.0.0.0
+```

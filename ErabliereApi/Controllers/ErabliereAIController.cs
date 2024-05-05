@@ -3,6 +3,7 @@ using Azure;
 using Azure.AI.OpenAI;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees.Action.Patch;
+using ErabliereApi.Donnees.Action.Post;
 using ErabliereModel.Action.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -18,7 +19,7 @@ namespace ErabliereApi.Controllers;
 /// </summary>
 [ApiController]
 [Route("[controller]")]
-[Authorize(Roles = "ErabliereAIUser")]
+[Authorize(Roles = "ErabliereAIUser", Policy = "TenantIdPrincipal")]
 public class ErabliereAIController : ControllerBase 
 {
     private readonly ErabliereDbContext _depot;
@@ -118,6 +119,7 @@ public class ErabliereAIController : ControllerBase
 
                 var chatCompletionsOptions = new ChatCompletionsOptions()
                 {
+                    DeploymentName = _configuration["AzureOpenAIDeploymentChatModelName"],
                     Temperature = (float)0.7,
                     MaxTokens = 800,
                     NucleusSamplingFactor = (float)0.95,
@@ -125,18 +127,20 @@ public class ErabliereAIController : ControllerBase
                     PresencePenalty = 0
                 };
 
-                chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.System, "Vous êtes un acériculteur expérimenté avec des connaissance scientifique et pratique."));
+                chatCompletionsOptions.Messages.Add(new ChatRequestSystemMessage("Vous êtes un acériculteur expérimenté avec des connaissance scientifique et pratique."));
 
                 foreach (var message in messages)
                 {
-                    chatCompletionsOptions.Messages.Add(new ChatMessage(message.IsUser ? ChatRole.User : ChatRole.Assistant, message.Content));
+                    chatCompletionsOptions.Messages.Add(message.IsUser ?
+                        new ChatRequestUserMessage(message.Content) :
+                        new ChatRequestAssistantMessage(message.Content));
                 }
 
-                chatCompletionsOptions.Messages.Add(new ChatMessage(ChatRole.User, prompt.Prompt));
+                chatCompletionsOptions.Messages.Add(new ChatRequestUserMessage(prompt.Prompt));
 
                 Response<ChatCompletions> responseWithoutStream = await client.GetChatCompletionsAsync(
-                    _configuration["AzureOpenAIDeploymentChatModelName"],
-                    chatCompletionsOptions
+                    chatCompletionsOptions,
+                    cancellationToken
                 );
 
                 ChatCompletions responseChat = responseWithoutStream.Value;
@@ -144,9 +148,9 @@ public class ErabliereAIController : ControllerBase
                 break;
             default:
                 var completionResponse = await client.GetCompletionsAsync(
-                    deploymentOrModelName: _configuration["AzureOpenAIDeploymentModelName"],
                     new CompletionsOptions
                     {
+                        DeploymentName = _configuration["AzureOpenAIDeploymentModelName"],
                         Prompts = { prompt.Prompt },
                         Temperature = (float)1,
                         MaxTokens = 800,
@@ -154,7 +158,8 @@ public class ErabliereAIController : ControllerBase
                         FrequencyPenalty = (float)0,
                         PresencePenalty = (float)0,
                         GenerationSampleCount = 1,
-                    }
+                    },
+                    cancellationToken
                 );
                 var completion = completionResponse.Value;
 
@@ -182,8 +187,8 @@ public class ErabliereAIController : ControllerBase
             CreatedAt = DateTime.Now,
         };
 
-        await _depot.Messages.AddAsync(query);
-        await _depot.Messages.AddAsync(response);
+        await _depot.Messages.AddAsync(query, cancellationToken);
+        await _depot.Messages.AddAsync(response, cancellationToken);
         await _depot.SaveChangesAsync(cancellationToken);
 
         return Ok(new PostPromptResponse 
@@ -235,6 +240,34 @@ public class ErabliereAIController : ControllerBase
     }
 
     /// <summary>
+    /// Post a image generation request
+    /// </summary>
+    /// <param name="model"></param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPost("Images")]
+    public async Task<IActionResult> Images([FromBody] PostImagesGenerationModel model, CancellationToken token)
+    {
+        var client = new OpenAIClient(
+            new Uri(_configuration["AzureOpenAIUri"] ?? ""),
+            new AzureKeyCredential(_configuration["AzureOpenAIKey"] ?? "")
+        );
+
+        var images = await client.GetImageGenerationsAsync(new ImageGenerationOptions
+        {
+            DeploymentName = "Dalle3",
+            ImageCount = model.ImageCount ?? 1,
+            Prompt = model.Prompt,
+            Quality = ImageGenerationQuality.Standard,
+            Size = new ImageSize(model.Size ?? "1024x1024"),
+            Style = ImageGenerationStyle.Natural
+        }, token);
+
+        return Ok(images);
+    }
+
+
+    /// <summary>
     /// Delete a conversation
     /// </summary>
     [HttpDelete("Conversations/{id}")]
@@ -260,7 +293,7 @@ public class ErabliereAIController : ControllerBase
     /// </summary>
     [HttpGet("Admin/Conversations")]
     [EnableQuery]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public IActionResult GetConversationAsAdmin()
     {
         return Ok(_depot.Conversations);
@@ -274,7 +307,7 @@ public class ErabliereAIController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpPatch("Conversations/{id}/UserId")]
-    [Authorize(Roles = "administrateur")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> PatchConversation(Guid id, PatchConversation patch, CancellationToken token)
     {
         var conversation = await _depot.Conversations

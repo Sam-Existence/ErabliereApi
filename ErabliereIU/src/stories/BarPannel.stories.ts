@@ -18,9 +18,6 @@ export default meta;
 type Story = StoryObj<BarPannelComponent>;
 
 export const Primary: Story = {
-  render: (args: BarPannelComponent) => ({
-    props: args,
-  }),
   args: {
     titre: 'Titre',
     barChartType: 'bar',
@@ -35,7 +32,5 @@ export const Primary: Story = {
 };
 
 export const NoArgs: Story = {
-  render: (args: BarPannelComponent) => ({
-    props: args,
-  }),
+
 };

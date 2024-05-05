@@ -1,24 +1,31 @@
-<div *ngIf="note">
+@if(note) {
+  <div>
     <span class="text-danger">
         {{generalError}}
     </span>
-    <form [formGroup]="noteForm">
-        <div class="form-group">
-          <label class="form-label">Titre: </label>
-          <input class="form-control" type="text" formControlName="title">
-          <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Texte: </label>
-          <input class="form-control" type="text" formControlName="text">
-          <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
-        </div>
-        <div class="form-group mb-3">
-          <label class="form-label">Date de la note: </label>
-          <input class="form-control" type="text" formControlName="noteDate">
-          <input-error [errorObj]="errorObj" [controlName]="'noteDate'"></input-error>
-        </div>
+    <form [formGroup]="noteForm" id="modifier-note" novalidate>
+      <div [class]="'form-group mb-3' + (noteForm.controls['title'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="modifier-note-title">Titre: </label>
+        <input class="form-control" type="text" formControlName="title" id="modifier-note-title">
+        <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
+      </div>
+      <div [class]="'form-group mb-3' + (noteForm.controls['text'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="modifier-note-text">Texte: </label>
+        <input class="form-control" type="text" formControlName="text" id="modifier-note-text">
+        <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
+      </div>
+      <div [class]="'form-group mb-3' + (noteForm.controls['noteDate'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="modifier-note-noteDate">Date de la note: </label>
+        <input class="form-control" type="text" formControlName="noteDate" id="modifier-note-noteDate">
+        <input-error [errorObj]="errorObj" [controlName]="'noteDate'"></input-error>
+      </div>
+      <div [class]="'form-group mb-3' + (noteForm.controls['reminderDate'].touched ? ' was-validated' : '')">
+        <label class="form-label" for="modifier-note-reminderDate">Date du rappel: </label>
+        <input class="form-control" type="date" formControlName="reminderDate" [min]="today" id="modifier-note-reminderDate">
+        <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
+      </div>
       <button id="modifierNote" class="btn btn-primary me-2" (click)="onButtonModifierClick()">Modifier</button>
       <button id="annulerModifierNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>
-</div>
+  </div>
+}

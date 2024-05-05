@@ -32,18 +32,12 @@ export default meta;
 type Story = StoryObj<AgoraCallServiceComponent>;
 
 export const Primary: Story = {
-    render: (args: AgoraCallServiceComponent) => ({
-        props: args,
-    }),
     args: {
         erablieres: customers
     }
 };
 
 export const AfterOneCick: Story = {
-    render: (args: AgoraCallServiceComponent) => ({
-        props: args,
-    }),
     args: {
         erablieres: customers,
         showPhone: true,
@@ -51,9 +45,6 @@ export const AfterOneCick: Story = {
 };
 
 export const VideoChat: Story = {
-    render: (args: AgoraCallServiceComponent) => ({
-        props: args,
-    }),
     args: {
         erablieres: customers,
         showPhone: true,

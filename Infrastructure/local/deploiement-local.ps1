@@ -117,3 +117,5 @@ $oauthConfigOidcTemplatePath = $PWD.Path + "\config\" + "oauth-oidc.template.jso
 $oauthConfigOidcDestinationPath = $PWD.Path + "\config\" + "oauth-oidc.json"
 $oauthConfigOidcTemplateContent = (Get-Content $oauthConfigOidcTemplatePath -Raw -Encoding utf8).Replace("<ip-address>", $ipAddress)
 [System.IO.File]::WriteAllText($oauthConfigOidcDestinationPath, $oauthConfigOidcTemplateContent, $Utf8NoBomEncoding);
+
+docker compose up -d

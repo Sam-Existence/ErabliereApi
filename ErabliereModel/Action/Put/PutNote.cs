@@ -30,6 +30,11 @@ public class PutNote
     public DateTimeOffset? NoteDate { get; set; }
 
     /// <summary>
+    /// Date de rappel de la note
+    /// </summary>
+    public DateTimeOffset? ReminderDate { get; set; }
+
+    /// <summary>
     /// Filtre de notification. Permet à la note d'afficher comme une notification
     /// si le filtre est évaluer à vrai.
     /// </summary>

@@ -19,27 +19,18 @@ export default meta;
 type Story = StoryObj<WeatherForecastComponent>;
 
 export const Vide: Story = {
-  render: (args: WeatherForecastComponent) => ({
-    props: args,
-  }),
   args: {
     
   }
 };
 
 export const Erreur: Story = {
-    render: (args: WeatherForecastComponent) => ({
-      props: args,
-    }),
     args: {
       error: "Erreur de connexion"
     }
   };
 
 export const Forecast5Days: Story = {
-  render: (args: WeatherForecastComponent) => ({
-    props: args,
-  }),
   args: {
     text: "Neige continuant jusqu’à demain après-midi; la tempête totalisera de 4 à 8 pouces",
     weatherData: {

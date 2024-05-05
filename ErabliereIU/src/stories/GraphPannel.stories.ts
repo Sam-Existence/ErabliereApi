@@ -18,9 +18,6 @@ export default meta;
 type Story = StoryObj<GraphPannelComponent>;
 
 export const Primary: Story = {
-  render: (args: GraphPannelComponent) => ({
-    props: args,
-  }),
   args: {
     timeaxes: ['2021-01-01 00:00:00', '2021-01-01 00:01:00', '2021-01-01 00:02:00', '2021-01-01 00:03:00', '2021-01-01 00:04:00', '2021-01-01 00:05:00', '2021-01-01 00:06:00', '2021-01-01 00:07:00', '2021-01-01 00:08:00'],
     datasets: [

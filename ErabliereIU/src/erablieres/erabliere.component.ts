@@ -9,6 +9,7 @@ import { Erabliere } from 'src/model/erabliere';
 import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.component';
 import { Subject } from 'rxjs';
 import { ImagePanelComponent } from 'src/donnees/sub-panel/image-pannel.component';
+import { RappelsComponent } from 'src/rappel/rappels.component';
 
 @Component({
     selector: 'erablieres',
@@ -20,7 +21,8 @@ import { ImagePanelComponent } from 'src/donnees/sub-panel/image-pannel.componen
       DonneesComponent,
       CapteurPannelsComponent,
       BarilsComponent,
-      ImagePanelComponent
+      ImagePanelComponent,
+      RappelsComponent
     ]
 })
 export class ErabliereComponent {

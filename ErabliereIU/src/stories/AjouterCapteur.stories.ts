@@ -18,7 +18,5 @@ export default meta;
 type Story = StoryObj<AjouterCapteurComponent>;
 
 export const Primary: Story = {
-  render: (args: AjouterCapteurComponent) => ({
-    props: args,
-  }),
+
 };

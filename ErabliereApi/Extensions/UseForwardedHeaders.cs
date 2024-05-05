@@ -84,22 +84,36 @@ public static class UseForwardedHeadersExtension
     {
         app.Use(async (context, next) =>
         {
-            // Request method, scheme, and path
-            logger.LogDebug("Request Method: {Method}", context.Request.Method);
-            logger.LogDebug("Request Scheme: {Scheme}", context.Request.Scheme);
-            logger.LogDebug("Request Path: {Path}", context.Request.Path);
-
-            // Headers
-            foreach (var header in context.Request.Headers)
+            if (logger.IsEnabled(LogLevel.Debug))
             {
-                logger.LogDebug("Header: {Key}: {Value}", header.Key, header.Value);
-            }
+                // Headers
+                // Request method, scheme, and path
+                logger.LogDebug("Request Method: {Method}", SanatizeHeader(context.Request.Method));
+                logger.LogDebug("Request Scheme: {Scheme}", SanatizeHeader(context.Request.Scheme));
+                logger.LogDebug("Request Path: {Path}", SanatizeHeader(context.Request.Path));
 
-            // Connection: RemoteIp
-            logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
-            context.Connection.RemoteIpAddress);
+                foreach (var header in context.Request.Headers)
+                {
+                    logger.LogDebug(
+                        "Header: {Key}: {Value}", 
+                        SanatizeHeader(header.Key), 
+                        SanatizeHeader(header.Value));
+                }
+
+                // Connection: RemoteIp
+                logger.LogDebug("Request RemoteIp: {RemoteIpAddress}",
+                context.Connection.RemoteIpAddress);
+            }
 
             await next();
         });
+    }
+
+    private static string? SanatizeHeader(string? value) 
+    {
+        return value?
+            .Replace("\r\n", string.Empty)
+            .Replace("\n", string.Empty)
+            .Replace("\r", string.Empty);
     }
 }

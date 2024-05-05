@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from '@angular/core';
 import {CommonModule} from "@angular/common";
 import {OnInit} from "@angular/core";
 
@@ -38,8 +38,14 @@ export class PaginationComponent implements OnChanges {
         return this.pageActuelle === 1
     }
 
-    ngOnChanges() {
-        this.pages = Array(Math.ceil(this.nombreElements / this.nombreParPage)).fill(null).map((_, i) => i + 1);
+    ngOnChanges(changes: SimpleChanges) {
+        if(changes.nombreElements) {
+            if(changes.nombreElements.currentValue) {
+                this.pages = Array(Math.ceil(this.nombreElements / this.nombreParPage)).fill(null).map((_, i) => i + 1);
+            } else {
+                this.pages = [1];
+            }
+        }
     }
 
     pagePrecedente(): void {

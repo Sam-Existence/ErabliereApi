@@ -1,49 +1,65 @@
-import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { GetImageInfo } from 'src/model/imageInfo';
 
 @Component({
     selector: 'image-panel',
     template: `
-        <div class="border-top" cdkDrag (cdkDragEnded)="dragEnd($event)">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="card-title">Images</h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6" *ngFor="let image of images">
-                            <img 
-                                src="data:image/png;base64,{{ image.images }}" 
-                                class="img-thumbnail trigger-modal" 
-                                alt="image" 
-                                style="width: 100%; height: 100%;" 
-                                data-bs-toggle="modal" 
-                                data-bs-target="#imageModal" 
-                                (click)="selectedImage = image.images">
-                        </div>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title">
+                    Images 
+                    <span class="float-end">
+                        <input 
+                            type="text" 
+                            class="form-control form-control-sm" 
+                            placeholder="Rechercher" 
+                            aria-label="Rechercher" 
+                            aria-describedby="basic-addon1"
+                            (keyup)="searchFromInput($event)">
+                    </span>
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <button *ngIf="skip" class="btn btn-light btn-sm position-absolute top-50 start-0 translate-middle-y" (click)="previousImage()" style="width: 5%;">&lt;</button>
+                    <button class="btn btn-light btn-sm position-absolute top-50 end-0 translate-middle-y" (click)="nextImage()" style="width: 5%;">&gt;</button>
+
+                    <div class="col-md-6" *ngFor="let image of images; let ls = index">
+                        <img 
+                            src="data:image/png;base64,{{ image.images }}" 
+                            class="img-thumbnail trigger-modal" 
+                            alt="image" 
+                            style="width: 100%; height: 100%;" 
+                            data-bs-toggle="modal" 
+                            data-bs-target="#imageModal" 
+                            (click)="selectImage(image, ls)">
                     </div>
                 </div>
             </div>
-
-            <div class="example-handle" cdkDragHandle>
-                <svg width="32px" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M10 9h4V6h3l-5-5-5 5h3v3zm-1 1H6V7l-5 5 5 5v-3h3v-4zm14 2l-5-5v3h-3v4h3v3l5-5zm-9 3h-4v3H7l5 5 5-5h-3v-3z"></path>
-                    <path d="M0 0h24v24H0z" fill="none"></path>
-                </svg>
-            </div>
-            
-            <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-lg">
-                    <div class="modal-content">
+        </div>
+        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">{{ modalTitle }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true"></span>
+                        </button>
+                    </div>
                     <div class="modal-body">
+                        <button *ngIf="modalSkip" class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="modalPreviousImage()">&lt;</button>
+                        <button *ngIf="modalHasNext" class="btn btn-light position-absolute top-50 end-0 translate-middle-y" (click)="modalNextImage()">&gt;</button>
                         <img 
                             [src]="'data:image/png;base64,' + selectedImage" 
                             class="img-fluid modal-image-content" 
                             alt="Selected Image">
                     </div>
+                    <div class="modal-footer">
+                        <pre class="float-start" style="display: block; width: 100%;">{{azureImageAPIInfo}}</pre>
                     </div>
                 </div>
             </div>
@@ -142,14 +158,23 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
     imports: [NgFor, NgIf, CdkDrag, CdkDragHandle]
 })
 export class ImagePanelComponent implements OnInit {
-    
+  
     constructor(private api: ErabliereApi, private route: ActivatedRoute) {
 
     }
 
     @Input() idErabliereSelectionnee: any;
-    images: any[] = [];
+    images: GetImageInfo[] = [];
+    selectedImageMetadata: GetImageInfo = new GetImageInfo();
+    azureImageAPIInfo: string = "";
     selectedImage?: string;
+    take: number = 2;
+    skip: number = 0;
+    search: string = "";
+    modalTake: number = 1;
+    modalSkip: number = 0;
+    modalHasNext: boolean = true;
+    modalTitle: string = "Image";
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -169,12 +194,81 @@ export class ImagePanelComponent implements OnInit {
 
     fetchImages() {
         console.log("fetch image for", this.idErabliereSelectionnee);
-        this.api.getImages(this.idErabliereSelectionnee, 2).then(images => {
-            this.images = images;
-        });
+        this.api.getImages(
+                this.idErabliereSelectionnee, this.take, this.skip, this.search)
+            .then(images => {
+                this.images = images;
+            });
     }
     
-    dragEnd(event: CdkDragEnd) {
-        console.log(event);
+    nextImage() {
+        console.log("next image");
+        this.take = 2;
+        this.skip += this.take;
+        this.fetchImages();
+    }
+        
+    previousImage() {
+        console.log("previous image");
+        this.take = 2;
+        this.skip -= this.take;
+        if (this.skip < 0) {
+            this.skip = 0;
+        }
+        this.fetchImages();
+    }
+
+    fetchModalImages() {
+        console.log("fetch image for", this.idErabliereSelectionnee);
+        this.api.getImages(this.idErabliereSelectionnee, this.modalTake, this.modalSkip, this.search).then(images => {
+            if (images.length > 0) {
+                this.selectedImage = images[0].images;
+                this.selectedImageMetadata = images[0];
+                this.azureImageAPIInfo = JSON.stringify(JSON.parse(images[0].azureImageAPIInfo ?? ""), null, 2);
+                this.modalHasNext = true;
+                this.modalTitle = images[0].name ?? "Image";
+            }
+            else {
+                this.modalHasNext = false;
+                this.modalSkip -= this.modalTake;
+            }
+        });
+    }
+
+    modalNextImage() {
+        console.log("modal next image");
+        this.modalTake = 1;
+        this.modalSkip += this.modalTake;
+        this.fetchModalImages();
+    }
+        
+    modalPreviousImage() {
+        console.log("modal previous image");
+        this.modalTake = 1;
+        this.modalSkip -= this.modalTake;
+        if (this.modalSkip < 0) {
+            this.modalSkip = 0;
+        }
+        this.fetchModalImages();
+    }
+
+    selectImage(image: GetImageInfo, localSkip: number) {
+        this.selectedImage = image.images;
+        this.selectedImageMetadata = image;
+        this.azureImageAPIInfo = JSON.stringify(JSON.parse(image.azureImageAPIInfo ?? ""), null, 2);
+        this.modalTake = 1;
+        this.modalSkip = this.skip + localSkip;
+        if (this.modalSkip < 0) {
+            this.modalSkip = 0;
+        }
+        this.modalTitle = image.name ?? "Image";
+    }
+
+    searchFromInput(event: any) {
+        console.log("searchFromInput", event);
+        const search = event.target.value;
+        this.search = search;
+        console.log("search", search);
+        this.fetchImages();
     }
 }

@@ -18,15 +18,10 @@ export default meta;
 type Story = StoryObj<AjouterNoteComponent>;
 
 export const Button: Story = {
-  render: (args: AjouterNoteComponent) => ({
-    props: args,
-  }),
+
 };
 
 export const Form: Story = {
-  render: (args: AjouterNoteComponent) => ({
-    props: args,
-  }),
   args: {
     display: true
   }

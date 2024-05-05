@@ -6,7 +6,8 @@ export class Note {
   fileExtension?: string
   file?: string
   created?: string
-  noteDate?: string
+  noteDate?: string | null
+  reminderDate?: string | null
 
   // calculated field
   decodedTextFile?: string

@@ -13,6 +13,36 @@ describe("Notes page", { testIsolation: false }, () => {
         notesPage.getPageTitle().should('have.text', 'Notes');
     });
 
+    it("should add note with specific date", () => {
+        if (notesPage == null) {
+            throw new Error("Notes page is not initialized");
+        }
+
+        // generate random title and content
+        const title = `Note title ${Math.floor(Math.random() * 1000)}`;
+        const content = `Note content ${Math.floor(Math.random() * 1000)}`;
+        const date = new Date();
+
+        const dstring = `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
+
+        notesPage.addNote(title, content, dstring);
+
+        cy.wait(1000);
+
+        // validate that note is added
+        notesPage.getNoteTitle().should('have.text', title);
+        notesPage.getNoteDescription().should('have.text', content);
+        notesPage.getNoteDate().should('have.text', dstring + "T00:00:00+00:00");
+    });
+
+    it("should click on cancel button", () => {
+        if (notesPage == null) {
+            throw new Error("Notes page is not initialized");
+        }
+
+        notesPage.getCancelButton().click();
+    });
+
     it("should add note without specifing date", () => {
         if (notesPage == null) {
             throw new Error("Notes page is not initialized");
@@ -29,34 +59,6 @@ describe("Notes page", { testIsolation: false }, () => {
         // validate that note is added
         notesPage.getNoteTitle().should('have.text', title);
         notesPage.getNoteDescription().should('have.text', content);
-    });
-
-    it("should click on cancel button", () => {
-        if (notesPage == null) {
-            throw new Error("Notes page is not initialized");
-        }
-
-        notesPage.getCancelButton().click();
-    });
-
-    it("should add note with specific date", () => {
-        if (notesPage == null) {
-            throw new Error("Notes page is not initialized");
-        }
-
-        // generate random title and content
-        const title = `Note title ${Math.floor(Math.random() * 1000)}`;
-        const content = `Note content ${Math.floor(Math.random() * 1000)}`;
-        const date = new Date();
-
-        notesPage.addNote(title, content, toISO8601(date));
-
-        cy.wait(1000);
-
-        // validate that note is added
-        notesPage.getNoteTitle().should('have.text', title);
-        notesPage.getNoteDescription().should('have.text', content);
-        notesPage.getNoteDate().should('have.text', toISO8601(date));
     });
 
     function toISO8601(date: Date): string {
