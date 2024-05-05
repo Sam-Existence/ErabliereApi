@@ -1,11 +1,10 @@
-import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { PostPositionGraph } from 'src/model/PositionGraph';
 import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
 import { calculerMoyenne } from '../util';
 import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
@@ -261,25 +260,5 @@ export class GraphPannelComponent implements OnInit {
 
     captureDateFin($event: SimpleChange) {
         this.dateFinFixRange = $event.currentValue;
-    }
-
-    dragEnd($event: CdkDragEnd) {
-        const element = $event.source.getRootElement() as HTMLElement;
-        const rect = element.getBoundingClientRect();
-        const posX: number = rect.left;
-        const posY: number = rect.top;
-        
-        let position = new PostPositionGraph();
-        position.id = 1;
-        position.d = "2024-04-15T14:58:10.604Z";
-        position.px = Math.floor(posX);
-        position.py = posY;
-        position.idErabliere = this.idErabliere;
-
-        console.log(position);
-
-        this._api.postPositionGraph(this.idErabliere, position).then(resp => {
-            console.log(resp);
-        });
     }
 }

@@ -18,13 +18,8 @@ namespace ErabliereApi.Donnees.Action.Get
         public DateTimeOffset? D { get; set; }
 
         /// <summary>
-        /// Position sur l'axe des x
+        /// Position dans la liste
         /// </summary>
-        public short? PX { get; set; }
-
-        /// <summary>
-        /// Position sur l'axe des y
-        /// </summary>
-        public short? PY { get; set; }
+        public int? Position { get; set; }
     }
 }

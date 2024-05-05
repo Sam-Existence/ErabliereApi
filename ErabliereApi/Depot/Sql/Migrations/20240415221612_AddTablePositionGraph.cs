@@ -16,8 +16,7 @@ namespace Depot.Sql.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
                     D = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    PX = table.Column<int>(type: "int", nullable: true),
-                    PY = table.Column<int>(type: "int", nullable: true),
+                    Position = table.Column<int>(type: "int", nullable: true),
                     IdErabliere = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    [Migration("20240419172138_AddTablePositionGraph")]
+    [Migration("20240503174246_AddTablePositionGraph")]
     partial class AddTablePositionGraph
     {
         /// <inheritdoc />
@@ -529,21 +529,13 @@ namespace Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("D")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<Guid?>("ErabliereId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<short?>("PX")
-                        .HasColumnType("smallint");
-
-                    b.Property<short?>("PY")
-                        .HasColumnType("smallint");
+                    b.Property<int?>("Position")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ErabliereId");
 
                     b.HasIndex(new[] { "D" }, "D_Index");
 
@@ -688,15 +680,6 @@ namespace Depot.Sql.Migrations
                         .WithMany("Notes")
                         .HasForeignKey("IdErabliere")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Erabliere");
-                });
-
-            modelBuilder.Entity("ErabliereApi.Donnees.PositionGraph", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany()
-                        .HasForeignKey("ErabliereId");
 
                     b.Navigation("Erabliere");
                 });

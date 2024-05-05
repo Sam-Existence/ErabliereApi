@@ -7,7 +7,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Modèle position graph.
 /// </summary>
-public class PositionGraph : IIdentifiable<int?, PositionGraph>, IErabliereOwnable
+public class PositionGraph : IIdentifiable<int?, PositionGraph>
 {
     /// <summary>
     /// L'id de l'occurence
@@ -20,24 +20,14 @@ public class PositionGraph : IIdentifiable<int?, PositionGraph>, IErabliereOwnab
     public DateTimeOffset? D { get; set; }
 
     /// <summary>
-    /// Position sur l'axe des x
+    /// Position dans la liste
     /// </summary>
-    public short? PX { get; set; }
-
-    /// <summary>
-    /// Position sur l'axe des y
-    /// </summary>
-    public short? PY { get; set; }
+    public int? Position { get; set; }
 
     /// <summary>
     /// Id de l'érablière relié a cette donnée
     /// </summary>
     public Guid? IdErabliere { get; set; }
-
-    /// <summary>
-    /// L'erabliere relié à la donn�e
-    /// </summary>
-    public Erabliere? Erabliere { get; set; }
 
     /// <inheritdoc />
     public int CompareTo([AllowNull] PositionGraph other)

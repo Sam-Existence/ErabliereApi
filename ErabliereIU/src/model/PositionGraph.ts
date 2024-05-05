@@ -1,14 +1,12 @@
 export class PositionGraph {
     id?:any
     d?:any
-    px?:number
-    py?:number
+    position?: number
 }
 
 export class PostPositionGraph {
     id?:any
     d?:any
-    px?:number
-    py?:number
+    position?: number
     idErabliere?:any
 }

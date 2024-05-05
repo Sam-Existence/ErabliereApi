@@ -4,6 +4,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
+import { PostPositionGraph } from 'src/model/PositionGraph';
 import { Erabliere } from 'src/model/erabliere';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
@@ -49,10 +50,10 @@ export class DonneesComponent implements OnInit {
   timeaxes: string[] = [];
   timeaxes_dompeux: string[] = []
 
-  derniereDonneeRecu?: string = undefined;
-  ddr?: string = undefined;
-  dernierDompeuxRecu?: string = undefined;
-  ddrDompeux?: string = undefined;
+  derniereDonneeRecu?: string | null = null;
+  ddr?: string | null = null;
+  dernierDompeuxRecu?: string | null = null;
+  ddrDompeux?: string | null = null;
 
   ids: Array<number> = []
   idsDompeux: Array<number> = []
@@ -116,7 +117,8 @@ export class DonneesComponent implements OnInit {
         this.erabliereId = undefined;
       }
 
-      this.fetchDataAndBuildGraph()
+      this.fetchDataAndBuildGraph();
+      
     });
 
     this.erabliereAfficherTrioDonnees = this.initialErabliere?.afficherTrioDonnees;
@@ -420,26 +422,19 @@ export class DonneesComponent implements OnInit {
     return notNullOrWitespace(arg0);
   }
 
-  dragEnd($event: CdkDragEnd) {
-    // const element = $event.source.getRootElement() as HTMLElement;
-    // const rect = element.getBoundingClientRect();
-    // const posX: number = rect.left;
-    // const posY: number = rect.top;
-    
-    // let position = new PostPositionGraph();
-    // position.id = 1;
-    // position.d = "2024-04-15T14:58:10.604Z";
-    // position.px = Math.floor(posX);
-    // position.py = posY;
-    // position.idErabliere = this.idErabliere;
+  dragEnd(event: CdkDragEnd) {
 
-    // console.log(position);
+    let position = new PostPositionGraph();
+    position.id = 1;
+    position.d = "2024-04-15T14:58:10.604Z";
+    position.position = this.dragDropInfo?.dropIndex;
+    position.idErabliere = this.erabliereId;
 
-    // this._api.postPositionGraph(this.idErabliere, position).then(resp => {
-    //     console.log(resp);
-    // });
-    console.log("dragEnd")
-    console.log(this.items)
+    console.log(position);
+
+    this._erabliereApi.postPositionGraph(this.erabliereId, position).then(resp => {
+        console.log(resp);
+    });
   }
 
   dragEntered(event: CdkDragEnter<number>) {
