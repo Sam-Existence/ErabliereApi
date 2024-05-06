@@ -287,10 +287,6 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
-                    b.Property<Guid?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<byte>("Access")
                         .HasColumnType("tinyint");
 
@@ -300,7 +296,7 @@ namespace Depot.Sql.Migrations
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey(["IdCustomer", "IdErabliere"]);
 
                     b.HasIndex("IdErabliere");
 
@@ -599,11 +595,13 @@ namespace Depot.Sql.Migrations
                 {
                     b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
                         .WithMany()
-                        .HasForeignKey("IdErabliere");
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("ErabliereApi.Donnees.Customer", "Customer")
                         .WithMany("CustomerErablieres")
-                        .HasForeignKey("IdCustomer");
+                        .HasForeignKey("IdCustomer")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Customer");
 

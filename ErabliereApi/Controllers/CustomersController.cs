@@ -191,30 +191,4 @@ public class CustomersController : ControllerBase
 
         return NoContent();
     }
-
-    /// <summary>
-    /// Point de terminaison pour la suppression d'un utilisateur
-    /// </summary>
-    /// <param name="id">Id de l'utilisateur</param>
-    /// <param name="token"></param>
-    /// <returns></returns>
-    [HttpDelete]
-    [Route("/admin/customeraccess/{id}")]
-    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    public async Task<IActionResult> DeleteCustomerAccessAdmin(Guid id, CancellationToken token)
-    {
-        var customer = await _context.CustomerErablieres
-            .FirstOrDefaultAsync(c => c.Id == id, token);
-
-        if (customer == null)
-        {
-            return NoContent();
-        }
-
-        _context.Remove(customer);
-
-        await _context.SaveChangesAsync(token);
-
-        return NoContent();
-    }
 }

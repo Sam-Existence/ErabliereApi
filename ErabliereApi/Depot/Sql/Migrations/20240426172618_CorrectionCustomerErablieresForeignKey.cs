@@ -22,17 +22,50 @@ namespace Depot.Sql.Migrations
                 name: "ErabliereId",
                 table: "CustomerErablieres");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_CustomerErablieres_IdErabliere",
-                table: "CustomerErablieres",
-                column: "IdErabliere");
-
             migrationBuilder.AddForeignKey(
                 name: "FK_CustomerErablieres_Erabliere_IdErabliere",
                 table: "CustomerErablieres",
                 column: "IdErabliere",
                 principalTable: "Erabliere",
                 principalColumn: "Id");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_CustomerErablieres",
+                table: "CustomerErablieres");
+
+            migrationBuilder.DropColumn(
+                name: "Id",
+                table: "CustomerErablieres");
+
+            migrationBuilder.DropIndex(
+                name: "IX_CustomerErablieres_IdCustomer",
+                table: "CustomerErablieres");
+
+            migrationBuilder.AlterColumn<Guid>(
+                table: "CustomerErablieres",
+                name: "IdCustomer",
+                nullable: false);
+
+            migrationBuilder.AlterColumn<Guid>(
+                table: "CustomerErablieres",
+                name: "IdErabliere",
+                nullable: false);
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_CustomerErablieres",
+                table: "CustomerErablieres",
+                columns: ["IdCustomer", "IdErabliere"]);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerErablieres_IdErabliere",
+                table: "CustomerErablieres",
+                column: "IdErabliere");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerErablieres_IdCustomer",
+                table: "CustomerErablieres",
+                column: "IdCustomer");
+
         }
 
         /// <inheritdoc />
@@ -63,6 +96,38 @@ namespace Depot.Sql.Migrations
                 column: "ErabliereId",
                 principalTable: "Erabliere",
                 principalColumn: "Id");
+
+            migrationBuilder.DropPrimaryKey(
+                name: "PK_CustomerErablieres",
+                table: "CustomerErablieres");
+
+            migrationBuilder.DropIndex(
+                name: "IX_CustomerErablieres_IdCustomer",
+                table: "CustomerErablieres");
+
+            migrationBuilder.AlterColumn<Guid>(
+                table: "CustomerErablieres",
+                name: "IdCustomer",
+                nullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomerErablieres_IdCustomer",
+                table: "CustomerErablieres",
+                column: "IdCustomer");
+
+            migrationBuilder.AlterColumn<Guid>(
+                table: "CustomerErablieres",
+                name: "IdErabliere",
+                nullable: true);
+
+            migrationBuilder.AddColumn<Guid>(
+                name: "Id",
+                table: "CustomerErablieres");
+
+            migrationBuilder.AddPrimaryKey(
+                name: "PK_CustomerErablieres",
+                table: "CustomerErablieres",
+                column: "Id");
         }
     }
 }

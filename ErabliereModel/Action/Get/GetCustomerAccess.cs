@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Get;
@@ -8,11 +8,6 @@ namespace ErabliereApi.Donnees.Action.Get;
 /// </summary>
 public class GetCustomerAccess
 {
-    /// <summary>
-    /// Clé primaire de la jonction
-    /// </summary>
-    public Guid? Id { get; set; }
-
     /// <summary>
     /// Id de l'érablière
     /// </summary>
