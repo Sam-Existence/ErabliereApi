@@ -101,7 +101,7 @@ namespace ErabliereApi.Controllers
         /// Ajouter un donnée.
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
-        /// <param name="idDonnee">L'id de la donnée à modifier</param>
+        /// <param name="idPosition">L'id de la donnée à modifier</param>
         /// <param name="donneeRecu">La donnée à ajouter</param>
         /// <param name="token">Token d'annulation</param>
         [HttpPut("{idPosition}")]
@@ -111,17 +111,28 @@ namespace ErabliereApi.Controllers
         {
             if (id != donneeRecu.IdErabliere)
             {
-                return BadRequest($"L'id de la route '{id}' ne concorde pas avec l'id de l'érablière dans la donnée '{donneeRecu.IdErabliere}'.");
+                return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière.");
             }
 
-            var entity = await _context.PositionGraph.FindAsync(idPosition);
+            if (idPosition != donneeRecu.Id)
+            {
+                return BadRequest("L'id de la donnée dans la route ne concorde pas avec l'id la donnée dans le body.");
+            }
+
+            var entity = await _context.PositionGraph.FindAsync(new object?[] { donneeRecu.Id }, token);
 
             if (entity == null)
             {
-                return NotFound();
+                return BadRequest($"La donnée que vous tentez de modifier n'existe pas.");
             }
 
-            _mapper.Map(donneeRecu, entity);
+            if (entity.IdErabliere != donneeRecu.IdErabliere)
+            {
+                return BadRequest($"L'id de l'érablière de la donnée trouvé ne concorde pas avec l'id de l'érablière de la route.");
+            }
+            
+            entity.D = DateTimeOffset.Now;
+            entity.Position = donneeRecu.Position;
 
             await _context.SaveChangesAsync(token);
 

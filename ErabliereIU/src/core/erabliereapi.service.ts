@@ -412,17 +412,22 @@ export class ErabliereApi {
         return new HttpHeaders().set('Authorization', `Bearer ${token}`);
     }
 
-    async getPositionsGraph(idErabliereSelectionnee: any): Promise<HttpResponse<PositionGraph[]>> {
+    async getPositionGraph(idErabliereSelectionnee: any): Promise<PositionGraph[]> {
         const headers = await this.getHeaders();
-        var httpCall = this._httpClient.get<PositionGraph[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/positionsGraph", { headers: headers, observe: 'response' });
-        const rtn = await httpCall.toPromise();
-        return rtn ?? new HttpResponse();
+        const rtn = await this._httpClient.get<PositionGraph[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliereSelectionnee + "/PositionGraph", { headers: headers }).toPromise();
+        return rtn ?? [];
     }
 
     async postPositionGraph(idErabliereSelectionnee: any, positionsGraph: PostPositionGraph): Promise<PostPositionGraph> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.post<PostPositionGraph>(this._environmentService.apiUrl + '/Erablieres/' + idErabliereSelectionnee + "/PositionGraph", positionsGraph, { headers: headers }).toPromise();
         return rtn ?? new PostPositionGraph();
+    }
+
+    async putPositionGraph(idErabliereSelectionnee: any, idPosition: number, positionsGraph: PositionGraph): Promise<PositionGraph> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.put<any>(this._environmentService.apiUrl + '/Erablieres/' + idErabliereSelectionnee + "/PositionGraph/" + idPosition, positionsGraph, { headers: headers }).toPromise();
+        return rtn ?? new PositionGraph();
     }
 }
 

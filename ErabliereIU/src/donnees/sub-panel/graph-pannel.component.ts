@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgIf } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChange, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -18,7 +18,6 @@ import { DateTimeSelectorComponent } from './userinput/date-time-selector.compon
         NgIf,
         AjouterDonneeCapteurComponent,
         NgChartsModule,
-        CdkDrag,
         CdkDragHandle,
     ],
 })

@@ -4,7 +4,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { PostPositionGraph } from 'src/model/PositionGraph';
+import { PutPositionGraph } from 'src/model/PositionGraph';
 import { Erabliere } from 'src/model/erabliere';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
@@ -89,6 +89,15 @@ export class DonneesComponent implements OnInit {
 
   public items: Array<string> = ['Temperature', 'Vaccium', 'Niveau Bassin', 'Dompeux', 'Weather', 'Images'];
 
+  public itemIds = [
+    { name: "Temperature", id: 0 },
+    { name: "Vaccium", id: 1 },
+    { name: "Niveau Bassin", id: 2 },
+    { name: "Dompeux", id: 3 },
+    { name: "Weather", id: 4 },
+    { name: "Images", id: 5 }
+];
+
   dropListReceiverElement?: HTMLElement;
   dragDropInfo?: {
     dragIndex: number;
@@ -126,6 +135,8 @@ export class DonneesComponent implements OnInit {
     this.erabliereId = this.initialErabliere?.id;
 
     this.fetchDataAndBuildGraph();
+
+    this.getPositionGraph();
   }
 
   fetchDataAndBuildGraph() {
@@ -422,21 +433,6 @@ export class DonneesComponent implements OnInit {
     return notNullOrWitespace(arg0);
   }
 
-  dragEnd(event: CdkDragEnd) {
-
-    let position = new PostPositionGraph();
-    position.id = 1;
-    position.d = "2024-04-15T14:58:10.604Z";
-    position.position = this.dragDropInfo?.dropIndex;
-    position.idErabliere = this.erabliereId;
-
-    console.log(position);
-
-    this._erabliereApi.postPositionGraph(this.erabliereId, position).then(resp => {
-        console.log(resp);
-    });
-  }
-
   dragEntered(event: CdkDragEnter<number>) {
     const drag = event.item;
     const dropList = event.container;
@@ -444,7 +440,6 @@ export class DonneesComponent implements OnInit {
     const dropIndex = dropList.data;
 
     this.dragDropInfo = { dragIndex, dropIndex };
-    console.log('dragEntered', { dragIndex, dropIndex });
 
     const phContainer = dropList.element.nativeElement;
     const phElement = phContainer.querySelector('.cdk-drag-placeholder');
@@ -487,8 +482,59 @@ export class DonneesComponent implements OnInit {
 
     this.dropListReceiverElement.style.removeProperty('display');
     this.dropListReceiverElement = undefined;
-    this.dragDropInfo = undefined;
   }
+
+  dragEnd(event: CdkDragEnd) {
+    let position = new PutPositionGraph();
+
+    const item = this.itemIds.find(item => item.name === this.items[event.source.data]);
+    position.id = item ? item.id : null;
+
+    position.d = "2024-04-15T14:58:10.604Z";
+    position.position = this.dragDropInfo?.dropIndex;
+    if (position.position === undefined) {
+      return;
+    }
+    position.idErabliere = this.erabliereId;
+
+    console.log(position);
+
+    this._erabliereApi.putPositionGraph(this.erabliereId, position.id, position).then(resp => {
+        console.log(resp);
+    });
 }
+
+getPositionGraph() {
+    this._erabliereApi.getPositionGraph(this.erabliereId).then(resp => {
+      console.log(resp);
+      let positionGraph: any = resp[0].position;
+      let removedItem = this.items.splice(this.items.indexOf("Temperature"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+
+      positionGraph = resp[1].position;
+      removedItem = this.items.splice(this.items.indexOf("Vaccium"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+
+      positionGraph = resp[2].position;
+      removedItem = this.items.splice(this.items.indexOf("Niveau Bassin"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+
+      positionGraph = resp[3].position;
+      removedItem = this.items.splice(this.items.indexOf("Dompeux"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+
+      positionGraph = resp[4].position;
+      removedItem = this.items.splice(this.items.indexOf("Weather"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+
+      positionGraph = resp[5].position;
+      removedItem = this.items.splice(this.items.indexOf("Images"), 1)[0];
+      this.items.splice(positionGraph, 0, removedItem);
+    });
+  }
+  
+}
+
+
 
 

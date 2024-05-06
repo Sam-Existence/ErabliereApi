@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { Component, Input, ViewChild } from '@angular/core';
 import { ChartDataset, ChartOptions, ChartType } from 'chart.js';
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
@@ -46,7 +46,7 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
         </div>
     `,
     standalone: true,
-    imports: [NgChartsModule, CdkDrag, CdkDragHandle],
+    imports: [NgChartsModule, CdkDragHandle],
 })
 export class BarPannelComponent {
     @ViewChild(BaseChartDirective) chart?: BaseChartDirective;
@@ -92,8 +92,5 @@ export class BarPannelComponent {
         this.valeurActuel = ""
         this.symbole = ""
         this.chart = undefined
-    }
-    dragEnd(event: CdkDragEnd) {
-        console.log(event);
     }
 }

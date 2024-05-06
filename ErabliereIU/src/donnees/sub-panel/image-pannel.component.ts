@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDragHandle } from '@angular/cdk/drag-drop';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -155,7 +155,7 @@ import { GetImageInfo } from 'src/model/imageInfo';
         }
     `],
     standalone: true,
-    imports: [NgFor, NgIf, CdkDrag, CdkDragHandle]
+    imports: [NgFor, NgIf, CdkDragHandle]
 })
 export class ImagePanelComponent implements OnInit {
   
