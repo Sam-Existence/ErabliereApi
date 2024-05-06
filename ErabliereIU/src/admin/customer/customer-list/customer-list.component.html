@@ -12,15 +12,17 @@
                 <td>{{customer.name}}</td>
                 <td>{{customer.email}}</td>
                 <td class="min">
-                    <button 
-                        type="button" 
-                        class="btn btn-outline-primary">
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary"
+                        (click)="signalerModification(customer)">
                         Modifier
                     </button>
                     &nbsp;
-                    <button 
-                        type="button" 
-                        class="btn btn-outline-danger">
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger"
+                        (click)="signalerSuppression(customer)">
                         Supprimer
                     </button>
                 </td>

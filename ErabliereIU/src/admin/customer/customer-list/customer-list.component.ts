@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Customer} from "../../../model/customer";
-import {ErabliereApi} from "../../../core/erabliereapi.service";
 import {NgForOf} from "@angular/common";
 
 @Component({
@@ -13,17 +12,15 @@ import {NgForOf} from "@angular/common";
   styleUrl: './customer-list.component.css'
 })
 export class CustomerListComponent {
-    @Output() customerSelected = new EventEmitter<Customer>();
-    customers: Customer[] = [];
-    constructor(private _api: ErabliereApi) { }
+    @Input() customers: Customer[] = [];
+    @Output() customerASupprimer: EventEmitter<Customer> = new EventEmitter();
+    @Output() customerAModifier: EventEmitter<Customer> = new EventEmitter();
 
-    ngOnInit() {
-        this._api.getCustomersAdmin().then(customers => {
-            this.customers = customers;
-        })
-            .catch(error => {
-                this.customers = [];
-                throw error;
-            });
+    signalerSuppression(customer: Customer) {
+      this.customerASupprimer.emit(customer);
+  }
+
+    signalerModification(customer: Customer) {
+      this.customerAModifier.emit(customer);
     }
 }

@@ -299,7 +299,12 @@ export class ErabliereApi {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers', { headers: headers}).toPromise();
         return rtn ?? [];
-}
+    }
+
+    async deleteCustomer(idCustomer: string) : Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, { headers: headers }).toPromise();
+    }
 
     async getCustomersAccess(idErabliere: any): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();

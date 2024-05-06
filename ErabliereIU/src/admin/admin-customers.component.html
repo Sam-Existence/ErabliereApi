@@ -2,6 +2,9 @@
     <h3>Clients</h3>
     <hr />
     <div class="container">
-        <customer-list></customer-list>
+        <customer-list
+          [customers]="customers"
+          (customerASupprimer)="supprimerCustomer($event)"
+        ></customer-list>
     </div>
 </div>
