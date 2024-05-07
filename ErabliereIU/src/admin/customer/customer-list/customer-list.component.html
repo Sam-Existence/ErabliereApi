@@ -8,7 +8,8 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let customer of customers">
+            @for (customer of customers; track customer.id) {
+            <tr>
                 <td>{{customer.name}}</td>
                 <td>{{customer.email}}</td>
                 <td class="min">
@@ -27,6 +28,7 @@
                     </button>
                 </td>
             </tr>
+            }
         </tbody>
     </table>
 </div>

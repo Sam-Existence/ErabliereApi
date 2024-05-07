@@ -10,8 +10,7 @@ import {NgIf} from "@angular/common";
   standalone: true,
   imports: [
     CustomerListComponent,
-    ModifierCustomerComponent,
-    NgIf
+    ModifierCustomerComponent
   ],
   templateUrl: './admin-customers.component.html',
 })
@@ -44,7 +43,6 @@ export class AdminCustomersComponent implements OnInit {
   }
 
   demarrerModifierCustomer(customer: Customer) {
-    console.log(customer);
     this.customerAModifier = customer;
   }
 

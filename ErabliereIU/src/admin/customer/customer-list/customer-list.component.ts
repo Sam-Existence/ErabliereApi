@@ -5,9 +5,6 @@ import {NgForOf} from "@angular/common";
 @Component({
   selector: 'customer-list',
   standalone: true,
-    imports: [
-        NgForOf
-    ],
   templateUrl: './customer-list.component.html',
   styleUrl: './customer-list.component.css'
 })
