@@ -2,17 +2,22 @@ import {Component, OnInit} from '@angular/core';
 import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
 import {ErabliereApi} from "../core/erabliereapi.service";
 import {Customer} from "../model/customer";
+import {ModifierCustomerComponent} from "./customer/modifier-customer/modifier-customer.component";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'admin-customers',
   standalone: true,
-    imports: [
-        CustomerListComponent
-    ],
+  imports: [
+    CustomerListComponent,
+    ModifierCustomerComponent,
+    NgIf
+  ],
   templateUrl: './admin-customers.component.html',
 })
 export class AdminCustomersComponent implements OnInit {
   customers: Customer[] = [];
+  customerAModifier: Customer | null = null;
 
   constructor(private _api: ErabliereApi) { }
 
@@ -35,6 +40,18 @@ export class AdminCustomersComponent implements OnInit {
         .then(a => {
           this.chargerCustomers();
         });
+    }
+  }
+
+  demarrerModifierCustomer(customer: Customer) {
+    console.log(customer);
+    this.customerAModifier = customer;
+  }
+
+  terminerModiferCustomer(update: boolean) {
+    this.customerAModifier = null;
+    if (update) {
+      this.chargerCustomers();
     }
   }
 }
