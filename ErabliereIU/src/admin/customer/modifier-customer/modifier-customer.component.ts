@@ -18,6 +18,7 @@ import {NgIf} from "@angular/common";
 export class ModifierCustomerComponent implements OnInit {
   @Input() customer: Customer | null = null;
   @Output() needToUpdate : EventEmitter<boolean> = new EventEmitter();
+
   customerForm: UntypedFormGroup;
   errorObj?: any;
   generalError?: string | null;
@@ -38,7 +39,8 @@ export class ModifierCustomerComponent implements OnInit {
   }
 
   onModifier() {
-    if (this.customer) {
+    if (this.customer && this.customerForm.valid) {
+
       this.customer.name = this.customerForm.controls['nom'].value;
       this.customer.email = this.customerForm.controls['email'].value;
 
@@ -52,7 +54,7 @@ export class ModifierCustomerComponent implements OnInit {
         .catch(e => {
           if (e.status == 400) {
             this.errorObj = e;
-            this.generalError = null;
+            this.generalError = "Le nom ne doit pas être vide";
           }
           else if (e.status == 404) {
             this.errorObj = null;

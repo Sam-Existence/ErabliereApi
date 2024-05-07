@@ -2,10 +2,10 @@
     <span class="text-danger">
         {{generalError}}
     </span>
-  <form [formGroup]="customerForm">
+  <form [formGroup]="customerForm" (ngSubmit)="onModifier()">
     <div class="form-group mb-2">
       <label class="form-label">Nom: </label>
-      <input class="form-control" type="text" formControlName="nom">
+      <input class="form-control" type="text" formControlName="nom" required>
       <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
     </div>
     <div class="form-group mb-2">
@@ -13,7 +13,7 @@
       <input class="form-control" type="email" formControlName="email">
       <input-error [errorObj]="errorObj" [controlName]="'email'"></input-error>
     </div>
-    <button id="modifierCustomer" class="btn btn-primary me-2" (click)="onModifier()">Modifier</button>
-    <button id="annulerModifiercCustomer" class="btn btn-secondary" (click)="onAnnuler()">Annuler</button>
+    <button id="modifierCustomer" class="btn btn-primary me-2" type="submit">Modifier</button>
+    <button id="annulerModifiercCustomer" class="btn btn-secondary" type="button" (click)="onAnnuler()">Annuler</button>
   </form>
 </div>
