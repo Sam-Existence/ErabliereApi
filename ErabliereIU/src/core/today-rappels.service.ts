@@ -8,22 +8,9 @@ import { Note } from 'src/model/note';
 export class RappelService {
     constructor(private erabliereapiService: ErabliereApi) { }
 
-    async getTodaysReminders(idErabliereSelectionnee:any, skip: number = 0, top?: number): Promise<Note[]> {
-        const notes = await this.erabliereapiService.getNotes(idErabliereSelectionnee, skip, top);
+    async getTodaysReminders(idErabliereSelectionnee:any): Promise<Note[]> {
+        const todaysNote  = await this.erabliereapiService.getActiveRappelNotes(idErabliereSelectionnee);
 
-        const today = new Date();
-        const todayStr = today.toDateString();
-
-        const todayNotes = notes.filter(note => {
-            const reminderDate = note.reminderDate ? new Date(note.reminderDate) : null;
-
-            if (reminderDate) {
-                const reminderDateStr = reminderDate.toDateString();
-                return reminderDateStr === todayStr;
-            }
-            return false;
-        });
-        
-        return todayNotes;
+        return todaysNote;
     }
 }
