@@ -42,7 +42,6 @@ export class ModifierCustomerComponent implements OnInit {
     if (this.customer && this.customerForm.valid) {
 
       this.customer.name = this.customerForm.controls['nom'].value;
-      this.customer.email = this.customerForm.controls['email'].value;
 
       this._api.putCustomer(this.customer.id, this.customer)
         .then(r => {
