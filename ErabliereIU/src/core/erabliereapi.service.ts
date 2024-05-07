@@ -301,6 +301,11 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
+    async putCustomer(idCustomer: string, customer: Customer) : Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<Customer>(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, customer, { headers: headers}).toPromise();
+    }
+
     async deleteCustomer(idCustomer: string) : Promise<any> {
         const headers = await this.getHeaders();
         return await this._httpClient.delete(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, { headers: headers }).toPromise();

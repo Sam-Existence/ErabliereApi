@@ -100,6 +100,43 @@ public class CustomersController : ControllerBase
     }
 
     /// <summary>
+    /// Point de terminaison pour modifier un utilisateur
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("/admin/customers/{id}")]
+    [ProducesResponseType(200, Type = typeof(GetCustomer))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    public async Task<IActionResult> PutCustomer(Guid id, PutCustomer putCustomer, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(putCustomer.Name))
+        {
+            return BadRequest("Le nom ne doit pas être vide");
+        }
+        if (id != putCustomer.Id)
+        {
+            return BadRequest("L'id de l'utilisateur dans la route ne concorde pas avec l'id dans le corps du message.");
+        }
+
+        var entity = await _context.Customers.FindAsync([id], token);
+
+        if (entity != null && entity.Id == id)
+        {
+            entity.Name = putCustomer.Name;
+
+            await _context.SaveChangesAsync(token);
+
+            return Ok(entity);
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    /// <summary>
     /// Point de terminaison d'administration pour 
     /// récupérer les accès d'un utilisateur
     /// </summary>
