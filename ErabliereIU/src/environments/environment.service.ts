@@ -22,7 +22,7 @@ export class EnvironmentService {
   loadConfig() {
     this.getAdditionnalUrls();
 
-    return this._httpClient.get<OAuthConfig>("/assets/config/oauth-oidc-no-auth-example.json").toPromise().then(c => {
+    return this._httpClient.get<OAuthConfig>("/assets/config/oauth-oidc.json").toPromise().then(c => {
       if (c == null) {
         return;
       }
@@ -35,9 +35,9 @@ export class EnvironmentService {
       this.stsAuthority = c.stsAuthority;
       this.authEnable = c.authEnable;
     })
-    .catch((err: any) => {
-      console.error(err);
-    });
+      .catch((err: any) => {
+        console.error(err);
+      });
   }
 
   getAdditionnalUrls() {

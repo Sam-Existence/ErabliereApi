@@ -4,5 +4,5 @@
     "tenantId": "common",
     "scopes": "api://4f782545-4370-417d-a0f8-eba950872a13/.default",
     "appRoot": "https://localhost:4200",
-    "authEnable": false
+    "authEnable": true
 }
