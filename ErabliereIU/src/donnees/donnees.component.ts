@@ -144,7 +144,7 @@ export class DonneesComponent implements OnInit {
         this.erabliereId = undefined;
       }
 
-      this.fetchDataAndBuildGraph()
+      this.fetchDataAndBuildGraph();
     });
 
     this.erabliereAfficherTrioDonnees = this.initialErabliere?.afficherTrioDonnees;

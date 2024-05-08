@@ -62,7 +62,9 @@ export class ModifierErabliereComponent implements OnInit {
     }
 
     deleteErabliere() {
-        if (confirm("Voulez-vous vraiment supprimer cette érablière ? Cette action est irréversible.")) {
+        const e = `Voulez-vous vraiment supprimer l'érablière avec l'identifiant ${this.idErabliere} ? Cette action est irréversible.`;
+
+        if (confirm(e)) {
             var erabliere = this.erabliereForm?.erabliere;
             if (erabliere != undefined) {
                 this._api.deleteErabliere(this.idErabliere, erabliere).then(() => {
