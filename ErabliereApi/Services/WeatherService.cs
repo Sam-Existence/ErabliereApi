@@ -2,6 +2,8 @@ using System.Text.Json;
 using ErabliereApi.Services;
 using Microsoft.Extensions.Caching.Distributed;
 
+namespace ErabliereApi.Services;
+
 /// <summary>
 /// Service pour interagir avec les prévisions météo
 /// </summary>
