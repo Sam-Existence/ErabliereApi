@@ -8,7 +8,7 @@ import {
     EventEmitter
 } from '@angular/core';
 import { Note } from 'src/model/note';
-import { Modal } from "bootstrap";
+//import { Modal } from "bootstrap";
 
 @Component({
   selector: 'app-modal-rappel',
@@ -22,7 +22,7 @@ export class ModalRappelComponent implements AfterContentChecked {
     @ViewChild('modalRappel') modalRappel!: ElementRef;
     private modalInstance: any;
     @Input() index!: number;
-    @Output() modalInitialized = new EventEmitter<Modal>();
+    //@Output() modalInitialized = new EventEmitter<Modal>();
 
     constructor() {
         this.note = new Note();
@@ -31,8 +31,8 @@ export class ModalRappelComponent implements AfterContentChecked {
     ngAfterContentChecked(): void {
         if (this.modalRappel && !this.modalInstance) {
             const modalElement = this.modalRappel.nativeElement;
-            this.modalInstance = new Modal(modalElement);
-            this.modalInitialized.emit(this.modalInstance);
+            // this.modalInstance = new Modal(modalElement);
+            // this.modalInitialized.emit(this.modalInstance);
         }
     }
 }
