@@ -22,7 +22,7 @@ export class GestionCapteursComponent implements OnInit {
     afficherSectionAjouterCapteur: boolean = false;
 
     async ngOnInit(): Promise<void> {
-        
+        this.capteurs = await this.erabliereApi.getCapteurs(this.idErabliere);
     }
 
     showAjouterCapteur() {
