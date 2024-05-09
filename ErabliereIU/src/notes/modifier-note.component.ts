@@ -103,7 +103,7 @@ export class ModifierNoteComponent implements OnInit {
     }
 
     onButtonModifierClick() {
-        if (!!this.note) {
+        if (this.note) {
           if(this.noteForm.valid) {
             this.note.title = this.noteForm.controls['title'].value;
             this.note.text = this.noteForm.controls['text'].value;
@@ -117,7 +117,7 @@ export class ModifierNoteComponent implements OnInit {
               this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
             }
             else {
-              this.note.reminderDate = "";
+              this.note.reminderDate = null;
             }
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
