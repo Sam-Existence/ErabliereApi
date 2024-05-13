@@ -5,10 +5,10 @@ import { NgIf, NgFor } from "@angular/common";
     selector: 'input-error',
     template: `
         <div *ngIf="errorObj?.error?.errors != null && errorObj.error.errors.hasOwnProperty(this.controlName)">
-            <span class="text-danger" *ngFor="let error of errorObj.error.errors[this.controlName]">{{error}}</span>
+            <span class="invalid-feedback" *ngFor="let error of errorObj.error.errors[this.controlName]">{{error}}</span>
         </div>
         <div *ngIf="errorObj?.error?.errors != null && errorObj.error.errors.hasOwnProperty('$.' + this.controlName)">
-            <span class="text-danger" *ngFor="let error of errorObj.error.errors['$.' + this.controlName]">{{error}}</span>
+            <span class="invalid-feedback" *ngFor="let error of errorObj.error.errors['$.' + this.controlName]">{{error}}</span>
         </div>
     `,
     standalone: true,

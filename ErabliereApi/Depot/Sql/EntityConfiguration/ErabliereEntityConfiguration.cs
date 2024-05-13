@@ -46,5 +46,9 @@ public class ErabliereEntityConfiguration : IEntityTypeConfiguration<Erabliere>
                  .WithOne(c => c.Erabliere)
                  .HasForeignKey(c => c.IdErabliere)
                  .OnDelete(DeleteBehavior.Cascade);
+
+        erabliere.HasMany(u => u.CustomerErablieres)
+               .WithOne(a => a.Erabliere)
+               .HasForeignKey(a => a.IdErabliere);
     }
 }

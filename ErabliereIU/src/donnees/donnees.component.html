@@ -1,0 +1,46 @@
+<div class="row">
+    @if (initialErabliere?.afficherTrioDonnees) {
+    <div class="col-md-4">
+        <graph-pannel [titre]="titre_temperature" 
+                     [valeurActuel]="temperatureValueActuel"
+                     [mean]="meanTemperature"
+                     [symbole]="temperatureSymbole"
+                     [timeaxes]="timeaxes" 
+                     (updateGraphCallback)="updateGraph($event)"
+                     (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                     [datasets]="temperature" #temperatureGraphPannel>
+        </graph-pannel>
+    </div>
+    <div class="col-md-4">
+        <vaccium-graph-pannel [titre]="titre_vaccium" 
+                     [valeurActuel]="vacciumValueActuel"
+                     [symbole]="vacciumSymbole"
+                     [timeaxes]="timeaxes"
+                     [mean]="meanVaccium"
+                     (updateGraphCallback)="updateGraph($event)"
+                     (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                     [datasets]="vaccium" #vacciumGraphPannel>
+        </vaccium-graph-pannel>
+    </div>
+    <div class="col-md-4">
+        <graph-pannel [titre]="titre_niveaubassin" 
+                     [valeurActuel]="niveauBassinValueActuel"
+                     [symbole]="niveauBassinSymbole"
+                     [timeaxes]="timeaxes" 
+                     [mean]="meanNiveauBassin"
+                     (updateGraphCallback)="updateGraph($event)"
+                     (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
+                     [datasets]="niveaubassin" #niveaubassinGraphPannel>
+        </graph-pannel>
+    </div>
+    }
+    @if (initialErabliere?.afficherSectionDompeux) {
+    <div class="col-md-6">
+        <bar-pannel [titre]="titre_dompeux" 
+                   [timeaxes]="timeaxes_dompeux" 
+                   [datasets]="dompeux"
+                   [barChartType]="dompeux_line_type" #dompeuxGraphPannel>
+        </bar-pannel>
+    </div>
+    }
+</div>

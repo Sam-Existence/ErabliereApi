@@ -100,6 +100,71 @@ public class CustomersController : ControllerBase
     }
 
     /// <summary>
+    /// Point de terminaison pour modifier un utilisateur
+    /// </summary>
+    /// <returns></returns>
+    [HttpPut]
+    [Route("/admin/customers/{id}")]
+    [ProducesResponseType(200, Type = typeof(GetCustomer))]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    public async Task<IActionResult> PutCustomer(Guid id, PutCustomer putCustomer, CancellationToken token)
+    {
+        if (string.IsNullOrWhiteSpace(putCustomer.Name))
+        {
+            return BadRequest("Le nom ne doit pas être vide");
+        }
+        if (id != putCustomer.Id)
+        {
+            return BadRequest("L'id de l'utilisateur dans la route ne concorde pas avec l'id dans le corps du message.");
+        }
+
+        var entity = await _context.Customers.FindAsync([id], token);
+
+        if (entity != null && entity.Id == id)
+        {
+            entity.Name = putCustomer.Name;
+
+            await _context.SaveChangesAsync(token);
+
+            return Ok(entity);
+        }
+        else
+        {
+            return NotFound();
+        }
+    }
+
+    /// <summary>
+    /// Point de terminaison d'administration pour 
+    /// récupérer les accès d'un utilisateur
+    /// </summary>
+    /// <param name="id">Id de l'utilisateur</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("/admin/customers/{id}/customeraccess")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
+    public async Task<IActionResult> GetAdminCustomerAccess(Guid id, CancellationToken token)
+    {
+        var customer = await _context.Customers.FindAsync([id], cancellationToken: token);
+
+        if (customer == null)
+        {
+            return NotFound();
+        }
+
+        var erablieres = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdCustomer == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(erablieres);
+    }
+
+    /// <summary>
     /// Point de terminaison d'administration pour 
     /// modifier les accès d'un utilisateur
     /// </summary>
@@ -150,32 +215,6 @@ public class CustomersController : ControllerBase
     {
         var customer = await _context.Customers
             .Include(c => c.CustomerErablieres)
-            .FirstOrDefaultAsync(c => c.Id == id, token);
-
-        if (customer == null)
-        {
-            return NoContent();
-        }
-
-        _context.Remove(customer);
-
-        await _context.SaveChangesAsync(token);
-
-        return NoContent();
-    }
-
-    /// <summary>
-    /// Point de terminaison pour la suppression d'un utilisateur
-    /// </summary>
-    /// <param name="id">Id de l'utilisateur</param>
-    /// <param name="token"></param>
-    /// <returns></returns>
-    [HttpDelete]
-    [Route("/admin/customeraccess/{id}")]
-    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    public async Task<IActionResult> DeleteCustomerAccessAdmin(Guid id, CancellationToken token)
-    {
-        var customer = await _context.CustomerErablieres
             .FirstOrDefaultAsync(c => c.Id == id, token);
 
         if (customer == null)
