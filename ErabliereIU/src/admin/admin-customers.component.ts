@@ -3,7 +3,6 @@ import {CustomerListComponent} from "./customer/customer-list/customer-list.comp
 import {ErabliereApi} from "../core/erabliereapi.service";
 import {Customer} from "../model/customer";
 import {ModifierCustomerComponent} from "./customer/modifier-customer/modifier-customer.component";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'admin-customers',

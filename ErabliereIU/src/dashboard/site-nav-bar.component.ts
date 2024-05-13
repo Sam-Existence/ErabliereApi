@@ -4,8 +4,7 @@ import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service'
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
 import { NgFor, NgIf } from '@angular/common';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Subject } from 'rxjs';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AgoraCallServiceComponent } from './agora-call-service.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';

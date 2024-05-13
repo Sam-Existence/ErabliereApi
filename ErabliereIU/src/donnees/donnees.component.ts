@@ -6,9 +6,7 @@ import { Erabliere } from 'src/model/erabliere';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
-import { NgIf } from '@angular/common';
 import { calculerMoyenne } from './util';
-import { WeatherForecastComponent } from './weatherforecast.component';
 import { ImagePanelComponent } from './sub-panel/image-pannel.component';
 
 @Component({
