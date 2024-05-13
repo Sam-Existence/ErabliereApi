@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.Json.Serialization;
 
 namespace ErabliereApi.Donnees;
 
@@ -98,6 +99,7 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// <summary>
     /// Liste de jonction entre l'utilisateurs et ses érablières
     /// </summary>
+    [JsonIgnore]
     public List<CustomerErabliere>? CustomerErablieres { get; set; }
 
     /// <inheritdoc />
