@@ -5,7 +5,8 @@ export class Rappel {
     idErabliere: any;
     isActive?: boolean;
     dateRappel?: string;
-    periodicite?: string;
+    dateRappelFin?: string | null;
+    periodicite?: string | null;
     noteId?: any;
     note?: Note;
 }
