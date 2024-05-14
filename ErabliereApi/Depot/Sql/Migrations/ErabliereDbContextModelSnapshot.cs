@@ -42,7 +42,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Conversations");
+                    b.ToTable("Conversations", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Alerte", b =>
@@ -97,7 +97,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Alertes");
+                    b.ToTable("Alertes", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.AlerteCapteur", b =>
@@ -137,7 +137,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdCapteur");
 
-                    b.ToTable("AlerteCapteurs");
+                    b.ToTable("AlerteCapteurs", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.ApiKey", b =>
@@ -169,7 +169,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("ApiKeys");
+                    b.ToTable("ApiKeys", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Baril", b =>
@@ -196,7 +196,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Barils");
+                    b.ToTable("Barils", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Capteur", b =>
@@ -233,7 +233,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Capteurs");
+                    b.ToTable("Capteurs", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Customer", b =>
@@ -279,34 +279,27 @@ namespace Depot.Sql.Migrations
                     b.HasIndex("UniqueName")
                         .IsUnique();
 
-                    b.ToTable("Customers");
+                    b.ToTable("Customers", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
-                    b.Property<Guid?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<byte>("Access")
-                        .HasColumnType("tinyint");
-
-                    b.Property<Guid?>("ErabliereId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<Guid?>("IdCustomer")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.Property<byte>("Access")
+                        .HasColumnType("tinyint");
 
-                    b.HasIndex("ErabliereId");
+                    b.HasKey("IdCustomer", "IdErabliere");
 
                     b.HasIndex("IdCustomer");
 
-                    b.ToTable("CustomerErablieres");
+                    b.HasIndex("IdErabliere");
+
+                    b.ToTable("CustomerErablieres", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Documentation", b =>
@@ -340,7 +333,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Documentation");
+                    b.ToTable("Documentation", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Dompeux", b =>
@@ -365,7 +358,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Dompeux");
+                    b.ToTable("Dompeux", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Donnee", b =>
@@ -404,7 +397,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex(new[] { "D" }, "D_index");
 
-                    b.ToTable("Donnees");
+                    b.ToTable("Donnees", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.DonneeCapteur", b =>
@@ -432,7 +425,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex(new[] { "D" }, "D_Index");
 
-                    b.ToTable("DonneesCapteur");
+                    b.ToTable("DonneesCapteur", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Erabliere", b =>
@@ -471,7 +464,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Erabliere");
+                    b.ToTable("Erabliere", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
@@ -515,7 +508,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("IdErabliere");
 
-                    b.ToTable("Notes");
+                    b.ToTable("Notes", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.PositionGraph", b =>
@@ -565,7 +558,7 @@ namespace Depot.Sql.Migrations
 
                     b.HasIndex("ConversationId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("ErabliereApi.Donnees.Alerte", b =>
@@ -621,13 +614,15 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany()
-                        .HasForeignKey("ErabliereId");
-
                     b.HasOne("ErabliereApi.Donnees.Customer", "Customer")
                         .WithMany("CustomerErablieres")
-                        .HasForeignKey("IdCustomer");
+                        .HasForeignKey("IdCustomer")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany()
+                        .HasForeignKey("IdErabliere")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Customer");
 
