@@ -21,6 +21,12 @@ namespace ErabliereApi.Donnees.Action.Put
         public DateTimeOffset? DateRappel { get; set; }
 
         /// <summary>
+        /// La date de fin du rappel
+        /// </summary>
+        public DateTimeOffset? DateRappelFin { get; set; }
+
+
+        /// <summary>
         /// La periodicité du rappel
         /// </summary>
         [MaxLength(20, ErrorMessage = "The periodicity of the reminder cannot exceed 20 characters.")]
