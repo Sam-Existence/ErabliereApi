@@ -1,36 +1,23 @@
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragMove, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
-import { NgFor, NgIf, NgSwitch, NgSwitchCase } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { PutPositionGraph } from 'src/model/PositionGraph';
 import { Erabliere } from 'src/model/erabliere';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { ImagePanelComponent } from './sub-panel/image-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
-import { calculerMoyenne, notNullOrWitespace } from './util';
-import { WeatherForecastComponent } from './weatherforecast.component';
+import { calculerMoyenne } from './util';
 
 @Component({
   selector: 'donnees-panel',
   templateUrl: './donnees.component.html',
-  styleUrls: ['./donnees.component.css'],
   standalone: true,
   imports: [
-    NgIf, 
-    NgFor,
     GraphPannelComponent, 
     VacciumGraphPannelComponent, 
     BarPannelComponent, 
-    WeatherForecastComponent,
-    ImagePanelComponent,
-    CdkDropListGroup,
-    CdkDropList,
-    CdkDrag,
-    NgSwitch,
-    NgSwitchCase,
+    ImagePanelComponent
   ]
 })
 export class DonneesComponent implements OnInit {
@@ -41,7 +28,6 @@ export class DonneesComponent implements OnInit {
   @ViewChild('dropListContainer') dropListContainer?: ElementRef;
   
   intervalRequetes?: any
-  intervalImages?: any
 
   @Input() initialErabliere?: Erabliere
   @Input() erabliereSubject: Subject<Erabliere> = new Subject<Erabliere>()
@@ -61,10 +47,10 @@ export class DonneesComponent implements OnInit {
   titre_temperature = "Temperature"
   temperature: ChartDataset[] = []
   temperatureValueActuel?: string | null
-  temperatureSymbole: string = "°c"
+  temperatureSymbole: string = "°C"
   meanTemperature?: string
 
-  titre_vaccium = "Vaccium"
+  titre_vaccium = "Vacuum"
   vaccium: ChartDataset[] = []
   vacciumValueActuel?: string | null
   vacciumSymbole: string = "HG"
@@ -127,7 +113,6 @@ export class DonneesComponent implements OnInit {
       }
 
       this.fetchDataAndBuildGraph();
-      
     });
 
     this.erabliereAfficherTrioDonnees = this.initialErabliere?.afficherTrioDonnees;
@@ -136,7 +121,6 @@ export class DonneesComponent implements OnInit {
 
     this.fetchDataAndBuildGraph();
 
-    this.getPositionGraph();
   }
 
   fetchDataAndBuildGraph() {
@@ -157,23 +141,10 @@ export class DonneesComponent implements OnInit {
         this.doHttpCallDompeux();
       }
     }, 1000 * 60);
-
-    this.intervalImages = setInterval(() => {
-      console.log("DonneesComponent getImages", this.erabliereId)
-      this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
-        this.displayImages = images.length > 0;
-      });
-    }, 1000 * 60 * 10);
-
-    console.log("DonneesComponent getImages", this.erabliereId)
-    this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
-      this.displayImages = images.length > 0;
-    });
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalRequetes);
-    clearInterval(this.intervalImages);
   }
 
   doHttpCallDompeux() {
@@ -428,113 +399,4 @@ export class DonneesComponent implements OnInit {
     this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
     this.doHttpCall();
   }
-
-  notNullOrWitespace(arg0?: string): any {
-    return notNullOrWitespace(arg0);
-  }
-
-  dragEntered(event: CdkDragEnter<number>) {
-    const drag = event.item;
-    const dropList = event.container;
-    const dragIndex = drag.data;
-    const dropIndex = dropList.data;
-
-    this.dragDropInfo = { dragIndex, dropIndex };
-
-    const phContainer = dropList.element.nativeElement;
-    const phElement = phContainer.querySelector('.cdk-drag-placeholder');
-
-    if (phElement) {
-      try {
-        phContainer.removeChild(phElement);
-      } catch (e) {}
-      phContainer.parentElement?.insertBefore(phElement, phContainer);
-
-      moveItemInArray(this.items, dragIndex, dropIndex);
-    }
-  }
-
-  dragMoved(event: CdkDragMove<number>) {
-    if (!this.dropListContainer || !this.dragDropInfo) return;
-
-    const placeholderElement =
-      this.dropListContainer.nativeElement.querySelector(
-        '.cdk-drag-placeholder'
-      );
-
-    const receiverElement =
-      this.dragDropInfo.dragIndex > this.dragDropInfo.dropIndex
-        ? placeholderElement?.nextElementSibling
-        : placeholderElement?.previousElementSibling;
-
-    if (!receiverElement) {
-      return;
-    }
-
-    receiverElement.style.display = 'none';
-    this.dropListReceiverElement = receiverElement;
-  }
-
-  dragDropped(event: CdkDragDrop<number>) {
-    if (!this.dropListReceiverElement) {
-      return;
-    }
-
-    this.dropListReceiverElement.style.removeProperty('display');
-    this.dropListReceiverElement = undefined;
-  }
-
-  dragEnd(event: CdkDragEnd) {
-    let position = new PutPositionGraph();
-
-    const item = this.itemIds.find(item => item.name === this.items[event.source.data]);
-    position.id = item ? item.id : null;
-
-    position.d = "2024-04-15T14:58:10.604Z";
-    position.position = this.dragDropInfo?.dropIndex;
-    if (position.position === undefined) {
-      return;
-    }
-    position.idErabliere = this.erabliereId;
-
-    console.log(position);
-
-    this._erabliereApi.putPositionGraph(this.erabliereId, position.id, position).then(resp => {
-        console.log(resp);
-    });
 }
-
-getPositionGraph() {
-    this._erabliereApi.getPositionGraph(this.erabliereId).then(resp => {
-      console.log(resp);
-      let positionGraph: any = resp[0].position;
-      let removedItem = this.items.splice(this.items.indexOf("Temperature"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-
-      positionGraph = resp[1].position;
-      removedItem = this.items.splice(this.items.indexOf("Vaccium"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-
-      positionGraph = resp[2].position;
-      removedItem = this.items.splice(this.items.indexOf("Niveau Bassin"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-
-      positionGraph = resp[3].position;
-      removedItem = this.items.splice(this.items.indexOf("Dompeux"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-
-      positionGraph = resp[4].position;
-      removedItem = this.items.splice(this.items.indexOf("Weather"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-
-      positionGraph = resp[5].position;
-      removedItem = this.items.splice(this.items.indexOf("Images"), 1)[0];
-      this.items.splice(positionGraph, 0, removedItem);
-    });
-  }
-  
-}
-
-
-
-

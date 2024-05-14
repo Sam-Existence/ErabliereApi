@@ -296,6 +296,22 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
+    async getCustomersAdmin(): Promise<Customer[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers', { headers: headers}).toPromise();
+        return rtn ?? [];
+    }
+
+    async putCustomer(idCustomer: string, customer: Customer) : Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<Customer>(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, customer, { headers: headers}).toPromise();
+    }
+
+    async deleteCustomer(idCustomer: string) : Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, { headers: headers }).toPromise();
+    }
+
     async getCustomersAccess(idErabliere: any): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
@@ -387,9 +403,9 @@ export class ErabliereApi {
 
     async getImages(idErabliereSelectionnee: any, take: number, skip: number = 0, search?: string): Promise<GetImageInfo[]> {
         const headers = await this.getHeaders();
-        let url = this._environmentService.apiUrl + 
-            '/erablieres/' + idErabliereSelectionnee + 
-            "/ImagesCapteur?take=" + take + 
+        let url = this._environmentService.apiUrl +
+            '/erablieres/' + idErabliereSelectionnee +
+            "/ImagesCapteur?take=" + take +
             "&skip=" + skip;
 
         if (isNotNullOrWhitespace(search)) {
@@ -397,7 +413,7 @@ export class ErabliereApi {
         }
 
         return await this._httpClient.get<any>(
-            url, 
+            url,
             { headers: headers })
             .toPromise();
     }

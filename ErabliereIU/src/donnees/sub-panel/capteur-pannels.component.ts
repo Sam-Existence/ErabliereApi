@@ -12,12 +12,6 @@ import { ImagePanelComponent } from './image-pannel.component';
     selector: 'capteur-pannels',
     template: `
       <div class="row">
-          <weather-forecast 
-            *ngIf="notNullOrWitespace(erabliere?.codePostal) && !erabliere?.afficherTrioDonnees"
-            class="col-md-6"></weather-forecast>
-          <div *ngIf="displayImages" class="col-md-6">
-            <image-panel [idErabliereSelectionnee]="erabliere?.id"></image-panel>
-          </div>
           <div class="border-top col-md-6" *ngFor="let capteur of capteurs">
               <graph-pannel [titre]="capteur.nom" 
                             [symbole]="capteur.symbole"
@@ -41,18 +35,8 @@ export class CapteurPannelsComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       if (this.erabliere != null) {
         this.erabliere.id = params.get('idErabliereSelectionee');
-        this.api.getImages(this.erabliere?.id, 1).then((images) => {
-          this.displayImages = images.length > 0 && this.erabliere?.afficherTrioDonnees == false;
-        });
       }
     });
   }
 
-  displayImages: boolean = false;
-  
-  notNullOrWitespace(arg0?: string): any {
-    if (arg0 == null)
-        return false;
-    return arg0.trim().length > 0;
-  }
 }

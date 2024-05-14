@@ -8,22 +8,19 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'weather-forecast',
   template: `
-    <div>
-        <div id="graph-pannel-weather-forecast" class="border-top">
-            <h3>Prévision 5 jours</h3>
-            <span data-bs-toggle="tooltip" title="{{ weatherData?.Headline?.Category }}" data-bs-placement="top">{{ text }}</span>
-            @if (notNullOrWhitespace(error)){
-                <div class="alert alert-danger" role="alert">
-                    {{error}}
-                </div>
-            }
-            
-            <div class="chart-wrapper">
-                <canvas 
-                  id="weatherChart" 
-                  class="chart">
-                </canvas>
+    <div id="graph-pannel-weather-forecast" class="border-top">
+        <h3>Prévision 5 jours</h3>
+        <span data-bs-toggle="tooltip" title="{{ weatherData?.Headline?.Category }}" data-bs-placement="top">{{ text }}</span>
+        @if (notNullOrWhitespace(error)){
+            <div class="alert alert-danger" role="alert">
+                {{error}}
             </div>
+        }  
+        <div class="chart-wrapper">
+            <canvas 
+              id="weatherChart" 
+              class="chart">
+            </canvas>
         </div>
     </div>
   `,
