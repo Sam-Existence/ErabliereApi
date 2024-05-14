@@ -4,7 +4,6 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
-import { NgIf, NgFor } from '@angular/common';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
 
@@ -12,7 +11,7 @@ import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.co
     selector: 'erablieres-side-bar',
     templateUrl: 'erablieres-side-bar.component.html',
     standalone: true,
-    imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor]
+    imports: [AjouterErabliereComponent, ModifierErabliereComponent]
 })
 export class ErabliereSideBarComponent implements OnInit {
   erablieres?: Array<Erabliere> | null;

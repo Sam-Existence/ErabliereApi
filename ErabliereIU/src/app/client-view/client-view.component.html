@@ -1,0 +1,23 @@
+<header>
+    <client-nav-bar
+        [idErabliereSelectionnee]="idErabliereSelectionnee"
+        [thereIsAtLeastOneErabliere]="thereIsAtLeastOneErabliere"
+    />
+    <you-are-not-connected />
+</header>
+<div class="container-fluid">
+    <div class="row">
+    @if (showMenu) {
+        <aside class="col-lg-2">
+            <erablieres-side-bar
+                [(idSelectionne)]="idErabliereSelectionnee"
+                [(thereIsAtLeastOneErabliere)]="thereIsAtLeastOneErabliere" />
+        </aside>
+        }
+        <div [class]="showMenu ? 'col-lg-10 col-md-12' : 'col-12'">
+            <main>
+                <router-outlet></router-outlet>
+            </main>
+        </div>
+    </div>
+</div>

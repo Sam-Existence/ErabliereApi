@@ -1,0 +1,16 @@
+@if (!isLoggedIn) {
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="alert alert-information" role="alert">
+                <strong>Vous n'êtes pas connecté </strong>
+                <button class="btn btn-link p-0" (click)="login()" style="vertical-align: top;">Cliquer ici pour vous connecter</button>
+                @if (tenantId === 'common') {
+                <p>Connectez-vous maintenant avec votre compte Microsoft.</p>
+                }
+                <p>Pour obtenir un compte, communiquer à l'administrateur. Vous trouverez les informations dans la page À propos.</p>
+            </div>
+        </div>
+    </div>
+</div>
+}

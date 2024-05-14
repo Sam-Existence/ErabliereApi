@@ -1,21 +1,20 @@
 import { ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { EnvironmentService } from '../environments/environment.service';
-import { UrlModel } from '../model/urlModel';
-import { NgFor, NgIf } from '@angular/common';
+import { EnvironmentService } from '../../../environments/environment.service';
+import { UrlModel } from '../../../model/urlModel';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { AgoraCallServiceComponent } from './agora-call-service.component';
+import { AgoraCallServiceComponent } from '../agora-call-service/agora-call-service.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
 
 @Component({
-    selector: 'site-nav-bar',
-    templateUrl: 'site-nav-bar.component.html',
+    selector: 'client-nav-bar',
+    templateUrl: 'client-nav-bar.component.html',
     standalone: true,
-    imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
 })
-export class SiteNavBarComponent implements OnInit {
+export class ClientNavBarComponent implements OnInit {
   useAuthentication: boolean = false;
   isLoggedIn: boolean;
   urls: UrlModel[]

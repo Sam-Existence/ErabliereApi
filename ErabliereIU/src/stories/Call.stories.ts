@@ -1,6 +1,6 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-import { AgoraCallServiceComponent } from 'src/dashboard/agora-call-service.component';
+import { AgoraCallServiceComponent } from 'src/app/client-view/agora-call-service/agora-call-service.component';
 import { Customer } from 'src/model/customer';
 
 const meta: Meta<AgoraCallServiceComponent> = {

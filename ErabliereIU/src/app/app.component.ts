@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import { EntraRedirectComponent } from './entra-redirect.component';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { SiteNavBarComponent } from 'src/dashboard/site-nav-bar.component';
-import { YouAreNotConnectedComponent } from 'src/dashboard/you-are-note-connected.component';
-import { ErabliereSideBarComponent } from 'src/dashboard/erablieres-side-bar.component';
+import { ClientNavBarComponent } from 'src/app/client-view/client-nav-bar/client-nav-bar.component';
+import { YouAreNotConnectedComponent } from 'src/app/client-view/you-are-not-connected/you-are-not-connected.component';
+import { ErabliereSideBarComponent } from 'src/app/client-view/erablieres-side-bar/erablieres-side-bar.component';
 import { NgIf} from '@angular/common';
 import { ErabliereAIComponent } from 'src/erabliereai/erabliereai-chat.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
