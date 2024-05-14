@@ -64,11 +64,17 @@ export class AjouterNoteComponent implements OnInit {
             dateRappel: new FormControl(
                 '',
                 {
+                    updateOn: 'blur',
+                }
+            ),
+            dateRappelFin: new FormControl(
+                '',
+                {
                     updateOn: 'blur'
                 }
             ),
             periodicite: new FormControl(
-                '',
+                'Aucune',
                 {
                     updateOn: 'blur'
                 }
@@ -127,7 +133,20 @@ export class AjouterNoteComponent implements OnInit {
                   this.note.rappel = new Rappel();
                   let date = new Date(this.noteForm.controls['dateRappel'].value);
                   this.note.rappel.dateRappel = date.toISOString();
-                  this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+
+                  if (this.noteForm.controls['dateRappelFin'].value) {
+                    let dateFin = new Date(this.noteForm.controls['dateRappelFin'].value);
+                    this.note.rappel.dateRappelFin = dateFin.toISOString();
+                  }
+                  else {
+                    this.note.rappel.dateRappelFin = null;
+                  }
+
+                  if (this.noteForm.controls['periodicite'].value === 'Aucune') {
+                      this.note.rappel.periodicite = null;
+                  } else {
+                      this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+                  }
               }
               else {
 
