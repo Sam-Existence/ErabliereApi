@@ -57,6 +57,13 @@
             À Propos
           </a>
         </li>
+        @if (!useAuthentication || isAdminUser) {
+        <li class="nav-item">
+            <a class="nav-link" routerLink="/admin">
+                Érablière Admin
+            </a>
+        </li>
+        }
       </ul>
       @if (useAuthentication) {
       <div class="d-flex gap-2">

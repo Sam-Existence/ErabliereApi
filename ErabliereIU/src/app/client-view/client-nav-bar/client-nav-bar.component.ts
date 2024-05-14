@@ -24,6 +24,7 @@ export class ClientNavBarComponent implements OnInit {
   @Input() thereIsAtLeastOneErabliere: boolean;
   callFeatureEnableForUser: boolean = false;
   callFeatureEnable: boolean = false;
+  isAdminUser: boolean = false;
 
   constructor(
       authFactoryService: AuthorisationFactoryService,
@@ -50,6 +51,7 @@ export class ClientNavBarComponent implements OnInit {
     this.tenantId = this.environmentService.tenantId;
 
     this.checkApiCallFeatureEnable();
+    this.checkRoleAdmin();
   }
 
   login() {
@@ -99,5 +101,16 @@ export class ClientNavBarComponent implements OnInit {
       this.callFeatureEnableForUser = false;
     }
     console.log("callFeatureEnableForUser: " + this.callFeatureEnableForUser);
+  }
+
+  private checkRoleAdmin() {
+      const account = this.msalService.instance.getActiveAccount();
+      this.isAdminUser = false;
+      if (account?.idTokenClaims) {
+          const roles = account?.idTokenClaims['roles'];
+          if (roles != null) {
+              this.isAdminUser = roles.includes("administrateur");
+          }
+      }
   }
 }
