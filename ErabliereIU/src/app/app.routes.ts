@@ -7,6 +7,7 @@ import { DocumentationComponent } from 'src/documentation/documentation.componen
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
 import {AdminCustomersComponent} from "../admin/admin-customers.component";
+import {Page404Component} from "./page404/page404.component";
 
 export const routes: Routes = [
     { path: '', redirectTo: 'e', pathMatch: 'full' },
@@ -19,6 +20,7 @@ export const routes: Routes = [
     { path: 'apropos', component: AproposComponent },
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
     { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
-    { path: 'admin', redirectTo: 'admin/customers', pathMatch: 'full'},
-    { path: 'admin/customers', component: AdminCustomersComponent}
+    { path: 'admin', redirectTo: 'admin/customers', pathMatch: 'full' },
+    { path: 'admin/customers', component: AdminCustomersComponent },
+    { path: '**', component: Page404Component }
 ]
