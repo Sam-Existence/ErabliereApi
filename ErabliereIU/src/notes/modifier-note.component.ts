@@ -29,6 +29,7 @@ export class ModifierNoteComponent implements OnInit {
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
                   if (this.note.rappel) {
                     this.noteForm.controls['dateRappel'].setValue(this.note.rappel.dateRappel ? new Date(this.note.rappel.dateRappel).toISOString().split('T')[0] : '');
+                    this.noteForm.controls['dateRappelFin'].setValue(this.note.rappel.dateRappelFin ? new Date(this.note.rappel.dateRappelFin).toISOString().split('T')[0] : '');
                     this.noteForm.controls['periodicite'].setValue(this.note.rappel.periodicite);
                   }
                 }
@@ -69,6 +70,12 @@ export class ModifierNoteComponent implements OnInit {
           }
         ),
         dateRappel: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        dateRappelFin: new FormControl(
           '',
           {
             updateOn: 'blur'
@@ -129,7 +136,12 @@ export class ModifierNoteComponent implements OnInit {
               this.note.rappel = new Rappel();
             }
             this.note.rappel.dateRappel = this.noteForm.controls['dateRappel'].value;
-            this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+            this.note.rappel.dateRappelFin = this.noteForm.controls['dateRappelFin'].value;
+            if (this.noteForm.controls['periodicite'].value === 'Aucune') {
+              this.note.rappel.periodicite = null;
+            } else {
+              this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+            }
 
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
