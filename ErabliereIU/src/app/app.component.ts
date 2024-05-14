@@ -18,23 +18,17 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
   imports: [
     RouterOutlet,
     EntraRedirectComponent,
-    SiteNavBarComponent,
-    YouAreNotConnectedComponent,
-    ErabliereSideBarComponent,
     ErabliereAIComponent,
     NgIf
   ]
 })
 export class AppComponent implements OnInit {
-  private _pagesSansMenu = ["apropos", "admin"];
-  idErabliereSelectionnee?: string;
-  showMenu: boolean = true;
-  thereIsAtLeastOneErabliere: boolean = false;
+  private _pagesSansMenu = ["apropos"];
   erabliereAIEnable: boolean = false;
   erabliereAIUserRole: boolean = false;
   authService: IAuthorisationSerivce;
 
-  constructor(private api: ErabliereApi, authServiceFactory: AuthorisationFactoryService, private msalService: MsalService, private _router: Router) {
+  constructor(private api: ErabliereApi, authServiceFactory: AuthorisationFactoryService, private msalService: MsalService) {
     this.authService = authServiceFactory.getAuthorisationService();
   }
 
@@ -47,14 +41,6 @@ export class AppComponent implements OnInit {
         console.error(err);
     });
 
-    this.showMenu = true;
-    let splitUrl = this._router.url.split("/");
-
-    if (splitUrl.length > 1) {
-      let page = splitUrl[1];
-      this.showMenu = !this._pagesSansMenu.includes(page);
-    }
-
     // get the user role to see if it got the ErabliereAIUser role
     // if so, enable the chat widget
     if (this.authService.type == "AzureAD") {
@@ -63,21 +49,6 @@ export class AppComponent implements OnInit {
         this.checkRoleErabliereAI();
       });
     }
-
-    // update the idErabliereSelectionnee when the route changes
-    this._router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        const url = val.url;
-        const urlParts = url.split('/');
-        if (urlParts.length >= 3 && urlParts[1] === 'e') {
-          this.idErabliereSelectionnee = urlParts[2];
-        }
-
-        if (urlParts.length > 1) {
-          this.showMenu = !this._pagesSansMenu.includes(urlParts[1]);
-        }
-      }
-    });
   }
 
   private checkRoleErabliereAI() {
