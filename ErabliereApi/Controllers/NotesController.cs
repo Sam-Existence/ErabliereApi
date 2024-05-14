@@ -63,12 +63,14 @@ public class NotesController : ControllerBase
 
         var notesWithRappel = await _depot.Notes
             .Include(n => n.Rappel)
-            .Where(n => n.IdErabliere == id && n.Rappel != null && n.Rappel.IsActive)
+            .Where(n => n.IdErabliere == id && n.Rappel != null && n.Rappel.IsActive && (n.Rappel.DateRappelFin == null || n.Rappel.DateRappelFin >= today))
             .ToListAsync(token);
-
+        
         var notes = notesWithRappel
             .Where(n => IsPeriodiciteDue(n.Rappel, today))
             .ToList();
+
+        await _depot.SaveChangesAsync(token);
 
         return Ok(notes);
     }
@@ -172,6 +174,7 @@ public class NotesController : ControllerBase
                 IdErabliere = postNote.IdErabliere,
                 IsActive = true,
                 DateRappel = postNote.Rappel.DateRappel,
+                DateRappelFin = postNote.Rappel.DateRappelFin,
                 Periodicite = postNote.Rappel.Periodicite,
                 NoteId = note.Id
             };
@@ -285,6 +288,7 @@ public class NotesController : ControllerBase
                 if (rappel != null)
                 {
                     rappel.DateRappel = putNote.Rappel.DateRappel;
+                    rappel.DateRappelFin = putNote.Rappel.DateRappelFin;
                     rappel.Periodicite = putNote.Rappel.Periodicite;
                     rappel.IsActive = putNote.Rappel.IsActive;
                 }
@@ -296,6 +300,7 @@ public class NotesController : ControllerBase
                         IdErabliere = id,
                         IsActive = putNote.Rappel.IsActive,
                         DateRappel = putNote.Rappel.DateRappel,
+                        DateRappelFin = putNote.Rappel.DateRappelFin,
                         Periodicite = putNote.Rappel.Periodicite
                     };
                 }
@@ -349,34 +354,48 @@ public class NotesController : ControllerBase
 
     private bool IsPeriodiciteDue(Rappel rappel, DateTimeOffset today)
     {
-        // Si la périodicité est vide, on compare la date de rappel avec la date d'aujourd'hui
-        if (string.IsNullOrEmpty(rappel.Periodicite))
+        // Si DateRappelFin est non null, le rappel doit être affiché entre DateRappel et DateRappelFin
+        if (rappel.DateRappelFin != null)
         {
-            return rappel.DateRappel.Value.Date <= today.Date;
-        }
+            if (rappel.DateRappel.Value.Date <= today.Date && rappel.DateRappelFin.Value.Date >= today.Date)
+            {
+                return true;
+            }
 
-        DateTime nextRappelDate;
-        DateTime todayDateTime = today.DateTime; 
+            if (rappel.DateRappelFin.Value.Date < today.Date)
+            {
+                switch (rappel.Periodicite)
+                {
+                    case "annuel":
+                        // Si la période est terminée et que la périodicité est "annuel", incrémenter DateRappel et DateRappelFin d'un an
+                        rappel.DateRappel = rappel.DateRappel.Value.AddYears(1);
+                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddYears(1);
+                        break;
+                    case "mensuel":
+                        // Si la période est terminée et que la périodicité est "mensuel", incrémenter DateRappel et DateRappelFin d'un mois
+                        rappel.DateRappel = rappel.DateRappel.Value.AddMonths(1);
+                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddMonths(1);
+                        break;
+                    case "hebdo":
+                        // Si la période est terminée et que la périodicité est "hebdo", incrémenter DateRappel et DateRappelFin d'une semaine
+                        rappel.DateRappel = rappel.DateRappel.Value.AddDays(7);
+                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddDays(7);
+                        break;
+                    case "quotidien":
+                        // Si la période est terminée et que la périodicité est "quotidien", incrémenter DateRappel et DateRappelFin d'un jour
+                        rappel.DateRappel = rappel.DateRappel.Value.AddDays(1);
+                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddDays(1);
+                        break;
+                }
 
-        switch (rappel.Periodicite)
-        {
-            case "annuel":
-                nextRappelDate = rappel.DateRappel.Value.DateTime.AddYears(1);
-                break;
-            case "mensuel":
-                nextRappelDate = rappel.DateRappel.Value.DateTime.AddMonths(1);
-                break;
-            case "hebdo":
-                nextRappelDate = rappel.DateRappel.Value.DateTime.AddDays(7);
-                break;
-            case "quotidien":
-                nextRappelDate = rappel.DateRappel.Value.DateTime.AddDays(1);
-                break;
-            default:
                 return false;
+            }
+
+            return false;
         }
 
-        return nextRappelDate <= todayDateTime; 
+        // Si DateRappelFin est null, le rappel doit être affiché à DateRappel
+        return rappel.DateRappel.Value.Date == today.Date;
     }
 
 }
