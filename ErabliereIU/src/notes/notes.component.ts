@@ -48,8 +48,8 @@ export class NotesComponent implements OnInit {
         }
     }
     @Output() needToUpdate = new EventEmitter();
-    noteToModify?: Subject<Note | undefined> = new Subject<Note | undefined>();
-    error?: string;
+    noteToModify?: Subject<Note | null> = new Subject<Note | null>();
+    error?: string | null;
 
     constructor(private _api: ErabliereApi, private _route: ActivatedRoute) { }
 
@@ -68,7 +68,7 @@ export class NotesComponent implements OnInit {
         this._api.getNotes(this.idErabliereSelectionee, (this._pageActuelle - 1) * this._nombreParPage, this._nombreParPage)
             .then(async notes => {
                 this.notes = notes;
-                this.error = undefined;
+                this.error = null;
 
                 for (let i = 0; i < notes.length; i++) {
                     let n = notes[i];

@@ -6,64 +6,7 @@ import { GetImageInfo } from 'src/model/imageInfo';
 
 @Component({
     selector: 'image-panel',
-    template: `
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">
-                    Images 
-                    <span class="float-end">
-                        <input 
-                            type="text" 
-                            class="form-control form-control-sm" 
-                            placeholder="Rechercher" 
-                            aria-label="Rechercher" 
-                            aria-describedby="basic-addon1"
-                            (keyup)="searchFromInput($event)">
-                    </span>
-                </h5>
-            </div>
-            <div class="card-body">
-                <div class="row">
-                    <button *ngIf="skip" class="btn btn-light btn-sm position-absolute top-50 start-0 translate-middle-y" (click)="previousImage()" style="width: 5%;">&lt;</button>
-                    <button class="btn btn-light btn-sm position-absolute top-50 end-0 translate-middle-y" (click)="nextImage()" style="width: 5%;">&gt;</button>
-
-                    <div class="col-md-6" *ngFor="let image of images; let ls = index">
-                        <img 
-                            src="data:image/png;base64,{{ image.images }}" 
-                            class="img-thumbnail trigger-modal" 
-                            alt="image" 
-                            style="width: 100%; height: 100%;" 
-                            data-bs-toggle="modal" 
-                            data-bs-target="#imageModal" 
-                            (click)="selectImage(image, ls)">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">{{ modalTitle }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true"></span>
-                        </button>
-                    </div>
-                    <div class="modal-body">
-                        <button *ngIf="modalSkip" class="btn btn-light position-absolute top-50 start-0 translate-middle-y" (click)="modalPreviousImage()">&lt;</button>
-                        <button *ngIf="modalHasNext" class="btn btn-light position-absolute top-50 end-0 translate-middle-y" (click)="modalNextImage()">&gt;</button>
-                        <img 
-                            [src]="'data:image/png;base64,' + selectedImage" 
-                            class="img-fluid modal-image-content" 
-                            alt="Selected Image">
-                    </div>
-                    <div class="modal-footer">
-                        <pre class="float-start" style="display: block; width: 100%;">{{azureImageAPIInfo}}</pre>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `,
+    templateUrl: "./image-pannel.component.html",
     styles: [`
         /* Style the Image Used to Trigger the Modal */
         .trigger-modal {

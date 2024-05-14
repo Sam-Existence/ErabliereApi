@@ -1,0 +1,127 @@
+@charset "UTF-8";
+
+.was-validated .ng-valid ~ .valid-feedback, .was-validated .ng-valid ~ .valid-tooltip {
+  display: block
+}
+
+.was-validated .form-control.ng-valid {
+  border-color: var(--bs-form-valid-border-color);
+  padding-right: calc(1.5em + .75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .1875rem) center;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)
+}
+
+.was-validated .form-control.ng-valid:focus {
+  border-color: var(--bs-form-valid-border-color);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-success-rgb), .25)
+}
+
+.was-validated textarea.form-control.ng-valid {
+  padding-right: calc(1.5em + .75rem);
+  background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem)
+}
+
+.was-validated .form-select.ng-valid {
+  border-color: var(--bs-form-valid-border-color)
+}
+
+.was-validated .form-select.ng-valid:not([multiple]):not([size]), .was-validated .form-select.ng-valid:not([multiple])[size="1"] {
+  --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 8'%3e%3cpath fill='%23198754' d='M2.3 6.73.6 4.53c-.4-1.04.46-1.4 1.1-.8l1.1 1.4 3.4-3.8c.6-.63 1.6-.27 1.2.7l-4 4.6c-.43.5-.8.4-1.1.1z'/%3e%3c/svg%3e");
+  padding-right: 4.125rem;
+  background-position: right .75rem center, center right 2.25rem;
+  background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
+}
+
+.was-validated .form-select.ng-valid:focus {
+  border-color: var(--bs-form-valid-border-color);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-success-rgb), .25)
+}
+
+.was-validated .form-control-color.ng-valid {
+  width: calc(3rem + calc(1.5em + .75rem))
+}
+
+.was-validated .form-check-input.ng-valid {
+  border-color: var(--bs-form-valid-border-color)
+}
+
+.was-validated .form-check-input.ng-valid:checked {
+  background-color: var(--bs-form-valid-color)
+}
+
+.was-validated .form-check-input.ng-valid:focus {
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-success-rgb), .25)
+}
+
+.was-validated .form-check-input.ng-valid ~ .form-check-label {
+  color: var(--bs-form-valid-color)
+}
+
+.was-validated .input-group > .form-control:not(:focus).ng-valid, .was-validated .input-group > .form-floating:not(:focus-within).ng-valid, .was-validated .input-group > .form-select:not(:focus).ng-valid {
+  z-index: 3
+}
+
+.was-validated .ng-invalid ~ .invalid-feedback, .was-validated .ng-invalid ~ .invalid-tooltip {
+  display: block
+}
+
+.was-validated .form-control.ng-invalid {
+  border-color: var(--bs-form-invalid-border-color);
+  padding-right: calc(1.5em + .75rem);
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right calc(.375em + .1875rem) center;
+  background-size: calc(.75em + .375rem) calc(.75em + .375rem)
+}
+
+.was-validated .form-control.ng-invalid:focus {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-danger-rgb), .25)
+}
+
+.was-validated textarea.form-control.ng-invalid {
+  padding-right: calc(1.5em + .75rem);
+  background-position: top calc(.375em + .1875rem) right calc(.375em + .1875rem)
+}
+
+.was-validated .form-select.ng-invalid {
+  border-color: var(--bs-form-invalid-border-color)
+}
+
+.was-validated .form-select.ng-invalid:not([multiple]):not([size]), .was-validated .form-select.ng-invalid:not([multiple])[size="1"] {
+  --bs-form-select-bg-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12' width='12' height='12' fill='none' stroke='%23dc3545'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath stroke-linejoin='round' d='M5.8 3.6h.4L6 6.5z'/%3e%3ccircle cx='6' cy='8.2' r='.6' fill='%23dc3545' stroke='none'/%3e%3c/svg%3e");
+  padding-right: 4.125rem;
+  background-position: right .75rem center, center right 2.25rem;
+  background-size: 16px 12px, calc(.75em + .375rem) calc(.75em + .375rem)
+}
+
+.was-validated .form-select.ng-invalid:focus {
+  border-color: var(--bs-form-invalid-border-color);
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-danger-rgb), .25)
+}
+
+.was-validated .form-control-color.ng-invalid {
+  width: calc(3rem + calc(1.5em + .75rem))
+}
+
+.was-validated .form-check-input.ng-invalid {
+  border-color: var(--bs-form-invalid-border-color)
+}
+
+.was-validated .form-check-input.ng-invalid:checked {
+  background-color: var(--bs-form-invalid-color)
+}
+
+.was-validated .form-check-input.ng-invalid:focus {
+  box-shadow: 0 0 0 .25rem rgba(var(--bs-danger-rgb), .25)
+}
+
+.was-validated .form-check-input.ng-invalid ~ .form-check-label {
+  color: var(--bs-form-invalid-color)
+}
+
+.was-validated .input-group > .form-control:not(:focus).ng-invalid, .was-validated .input-group > .form-floating:not(:focus-within).ng-invalid, .was-validated .input-group > .form-select:not(:focus).ng-invalid {
+  z-index: 4
+}

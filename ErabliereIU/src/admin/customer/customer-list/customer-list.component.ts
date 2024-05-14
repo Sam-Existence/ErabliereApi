@@ -1,6 +1,5 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Customer} from "../../../model/customer";
-import {NgForOf} from "@angular/common";
 
 @Component({
   selector: 'customer-list',
