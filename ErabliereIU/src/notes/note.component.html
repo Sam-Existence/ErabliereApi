@@ -10,6 +10,8 @@
 
       <p *ngIf="note.rappel && note.rappel.dateRappel" class="noteReminder card-text"><small class="text-muted">Date Rappel: {{ note.rappel.dateRappel }}</small></p>
 
+      <p *ngIf="note.rappel && note.rappel.dateRappelFin" class="noteReminder card-text"><small class="text-muted">Date de fin Rappel: {{ note.rappel.dateRappelFin }}</small></p>
+
       <p *ngIf="note.rappel && note.rappel.periodicite" class="noteReminder card-text"><small class="text-muted">Periodicite: {{ note.rappel.periodicite }}</small></p>
 
 
