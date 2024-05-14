@@ -163,7 +163,7 @@ public class NotesController : ControllerBase
         // Creer un rappel si le rappel est présent
         if (postNote.Rappel != null)
         {
-            var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien" };
+            var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien", null };
             if (!allowedPeriodiciteValues.Contains(postNote.Rappel.Periodicite))
             {
                 return BadRequest("Periodicité invalide. Doit être : Annuel, Mensuel, Hebdo, Quotidien");
@@ -278,7 +278,7 @@ public class NotesController : ControllerBase
             // Update rappel si le rappel est présent
             if (putNote.Rappel != null)
             {
-                var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien" };
+                var allowedPeriodiciteValues = new[] { "annuel", "mensuel", "hebdo", "quotidien", null };
                 if (!allowedPeriodiciteValues.Contains(putNote.Rappel.Periodicite))
                 {
                     return BadRequest("Periodicité invalide. Valeurs acceptées: annuel, mensuel, hebdo, quotidien");
