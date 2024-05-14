@@ -39,7 +39,8 @@ public static class ErabliereFixture
                                            .Without(e => e.Barils)
                                            .Without(e => e.Documentations)
                                            .Without(e => e.Notes)
-                                           .Without(e => e.Alertes));
+                                           .Without(e => e.Alertes)
+                                           .Without(e => e.CustomerErablieres));
 
         fixture.Customize<Capteur>(c => c.Without(cc => cc.Erabliere));
 

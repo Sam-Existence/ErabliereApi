@@ -6,67 +6,17 @@ import { Erabliere } from 'src/model/erabliere';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
-import { NgIf } from '@angular/common';
-import { calculerMoyenne, notNullOrWitespace } from './util';
-import { WeatherForecastComponent } from './weatherforecast.component';
+import { calculerMoyenne } from './util';
 import { ImagePanelComponent } from './sub-panel/image-pannel.component';
-import { clear } from 'console';
 
 @Component({
   selector: 'donnees-panel',
-  template: `
-        <div class="row">
-          <weather-forecast 
-            *ngIf="notNullOrWitespace(initialErabliere?.codePostal) && initialErabliere?.afficherTrioDonnees"
-            class="col-md-6"></weather-forecast>
-          <div *ngIf="displayImages" class="col-md-6">
-            <image-panel [idErabliereSelectionnee]="erabliereId"></image-panel>
-          </div>
-          <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <graph-pannel [titre]="titre_temperature" 
-                           [valeurActuel]="temperatureValueActuel"
-                           [mean]="meanTemperature"
-                           [symbole]="temperatureSymbole"
-                           [timeaxes]="timeaxes" 
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="temperature" #temperatureGraphPannel></graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <vaccium-graph-pannel [titre]="titre_vaccium" 
-                           [valeurActuel]="vacciumValueActuel"
-                           [symbole]="vacciumSymbole"
-                           [timeaxes]="timeaxes"
-                           [mean]="meanVaccium"
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="vaccium" #vacciumGraphPannel></vaccium-graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherTrioDonnees" class="col-md-4">
-              <graph-pannel [titre]="titre_niveaubassin" 
-                           [valeurActuel]="niveauBassinValueActuel"
-                           [symbole]="niveauBassinSymbole"
-                           [timeaxes]="timeaxes" 
-                           [mean]="meanNiveauBassin"
-                           (updateGraphCallback)="updateGraph($event)"
-                           (updateGraphUsingFixRangeCallback)="updateGraphUsingFixRangeCallback($event)"
-                           [datasets]="niveaubassin" #niveaubassinGraphPannel></graph-pannel>
-            </div>
-            <div *ngIf="initialErabliere?.afficherSectionDompeux" class="col-md-6">
-              <bar-pannel [titre]="titre_dompeux" 
-                         [timeaxes]="timeaxes_dompeux" 
-                         [datasets]="dompeux"
-                         [barChartType]="dompeux_line_type" #dompeuxGraphPannel></bar-pannel>
-            <div>
-        </div>
-    `,
+  templateUrl: './donnees.component.html',
   standalone: true,
   imports: [
-    NgIf, 
     GraphPannelComponent, 
     VacciumGraphPannelComponent, 
     BarPannelComponent, 
-    WeatherForecastComponent,
     ImagePanelComponent
   ]
 })
@@ -77,7 +27,6 @@ export class DonneesComponent implements OnInit {
   @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
 
   intervalRequetes?: any
-  intervalImages?: any
 
   @Input() initialErabliere?: Erabliere
   @Input() erabliereSubject: Subject<Erabliere> = new Subject<Erabliere>()
@@ -97,10 +46,10 @@ export class DonneesComponent implements OnInit {
   titre_temperature = "Temperature"
   temperature: ChartDataset[] = []
   temperatureValueActuel?: string | null
-  temperatureSymbole: string = "°c"
+  temperatureSymbole: string = "°C"
   meanTemperature?: string
 
-  titre_vaccium = "Vaccium"
+  titre_vaccium = "Vacuum"
   vaccium: ChartDataset[] = []
   vacciumValueActuel?: string | null
   vacciumSymbole: string = "HG"
@@ -144,7 +93,7 @@ export class DonneesComponent implements OnInit {
         this.erabliereId = undefined;
       }
 
-      this.fetchDataAndBuildGraph()
+      this.fetchDataAndBuildGraph();
     });
 
     this.erabliereAfficherTrioDonnees = this.initialErabliere?.afficherTrioDonnees;
@@ -172,23 +121,10 @@ export class DonneesComponent implements OnInit {
         this.doHttpCallDompeux();
       }
     }, 1000 * 60);
-
-    this.intervalImages = setInterval(() => {
-      console.log("DonneesComponent getImages", this.erabliereId)
-      this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
-        this.displayImages = images.length > 0;
-      });
-    }, 1000 * 60 * 10);
-
-    console.log("DonneesComponent getImages", this.erabliereId)
-    this._erabliereApi.getImages(this.erabliereId, 1).then(images => {
-      this.displayImages = images.length > 0;
-    });
   }
 
   ngOnDestroy() {
     clearInterval(this.intervalRequetes);
-    clearInterval(this.intervalImages);
   }
 
   doHttpCallDompeux() {
@@ -442,9 +378,5 @@ export class DonneesComponent implements OnInit {
     this.cleanGraphComponentCache();
     this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
     this.doHttpCall();
-  }
-
-  notNullOrWitespace(arg0?: string): any {
-    return notNullOrWitespace(arg0);
   }
 }

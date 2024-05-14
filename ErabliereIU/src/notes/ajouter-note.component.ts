@@ -111,7 +111,7 @@ export class AjouterNoteComponent implements OnInit {
     }
 
     onButtonCreerClick() {
-        if (!!this.note) {
+        if (this.note) {
             if(this.noteForm.valid) {
               this.note.idErabliere = this.idErabliereSelectionee;
               this.note.title = this.noteForm.controls['title'].value;

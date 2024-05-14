@@ -1,17 +1,12 @@
-﻿using System;
+using System;
 
 namespace ErabliereApi.Donnees;
 
 /// <summary>
 /// Jonction entre les érablières et les utilisateurs
 /// </summary>
-public class CustomerErabliere : IIdentifiable<Guid?, CustomerErabliere>
+public class CustomerErabliere
 {
-    /// <summary>
-    /// Clé primaire de la jonction
-    /// </summary>
-    public Guid? Id { get; set; }
-
     /// <summary>
     /// Id de l'érablière
     /// </summary>

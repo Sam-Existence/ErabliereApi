@@ -21,9 +21,9 @@ export class ModifierNoteComponent implements OnInit {
     ngOnInit(): void {
         this.noteSubject?.subscribe(note => {
             this.initializeForm();
-            if (!!note) {
+            if (note) {
                 this.note = { ... note };
-                if (!!this.note) {
+                if (this.note) {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
@@ -114,7 +114,7 @@ export class ModifierNoteComponent implements OnInit {
     }
 
     onButtonModifierClick() {
-        if (!!this.note) {
+        if (this.note) {
           if(this.noteForm.valid) {
             this.note.title = this.noteForm.controls['title'].value;
             this.note.text = this.noteForm.controls['text'].value;
