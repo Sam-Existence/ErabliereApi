@@ -3,6 +3,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
+                <th scope="col">Id</th>
                 <th scope="col">Indice</th>
                 <th scope="col">Nom</th>
                 <th scope="col">Symbole</th>
@@ -15,6 +16,16 @@
         </thead>
         <tbody>
             <tr *ngFor="let capteur of capteurs">
+                <td>
+                    <!-- create a copy id button, and for the icon of the button use a copy icon -->
+                    <button 
+                        type="button" 
+                        class="btn btn-outline-primary btn-sm" 
+                        (click)="copyId(capteur.id)"
+                        title="Copier l'id du capteur">
+                        &#x2398;
+                    </button>
+                </td>
                 <td>
                     <table-form-input
                         [value]="capteur.indiceOrdre"

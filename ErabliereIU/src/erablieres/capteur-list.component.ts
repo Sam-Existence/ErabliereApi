@@ -124,4 +124,12 @@ export class CapteurListComponent {
 
         this.editedCapteurs[capteurId].indiceOrdre = parseInt($newValue.toString());
     }
+
+    copyId(arg0: string|undefined) {
+        if (!arg0) {
+            return;
+        }
+
+        navigator.clipboard.writeText(arg0);
+    }
 }
