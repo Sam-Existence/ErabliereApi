@@ -1,33 +1,24 @@
-<div>
-    <!-- Component CRUD pour les capteurs des érablière -->
-    <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                <h5>Gestion des capteurs</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div *ngIf="!afficherSectionAjouterCapteur">
-                    <button 
-                        type="button" 
-                        class="btn btn-outline-primary btn-sm" 
-                        (click)="showAjouterCapteur()">Ajouter un capteur</button>
-                </div>
-                <div *ngIf="afficherSectionAjouterCapteur">
-                    <ajouter-capteur 
-                        [idErabliere]="idErabliere" 
-                        (hideAjouterCapteur)="hideAjouterCapteur()"
-                        (shouldReloadCapteurs)="ngOnInit()"></ajouter-capteur>
-                </div>
-            </div>
-        </div>
-        <div class="row" style="margin-top: 0.5em;">
-            <div class="col-md-12">
-                <capteur-list 
-                    [idErabliere]="idErabliere" 
-                    [capteurs]="capteurs"
-                    (shouldRefreshCapteurs)="ngOnInit()"></capteur-list>
-            </div>
-        </div>
-</div>
+<h3>Capteurs</h3>
+<!-- Component CRUD pour les page-capteurs des érablière -->
+
+@if(afficherSectionAjouterCapteur) {
+    <div>
+        <ajouter-capteur
+            [idErabliere]="idErabliere"
+            (hideAjouterCapteur)="hideAjouterCapteur()"
+            (shouldReloadCapteurs)="getCapteurs()"></ajouter-capteur>
+    </div>
+} @else {
+    <div>
+        <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            (click)="showAjouterCapteur()">Ajouter un capteur</button>
+    </div>
+}
+<capteur-list
+            [idErabliere]="idErabliere"
+            [capteurs]="capteurs"
+            (shouldRefreshCapteurs)="ngOnInit()"></capteur-list>
+
+

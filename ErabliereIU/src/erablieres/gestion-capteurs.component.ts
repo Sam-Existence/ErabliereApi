@@ -14,15 +14,20 @@ import { Subject } from "rxjs";
     imports: [NgIf, AjouterCapteurComponent, CapteurListComponent]
 })
 export class GestionCapteursComponent implements OnInit {
-    constructor(private readonly erabliereApi: ErabliereApi) {
-    }
 
     @Input() idErabliere?: any;
     @Input() capteurs: Capteur[] = [];
     afficherSectionAjouterCapteur: boolean = false;
 
-    async ngOnInit(): Promise<void> {
-        
+    constructor (
+        private _api: ErabliereApi,
+        private _route: ActivatedRoute) {
+    }
+    async ngOnInit()  {
+        this._route.paramMap.subscribe(params => {
+            this.idErabliere = params.get("idErabliereSelectionee");
+            this.getCapteurs();
+        });
     }
 
     showAjouterCapteur() {
@@ -31,5 +36,13 @@ export class GestionCapteursComponent implements OnInit {
 
     hideAjouterCapteur() {
         this.afficherSectionAjouterCapteur = false;
+    }
+
+    async getCapteurs() {
+        if(this.idErabliere) {
+            this._api.getCapteurs(this.idErabliere).then(capteurs => {
+                this.capteurs = capteurs;
+            });
+        }
     }
 }
