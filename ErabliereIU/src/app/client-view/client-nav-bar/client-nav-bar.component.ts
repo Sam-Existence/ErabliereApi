@@ -7,64 +7,47 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AgoraCallServiceComponent } from '../agora-call-service/agora-call-service.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
+import {ConnectionButtonComponent} from "../../../authorisation/connection-button/connection-button.component";
 
 @Component({
     selector: 'client-nav-bar',
     templateUrl: 'client-nav-bar.component.html',
     standalone: true,
-    imports: [RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
+    imports: [RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent, ConnectionButtonComponent]
 })
 export class ClientNavBarComponent implements OnInit {
+  private _authService: IAuthorisationSerivce
+
+  @Input() idErabliereSelectionnee?: string;
+  @Input() thereIsAtLeastOneErabliere: boolean;
+
   useAuthentication: boolean = false;
   isLoggedIn: boolean;
-  urls: UrlModel[]
-  tenantId?: string;
-  @Input() idErabliereSelectionnee?: string;
-  private _authService: IAuthorisationSerivce
-  @Input() thereIsAtLeastOneErabliere: boolean;
+  urls?: UrlModel[]
   callFeatureEnableForUser: boolean = false;
   callFeatureEnable: boolean = false;
   isAdminUser: boolean = false;
 
   constructor(
       authFactoryService: AuthorisationFactoryService,
-      private environmentService: EnvironmentService,
-      private cdr: ChangeDetectorRef,
-      private api: ErabliereApi,
-      private msalService: MsalService) {
+      private _environmentService: EnvironmentService,
+      private _api: ErabliereApi,
+      private _msalService: MsalService) {
     this._authService = authFactoryService.getAuthorisationService()
-    this.useAuthentication = environmentService.authEnable ?? false;
+    this.useAuthentication = this._environmentService.authEnable ?? false;
     this.thereIsAtLeastOneErabliere = false
     this.isLoggedIn = false
-    this.urls = []
+    this.urls = this._environmentService.additionnalUrls;
   }
 
   ngOnInit(): void {
-    this._authService.isLoggedIn().then(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-    });
-    this._authService.loginChanged.subscribe(isLoggedIn => {
-      this.isLoggedIn = isLoggedIn;
-      this.cdr.detectChanges();
-    });
-    this.urls = this.environmentService.additionnalUrls ?? [];
-    this.tenantId = this.environmentService.tenantId;
-
     this.checkApiCallFeatureEnable();
     this.checkRoleAdmin();
   }
 
-  login() {
-    this._authService.login();
-  }
-
-  logout() {
-    this._authService.logout();
-  }
-
   checkApiCallFeatureEnable() {
     // look at the openapi spec to see if the call endpoint is enable
-    this.api.getOpenApiSpec().then(spec => {
+    this._api.getOpenApiSpec().then(spec => {
       this.callFeatureEnable = spec.paths['/Calls/GetAppId'] !== undefined;
       console.log("CallFeatureEnable: " + this.callFeatureEnable);
     })
@@ -87,7 +70,7 @@ export class ClientNavBarComponent implements OnInit {
 
   private checkRoleErabliereCalls() {
     console.log("checkRoleErabliereCalls");
-    const account = this.msalService.instance.getActiveAccount();
+    const account = this._msalService.instance.getActiveAccount();
     if (account?.idTokenClaims) {
       const roles = account?.idTokenClaims['roles'];
       if (roles != null) {
@@ -104,7 +87,7 @@ export class ClientNavBarComponent implements OnInit {
   }
 
   private checkRoleAdmin() {
-      const account = this.msalService.instance.getActiveAccount();
+      const account = this._msalService.instance.getActiveAccount();
       this.isAdminUser = false;
       if (account?.idTokenClaims) {
           const roles = account?.idTokenClaims['roles'];
@@ -112,5 +95,10 @@ export class ClientNavBarComponent implements OnInit {
               this.isAdminUser = roles.includes("administrateur");
           }
       }
+  }
+
+  onLoginChange(loginState: boolean) {
+      this.isLoggedIn = loginState;
+      this.checkRoleAdmin();
   }
 }

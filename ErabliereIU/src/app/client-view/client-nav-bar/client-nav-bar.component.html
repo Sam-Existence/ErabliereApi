@@ -57,26 +57,18 @@
             À Propos
           </a>
         </li>
-        @if (!useAuthentication || isAdminUser) {
-        <li class="nav-item">
-            <a class="nav-link" routerLink="/admin">
-                Érablière Admin
-            </a>
-        </li>
-        }
       </ul>
-      @if (useAuthentication) {
       <div class="d-flex gap-2">
+      @if (!useAuthentication || isAdminUser) {
+        <button id="zone-admin-button" class="btn btn-outline-primary" routerLink="/admin">Érablière Admin</button>
+      }
+      @if (useAuthentication) {
         @if (callFeatureEnable && callFeatureEnableForUser) {
         <agora-call-service></agora-call-service>
         }
-        @if (isLoggedIn) {
-        <button id="logout-button" class="btn btn-outline-success" (click)="logout()">Déconnexion</button>
-        } @else {
-        <button id="login-button" class="btn btn-outline-success" (click)="login()">Se connecter</button>
-        }
-      </div>
+        <connection-button (loginChange)="onLoginChange($event)" />
       }
+      </div>
     </div>
   </div>
 </nav>

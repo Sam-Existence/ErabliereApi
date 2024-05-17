@@ -31,15 +31,13 @@
                         Érablières
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a
-                        class="nav-link"
-                        routerLink=""
-                    >
-                        ÉrablièreIU
-                    </a>
-                </li>
             </ul>
+            <div class="d-flex gap-2">
+                <button id="zone-admin-button" class="btn btn-outline-primary" routerLink="">ÉrablièreIU</button>
+            @if (useAuthentication) {
+                <connection-button />
+            }
+            </div>
         </div>
     </div>
 </nav>
