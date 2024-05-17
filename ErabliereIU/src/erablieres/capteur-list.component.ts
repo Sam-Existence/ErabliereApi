@@ -88,40 +88,23 @@ export class CapteurListComponent {
     editAjouterDonneeDepuisInterface(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
         if (!capteurId) {
             return;
-        }
-
-        this.editedCapteurs[capteurId].ajouterDonneeDepuisInterface = newValue?.toString().trim().toLowerCase() === "true";
+    getCapteur(capteurId: string) {
+        const arrayKey = this.formArrayIdToKey.get(capteurId)
+        return this.getCapteurs().at(arrayKey ?? 0) as FormGroup;
     }
-
-    editAfficherCapteurDashboard(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].afficherCapteurDashboard = newValue?.toString().trim().toLowerCase() === "true";
+    getIndice(capteurId: string) {
+        return this.getCapteur(capteurId).controls['indice'];
     }
-
-    editSymbol(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].symbole = newValue?.toString();
+    getNom(capteurId: string) {
+        return this.getCapteur(capteurId).controls['nom'];
     }
-
-    editName(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].nom = newValue?.toString();
+    getSymbole(capteurId: string) {
+        return this.getCapteur(capteurId).controls['symbole'];
     }
-
-    editIndice(capteurId: string|undefined, $newValue: string|number|boolean) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].indiceOrdre = parseInt($newValue.toString());
+    getEstGraphiqueAffiche(capteurId: string) {
+        return this.getCapteur(capteurId).controls['estGraphiqueAffiche'];
+    }
+    getEstSaisieManuelle(capteurId: string) {
+        return this.getCapteur(capteurId).controls['estSaisieManuelle'];
     }
 }
