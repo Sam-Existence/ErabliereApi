@@ -10,6 +10,7 @@ import {
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import {Rappel} from "../model/Rappel";
+import { dateRappelValidator, dateRappelFinValidator, periodiciteValidator} from "../CustomValidators/ajouter-note.custom-validators";
 
 @Component({
     selector: 'ajouter-note',
@@ -64,27 +65,33 @@ export class AjouterNoteComponent implements OnInit {
             dateRappel: new FormControl(
                 '',
                 {
+                    validators: [dateRappelValidator()],
                     updateOn: 'blur',
                 }
             ),
             dateRappelFin: new FormControl(
                 '',
                 {
+                    validators: [],
                     updateOn: 'blur'
                 }
             ),
             periodicite: new FormControl(
                 'Aucune',
                 {
+                    validators: [],
                     updateOn: 'blur'
                 }
             ),
         });
+
+        // Set validators that depend on other controls after form initialization
+        this.noteForm.get('dateRappelFin')?.setValidators(dateRappelFinValidator(this.noteForm.get('dateRappel')!, this.noteForm.get('periodicite')!));
+        this.noteForm.get('periodicite')?.setValidators(periodiciteValidator(this.noteForm.get('dateRappel')!, this.noteForm.get('dateRappelFin')!));
     }
 
-    display: boolean = false;
 
-    today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+    display: boolean = false;
 
     error: string | null = null;
 
