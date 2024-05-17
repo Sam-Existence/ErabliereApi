@@ -1,51 +1,30 @@
+import { FormGroup, ValidationErrors } from "@angular/forms";
 
-import {AbstractControl, ValidationErrors, ValidatorFn} from "@angular/forms";
+export function reminderValidator(formGroup: FormGroup): ValidationErrors | null {
+    const reminderEnabled = formGroup.get('reminderEnabled')?.value;
+    const dateRappel = formGroup.get('dateRappel')?.value;
+    const dateRappelFin = formGroup.get('dateRappelFin')?.value;
+    const periodicite = formGroup.get('periodicite')?.value;
 
-// Validator for dateRappel
-export function dateRappelValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-        const selectedDate = new Date(control.value);
-        selectedDate.setHours(0, 0, 0, 0);
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        return selectedDate < today ? { dateInPast: { value: control.value } } : null;
-    };
+    let errors: any = {};
+
+    if (reminderEnabled) {
+        if (!dateRappel) {
+            formGroup.get('dateRappel')?.setErrors({ dateRappelRequired: true });
+        } else if (new Date(dateRappel) < new Date()) {
+            formGroup.get('dateRappel')?.setErrors({ dateRappelPast: true });
+        }
+
+        if (dateRappelFin && !dateRappel) {
+            formGroup.get('dateRappel')?.setErrors({ dateRappelRequired: true });
+        } else if (dateRappelFin && new Date(dateRappelFin) < new Date(dateRappel)) {
+            formGroup.get('dateRappelFin')?.setErrors({ dateRappelFinBeforeDateRappel: true });
+        }
+
+        if (periodicite !== 'Aucune' && (!dateRappel || !dateRappelFin)) {
+            formGroup.get('periodicite')?.setErrors({ datesRequiredForPeriodicite: true });
+        }
+    }
+
+    return Object.keys(errors).length > 0 ? errors : null;
 }
-
-// Validator for dateRappelFin
-export function dateRappelFinValidator(dateRappelControl: AbstractControl, periodiciteControl: AbstractControl): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-        if (!dateRappelControl || !dateRappelControl.value || !periodiciteControl || !periodiciteControl.value) {
-            return null;
-        }
-
-        if (!dateRappelControl || !dateRappelControl.value) {
-            return { dateRappelRequired: { value: control.value } };
-        }
-
-        const dateRappel = new Date(dateRappelControl.value);
-        const dateRappelFin = new Date(control.value);
-        if (dateRappelFin < dateRappel) {
-            return { dateBeforeRappel: { value: control.value } };
-        }
-        return null;
-    };
-}
-
-// Validator for periodicite
-export function periodiciteValidator(dateRappelControl: AbstractControl, dateRappelFinControl: AbstractControl): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-        if (control.value !== 'Aucune') {
-            if (!dateRappelControl || !dateRappelControl.value || !dateRappelFinControl || !dateRappelFinControl.value) {
-                return { datesNotSelected: { value: control.value } };
-            }
-            const dateRappel = new Date(dateRappelControl.value);
-            const dateRappelFin = new Date(dateRappelFinControl.value);
-            if (dateRappel > dateRappelFin) {
-                return { invalidPeriod: { value: control.value } };
-            }
-        }
-        return null;
-    };
-}
-
