@@ -17,7 +17,7 @@ import {
     standalone: true,
     imports: [ReactiveFormsModule, FormsModule, InputErrorComponent]
 })
-export class AjouterCapteurComponent implements AfterViewChecked {
+export class AjouterCapteurComponent {
     ajoutCapteurForm: UntypedFormGroup;
     @Input() idErabliere?: string;
     @Output() hideAjouterCapteur = new EventEmitter();
@@ -56,7 +56,6 @@ export class AjouterCapteurComponent implements AfterViewChecked {
 
     ajouterCapteur() {
         this.capteur.idErabliere = this.idErabliere;
-        this.capteur.indice = 0;
         this.capteur.nom = this.ajoutCapteurForm.controls['nom'].value;
         this.capteur.symbole = this.ajoutCapteurForm.controls['symbole'].value;
         this.capteur.afficherCapteurDashboard = this.ajoutCapteurForm.controls['affichageDashboard'].value;
@@ -77,10 +76,6 @@ export class AjouterCapteurComponent implements AfterViewChecked {
 
     buttonAnnuler() {
         this.hideAjouterCapteur.emit();
-    }
-
-    ngAfterViewChecked() {
-        console.log(this.ajoutCapteurForm.controls['nom'].errors);
     }
 }
 
