@@ -13,7 +13,7 @@ import { ActivatedRoute } from '@angular/router';
     template: `
       <div class="row">
           <div class="border-top col-md-6" *ngFor="let capteur of capteurs">
-              <graph-pannel [titre]="capteur.nom" 
+              <graph-pannel [titre]="capteur.nom"
                             [symbole]="capteur.symbole"
                             [idCapteur]="capteur.id"
                             [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
@@ -29,9 +29,9 @@ export class CapteurPannelsComponent implements OnInit {
 
   constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     console.log('CapteurPannelsComponent.ngOnInit', this.erabliere?.id);
-    
+
     this.route.paramMap.subscribe(params => {
       if (this.erabliere != null) {
         this.erabliere.id = params.get('idErabliereSelectionee');

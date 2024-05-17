@@ -107,7 +107,10 @@ public class CapteursController : ControllerBase
             capteur.DC = DateTimeOffset.Now;
         }
 
+
         var entity = await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur), token);
+
+        entity.Entity.IndiceOrdre = _depot.Capteurs.Where(c => capteur.IdErabliere == c.IdErabliere).Count();
 
         await _depot.SaveChangesAsync(token);
 

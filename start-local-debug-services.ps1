@@ -32,7 +32,7 @@ code .
 
 # if the parent folder contains a folder name LearnNestJS, then start the NestJS server in a new process, also in watch mode
 
-$learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS"
+$learnNestJS = Get-ChildItem -Path ..\ -Directory -Filter "LearnNestJS" | Select -expand FullName
 if ($null -ne $learnNestJS) {
     Set-Location $learnNestJS
     Start-Process npm -ArgumentList "run", "start:dev"
@@ -42,7 +42,7 @@ if ($null -ne $learnNestJS) {
 
 # if the parent folder contains a folder name EmailImagesObserver, then start the EmailImagesObserver server in a new process, also in watch mode
 
-$emailImagesObserver = Get-ChildItem -Path ..\ -Directory -Filter "EmailImagesObserver"
+$emailImagesObserver = Get-ChildItem -Path ..\ -Directory -Filter "EmailImagesObserver" | Select -expand FullName
 if ($null -ne $emailImagesObserver) {
     Set-Location "$emailImagesObserver\BlazorApp"
     Start-Process dotnet -ArgumentList "watch", "run", "$PWD\BlazorApp.csproj", " --no-hot-reload"

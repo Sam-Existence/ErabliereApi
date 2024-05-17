@@ -1,29 +1,89 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
+import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
-import { TableFormInputComponent } from "../formsComponents/table-form-input.component";
-import { NgFor, NgIf } from "@angular/common";
+import {
+    AbstractControl,
+    FormArray,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    Validators
+} from "@angular/forms";
 
 @Component({
     selector: 'capteur-list',
     templateUrl: 'capteur-list.component.html',
+    styleUrl: 'capteur-list.component.css',
     standalone: true,
-    imports: [NgFor, TableFormInputComponent, NgIf]
+    imports: [ReactiveFormsModule]
 })
-export class CapteurListComponent {
+export class CapteurListComponent implements OnChanges {
     @Input() idErabliere?: string;
     @Input() capteurs: Capteur[] = [];
 
     @Output() shouldRefreshCapteurs = new EventEmitter<void>();
 
+    formArrayIdToKey: Map<string, number> = new Map<string, number>();
+    form: FormGroup;
     displayEdits: { [id: string]: boolean } = {};
     editedCapteurs: { [id: string]: Capteur } = {};
 
-    constructor(private readonly erabliereApi: ErabliereApi) {
-
+    constructor(private readonly erabliereApi: ErabliereApi, private fb: UntypedFormBuilder) {
+        this.form = this.fb.group({
+            capteurs: new FormArray([])
+        });
     }
 
-    resolveDisplayEdit(capteurId: string | undefined) {
+    ngOnChanges(changes: SimpleChanges) {
+        if(changes['capteurs']) {
+            console.log(this.capteurs);
+            this.capteurs.forEach((capteur, key) => {
+                this.formArrayIdToKey.set(capteur.id ?? '', key);
+                const capteurFormGroup = this.fb.group({
+                    indice: new FormControl(
+                        capteur.indiceOrdre,
+                        {
+                            validators: [
+                                Validators.required,
+                                Validators.min(0)
+                            ],
+                            updateOn: 'blur'
+                        }
+                    ),
+                    nom: new FormControl(
+                        capteur.nom,
+                        {
+                            validators: [
+                                Validators.required,
+                                Validators.maxLength(50)
+                            ],
+                            updateOn: 'blur'
+                        }
+                    ),
+                    symbole: new FormControl(
+                        capteur.symbole,
+                        {
+                            validators: [
+                                Validators.maxLength(5)
+                            ],
+                            updateOn: 'blur'
+                        }
+                    ),
+                    estGraphiqueAffiche: new FormControl(
+                        capteur.afficherCapteurDashboard
+                    ),
+                    estSaisieManuelle: new FormControl(
+                        capteur.ajouterDonneeDepuisInterface
+                    )
+                });
+                this.getCapteurs().push(capteurFormGroup);
+                this.displayEdits[capteur.id ?? ''] = false;
+            });
+        }
+    }
+
+    isDisplayEditForm(capteurId?: string): boolean {
         if (!capteurId) {
             return false;
         }
@@ -34,7 +94,12 @@ export class CapteurListComponent {
     showModifierCapteur(capteur: Capteur) {
         if (capteur.id) {
             this.displayEdits[capteur.id] = true;
-            this.editedCapteurs[capteur.id] = { ...capteur };
+            const formCapteur = this.getCapteur(capteur.id);
+            formCapteur.controls['indice'].setValue(capteur.indiceOrdre);
+            formCapteur.controls['nom'].setValue(capteur.nom);
+            formCapteur.controls['symbole'].setValue(capteur.symbole);
+            formCapteur.controls['estGraphiqueAffiche'].setValue(capteur.afficherCapteurDashboard);
+            formCapteur.controls['estSaisieManuelle'].setValue(capteur.ajouterDonneeDepuisInterface);
         }
     }
 
@@ -49,17 +114,30 @@ export class CapteurListComponent {
         if (!capteur.id) {
             console.error("capteur.id is undefined in modifierCapteur()");
             return;
-        }
-        const putCapteur = this.editedCapteurs[capteur.id];
-        console.log(putCapteur);
-        this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
-            this.shouldRefreshCapteurs.emit();
-            if (capteur.id) {
-                this.displayEdits[capteur.id] = false;
+        } else {
+            if (this.getCapteur(capteur.id).valid) {
+                const formCapteur = this.getCapteur(capteur.id);
+                console.log(formCapteur)
+                console.log(this.editedCapteurs)
+                this.editedCapteurs[capteur.id] = {...capteur};
+                this.editedCapteurs[capteur.id].indiceOrdre = formCapteur.controls['indice'].value;
+                this.editedCapteurs[capteur.id].nom = formCapteur.controls['nom'].value;
+                this.editedCapteurs[capteur.id].symbole = formCapteur.controls['symbole'].value;
+                this.editedCapteurs[capteur.id].afficherCapteurDashboard = formCapteur.controls['estGraphiqueAffiche'].value;
+                this.editedCapteurs[capteur.id].ajouterDonneeDepuisInterface = formCapteur.controls['estSaisieManuelle'].value;
+                this.editedCapteurs[capteur.id].dc = capteur.dc;
+                const putCapteur = this.editedCapteurs[capteur.id];
+                console.log(putCapteur);
+                this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
+                    this.shouldRefreshCapteurs.emit();
+                    if (capteur.id) {
+                        this.displayEdits[capteur.id] = false;
+                    }
+                }).catch(() => {
+                    alert('Erreur lors de la modification du capteur');
+                });
             }
-        }).catch(() => {
-            alert('Erreur lors de la modification du capteur');
-        });
+        }
     }
 
     async supprimerCapteur(capteur: Capteur) {
@@ -84,44 +162,27 @@ export class CapteurListComponent {
         }
         return date.toLocaleDateString("fr-CA");
     }
-
-    editAjouterDonneeDepuisInterface(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].ajouterDonneeDepuisInterface = newValue?.toString().trim().toLowerCase() === "true";
+    getCapteurs() {
+        return this.form.get('capteurs') as FormArray;
     }
 
-    editAfficherCapteurDashboard(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].afficherCapteurDashboard = newValue?.toString().trim().toLowerCase() === "true";
+    getCapteur(capteurId: string) {
+        const arrayKey = this.formArrayIdToKey.get(capteurId);
+        return this.getCapteurs().at(arrayKey ?? 0) as FormGroup;
     }
-
-    editSymbol(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].symbole = newValue?.toString();
+    getIndice(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['indice'] ?? null;
     }
-
-    editName(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].nom = newValue?.toString();
+    getNom(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['nom'] ?? null;
     }
-
-    editIndice(capteurId: string|undefined, $newValue: string|number|boolean) {
-        if (!capteurId) {
-            return;
-        }
-
-        this.editedCapteurs[capteurId].indiceOrdre = parseInt($newValue.toString());
+    getSymbole(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['symbole'] ?? null;
+    }
+    getEstGraphiqueAffiche(capteurId: string) {
+        return this.getCapteur(capteurId).controls['estGraphiqueAffiche'] ?? null;
+    }
+    getEstSaisieManuelle(capteurId: string) {
+        return this.getCapteur(capteurId).controls['estSaisieManuelle'] ?? null;
     }
 }
