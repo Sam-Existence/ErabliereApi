@@ -8,7 +8,9 @@
     <div [class]="'mb-3' + (ajoutCapteurForm.controls['nom'].touched ? ' was-validated' : '')">
         <label for="nom" class="form-label">Nom</label>
         <input type="text" class="form-control" id="nom" name="nom" formControlName="nom"
-               placeholder="Nom du capteur">
+               placeholder="Nom du capteur"
+               maxlength="200"
+               required>
         <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
         @if(ajoutCapteurForm.controls['nom'].hasError('maxlength')) {
             <div class="invalid-feedback">Le nom est trop long.</div>
@@ -21,7 +23,8 @@
     <div [class]="'mb-3' + (ajoutCapteurForm.controls['symbole'].touched ? ' was-validated' : '')">
         <label for="symbole" class="form-label">Symbole</label>
         <input type="text" class="form-control" id="symbole" name="symbole" formControlName="symbole"
-               placeholder="°C">
+               placeholder="°C"
+               maxlength="5">
         <input-error [errorObj]="errorObj" [controlName]="'symbole'"></input-error>
     </div>
 

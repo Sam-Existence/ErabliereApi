@@ -56,6 +56,7 @@ export class AjouterCapteurComponent implements AfterViewChecked {
 
     ajouterCapteur() {
         this.capteur.idErabliere = this.idErabliere;
+        this.capteur.indice = 0;
         this.capteur.nom = this.ajoutCapteurForm.controls['nom'].value;
         this.capteur.symbole = this.ajoutCapteurForm.controls['symbole'].value;
         this.capteur.afficherCapteurDashboard = this.ajoutCapteurForm.controls['affichageDashboard'].value;
