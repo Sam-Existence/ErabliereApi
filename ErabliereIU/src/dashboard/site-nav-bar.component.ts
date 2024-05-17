@@ -16,10 +16,10 @@ import { MsalService } from '@azure/msal-angular';
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
             <h2 class="ms-4 me-5">Érablière IU</h2>
-            <button class="navbar-toggler" 
-                    type="button" 
-                    data-bs-toggle="collapse" 
-                    data-bs-target=".navbar-collapse" 
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target=".navbar-collapse"
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -40,6 +40,9 @@ import { MsalService } from '@azure/msal-angular';
                     </li>
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
                         <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/documentations" routerLinkActive="active" ariaCurrentWhenActive="page">Documentation</a>
+                    </li>
+                    <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
+                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/capteurs" routerLinkActive="active" ariaCurrentWhenActive="page">Capteurs</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page">À Propos</a>
@@ -70,8 +73,8 @@ export class SiteNavBarComponent implements OnInit {
   callFeatureEnable: boolean = false;
 
   constructor(
-      authFactoryService: AuthorisationFactoryService, 
-      private environmentService: EnvironmentService, 
+      authFactoryService: AuthorisationFactoryService,
+      private environmentService: EnvironmentService,
       private cdr: ChangeDetectorRef,
       private router: Router,
       private api: ErabliereApi,
@@ -82,7 +85,7 @@ export class SiteNavBarComponent implements OnInit {
     this.isLoggedIn = false
     this.urls = []
   }
-  
+
   ngOnInit(): void {
     this.thereIsAtLeastOneErabliereSubject.subscribe((val) => {
       this.thereIsAtLeastOneErabliere = val;
