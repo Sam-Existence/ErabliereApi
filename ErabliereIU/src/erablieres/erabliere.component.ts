@@ -2,7 +2,6 @@ import { Component, Input } from '@angular/core';
 import { NgIf, NgFor } from '@angular/common';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { DonneesComponent } from 'src/donnees/donnees.component';
-import { CapteurListComponent } from './capteur-list.component';
 import { BarilsComponent } from 'src/barils/barils.component';
 import { ActivatedRoute } from '@angular/router';
 import { Erabliere } from 'src/model/erabliere';
