@@ -1,8 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import {AfterViewChecked, Component, EventEmitter, Input, OnChanges, OnInit, Output} from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { PutCapteur } from "src/model/putCapteur";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
-import { ReactiveFormsModule, FormsModule } from "@angular/forms";
+import {
+    ReactiveFormsModule,
+    FormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+    FormControl,
+    Validators
+} from "@angular/forms";
 
 @Component({
     selector: 'ajouter-capteur',
@@ -10,8 +17,8 @@ import { ReactiveFormsModule, FormsModule } from "@angular/forms";
     standalone: true,
     imports: [ReactiveFormsModule, FormsModule, InputErrorComponent]
 })
-export class AjouterCapteurComponent implements OnInit {
-
+export class AjouterCapteurComponent implements AfterViewChecked {
+    ajoutCapteurForm: UntypedFormGroup;
     @Input() idErabliere?: string;
     @Output() hideAjouterCapteur = new EventEmitter();
     @Output() shouldReloadCapteurs = new EventEmitter();
@@ -21,26 +28,46 @@ export class AjouterCapteurComponent implements OnInit {
     errorObj: any;
     generalError: string | undefined;
 
-    constructor(private readonly erabliereApi: ErabliereApi) {
-    }
-
-    ngOnInit(): void {
-        
+    constructor(private readonly erabliereApi: ErabliereApi,
+                private formBuilder: UntypedFormBuilder) {
+        this.ajoutCapteurForm = this.formBuilder.group({
+            nom: new FormControl(
+                '',
+                {
+                    validators: [Validators.required, Validators.maxLength(50)],
+                    updateOn: 'blur'
+                }
+            ),
+            symbole: new FormControl(
+                '',
+                {
+                    validators: [Validators.maxLength(5)],
+                    updateOn: 'blur'
+                }
+            ),
+            affichageDashboard: new FormControl(
+                false
+            ),
+            saisieManuelle: new FormControl(
+                false
+            )
+        })
     }
 
     ajouterCapteur() {
-        console.log(this.capteur)
         this.capteur.idErabliere = this.idErabliere;
-        this.capteur.afficherCapteurDashboard = parseBoolean(this.capteur.afficherCapteurDashboard);
-        this.capteur.ajouterDonneeDepuisInterface = parseBoolean(this.capteur.ajouterDonneeDepuisInterface);
+        this.capteur.nom = this.ajoutCapteurForm.controls['nom'].value;
+        this.capteur.symbole = this.ajoutCapteurForm.controls['symbole'].value;
+        this.capteur.afficherCapteurDashboard = this.ajoutCapteurForm.controls['affichageDashboard'].value;
+        this.capteur.ajouterDonneeDepuisInterface = this.ajoutCapteurForm.controls['saisieManuelle'].value;
         this.erabliereApi.postCapteur(this.idErabliere, this.capteur).then(() => {
             this.shouldReloadCapteurs.emit();
-            this.hideAjouterCapteur.emit();
+            this.ajoutCapteurForm.reset();
         }).catch(error => {
             if (error.status == 400) {
                 this.errorObj = error
                 this.generalError = undefined
-            } 
+            }
             else {
                 this.generalError = "Une erreur est survenue lors de l'ajout du capteur. Veuillez réessayer plus tard."
             }
@@ -50,14 +77,9 @@ export class AjouterCapteurComponent implements OnInit {
     buttonAnnuler() {
         this.hideAjouterCapteur.emit();
     }
+
+    ngAfterViewChecked() {
+        console.log(this.ajoutCapteurForm.controls['nom'].errors);
+    }
 }
 
-function parseBoolean(afficherCapteurDashboard: boolean | string | undefined): boolean {
-    if (typeof afficherCapteurDashboard === "boolean") {
-        return afficherCapteurDashboard;
-    }
-    if (typeof afficherCapteurDashboard === "string") {
-        return afficherCapteurDashboard.toLowerCase().trim() === "true";
-    }
-    return false;
-}
