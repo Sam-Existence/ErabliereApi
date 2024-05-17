@@ -1,15 +1,22 @@
 import {Component, EventEmitter, Input, OnChanges, Output, SimpleChanges} from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
-import { TableFormInputComponent } from "../formsComponents/table-form-input.component";
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule, UntypedFormBuilder, Validators} from "@angular/forms";
+import {
+    AbstractControl,
+    FormArray,
+    FormControl,
+    FormGroup,
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    Validators
+} from "@angular/forms";
 
 @Component({
     selector: 'capteur-list',
     templateUrl: 'capteur-list.component.html',
     styleUrl: 'capteur-list.component.css',
     standalone: true,
-    imports: [TableFormInputComponent, ReactiveFormsModule]
+    imports: [ReactiveFormsModule]
 })
 export class CapteurListComponent implements OnChanges {
     @Input() idErabliere?: string;
@@ -160,22 +167,22 @@ export class CapteurListComponent implements OnChanges {
     }
 
     getCapteur(capteurId: string) {
-        const arrayKey = this.formArrayIdToKey.get(capteurId)
+        const arrayKey = this.formArrayIdToKey.get(capteurId);
         return this.getCapteurs().at(arrayKey ?? 0) as FormGroup;
     }
-    getIndice(capteurId: string) {
-        return this.getCapteur(capteurId).controls['indice'];
+    getIndice(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['indice'] ?? null;
     }
-    getNom(capteurId: string) {
-        return this.getCapteur(capteurId).controls['nom'];
+    getNom(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['nom'] ?? null;
     }
-    getSymbole(capteurId: string) {
-        return this.getCapteur(capteurId).controls['symbole'];
+    getSymbole(capteurId: string): AbstractControl<any, any> | null {
+        return this.getCapteur(capteurId).controls['symbole'] ?? null;
     }
     getEstGraphiqueAffiche(capteurId: string) {
-        return this.getCapteur(capteurId).controls['estGraphiqueAffiche'];
+        return this.getCapteur(capteurId).controls['estGraphiqueAffiche'] ?? null;
     }
     getEstSaisieManuelle(capteurId: string) {
-        return this.getCapteur(capteurId).controls['estSaisieManuelle'];
+        return this.getCapteur(capteurId).controls['estSaisieManuelle'] ?? null;
     }
 }

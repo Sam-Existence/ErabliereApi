@@ -15,7 +15,7 @@
         <tbody>
             @for(capteur of capteurs; track capteur.id) {
                 <tr [formGroup]="getCapteur(capteur.id ?? '')">
-                    <td [class.was-validated]="getCapteur(capteur.id ?? '').controls['indice']?.touched">
+                    <td [class.was-validated]="getIndice(capteur.id ?? '')?.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="indice"
@@ -24,7 +24,7 @@
                                 min="0"
                                 required
                             />
-                            @if(getIndice(capteur.id ?? '').errors?.['required']) {
+                            @if(getIndice(capteur.id ?? '')?.errors?.['required']) {
                                 <div class="invalid-feedback">
                                     L'indice est requis
                                 </div>
@@ -33,7 +33,7 @@
                             <span>{{this.capteur.indiceOrdre}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getCapteur(capteur.id ?? '').controls['nom']?.touched">
+                    <td [class.was-validated]="getNom(capteur.id ?? '')?.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="nom"
@@ -42,11 +42,11 @@
                                 maxlength="200"
                                 required
                             />
-                            @if(getNom(capteur.id ?? '').errors?.['maxlength']) {
+                            @if(getNom(capteur.id ?? '')?.errors?.['maxlength']) {
                                 <div class="invalid-feedback">
                                     Le nom doit être maximum 200 caractères de long
                                 </div>
-                            } @else if(getNom(capteur.id ?? '').errors?.['required']) {
+                            } @else if(getNom(capteur.id ?? '')?.errors?.['required']) {
                                 <div class="invalid-feedback">
                                     Le nom est requis
                                 </div>
@@ -55,7 +55,7 @@
                             <span>{{this.capteur.nom}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getCapteur(capteur.id ?? '').controls['symbole']?.touched">
+                    <td [class.was-validated]="getSymbole(capteur.id ?? '')?.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="symbole"
