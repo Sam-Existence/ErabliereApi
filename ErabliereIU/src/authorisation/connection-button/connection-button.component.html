@@ -1,0 +1,5 @@
+@if (isLoggedIn) {
+    <button id="logout-button" class="btn btn-outline-danger" (click)="logout()">Déconnexion</button>
+} @else {
+    <button id="login-button" class="btn btn-outline-success" (click)="login()">Se connecter</button>
+}
