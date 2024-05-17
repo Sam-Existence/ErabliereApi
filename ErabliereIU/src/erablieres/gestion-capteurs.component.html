@@ -4,7 +4,7 @@
 @if(afficherSectionAjouterCapteur) {
     <div>
         <ajouter-capteur
-            [idErabliere]="idErabliere"
+            [idErabliere]="idErabliereSelectionee"
             (hideAjouterCapteur)="hideAjouterCapteur()"
             (shouldReloadCapteurs)="getCapteurs()"></ajouter-capteur>
     </div>
@@ -17,7 +17,7 @@
     </div>
 }
 <capteur-list
-            [idErabliere]="idErabliere"
+            [idErabliere]="idErabliereSelectionee"
             [capteurs]="capteurs"
             (shouldRefreshCapteurs)="ngOnInit()"></capteur-list>
 

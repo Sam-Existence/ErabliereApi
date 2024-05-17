@@ -1,11 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
 import { CapteurListComponent } from "./capteur-list.component";
 import { AjouterCapteurComponent } from "./ajouter-capteur.component";
 import { NgIf } from "@angular/common";
-import { ActivatedRoute } from "@angular/router";
-import { Subject } from "rxjs";
 
 @Component({
     selector: 'gestion-capteurs',
@@ -14,20 +12,15 @@ import { Subject } from "rxjs";
     imports: [NgIf, AjouterCapteurComponent, CapteurListComponent]
 })
 export class GestionCapteursComponent implements OnInit {
-
-    @Input() idErabliere?: any;
-    @Input() capteurs: Capteur[] = [];
+    @Input() idErabliereSelectionee?: any;
+    capteurs: Capteur[] = [];
     afficherSectionAjouterCapteur: boolean = false;
 
     constructor (
-        private _api: ErabliereApi,
-        private _route: ActivatedRoute) {
+        private _api: ErabliereApi) {
     }
     async ngOnInit()  {
-        this._route.paramMap.subscribe(params => {
-            this.idErabliere = params.get("idErabliereSelectionee");
-            this.getCapteurs();
-        });
+        await this.getCapteurs();
     }
 
     showAjouterCapteur() {
@@ -39,8 +32,8 @@ export class GestionCapteursComponent implements OnInit {
     }
 
     async getCapteurs() {
-        if(this.idErabliere) {
-            this._api.getCapteurs(this.idErabliere).then(capteurs => {
+        if(this.idErabliereSelectionee) {
+            this._api.getCapteurs(this.idErabliereSelectionee).then(capteurs => {
                 this.capteurs = capteurs;
             });
         }
