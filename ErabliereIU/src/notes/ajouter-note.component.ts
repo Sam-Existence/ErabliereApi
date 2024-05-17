@@ -10,7 +10,7 @@ import {
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import {Rappel} from "../model/Rappel";
-import { dateRappelValidator, dateRappelFinValidator, periodiciteValidator} from "../CustomValidators/ajouter-note.custom-validators";
+import { reminderValidator } from "../CustomValidators/ajouter-note.custom-validators";
 
 @Component({
     selector: 'ajouter-note',
@@ -65,29 +65,22 @@ export class AjouterNoteComponent implements OnInit {
             dateRappel: new FormControl(
                 '',
                 {
-                    validators: [dateRappelValidator()],
                     updateOn: 'blur',
                 }
             ),
             dateRappelFin: new FormControl(
                 '',
                 {
-                    validators: [],
                     updateOn: 'blur'
                 }
             ),
             periodicite: new FormControl(
                 'Aucune',
                 {
-                    validators: [],
                     updateOn: 'blur'
                 }
             ),
-        });
-
-        // Set validators that depend on other controls after form initialization
-        this.noteForm.get('dateRappelFin')?.setValidators(dateRappelFinValidator(this.noteForm.get('dateRappel')!, this.noteForm.get('periodicite')!));
-        this.noteForm.get('periodicite')?.setValidators(periodiciteValidator(this.noteForm.get('dateRappel')!, this.noteForm.get('dateRappelFin')!));
+        }, { validators: reminderValidator });
     }
 
 
@@ -185,6 +178,7 @@ export class AjouterNoteComponent implements OnInit {
                 });
             } else {
               this.validateForm();
+                console.log(this.noteForm.errors);
             }
         }
         else {
@@ -203,6 +197,7 @@ export class AjouterNoteComponent implements OnInit {
 
     validateForm() {
       const form = document.getElementById('ajouter-note');
+      this.noteForm.markAllAsTouched();
       this.noteForm.updateValueAndValidity();
       form?.classList.add('was-validated');
     }
