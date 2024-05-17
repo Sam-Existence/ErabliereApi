@@ -18,7 +18,7 @@ import {ConnectionButtonComponent} from "../../../authorisation/connection-butto
 export class ClientNavBarComponent implements OnInit {
   private _authService: IAuthorisationSerivce
 
-  @Input() idErabliereSelectionnee?: string;
+  @Input() idErabliereSelectionee?: string;
   @Input() thereIsAtLeastOneErabliere: boolean;
 
   useAuthentication: boolean = false;

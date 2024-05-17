@@ -1,6 +1,6 @@
 @if (!isLoggedIn) {
 <div class="container-fluid">
-    <div class="alert alert-info alert-dismissible fade show" role="alert">
+    <div class="alert alert-info alert-dismissible fade show mb-0" role="alert">
         <strong>Vous n'êtes pas connecté </strong>
         <button class="btn btn-link p-0" (click)="login()" style="vertical-align: top;">Cliquer ici pour vous connecter</button>
         @if (tenantId === 'common') {
