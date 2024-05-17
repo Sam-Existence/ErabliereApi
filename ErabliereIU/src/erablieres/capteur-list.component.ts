@@ -84,10 +84,10 @@ export class CapteurListComponent {
         }
         return date.toLocaleDateString("fr-CA");
     }
+    getCapteurs() {
+        return this.form.get('capteurs') as FormArray;
+    }
 
-    editAjouterDonneeDepuisInterface(capteurId: string|undefined, newValue: string|number|boolean|undefined) {
-        if (!capteurId) {
-            return;
     getCapteur(capteurId: string) {
         const arrayKey = this.formArrayIdToKey.get(capteurId)
         return this.getCapteurs().at(arrayKey ?? 0) as FormGroup;
