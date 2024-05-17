@@ -12,14 +12,14 @@ import { ActivatedRoute } from '@angular/router';
     selector: 'capteur-pannels',
     template: `
       <div class="row">
-          <weather-forecast 
-            *ngIf="notNullOrWitespace(erabliere?.codePostal) && !erabliere?.afficherTrioDonnees"
+          <weather-forecast
+            *ngIf="erabliere?.codePostal?.trim() && !erabliere?.afficherTrioDonnees"
             class="col-md-6"></weather-forecast>
           <div *ngIf="displayImages" class="col-md-6">
             <image-panel [idErabliereSelectionnee]="erabliere?.id"></image-panel>
           </div>
           <div class="border-top col-md-6" *ngFor="let capteur of capteurs">
-              <graph-pannel [titre]="capteur.nom" 
+              <graph-pannel [titre]="capteur.nom"
                             [symbole]="capteur.symbole"
                             [idCapteur]="capteur.id"
                             [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
@@ -35,9 +35,9 @@ export class CapteurPannelsComponent implements OnInit {
 
   constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
     console.log('CapteurPannelsComponent.ngOnInit', this.erabliere?.id);
-    
+
     this.route.paramMap.subscribe(params => {
       if (this.erabliere != null) {
         this.erabliere.id = params.get('idErabliereSelectionee');
@@ -49,7 +49,7 @@ export class CapteurPannelsComponent implements OnInit {
   }
 
   displayImages: boolean = false;
-  
+
   notNullOrWitespace(arg0?: string): any {
     if (arg0 == null)
         return false;
