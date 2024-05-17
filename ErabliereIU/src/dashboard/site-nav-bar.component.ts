@@ -4,8 +4,7 @@ import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service'
 import { EnvironmentService } from '../environments/environment.service';
 import { UrlModel } from '../model/urlModel';
 import { NgFor, NgIf } from '@angular/common';
-import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Subject } from 'rxjs';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { AgoraCallServiceComponent } from './agora-call-service.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
@@ -16,10 +15,10 @@ import { MsalService } from '@azure/msal-angular';
         <nav class="navbar navbar-expand-lg navbar-light bd-navbar">
             <div class="container-fluid">
             <h2 class="ms-4 me-5">Érablière IU</h2>
-            <button class="navbar-toggler"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target=".navbar-collapse"
+            <button class="navbar-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target=".navbar-collapse" 
                     aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -41,9 +40,6 @@ import { MsalService } from '@azure/msal-angular';
                     <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
                         <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/documentations" routerLinkActive="active" ariaCurrentWhenActive="page">Documentation</a>
                     </li>
-                    <li *ngIf="isLoggedIn && thereIsAtLeastOneErabliere" class="nav-item">
-                        <a class="nav-link" routerLink="e/{{idErabliereSelectionnee}}/capteurs" routerLinkActive="active" ariaCurrentWhenActive="page">Capteurs</a>
-                    </li>
                     <li class="nav-item">
                         <a class="nav-link" routerLink="/apropos" routerLinkActive="active" ariaCurrentWhenActive="page">À Propos</a>
                     </li>
@@ -57,6 +53,7 @@ import { MsalService } from '@azure/msal-angular';
             </div>
         </nav>
     `,
+    templateUrl: 'site-nav-bar.component.html',
     standalone: true,
     imports: [NgFor, NgIf, RouterOutlet, RouterLink, RouterLinkActive, AgoraCallServiceComponent]
 })
@@ -65,10 +62,9 @@ export class SiteNavBarComponent implements OnInit {
   isLoggedIn: boolean;
   urls: UrlModel[]
   tenantId?: string;
-  idErabliereSelectionnee?: any;
+  @Input() idErabliereSelectionnee?: string;
   private _authService: IAuthorisationSerivce
-  @Input() thereIsAtLeastOneErabliereSubject: Subject<boolean> = new Subject<boolean>();
-  thereIsAtLeastOneErabliere: boolean = false;
+  @Input() thereIsAtLeastOneErabliere: boolean;
   callFeatureEnableForUser: boolean = false;
   callFeatureEnable: boolean = false;
 
@@ -76,7 +72,6 @@ export class SiteNavBarComponent implements OnInit {
       authFactoryService: AuthorisationFactoryService,
       private environmentService: EnvironmentService,
       private cdr: ChangeDetectorRef,
-      private router: Router,
       private api: ErabliereApi,
       private msalService: MsalService) {
     this._authService = authFactoryService.getAuthorisationService()
@@ -87,9 +82,6 @@ export class SiteNavBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.thereIsAtLeastOneErabliereSubject.subscribe((val) => {
-      this.thereIsAtLeastOneErabliere = val;
-    });
     this._authService.isLoggedIn().then(isLoggedIn => {
       this.isLoggedIn = isLoggedIn;
     });
@@ -99,21 +91,6 @@ export class SiteNavBarComponent implements OnInit {
     });
     this.urls = this.environmentService.additionnalUrls ?? [];
     this.tenantId = this.environmentService.tenantId;
-
-    // update the idErabliereSelectionnee when the route changes
-    this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        const url = val.url;
-        const urlParts = url.split('/');
-        if (urlParts.length >= 3) {
-          const idErabliereSelectionnee = urlParts[2];
-          this.idErabliereSelectionnee = idErabliereSelectionnee;
-        }
-        else {
-
-        }
-      }
-    });
 
     this.checkApiCallFeatureEnable();
   }

@@ -1,0 +1,17 @@
+<div class="m-3">
+    <h3>Clients</h3>
+    <hr />
+    @if (customerAModifier) {
+    <modifier-customer-modal
+      [customer]="customerAModifier"
+      (needToUpdate)="terminerModiferCustomer($event)">
+    </modifier-customer-modal>
+    }
+    <div class="container">
+        <customer-list
+          [customers]="customers"
+          (customerASupprimer)="supprimerCustomer($event)"
+          (customerAModifier)="demarrerModifierCustomer($event)"
+        ></customer-list>
+    </div>
+</div>
