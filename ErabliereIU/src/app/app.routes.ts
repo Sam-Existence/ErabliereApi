@@ -6,6 +6,7 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
+import {GestionCapteursComponent} from "../erablieres/gestion-capteurs.component";
 import {AdminCustomersComponent} from "../admin/admin-customers.component";
 import {Page404Component} from "./page404/page404.component";
 import {ClientViewComponent} from "./client-view/client-view.component";
@@ -64,7 +65,7 @@ export const routes: Routes = [
                 component: AlerteComponent
             },
             {
-                path: 'e/:idErabliereSelectionee/documentations',
+                path: 'e/:idErabliereSelectionee/documentation',
                 title: 'ÉrablièreIU - Documentation',
                 component: DocumentationComponent
             },
@@ -72,6 +73,11 @@ export const routes: Routes = [
                 path: 'e/:idErabliereSelectionee/notes',
                 title: 'ÉrablièreIU - Notes',
                 component: NotesComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee/capteurs',
+                title: 'ÉrablièreIU - Capteurs',
+                component: GestionCapteursComponent
             },
             {
                 path: 'apropos',
