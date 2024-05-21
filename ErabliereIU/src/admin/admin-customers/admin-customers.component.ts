@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {CustomerListComponent} from "./customer/customer-list/customer-list.component";
-import {ErabliereApi} from "../core/erabliereapi.service";
-import {Customer} from "../model/customer";
-import {ModifierCustomerComponent} from "./customer/modifier-customer/modifier-customer.component";
+import {CustomerListComponent} from "./customer-list/customer-list.component";
+import {ErabliereApi} from "../../core/erabliereapi.service";
+import {Customer} from "../../model/customer";
+import {ModifierCustomerComponent} from "./modifier-customer/modifier-customer.component";
 
 @Component({
   selector: 'admin-customers',
