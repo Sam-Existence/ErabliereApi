@@ -7,7 +7,7 @@ import { DocumentationComponent } from 'src/documentation/documentation.componen
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
 import {GestionCapteursComponent} from "../erablieres/gestion-capteurs.component";
-import {AdminCustomersComponent} from "../admin/admin-customers.component";
+import {AdminCustomersComponent} from "../admin/admin-customers/admin-customers.component";
 import {Page404Component} from "./page404/page404.component";
 import {ClientViewComponent} from "./client-view/client-view.component";
 import {AdminViewComponent} from "./admin-view/admin-view.component";
