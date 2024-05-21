@@ -7,7 +7,7 @@ using Microsoft.Extensions.Caching.Distributed;
 namespace ErabliereApi.Attributes;
 
 /// <summary>
-/// Attribue permettant de restraindre les accès a un seul adresse IP selon l'id enregistrer dans les données de l'érablière.
+/// Attribue permettant de restraindre les accès a un seul adresse IP selon l'id enregistré dans les données de l'érablière.
 /// </summary>
 public class ValiderIPRulesAttribute : ActionFilterAttribute
 {

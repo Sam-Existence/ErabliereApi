@@ -92,7 +92,7 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery]
-    [Route("/admin/customers")]
+    [Route("/Admin/Customers")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public IQueryable<Customer> GetCustomersAdmin()
     {
@@ -104,7 +104,7 @@ public class CustomersController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    [Route("/admin/customers/{id}")]
+    [Route("/Admin/Customers/{id}")]
     [ProducesResponseType(200, Type = typeof(GetCustomer))]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
@@ -144,7 +144,7 @@ public class CustomersController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpGet]
-    [Route("/admin/customers/{id}/customeraccess")]
+    [Route("/Admin/Customers/{id}/CustomerAccess")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
     public async Task<IActionResult> GetAdminCustomerAccess(Guid id, CancellationToken token)
@@ -173,7 +173,7 @@ public class CustomersController : ControllerBase
     /// <param name="token"></param>
     /// <returns></returns>
     [HttpPut]
-    [Route("/admin/customers/{id}/customeraccess")]
+    [Route("/Admin/Customers/{id}/CustomerAccess")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public async Task<IActionResult> PutAdminCustomerAccess(Guid id, PutAdminCustomerAccess putAdminCustomerAccess, CancellationToken token)
     {
