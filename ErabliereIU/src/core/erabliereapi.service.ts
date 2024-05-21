@@ -325,7 +325,7 @@ export class ErabliereApi {
 
     async deleteCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
         const headers = await this.getHeaders();
-        return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess/" + idCustomer, { headers: headers }).toPromise();
+        return await this._httpClient.delete(this._environmentService.apiUrl + `/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
     }
 
     async deleteErabliere(idErabliere: any, erabliere: Erabliere): Promise<any> {

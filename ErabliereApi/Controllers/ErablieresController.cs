@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Authorization;
@@ -453,15 +453,15 @@ public class ErablieresController : ControllerBase
     /// Supprimer les droits d'accès d'un utilisateur à une érablière
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
-    /// <param name="idCustomerErabliere">L'id du droit d'accès</param>
+    /// <param name="idCustomer">L'id du client</param>
     /// <param name="token">Le token d'annulation</param>
-    [HttpDelete("{id}/CustomersAccess/{idCustomerErabliere}")]
+    [HttpDelete("{id}/Customer/{idCustomer}/Access/")]
     [ValiderIPRules]
     [ValiderOwnership("id")]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomerErabliere, CancellationToken token)
+    public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomer, CancellationToken token)
     {
-        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomerErabliere }, token);
+        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomer, id }, token);
 
         if (entity != null && entity.IdErabliere == id)
         {
