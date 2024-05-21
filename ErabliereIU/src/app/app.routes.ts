@@ -6,7 +6,7 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
-import {GestionCapteursComponent} from "../erablieres/gestion-capteurs.component";
+import {GestionCapteursComponent} from "../capteurs/gestion-capteurs.component";
 import {AdminCustomersComponent} from "../admin/admin-customers.component";
 
 export const routes: Routes = [

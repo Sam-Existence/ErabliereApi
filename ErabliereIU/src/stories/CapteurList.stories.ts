@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { CapteurListComponent } from 'src/erablieres/capteur-list.component';
+import { CapteurListComponent } from 'src/capteurs/capteur-list.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<CapteurListComponent> = {
