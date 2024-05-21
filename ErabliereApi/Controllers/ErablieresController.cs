@@ -72,9 +72,9 @@ public class ErablieresController : ControllerBase
     [HttpGet]
     [SecureEnableQuery(MaxTop = TakeErabliereNbMax)]
     [AllowAnonymous]
-    public async Task<IQueryable<Erabliere>> ListerAsync([FromQuery] bool my, CancellationToken token)
+    public async Task<IQueryable<GetErabliere>> ListerAsync([FromQuery] bool my, CancellationToken token)
     {
-        var query = _context.Erabliere.AsNoTracking();
+        var query = _context.Erabliere.AsNoTracking().ProjectTo<GetErabliere>(_mapper.ConfigurationProvider);
 
         if (_config.IsAuthEnabled() &&
             (await IsAuthenticatedAsync(token)).Item1 == false)
