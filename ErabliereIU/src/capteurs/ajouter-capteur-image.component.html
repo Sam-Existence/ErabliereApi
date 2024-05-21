@@ -1,0 +1,53 @@
+<form [formGroup]="ajouterImageCapteurForm" class="mb-3" novalidate>
+    <!-- ajouter la section des erreurs général -->
+    @if (generalError) {
+        <span class="text-danger">
+            {{ generalError }}
+        </span>
+    }
+    <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['nom'].touched ? ' was-validated' : '')">
+        <label for="nom" class="form-label">Nom</label>
+        <input type="text" class="form-control" id="nom" name="nom" formControlName="nom"
+               placeholder="Nom du capteur"
+               maxlength="200"
+               required>
+        <input-error [errorObj]="errorObj" controlName="nom"></input-error>
+        @if(ajouterImageCapteurForm.controls['nom'].hasError('maxlength')) {
+            <div class="invalid-feedback">Le nom est trop long.</div>
+        } @else if(ajouterImageCapteurForm.controls['nom'].hasError('required')) {
+            <div class="invalid-feedback">Le nom est obligatoire.</div>
+        }
+
+    </div>
+
+    <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['url'].touched ? ' was-validated' : '')">
+        <label for="url" class="form-label">URL</label>
+        <input type="text" class="form-control" id="url" name="url" formControlName="url"
+               placeholder="rtsp://url-de-votre-capteur.com">
+        <input-error [errorObj]="errorObj" controlName="url"></input-error>
+    </div>
+
+    <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['port'].touched ? ' was-validated' : '')">
+        <label for="port" class="form-label">Port</label>
+        <input type="text" class="form-control" id="port" name="port" formControlName="port"
+               placeholder="12345"
+               onlyDigits>
+        <input-error [errorObj]="errorObj" controlName="port"></input-error>
+    </div>
+
+    <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['nomDUtilisateur'].touched ? ' was-validated' : '')">
+        <label for="nomDUtilisateur" class="form-label">Nom d'utilisateur</label>
+        <input type="text" class="form-control" id="nomDUtilisateur" name="nomDUtilisateur" formControlName="nomDUtilisateur"
+               placeholder="JeanErable">
+        <input-error [errorObj]="errorObj" controlName="nomDUtilisateur"></input-error>
+    </div>
+
+    <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['motDePasse'].touched ? ' was-validated' : '')">
+        <label for="motDePasse" class="form-label">Mot de passe</label>
+        <input type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse">
+        <input-error [errorObj]="errorObj" controlName="motDePasse"></input-error>
+    </div>
+
+    <button class="btn btn-primary me-2" (click)="ajouter()">Ajouter</button>
+    <button type="button" class="btn btn-secondary" (click)="annuler()">Annuler</button>
+</form>

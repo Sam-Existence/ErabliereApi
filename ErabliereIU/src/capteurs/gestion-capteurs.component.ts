@@ -3,18 +3,20 @@ import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
 import { CapteurListComponent } from "./capteur-list.component";
 import { AjouterCapteurComponent } from "./ajouter-capteur.component";
+import {AjouterCapteurImageComponent} from "./ajouter-capteur-image.component";
 import { NgIf } from "@angular/common";
 
 @Component({
     selector: 'gestion-capteurs',
     templateUrl: 'gestion-capteurs.component.html',
     standalone: true,
-    imports: [NgIf, AjouterCapteurComponent, CapteurListComponent]
+    imports: [NgIf, AjouterCapteurComponent, CapteurListComponent, AjouterCapteurImageComponent]
 })
 export class GestionCapteursComponent implements OnInit {
     @Input() idErabliereSelectionee?: any;
     capteurs: Capteur[] = [];
     afficherSectionAjouterCapteur: boolean = false;
+    afficherSectionAjouterCapteurImage: boolean = false;
 
     constructor (
         private _api: ErabliereApi) {

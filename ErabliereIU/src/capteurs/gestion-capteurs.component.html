@@ -21,4 +21,17 @@
             [capteurs]="capteurs"
             (shouldRefreshCapteurs)="ngOnInit()"></capteur-list>
 
+@if(afficherSectionAjouterCapteurImage) {
+    <div>
+        <ajouter-capteur-image (masquer)="afficherSectionAjouterCapteurImage = false" (rechargerCapteursImage)="'temp'"></ajouter-capteur-image>
+    </div>
+} @else {
+    <div>
+        <button
+            type="button"
+            class="btn btn-outline-primary btn-sm"
+            (click)="afficherSectionAjouterCapteurImage = true">Ajouter un capteur d'image</button>
+    </div>
+}
+
 
