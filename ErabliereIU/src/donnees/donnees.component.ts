@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ChartDataset, ChartType } from 'chart.js';
 import { Subject } from 'rxjs';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -7,7 +7,7 @@ import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { ImagePanelComponent } from './sub-panel/image-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
-import { calculerMoyenne } from './util';
+import { calculerMoyenne, notNullOrWitespace } from './util';
 
 @Component({
   selector: 'donnees-panel',
@@ -25,7 +25,6 @@ export class DonneesComponent implements OnInit {
   @ViewChild('vacciumGraphPannel') vacciumGraphPannel?: GraphPannelComponent
   @ViewChild('niveaubassinGraphPannel') niveaubassinGraphPannel?: GraphPannelComponent
   @ViewChild('dompeuxGraphPannel') dompeuxGraphPannel?: GraphPannelComponent
-  @ViewChild('dropListContainer') dropListContainer?: ElementRef;
   
   intervalRequetes?: any
 
@@ -72,24 +71,6 @@ export class DonneesComponent implements OnInit {
   erabliereId: any;
 
   displayImages: boolean = false;
-
-  public items: Array<string> = ['Temperature', 'Vaccium', 'Niveau Bassin', 'Dompeux', 'Weather', 'Images'];
-
-  public itemIds = [
-    { name: "Temperature", id: 0 },
-    { name: "Vaccium", id: 1 },
-    { name: "Niveau Bassin", id: 2 },
-    { name: "Dompeux", id: 3 },
-    { name: "Weather", id: 4 },
-    { name: "Images", id: 5 }
-];
-
-  dropListReceiverElement?: HTMLElement;
-  dragDropInfo?: {
-    dragIndex: number;
-    dropIndex: number;
-  };
-
 
   constructor(private _erabliereApi: ErabliereApi) { }
 
@@ -398,5 +379,8 @@ export class DonneesComponent implements OnInit {
     this.cleanGraphComponentCache();
     this.updateDuree(this.dateDebutFixRange + " - " + this.dateFinFixRange);
     this.doHttpCall();
+  }
+  notNullOrWitespace(arg0?: string): any {
+    return notNullOrWitespace(arg0);
   }
 }

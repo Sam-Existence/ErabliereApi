@@ -1,0 +1,12 @@
+<div #dropListContainer class="container" cdkDropListGroup>
+  <div class="row">
+    <div *ngFor="let capteur of capteurs; let i = index" cdkDropList [cdkDropListData]="i">
+      <div cdkDrag [cdkDragData]="i" (cdkDragEntered)="dragEntered($event)" (cdkDragMoved)="dragMoved($event)" (cdkDragDropped)="dragDropped($event)" (cdkDragEnded)="dragEnd($event)">
+        <graph-pannel [titre]="capteur.nom" 
+                      [symbole]="capteur.symbole"
+                      [idCapteur]="capteur.id"
+                      [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>            
+      </div>
+    </div>
+  </div>
+</div>
