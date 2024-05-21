@@ -11,6 +11,7 @@ import {AdminCustomersComponent} from "../admin/admin-customers/admin-customers.
 import {Page404Component} from "./page404/page404.component";
 import {ClientViewComponent} from "./client-view/client-view.component";
 import {AdminViewComponent} from "./admin-view/admin-view.component";
+import {AdminErablieresComponent} from "../admin/admin-erablieres/admin-erablieres.component";
 
 export const routes: Routes = [
     {
@@ -26,6 +27,11 @@ export const routes: Routes = [
                 path: 'customers',
                 title: 'Érablière Admin - Clients',
                 component: AdminCustomersComponent,
+            },
+            {
+                path: 'erablieres',
+                title: 'Érablière Admin - Érablières',
+                component: AdminErablieresComponent,
             },
             {
                 path: '**',
