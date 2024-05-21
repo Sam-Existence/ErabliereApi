@@ -6,6 +6,7 @@ import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { NgIf } from "@angular/common";
 import { Subject } from "rxjs";
 import {Rappel} from "../model/Rappel";
+import {reminderValidator} from "./note.custom-validators";
 
 @Component({
     selector: 'modifier-note',
@@ -22,7 +23,8 @@ export class ModifierNoteComponent implements OnInit {
         this.noteSubject?.subscribe(note => {
             this.initializeForm();
             if (note) {
-                this.note = { ... note };
+              this.noteForm.controls['isEditMode'].setValue(true);
+              this.note = { ... note };
                 if (this.note) {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
@@ -69,6 +71,9 @@ export class ModifierNoteComponent implements OnInit {
             updateOn: 'blur'
           }
         ),
+        reminderEnabled: new FormControl(
+          false
+        ),
         dateRappel: new FormControl(
           '',
           {
@@ -87,7 +92,8 @@ export class ModifierNoteComponent implements OnInit {
             updateOn: 'blur'
           }
         ),
-      });
+        isEditMode: new FormControl(false)
+      },{ validators: reminderValidator });
     }
 
     error: string | null = null;
@@ -107,6 +113,10 @@ export class ModifierNoteComponent implements OnInit {
     fileToLargeErrorMessage?: string | null;
 
     generalError?: string | null;
+
+  get displayReminder(): boolean {
+    return this.noteForm.controls['reminderEnabled'].value;
+  }
 
     today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 

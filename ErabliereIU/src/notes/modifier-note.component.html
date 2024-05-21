@@ -19,29 +19,35 @@
         <input class="form-control" type="text" formControlName="noteDate" id="modifier-note-noteDate">
         <input-error [errorObj]="errorObj" [controlName]="'noteDate'"></input-error>
       </div>
-      <div [class]="'form-group mb-3' + (noteForm.controls['dateRappel'].touched ? ' was-validated' : '')">
-        <label for="dateRappel">Date Rappel</label>
-        <input type="date" id="dateRappel" class="form-control" formControlName="dateRappel">
-        <input-error [errorObj]="errorObj" [controlName]="'dateRappel'"></input-error>
+      <div class="form-group mb-3">
+        <input class="form-check-input me-2" type="checkbox" formControlName="reminderEnabled" id="modifier-note-reminderEnabled" />
+        <label class="form-check-label" for="modifier-note-reminderEnabled">Modifier un rappel</label>
       </div>
+      @if(displayReminder) {
+        <div [class]="'form-group mb-3' + (noteForm.controls['dateRappel'].touched ? ' was-validated' : '')">
+          <label for="dateRappel">Date Rappel</label>
+          <input type="date" id="dateRappel" class="form-control" formControlName="dateRappel">
+          <input-error [errorObj]="errorObj" [controlName]="'dateRappel'"></input-error>
+        </div>
 
-      <div [class]="'form-group mb-3' + (noteForm.controls['dateRappelFin'].touched ? ' was-validated' : '')">
-        <label for="dateRappelFin">Date Rappel Fin</label>
-        <input type="date" id="dateRappelFin" class="form-control" formControlName="dateRappelFin">
-        <input-error [errorObj]="errorObj" [controlName]="'dateRappelFin'"></input-error>
-      </div>
+        <div [class]="'form-group mb-3' + (noteForm.controls['dateRappelFin'].touched ? ' was-validated' : '')">
+          <label for="dateRappelFin">Date Rappel Fin</label>
+          <input type="date" id="dateRappelFin" class="form-control" formControlName="dateRappelFin">
+          <input-error [errorObj]="errorObj" [controlName]="'dateRappelFin'"></input-error>
+        </div>
 
-      <div [class]="'form-group mb-3' + (noteForm.controls['periodicite'].touched ? ' was-validated' : '')">
-        <label for="periodicite">Periodicite</label>
-        <select id="periodicite" class="form-control" formControlName="periodicite">
-          <option value="Aucune">Aucune</option>
-          <option value="annuel">Annuel</option>
-          <option value="mensuel">Mensuel</option>
-          <option value="hebdo">Hebdomadaire</option>
-          <option value="quotidien">Quotidien</option>
-        </select>
-        <input-error [errorObj]="errorObj" [controlName]="'periodicite'"></input-error>
-      </div>
+        <div [class]="'form-group mb-3' + (noteForm.controls['periodicite'].touched ? ' was-validated' : '')">
+          <label for="periodicite">Periodicite</label>
+          <select id="periodicite" class="form-control" formControlName="periodicite">
+            <option value="Aucune">Aucune</option>
+            <option value="annuel">Annuel</option>
+            <option value="mensuel">Mensuel</option>
+            <option value="hebdo">Hebdomadaire</option>
+            <option value="quotidien">Quotidien</option>
+          </select>
+          <input-error [errorObj]="errorObj" [controlName]="'periodicite'"></input-error>
+        </div>
+      }
       <button id="modifierNote" class="btn btn-primary me-2" (click)="onButtonModifierClick()">Modifier</button>
       <button id="annulerModifierNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>
