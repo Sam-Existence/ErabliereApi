@@ -301,9 +301,9 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
-    async getCustomersAdmin(): Promise<Customer[]> {
+    async getCustomersAdminExpandAccess(): Promise<Customer[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers', { headers: headers}).toPromise();
+        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers' + '?$expand=customerErablieres', { headers: headers}).toPromise();
         return rtn ?? [];
     }
 

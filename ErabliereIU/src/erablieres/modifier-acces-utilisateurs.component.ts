@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Customer } from 'src/model/customer';
 import { CustomerAccess } from 'src/model/customerAccess';
@@ -22,7 +22,7 @@ import { NgIf, NgFor } from '@angular/common';
     ],
 })
 
-export class ModifierAccesUtilisateursComponent implements OnInit {
+export class ModifierAccesUtilisateursComponent {
     customersAccess: CustomerAccess[] = [];
     erreurChargementDroits: Boolean = false;
     erreurAjoutAcces: Boolean = false;
@@ -32,10 +32,6 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
     newCustomerAccess: PutCustomerAccess = new PutCustomerAccess()
     @Input() idErabliere: any;
     constructor(private _api: ErabliereApi) { }
-
-    ngOnInit() { 
-        
-    }
 
     changeDisplaySection() {
         this.displaySection = !this.displaySection;
@@ -91,7 +87,7 @@ export class ModifierAccesUtilisateursComponent implements OnInit {
 
     supprimer(customerAccess?: CustomerAccess) {
         if (customerAccess != undefined) {
-            this._api.deleteCustomerAccess(customerAccess.idErabliere, customerAccess.id).then(() => {
+            this._api.deleteCustomerAccess(customerAccess.idErabliere, customerAccess.idCustomer).then(() => {
                 this.refreashAccess(customerAccess.idErabliere);
             });
         }

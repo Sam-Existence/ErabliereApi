@@ -24,7 +24,7 @@ export class AdminCustomersComponent implements OnInit {
   }
 
   chargerCustomers() {
-    this._api.getCustomersAdmin().then(customers => {
+    this._api.getCustomersAdminExpandAccess().then(customers => {
       this.customers = customers;
     }).catch(error => {
       this.customers = [];
