@@ -1,27 +1,29 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
-import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { EnvironmentService } from 'src/environments/environment.service';
-import { Alerte } from 'src/model/alerte';
-import { AlerteCapteur } from 'src/model/alerteCapteur';
-import { Baril } from 'src/model/baril';
-import { Capteur } from 'src/model/capteur';
-import { Conversation, Message } from 'src/model/conversation';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
-import { DeleteCapteur } from 'src/model/deleteCapteur';
-import { Documentation } from 'src/model/documentation';
-import { Dompeux } from 'src/model/dompeux';
-import { Donnee } from 'src/model/donnee';
-import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
-import { Erabliere } from 'src/model/erabliere';
-import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
-import { GetImageInfo } from 'src/model/imageInfo';
-import { Note } from 'src/model/note';
-import { PutCapteur } from 'src/model/putCapteur';
-import { PutCustomerAccess } from 'src/model/putCustomerAccess';
-import { WeatherForecase } from 'src/model/weatherforecast';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {AuthorisationFactoryService} from 'src/authorisation/authorisation-factory-service';
+import {IAuthorisationSerivce} from 'src/authorisation/iauthorisation-service';
+import {EnvironmentService} from 'src/environments/environment.service';
+import {Alerte} from 'src/model/alerte';
+import {AlerteCapteur} from 'src/model/alerteCapteur';
+import {Baril} from 'src/model/baril';
+import {Capteur} from 'src/model/capteur';
+import {Conversation, Message} from 'src/model/conversation';
+import {Customer} from 'src/model/customer';
+import {CustomerAccess} from 'src/model/customerAccess';
+import {DeleteCapteur} from 'src/model/deleteCapteur';
+import {Documentation} from 'src/model/documentation';
+import {Dompeux} from 'src/model/dompeux';
+import {Donnee} from 'src/model/donnee';
+import {DonneeCapteur, PostDonneeCapteur} from 'src/model/donneeCapteur';
+import {Erabliere} from 'src/model/erabliere';
+import {ErabliereApiDocument} from 'src/model/erabliereApiDocument';
+import {GetImageInfo} from 'src/model/imageInfo';
+import {Note} from 'src/model/note';
+import {PutCapteur} from 'src/model/putCapteur';
+import {PutCustomerAccess} from 'src/model/putCustomerAccess';
+import {WeatherForecase} from 'src/model/weatherforecast';
+import {PostCapteurImage} from "../model/postCapteurImage";
+import {CapteurImage} from "../model/capteurImage";
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -245,6 +247,11 @@ export class ErabliereApi {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();
         return rtn ?? new DonneeCapteur();
+    }
+
+    async postImageCapteur(capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/CapteursImage', capteurImage, {headers: headers}).toPromise();
     }
 
     async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {

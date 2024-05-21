@@ -1,5 +1,4 @@
-export interface CapteurImage {
-    ordre: number;
+export interface PostCapteurImage {
     nom: string;
     url: string;
     port: string;
