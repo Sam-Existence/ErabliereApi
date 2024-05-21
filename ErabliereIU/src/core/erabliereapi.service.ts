@@ -214,9 +214,10 @@ export class ErabliereApi {
     }
 
     async getActiveRappelNotes(idErabliereSelectionee: any): Promise<Note[]> {
-        const headers = await this.getHeaders();
+        let headers = await this.getHeaders();
+        headers = headers.set('Accept', 'application/json');
         const rtn = await this._httpClient.get<Note[]>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + "/ActiveRappelNotes",
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/Notes' + "/ActiveRappelsNotes",
             { headers: headers }).toPromise();
         return rtn ?? [];
     }
