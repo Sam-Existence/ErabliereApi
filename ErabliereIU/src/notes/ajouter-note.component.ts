@@ -10,7 +10,7 @@ import {
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import {Rappel} from "../model/Rappel";
-import { reminderValidator } from "../CustomValidators/ajouter-note.custom-validators";
+import { reminderValidator } from "./note.custom-validators";
 
 @Component({
     selector: 'ajouter-note',
