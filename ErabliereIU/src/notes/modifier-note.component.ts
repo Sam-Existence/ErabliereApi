@@ -23,13 +23,13 @@ export class ModifierNoteComponent implements OnInit {
         this.noteSubject?.subscribe(note => {
             this.initializeForm();
             if (note) {
-              this.noteForm.controls['isEditMode'].setValue(true);
               this.note = { ... note };
                 if (this.note) {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
                   if (this.note.rappel) {
+                    this.noteForm.controls['isEditMode'].setValue(true);
                     this.noteForm.controls['dateRappel'].setValue(this.note.rappel.dateRappel ? new Date(this.note.rappel.dateRappel).toISOString().split('T')[0] : '');
                     this.noteForm.controls['dateRappelFin'].setValue(this.note.rappel.dateRappelFin ? new Date(this.note.rappel.dateRappelFin).toISOString().split('T')[0] : '');
                     this.noteForm.controls['periodicite'].setValue(this.note.rappel.periodicite);
