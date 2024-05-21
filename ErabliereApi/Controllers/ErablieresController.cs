@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Authorization;
@@ -121,6 +121,19 @@ public class ErablieresController : ControllerBase
         }
 
         return query;
+    }
+
+    /// <summary>
+    /// Point de terminaison pour l'administration des érablières
+    /// </summary>
+    /// <returns>Une liste d'érablières</returns>
+    [HttpGet]
+    [EnableQuery]
+    [Route("/Admin/Erablieres")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    public IQueryable<Erabliere> GetErablieresAdmin()
+    {
+        return _context.Erabliere;
     }
 
     /// <summary>

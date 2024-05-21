@@ -51,6 +51,12 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
+    async getErablieresAdminExpandAccess(): Promise<Erabliere[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/admin/erablieres?$expand=customerErablieres', { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
     async getErablieresExpandCapteurs(my: boolean): Promise<Erabliere[]> {
         let headers = await this.getHeaders();
         headers = headers.set('Accept', 'application/json');
