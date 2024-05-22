@@ -70,6 +70,11 @@ export class ErabliereApi {
         return await this._httpClient.put<void>(this._environmentService.apiUrl + '/erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
     }
 
+    async putErabliereAdmin(erabliere: Erabliere): Promise<void> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<void>(this._environmentService.apiUrl + '/Admin/Erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
+    }
+
     async getAlertes(idErabliereSelectionnee: any): Promise<Alerte[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Alerte[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/alertes?additionalProperties=true", { headers: headers }).toPromise();

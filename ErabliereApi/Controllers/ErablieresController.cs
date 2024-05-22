@@ -274,14 +274,15 @@ public class ErablieresController : ControllerBase
     /// Modifier une érablière
     /// </summary>
     /// <param name="id">L'id de l'érablière à modifier</param>
-    /// <param name="erabliere">Le donnée de l'érablière à modifier.
+    /// <param name="erabliere">Les données de l'érablière à modifier.
     ///     1. L'id doit concorder avec celui de la route.
     ///     2. L'érablière doit exister.
-    ///     3. Si le nom est modifier, il ne doit pas être pris par un autre érablière.
+    ///     3. Si le nom est modifié, il ne doit pas être pris par une autre érablière.
     /// 
     /// Pour modifier l'adresse IP, vous devez entrer quelque chose. "-" pour supprimer les règles déjà existante.</param>
-    /// <response code="200">L'érablière à été correctement modifié.</response>
-    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="200">L'érablière a été correctement modifiée.</response>
+    /// <response code="400">Une des validations des paramètres a échoué.</response>
+    /// <response code="404">L'érablière n'a pas été trouvée.</response>
     /// <returns></returns>
     [HttpPut("{id}")]
     [ValiderIPRules]
@@ -297,7 +298,7 @@ public class ErablieresController : ControllerBase
 
         if (entity == null)
         {
-            return BadRequest($"L'érablière que vous tentez de modifier n'existe pas.");
+            return NotFound($"L'érablière que vous tentez de modifier n'existe pas.");
         }
 
         if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom))
@@ -352,6 +353,94 @@ public class ErablieresController : ControllerBase
         await _context.SaveChangesAsync();
 
         await _cache.RemoveAsync($"Erabliere_{id}");
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Modifier une érablière en tant qu'administrateur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="erabliere">Les données de l'érablière à modifier.
+    ///     1. L'id doit concorder avec celui de la route.
+    ///     2. L'érablière doit exister.
+    ///     3. Si le nom est modifié, il ne doit pas être pris par une autre érablière.</param>
+    /// <param name="token">Un jeton d'annulation</param>
+    /// <response code="200">L'érablière a été correctement modifiée</response>
+    /// <response code="400">Une des validations des paramètres a échoué.</response>
+    /// <response code="404">L'érablière n'a pas été trouvée</response>
+    [HttpPut]
+    [Route("/Admin/Erablieres/{id}")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> ModifierAdmin(Guid id, PutErabliere erabliere, CancellationToken token)
+    {
+        if (id != erabliere.Id)
+        {
+            return BadRequest($"L'id de la route ne concorde pas avec l'id de l'érablière à modifier.");
+        }
+
+        var entity = await _context.Erabliere.FindAsync([id], token);
+
+        if (entity == null)
+        {
+            return NotFound($"L'érablière que vous tentez de modifier n'existe pas.");
+        }
+
+        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom, token) )
+        {
+            return BadRequest($"L'érablière avec le nom {erabliere.Nom}");
+        }
+
+        // fin des validations
+
+        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false)
+        {
+            entity.Nom = erabliere.Nom;
+        }
+
+        if (string.IsNullOrWhiteSpace(erabliere.IpRule) == false)
+        {
+            entity.IpRule = erabliere.IpRule;
+        }
+
+        if (erabliere.IndiceOrdre.HasValue)
+        {
+            entity.IndiceOrdre = erabliere.IndiceOrdre;
+        }
+
+        if (erabliere.CodePostal != null)
+        {
+            entity.CodePostal = erabliere.CodePostal;
+        }
+
+        if (erabliere.AfficherSectionBaril.HasValue)
+        {
+            entity.AfficherSectionBaril = erabliere.AfficherSectionBaril;
+        }
+
+        if (erabliere.AfficherSectionDompeux.HasValue)
+        {
+            entity.AfficherSectionDompeux = erabliere.AfficherSectionDompeux;
+        }
+
+        if (erabliere.AfficherTrioDonnees.HasValue)
+        {
+            entity.AfficherTrioDonnees = erabliere.AfficherTrioDonnees;
+        }
+
+        if (erabliere.IsPublic.HasValue)
+        {
+            entity.IsPublic = erabliere.IsPublic.Value;
+        }
+
+        _context.Erabliere.Update(entity);
+
+        await _context.SaveChangesAsync(token);
+
+        await _cache.RemoveAsync($"Erabliere_{id}", token);
 
         return Ok();
     }

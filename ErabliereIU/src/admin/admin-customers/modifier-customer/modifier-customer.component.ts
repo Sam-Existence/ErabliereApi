@@ -3,14 +3,12 @@ import {Customer} from "../../../model/customer";
 import {ErabliereApi} from "../../../core/erabliereapi.service";
 import {ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {InputErrorComponent} from "../../../formsComponents/input-error.component";
-import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'modifier-customer-modal',
   standalone: true,
   imports: [
     InputErrorComponent,
-    NgIf,
     ReactiveFormsModule
   ],
   templateUrl: './modifier-customer.component.html',
