@@ -132,10 +132,9 @@ public class ErablieresController : ControllerBase
     [EnableQuery]
     [Route("/Admin/Erablieres")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    [ProducesResponseType(200, Type = typeof(Erabliere[]))]
-    public async Task<IActionResult> GetErablieresAdmin(CancellationToken token)
+    public IQueryable<Erabliere> GetErablieresAdmin()
     {
-        return Ok(await _context.Erabliere.AsNoTracking().ToArrayAsync(token));
+        return _context.Erabliere;
     }
 
     /// <summary>
