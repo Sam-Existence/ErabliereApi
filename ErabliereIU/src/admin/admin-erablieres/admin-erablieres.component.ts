@@ -28,4 +28,13 @@ export class AdminErablieresComponent implements OnInit {
             throw error;
         });
     }
+
+    supprimerErabliere(erabliere: Erabliere) {
+        if (confirm("Voulez-vous vraiment supprimer l'érablière " + erabliere.nom + " ? ")) {
+            this._api.deleteErabliereAdmin(erabliere.id)
+                .then(a => {
+                    this.chargerErablieres();
+                });
+        }
+    }
 }

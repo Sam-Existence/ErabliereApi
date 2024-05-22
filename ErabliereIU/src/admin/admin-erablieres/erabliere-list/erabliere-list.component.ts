@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Erabliere} from "../../../model/erabliere";
 
 @Component({
@@ -11,4 +11,9 @@ import {Erabliere} from "../../../model/erabliere";
 })
 export class ErabliereListComponent {
     @Input() erablieres: Erabliere[] = [];
+    @Output() erabliereASupprimer: EventEmitter<Erabliere> = new EventEmitter();
+
+    signalerSuppression(erabliere: Erabliere) {
+        this.erabliereASupprimer.emit(erabliere);
+    }
 }
