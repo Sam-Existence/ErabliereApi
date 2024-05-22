@@ -127,13 +127,15 @@ public class ErablieresController : ControllerBase
     /// Point de terminaison pour l'administration des érablières
     /// </summary>
     /// <returns>Une liste d'érablières</returns>
+    /// <response code="200">Les érablières ont été correctement récupérées</response>
     [HttpGet]
     [EnableQuery]
     [Route("/Admin/Erablieres")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    public IQueryable<Erabliere> GetErablieresAdmin()
+    [ProducesResponseType(200, Type = typeof(Erabliere[]))]
+    public async Task<IActionResult> GetErablieresAdmin(CancellationToken token)
     {
-        return _context.Erabliere;
+        return Ok(await _context.Erabliere.AsNoTracking().ToArrayAsync(token));
     }
 
     /// <summary>
@@ -173,7 +175,7 @@ public class ErablieresController : ControllerBase
     /// </response>
     /// <response code="409">La clé primaire de l'érablière existe déjà</response>
     [HttpPost]
-    public async Task<ActionResult> Ajouter(PostErabliere postErabliere, CancellationToken token)
+    public async Task<IActionResult> Ajouter(PostErabliere postErabliere, CancellationToken token)
     {
         if (string.IsNullOrWhiteSpace(postErabliere.Nom))
         {
@@ -460,6 +462,36 @@ public class ErablieresController : ControllerBase
         }
 
         return NoContent();
+    }
+
+    /// <summary>
+    /// Supprimer une érablière en tant qu'administrateur
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="token">Un jeton d'annulation</param>
+    /// <response code="204">L'érablière a été correctement supprimée</response>
+    /// <response code="404">L'érablière n'a pas été trouvée</response>
+    [HttpDelete]
+    [Route("/Admin/Erablieres/{id}")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(204)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> DeleteErablieresAdmin(Guid id, CancellationToken token)
+    {
+        var entity = await _context.Erabliere.Include(e => e.CustomerErablieres).FirstOrDefaultAsync(e => e.Id == id, token);
+
+        if (entity != null)
+        {
+            _context.Remove(entity);
+
+            await _context.SaveChangesAsync(token);
+
+            await _cache.RemoveAsync($"Erabliere_{id}", token);
+
+            return NoContent();
+        }
+
+        return NotFound();
     }
 
     /// <summary>
