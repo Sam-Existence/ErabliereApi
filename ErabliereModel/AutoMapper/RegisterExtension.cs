@@ -1,4 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using System;
@@ -41,6 +41,7 @@ public static class RegisterExtension
             config.CreateMap<Capteur, GetCapteurs>().ReverseMap();
             config.CreateMap<CapteurImage, PostCapteurImage>().ReverseMap();
             config.CreateMap<CapteurImage, GetCapteurImage>().ReverseMap();
+            config.CreateMap<CapteurImage, PutCapteurImage>().ReverseMap();
             config.CreateMap<Customer, GetCustomer>().ReverseMap();
             config.CreateMap<CustomerErabliere, GetCustomerAccess>();
             config.CreateMap<Erabliere, GetCustomerAccessErabliere>().ReverseMap();

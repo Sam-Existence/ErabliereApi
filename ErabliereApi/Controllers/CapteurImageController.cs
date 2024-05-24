@@ -1,10 +1,11 @@
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
+using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -87,6 +88,40 @@ namespace ErabliereApi.Controllers
             await _depot.SaveChangesAsync(token);
 
             return Ok(new { id = entity.Entity.Id });
+        }
+
+        /// <summary>
+        /// Ajouter un capteur d'image
+        /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="idCapteur">L'identifiant du capteur à modifier</param>
+        /// <param name="capteur">Le capteur a ajouter</param>
+        /// <param name="token">Le jeton d'annulation de la requête</param>
+        /// <response code="200">Le capteur a été correctement ajouté.</response>
+        /// <response code="404">Le capteur n'a pas été trouvé.</response>
+        [HttpPut("{idCapteur}")]
+        [ValiderOwnership("id")]
+        public async Task<IActionResult> Modifier(Guid id, Guid idCapteur, PutCapteurImage capteur, CancellationToken token)
+        {
+            var capteurImageEntity = await _depot.CapteurImage.FindAsync(idCapteur);
+
+            if(capteurImageEntity is null)
+            {
+                return NotFound("Le capteur d'images à modifier n'existe pas");
+            }
+
+            capteurImageEntity.Nom = capteur.Nom;
+            capteurImageEntity.Url = capteur.Url;
+            capteurImageEntity.Port = capteur.Port;
+            capteurImageEntity.Identifiant = string.IsNullOrEmpty(capteur.Identifiant) ? null : capteur.Identifiant;
+            capteurImageEntity.MotDePasse = string.IsNullOrEmpty(capteur.MotDePasse) ? null : capteur.MotDePasse;
+
+
+            _depot.Update(capteurImageEntity);
+
+            await _depot.SaveChangesAsync(token);
+
+            return Ok();
         }
     }
 }
