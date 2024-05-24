@@ -26,6 +26,8 @@ export class RappelsComponent {
       changes.idErabliereSelectionnee.currentValue) {
       try {
         this.todayReminders = await this.erabliereapiService.getActiveRappelNotes(this.idErabliereSelectionnee);
+
+        await this.erabliereapiService.putNotePeriodiciteDue(this.idErabliereSelectionnee);
       } catch (error) {
         console.error('Error getting today\'s reminders', error);
       }

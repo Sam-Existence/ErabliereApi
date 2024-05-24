@@ -63,16 +63,15 @@ public class NotesController : ControllerBase
 
         var notesWithRappel = await _depot.Notes
             .Include(n => n.Rappel)
-            .Where(n => n.IdErabliere == id && n.Rappel != null && n.Rappel.IsActive && (n.Rappel.DateRappelFin == null || n.Rappel.DateRappelFin >= today))
+            .Where(n => n.IdErabliere == id
+                     && n.Rappel != null
+                     && n.Rappel.IsActive
+                     && n.Rappel.DateRappel <= today
+                     && (n.Rappel.DateRappelFin == null || n.Rappel.DateRappelFin >= today))
             .ToListAsync(token);
         
-        var notes = notesWithRappel
-            .Where(n => IsPeriodiciteDue(n.Rappel, today))
-            .ToList();
 
-        await _depot.SaveChangesAsync(token);
-
-        return Ok(notes);
+        return Ok(notesWithRappel);
     }
 
     /// <summary>
@@ -315,6 +314,70 @@ public class NotesController : ControllerBase
             return NotFound();
         }
     }
+    /// <summary>
+    ///  Action permettant de mettre à jour les rappels des notes avec une périodicité due
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpPut("PeriodiciteNotes")]
+    [ProducesResponseType(200, Type = typeof(Note))]
+    [ValiderOwnership("id")]
+    public async Task<IActionResult> UpdateRappels(Guid id, CancellationToken token)
+    {
+        var today = DateTimeOffset.Now;
+
+        var notesWithRappel = await _depot.Notes
+            .Include(n => n.Rappel)
+            .Where(n => n.IdErabliere == id && n.Rappel != null && n.Rappel.IsActive &&  n.Rappel.DateRappelFin < today && n.Rappel.Periodicite != null)
+            .ToListAsync(token);
+
+        if (!notesWithRappel.Any())
+        {
+            return NoContent();
+        }
+
+        foreach (var note in notesWithRappel)
+        {
+            if (note.Rappel.Periodicite == "annuel")
+            {
+                note.Rappel.DateRappel = note.Rappel.DateRappel.Value.AddYears(1);
+                if (note.Rappel.DateRappelFin != null)
+                {
+                    note.Rappel.DateRappelFin = note.Rappel.DateRappelFin.Value.AddYears(1);
+                }
+            }
+            else if (note.Rappel.Periodicite == "mensuel")
+            {
+                note.Rappel.DateRappel = note.Rappel.DateRappel.Value.AddMonths(1);
+                if (note.Rappel.DateRappelFin != null)
+                {
+                    note.Rappel.DateRappelFin = note.Rappel.DateRappelFin.Value.AddMonths(1);
+                }
+            }
+            else if (note.Rappel.Periodicite == "hebdo")
+            {
+                note.Rappel.DateRappel = note.Rappel.DateRappel.Value.AddDays(7);
+                if (note.Rappel.DateRappelFin != null)
+                {
+                    note.Rappel.DateRappelFin = note.Rappel.DateRappelFin.Value.AddDays(7);
+                }
+            }
+            else if (note.Rappel.Periodicite == "quotidien")
+            {
+                note.Rappel.DateRappel = note.Rappel.DateRappel.Value.AddDays(1);
+                if (note.Rappel.DateRappelFin != null)
+                {
+                    note.Rappel.DateRappelFin = note.Rappel.DateRappelFin.Value.AddDays(1);
+                }
+            }
+        }
+
+        await _depot.SaveChangesAsync(token);
+
+        return Ok(notesWithRappel);
+    }
+
 
     /// <summary>
     /// Action permettant de supprimer une note
@@ -350,52 +413,6 @@ public class NotesController : ControllerBase
         {
             return NotFound();
         }
-    }
-
-    private bool IsPeriodiciteDue(Rappel rappel, DateTimeOffset today)
-    {
-        // Si DateRappelFin est non null, le rappel doit être affiché entre DateRappel et DateRappelFin
-        if (rappel.DateRappelFin != null)
-        {
-            if (rappel.DateRappel.Value.Date <= today.Date && rappel.DateRappelFin.Value.Date >= today.Date)
-            {
-                return true;
-            }
-
-            if (rappel.DateRappelFin.Value.Date < today.Date)
-            {
-                switch (rappel.Periodicite)
-                {
-                    case "annuel":
-                        // Si la période est terminée et que la périodicité est "annuel", incrémenter DateRappel et DateRappelFin d'un an
-                        rappel.DateRappel = rappel.DateRappel.Value.AddYears(1);
-                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddYears(1);
-                        break;
-                    case "mensuel":
-                        // Si la période est terminée et que la périodicité est "mensuel", incrémenter DateRappel et DateRappelFin d'un mois
-                        rappel.DateRappel = rappel.DateRappel.Value.AddMonths(1);
-                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddMonths(1);
-                        break;
-                    case "hebdo":
-                        // Si la période est terminée et que la périodicité est "hebdo", incrémenter DateRappel et DateRappelFin d'une semaine
-                        rappel.DateRappel = rappel.DateRappel.Value.AddDays(7);
-                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddDays(7);
-                        break;
-                    case "quotidien":
-                        // Si la période est terminée et que la périodicité est "quotidien", incrémenter DateRappel et DateRappelFin d'un jour
-                        rappel.DateRappel = rappel.DateRappel.Value.AddDays(1);
-                        rappel.DateRappelFin = rappel.DateRappelFin.Value.AddDays(1);
-                        break;
-                }
-
-                return false;
-            }
-
-            return false;
-        }
-
-        // Si DateRappelFin est null, le rappel doit être affiché à DateRappel
-        return rappel.DateRappel.Value.Date == today.Date;
     }
 
 }
