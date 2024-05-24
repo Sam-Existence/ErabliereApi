@@ -13,8 +13,8 @@
             <div class="card-text">
                 <small class="text-muted">
                     <span *ngIf="note.rappel.dateRappel">Début: {{ note.rappel.dateRappel | date: 'dd-MM-yyyy' }}</span><br>
-                    <span *ngIf="note.rappel.dateRappelFin">Fin: {{ note.rappel.dateRappelFin | date: 'dd-MM-yyyy' }}</span><br>
-                    <span *ngIf="note.rappel.periodicite">Periodicité: {{ note.rappel.periodicite }}</span><br>
+                    <span *ngIf="note.rappel.dateRappelFin">Fin: {{ note.rappel.dateRappelFin | date: 'dd-MM-yyyy' }}</span><br *ngIf="note.rappel.dateRappelFin">
+                    <span *ngIf="note.rappel.periodicite">Periodicité: {{ note.rappel.periodicite }}</span><br *ngIf="note.rappel.periodicite">
                     <span *ngIf="note.rappel.isActive !== null">Statut: {{ note.rappel.isActive ? 'Actif' : 'Inactif' }}</span>
                 </small>
             </div>
