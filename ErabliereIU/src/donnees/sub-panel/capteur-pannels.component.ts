@@ -36,9 +36,11 @@ export class CapteurPannelsComponent implements OnInit {
       }
     });
   }
+  dragEntered(event: CdkDragDrop<number>) {
     const drag = event.item;
     const dropList = event.container;
     const dragIndex = drag.data;
+    const dropIndex = dropList.data;
 
     this.dragDropInfo = { dragIndex, dropIndex };
     console.log('dragEntered', { dragIndex, dropIndex });
@@ -85,7 +87,11 @@ export class CapteurPannelsComponent implements OnInit {
     this.dragDropInfo = undefined;
   }
 
-  dragEnd(event: CdkDragEnd) {
+  drop(event: CdkDragDrop<Capteur>) {
+    moveItemInArray(this.capteurs!, event.previousIndex, event.currentIndex);
+  }
+
+  dragEnd(event: Capteur) {
     // let position = new PutPositionGraph();
     // position.id = this.capteurs[event.source.data].id;
     // position.d = "2024-04-15T14:58:10.604Z";
