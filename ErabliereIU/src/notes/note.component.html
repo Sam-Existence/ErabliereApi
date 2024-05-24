@@ -6,14 +6,18 @@
 
         <p *ngIf="note.fileExtension === 'csv'" class="card-text">{{ note.decodedTextFile }}</p>
 
-        <p class="noteDate card-text"><small class="text-muted">{{ note.noteDate }}</small></p>
+        <p class="noteDate card-text"><small class="text-muted">Date de Création: {{ note.noteDate | date: 'dd-MM-yyyy' }}</small></p>
 
-        <div *ngIf="note.rappel" class="noteReminder card-text">
-            <small class="text-muted">
-                <span *ngIf="note.rappel.dateRappel">Date Rappel: {{ note.rappel.dateRappel | date: 'dd-MM-yyyy' }}</span><br>
-                <span *ngIf="note.rappel.dateRappelFin">Date de fin Rappel: {{ note.rappel.dateRappelFin | date: 'dd-MM-yyyy' }}</span><br>
-                <span *ngIf="note.rappel.periodicite">Periodicité: {{ note.rappel.periodicite }}</span>
-            </small>
+        <div *ngIf="note.rappel" class="noteReminder card bg-light p-3 mb-3 d-inline-block">
+            <h5 class="card-title">Rappel</h5>
+            <div class="card-text">
+                <small class="text-muted">
+                    <span *ngIf="note.rappel.dateRappel">Début: {{ note.rappel.dateRappel | date: 'dd-MM-yyyy' }}</span><br>
+                    <span *ngIf="note.rappel.dateRappelFin">Fin: {{ note.rappel.dateRappelFin | date: 'dd-MM-yyyy' }}</span><br>
+                    <span *ngIf="note.rappel.periodicite">Periodicité: {{ note.rappel.periodicite }}</span><br>
+                    <span *ngIf="note.rappel.isActive !== null">Statut: {{ note.rappel.isActive ? 'Actif' : 'Inactif' }}</span>
+                </small>
+            </div>
         </div>
 
         <br>
