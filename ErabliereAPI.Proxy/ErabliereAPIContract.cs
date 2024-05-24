@@ -972,7 +972,7 @@ namespace ErabliereAPI.Proxy
         /// <param name="lang">Paramètre de langue, fr-ca par défaut.</param>
         /// <returns>Prévisions météo</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HourlyAsync(System.Guid id, string? lang);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HourlyWeatherForecastResponse>> HourlyAsync(System.Guid id, string? lang);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -982,7 +982,7 @@ namespace ErabliereAPI.Proxy
         /// <param name="lang">Paramètre de langue, fr-ca par défaut.</param>
         /// <returns>Prévisions météo</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task HourlyAsync(System.Guid id, string? lang, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<HourlyWeatherForecastResponse>> HourlyAsync(System.Guid id, string? lang, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Create a checkout session
@@ -1094,7 +1094,6 @@ namespace ErabliereAPI.Proxy
         /// Action permettant de créer une note en utilisant Content-Type: multipart/form-data
         /// </summary>
         /// <param name="id">Id de l'érablière</param>
-        /// <param name="id">L'id de la note si le client désire l'initialiser</param>
         /// <param name="idErabliere">L'id de l'érablière</param>
         /// <param name="title">Le titre de la note</param>
         /// <param name="text">Le text de la note</param>
@@ -2309,6 +2308,57 @@ namespace ErabliereAPI.Proxy
 
         [System.Text.Json.Serialization.JsonPropertyName("endEpochDate")]
         public int? EndEpochDate { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("mobileLink")]
+        public string? MobileLink { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("link")]
+        public string? Link { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HourlyForecastTemperature
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("value")]
+        public double? Value { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("unit")]
+        public string? Unit { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("unitType")]
+        public int? UnitType { get; set; } = default!;
+
+    }
+
+    [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "14.0.7.0 (NJsonSchema v11.0.0.0 (Newtonsoft.Json v13.0.0.0))")]
+    public partial class HourlyWeatherForecastResponse
+    {
+
+        [System.Text.Json.Serialization.JsonPropertyName("dateTime")]
+        public System.DateTimeOffset? DateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("epochDateTime")]
+        public int? EpochDateTime { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("weatherIcon")]
+        public int? WeatherIcon { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("iconPhrase")]
+        public string? IconPhrase { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("hasPrecipitation")]
+        public bool? HasPrecipitation { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("precipitationType")]
+        public string? PrecipitationType { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("precipitationIntensity")]
+        public string? PrecipitationIntensity { get; set; } = default!;
+
+        [System.Text.Json.Serialization.JsonPropertyName("temperature")]
+        public HourlyForecastTemperature? Temperature { get; set; } = default!;
 
         [System.Text.Json.Serialization.JsonPropertyName("mobileLink")]
         public string? MobileLink { get; set; } = default!;
