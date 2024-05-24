@@ -8,12 +8,15 @@
 
         <p class="noteDate card-text"><small class="text-muted">{{ note.noteDate }}</small></p>
 
-      <p *ngIf="note.rappel && note.rappel.dateRappel" class="noteReminder card-text"><small class="text-muted">Date Rappel: {{ note.rappel.dateRappel }}</small></p>
+        <div *ngIf="note.rappel" class="noteReminder card-text">
+            <small class="text-muted">
+                <span *ngIf="note.rappel.dateRappel">Date Rappel: {{ note.rappel.dateRappel | date: 'dd-MM-yyyy' }}</span><br>
+                <span *ngIf="note.rappel.dateRappelFin">Date de fin Rappel: {{ note.rappel.dateRappelFin | date: 'dd-MM-yyyy' }}</span><br>
+                <span *ngIf="note.rappel.periodicite">Periodicité: {{ note.rappel.periodicite }}</span>
+            </small>
+        </div>
 
-      <p *ngIf="note.rappel && note.rappel.dateRappelFin" class="noteReminder card-text"><small class="text-muted">Date de fin Rappel: {{ note.rappel.dateRappelFin }}</small></p>
-
-      <p *ngIf="note.rappel && note.rappel.periodicite" class="noteReminder card-text"><small class="text-muted">Periodicité: {{ note.rappel.periodicite }}</small></p>
-
+        <br>
 
         <div class="btn-group me-2">
             <button class="btn btn-info btn-sm" (click)="selectEditNote()">Modifier</button>
