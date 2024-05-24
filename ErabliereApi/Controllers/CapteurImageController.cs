@@ -1,12 +1,15 @@
-﻿using AutoMapper;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
+using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace ErabliereApi.Controllers
 {
@@ -34,7 +37,26 @@ namespace ErabliereApi.Controllers
         }
 
         /// <summary>
-        /// Ajouter un capteur
+        /// Lister les capteurs d'image
+        /// </summary>
+        /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="token">Le jeton d'annulation de la requête</param>
+        /// <response code="200">Les capteurs d'image ont correctement été récupérés.</response>
+        [HttpGet]
+        [ValiderOwnership("id")]
+        [EnableQuery]
+        public async Task<IEnumerable<GetCapteurImage>> Lister(Guid id, string? filtreNom, CancellationToken token)
+        {
+            return await _depot.CapteurImage.AsNoTracking()
+                                .Where(b => b.IdErabliere == id && 
+                                        (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
+                                .ProjectTo<GetCapteurImage>(_mapper.ConfigurationProvider)
+                                .ToArrayAsync(token);
+        }
+
+
+        /// <summary>
+        /// Ajouter un capteur d'image
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="capteur">Le capteur a ajouter</param>
