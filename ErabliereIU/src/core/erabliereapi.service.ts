@@ -249,9 +249,9 @@ export class ErabliereApi {
         return rtn ?? new DonneeCapteur();
     }
 
-    async postImageCapteur(capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
+    async postCapteurImage(idErabliereSelectionee: any, capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
         const headers = await this.getHeaders();
-        return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/CapteursImage', capteurImage, {headers: headers}).toPromise();
+        return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', capteurImage, {headers: headers}).toPromise();
     }
 
     async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {

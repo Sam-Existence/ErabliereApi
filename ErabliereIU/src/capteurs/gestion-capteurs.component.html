@@ -23,7 +23,11 @@
 
 @if(afficherSectionAjouterCapteurImage) {
     <div>
-        <ajouter-capteur-image (masquer)="afficherSectionAjouterCapteurImage = false" (rechargerCapteursImage)="'temp'"></ajouter-capteur-image>
+        <ajouter-capteur-image
+            (masquer)="afficherSectionAjouterCapteurImage = false"
+            (rechargerCapteursImage)="'temp'"
+            [idErabliere]="idErabliereSelectionee">
+        </ajouter-capteur-image>
     </div>
 } @else {
     <div>
