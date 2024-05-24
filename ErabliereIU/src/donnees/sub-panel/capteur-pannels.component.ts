@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragEnter, CdkDragMove, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragMove, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { NgFor, NgIf } from '@angular/common';
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -27,19 +27,18 @@ export class CapteurPannelsComponent implements OnInit {
 
   constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
 
-  ngOnInit(): void { 
+  ngOnInit(): void {
+    console.log('CapteurPannelsComponent.ngOnInit', this.erabliere?.id);
+
     this.route.paramMap.subscribe(params => {
       if (this.erabliere != null) {
         this.erabliere.id = params.get('idErabliereSelectionee');
       }
     });
   }
-
-  dragEntered(event: CdkDragEnter<number>) {
     const drag = event.item;
     const dropList = event.container;
     const dragIndex = drag.data;
-    const dropIndex = dropList.data;
 
     this.dragDropInfo = { dragIndex, dropIndex };
     console.log('dragEntered', { dragIndex, dropIndex });

@@ -4,7 +4,6 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
 import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Erabliere } from 'src/model/erabliere';
-import { NgIf, NgFor } from '@angular/common';
 import { AjouterErabliereComponent } from 'src/erablieres/ajouter-erabliere.component';
 import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.component';
 
@@ -12,19 +11,24 @@ import { ModifierErabliereComponent } from 'src/erablieres/modifier-erabliere.co
     selector: 'erablieres-side-bar',
     templateUrl: 'erablieres-side-bar.component.html',
     standalone: true,
-    imports: [AjouterErabliereComponent, ModifierErabliereComponent, NgIf, NgFor]
+    imports: [AjouterErabliereComponent, ModifierErabliereComponent]
 })
 export class ErabliereSideBarComponent implements OnInit {
+  private _authService: IAuthorisationSerivce
+
+  @ViewChild(ModifierErabliereComponent) modifierErabliereComponent?: ModifierErabliereComponent;
+
+  @Input() idSelectionne?: string;
+  @Input() thereIsAtLeastOneErabliere: boolean = false;
+
+  @Output() thereIsAtLeastOneErabliereChange = new EventEmitter<boolean>();
+  @Output() idSelectionneChange = new EventEmitter<string>();
+
+  authDisabled: boolean = false;
   erablieres?: Array<Erabliere> | null;
   etat: string = "";
-  @Input() idSelectionne?: string;
-  @Output() idSelectionneChange = new EventEmitter<string>();
   erabliereSelectionnee?: Erabliere | null;
-  @Input() thereIsAtLeastOneErabliere: boolean = false;
-  @Output() thereIsAtLeastOneErabliereChange = new EventEmitter<boolean>();
-  private _authService: IAuthorisationSerivce
   loggedIn: boolean = false;
-  authDisabled: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi,
       authFactory: AuthorisationFactoryService,
@@ -121,8 +125,6 @@ export class ErabliereSideBarComponent implements OnInit {
       }
     }
   }
-
-  @ViewChild(ModifierErabliereComponent) modifierErabliereComponent?: ModifierErabliereComponent;
 
   async openEditErabliereForm(erabliere: Erabliere) {
     if (this.modifierErabliereComponent != undefined) {
