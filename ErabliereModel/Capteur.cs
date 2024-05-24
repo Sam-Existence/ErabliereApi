@@ -71,6 +71,11 @@ public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
     [MaxLength(5)]
     public string? Symbole { get; set; }
 
+    /// <summary>
+    /// la string bootstrap pour chnager les dimensions du graphique
+    /// </summary>
+    public string? Dimension { get; set; }
+
     /// <inheritdoc />
     public int CompareTo(Capteur? other)
     {

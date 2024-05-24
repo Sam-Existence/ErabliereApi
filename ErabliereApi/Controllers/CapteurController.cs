@@ -171,6 +171,11 @@ public class CapteursController : ControllerBase
             capteurEntity.IndiceOrdre = capteur.IndiceOrdre;
         }
 
+        if (string.IsNullOrWhiteSpace(capteur.Dimension) == false)
+        {
+            capteurEntity.Dimension = capteur.Dimension;
+        }
+
         _depot.Update(capteurEntity);
 
         await _depot.SaveChangesAsync(token);
@@ -192,7 +197,7 @@ public class CapteursController : ControllerBase
     {
         if (id != capteur.IdErabliere)
         {
-            return BadRequest("L'id de la route ne concorde pas avec l'id du baril à supprimer.");
+            return BadRequest("L'id de la route ne concorde pas avec l'id du capteur à supprimer.");
         }
 
         var capteurEntity = await _depot.Capteurs

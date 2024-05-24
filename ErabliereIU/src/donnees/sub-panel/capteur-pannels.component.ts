@@ -13,15 +13,15 @@ import { ImagePanelComponent } from './image-pannel.component';
 @Component({
     selector: 'capteur-pannels',
     template: `
-    <div class="justify-content-end d-flex">
-      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-        <mat-button-toggle (click)="changerDimension12()">gros</mat-button-toggle>
-        <mat-button-toggle (click)="changerDimension6()">normale</mat-button-toggle>
-        <mat-button-toggle (click)="changerDimension4()">petit</mat-button-toggle>
-      </mat-button-toggle-group>
-    </div>
       <div class="row">
           <div [ngClass]="Dimension" *ngFor="let capteur of capteurs">
+            <div class="justify-content-end d-flex">
+              <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+                <mat-button-toggle id="gros" (click)="changerDimension12()">gros</mat-button-toggle>
+                <mat-button-toggle id="normale" (click)="changerDimension6()">normale</mat-button-toggle>
+                <mat-button-toggle id="petit" (click)="changerDimension4()">petit</mat-button-toggle>
+              </mat-button-toggle-group>
+            </div>
               <graph-pannel [titre]="capteur.nom"
                             [symbole]="capteur.symbole"
                             [idCapteur]="capteur.id"
@@ -33,7 +33,7 @@ import { ImagePanelComponent } from './image-pannel.component';
     imports: [NgIf, NgFor, GraphPannelComponent, WeatherForecastComponent, ImagePanelComponent, NgClass, MatButtonToggleModule, MatIconModule]
 })
 export class CapteurPannelsComponent implements OnInit {
-  @Input() capteurs?: Capteur[]
+  @Input() capteurs: Capteur[] = []
   @Input() erabliere?: Erabliere
 
   public Dimension: string = "border-top col-md-6";
@@ -53,11 +53,23 @@ export class CapteurPannelsComponent implements OnInit {
 
   changerDimension12() {
     this.Dimension = "border-top col-md-12";
+    for (let capteur of this.capteurs!) {
+      capteur.dimension = this.Dimension;
+      this.api.putCapteur(this.erabliere!.id, capteur)
+    }
   }
   changerDimension6() {
     this.Dimension = "border-top col-md-6";
+    for (let capteur of this.capteurs!) {
+      capteur.dimension = this.Dimension;
+      this.api.putCapteur(this.erabliere!.id, capteur)
+    }
   }
   changerDimension4() {
     this.Dimension = "border-top col-md-4";
+    for (let capteur of this.capteurs!) {
+      capteur.dimension = this.Dimension;
+      this.api.putCapteur(this.erabliere!.id, capteur)
+    }
   }
 }

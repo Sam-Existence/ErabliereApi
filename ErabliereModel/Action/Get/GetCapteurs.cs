@@ -42,5 +42,9 @@ namespace ErabliereApi.Donnees.Action.Get
         /// </summary>
         public int? IndiceOrdre { get; set; }
 
+        /// <summary>
+        /// la string bootstrap pour chnager les dimensions du graphique
+        /// </summary>
+        public string? Dimension { get; set; }
     }
 }

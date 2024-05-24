@@ -9,4 +9,5 @@ export class Capteur {
     dc?: string;
     donnees?: DonneeCapteur[];
     indiceOrdre?: number;
+    dimension?: string;
 }
