@@ -41,6 +41,10 @@
         <label class="form-check-label" for="modifier-note-reminderEnabled">{{note?.rappel ? 'Modifier un rappel' : 'Ajouter un rappel'}}</label>
       </div>
       @if(displayReminder) {
+        <div class="form-group mb-3">
+          <button *ngIf="noteForm.controls['isActive'].value" class="btn btn-warning" (click)="toggleActiveStatus()">Désactiver le rappel</button>
+          <button *ngIf="!noteForm.controls['isActive'].value" class="btn btn-success" (click)="toggleActiveStatus()">Activer le rappel</button>
+        </div>
         <div [class]="'form-group mb-3' + (noteForm.controls['dateRappel'].touched ? ' was-validated' : '')">
           <label for="dateRappel">Date Rappel</label>
           <input type="date" id="dateRappel" class="form-control" formControlName="dateRappel">

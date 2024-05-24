@@ -33,6 +33,7 @@ export class ModifierNoteComponent implements OnInit {
                     this.noteForm.controls['dateRappel'].setValue(this.note.rappel.dateRappel ? new Date(this.note.rappel.dateRappel).toISOString().split('T')[0] : '');
                     this.noteForm.controls['dateRappelFin'].setValue(this.note.rappel.dateRappelFin ? new Date(this.note.rappel.dateRappelFin).toISOString().split('T')[0] : '');
                     this.noteForm.controls['periodicite'].setValue(this.note.rappel.periodicite);
+                    this.noteForm.controls['isActive'].setValue(this.note.rappel.isActive);
                   }
                 }
             }
@@ -92,6 +93,12 @@ export class ModifierNoteComponent implements OnInit {
             updateOn: 'blur'
           }
         ),
+        isActive: new FormControl(
+          false,
+          {
+            updateOn: 'blur'
+          }
+        ),
         isEditMode: new FormControl(false)
       },{ validators: reminderValidator });
     }
@@ -126,6 +133,10 @@ export class ModifierNoteComponent implements OnInit {
       form?.classList.add('was-validated');
     }
 
+    toggleActiveStatus() {
+      this.noteForm.controls['isActive'].setValue(!this.noteForm.controls['isActive'].value);
+    }
+
     onButtonAnnuleClick() {
         this.note = null;
     }
@@ -152,6 +163,7 @@ export class ModifierNoteComponent implements OnInit {
             } else {
               this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
             }
+            this.note.rappel.isActive = !!this.noteForm.controls['isActive'].value;
 
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
