@@ -3,29 +3,15 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace ErabliereApi.Donnees
+namespace ErabliereApi.Donnees.Action.Post
 {
-    public class CapteurImage
+    /// <summary>
+    /// Modèle de création d'un capteur d'image
+    /// </summary>
+    public class PostCapteurImage
     {
-        /// <summary>
-        /// L'id du capteur
-        /// </summary>
-        public Guid Id { get; set; }
-
-        /// <summary>
-        /// Id de l'érablière lié à ce capteur
-        /// </summary>
-        public Guid IdErabliere { get; set; }
-
-        /// <summary>
-        /// L'érablière liée à ce capteur
-        /// </summary>
-        public Erabliere? Erabliere { get; set; }
-
-
         /// <summary>
         /// Le nom donné au capteur
         /// </summary>
@@ -41,7 +27,7 @@ namespace ErabliereApi.Donnees
         /// </example>
         [Required]
         [MaxLength(200)]
-        [RegularExpression("/^rtsp:\\/\\/[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/i")]
+        [RegularExpression(@"^rtsp:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}([-a-zA-Z0-9()@:%_+.~#?&/=]*)$")]
         public string Url { get; set; }
 
         /// <summary>
@@ -62,11 +48,5 @@ namespace ErabliereApi.Donnees
         /// </summary>
         [MaxLength(200)]
         public string? MotDePasse { get; set; }
-
-        /// <summary>
-        /// La position d'affichage du capteur.
-        /// </summary>
-        [Range(0, int.MaxValue)]
-        public int Ordre { get; set; }
     }
 }
