@@ -24,8 +24,8 @@
         <input class="form-control" type="date" formControlName="reminderDate" [min]="today" id="modifier-note-reminderDate">
         <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
       </div>
-      <button id="modifierNote" class="btn btn-primary me-2" (click)="onButtonModifierClick()">Modifier</button>
-      <button id="annulerModifierNote" class="btn btn-secondary" (click)="onButtonAnnuleClick()">Annuler</button>
+      <button id="modifierNote" class="btn btn-primary me-2" type="button" (click)="onButtonModifierClick()">Modifier</button>
+      <button id="annulerModifierNote" class="btn btn-secondary" type="button" (click)="onButtonAnnuleClick()">Annuler</button>
     </form>
   </div>
 }
