@@ -1,4 +1,4 @@
-<form [formGroup]="ajouterImageCapteurForm" class="mb-3" novalidate>
+<form [formGroup]="ajouterImageCapteurForm" class="mb-3" id="ajouter-capteur-image" novalidate>
     <!-- ajouter la section des erreurs général -->
     @if (generalError) {
         <span class="text-danger">
@@ -25,6 +25,14 @@
         <input type="text" class="form-control" id="url" name="url" formControlName="url"
                placeholder="rtsp://url-de-votre-capteur.com">
         <input-error [errorObj]="errorObj" controlName="url"></input-error>
+        @if(ajouterImageCapteurForm.controls['url'].hasError('maxlength')) {
+            <div class="invalid-feedback">L'url est trop longue.</div>
+        } @else if(ajouterImageCapteurForm.controls['url'].hasError('required')) {
+            <div class="invalid-feedback">L'url est obligatoire.</div>
+        }
+        @if(ajouterImageCapteurForm.controls['url'].hasError('pattern')) {
+            <div class="invalid-feedback">L'url n'est pas dans un format acceptable.</div>
+        }
     </div>
 
     <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['port'].touched ? ' was-validated' : '')">
@@ -33,6 +41,11 @@
                placeholder="12345"
                onlyDigits>
         <input-error [errorObj]="errorObj" controlName="port"></input-error>
+        @if(ajouterImageCapteurForm.controls['port'].hasError('maxlength')) {
+            <div class="invalid-feedback">Le port est trop long.</div>
+        } @else if(ajouterImageCapteurForm.controls['port'].hasError('required')) {
+            <div class="invalid-feedback">Le port est obligatoire.</div>
+        }
     </div>
 
     <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['nomDUtilisateur'].touched ? ' was-validated' : '')">
@@ -40,12 +53,18 @@
         <input type="text" class="form-control" id="nomDUtilisateur" name="nomDUtilisateur" formControlName="nomDUtilisateur"
                placeholder="JeanErable">
         <input-error [errorObj]="errorObj" controlName="nomDUtilisateur"></input-error>
+        @if(ajouterImageCapteurForm.controls['nomDUtilisateur'].hasError('maxlength')) {
+            <div class="invalid-feedback">Le nom d'utilisateur est trop long.</div>
+        }
     </div>
 
     <div [class]="'mb-3' + (ajouterImageCapteurForm.controls['motDePasse'].touched ? ' was-validated' : '')">
         <label for="motDePasse" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse">
         <input-error [errorObj]="errorObj" controlName="motDePasse"></input-error>
+        @if(ajouterImageCapteurForm.controls['nomDUtilisateur'].hasError('maxlength')) {
+            <div class="invalid-feedback">Le mot de passe est trop long.</div>
+        }
     </div>
 
     <button class="btn btn-primary me-2" (click)="ajouter()">Ajouter</button>

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {InputErrorComponent} from "../formsComponents/input-error.component";
 import {FormControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, Validators} from "@angular/forms";
 import {OnlyDigitsDirective} from "../directives/only-digits.directive";
@@ -20,6 +20,7 @@ export class AjouterCapteurImageComponent {
     errorObj: any;
     generalError: string;
 
+    @Input() idErabliere!: string;
     @Output() masquer = new EventEmitter();
     @Output() rechargerCapteursImage = new EventEmitter();
 
@@ -29,38 +30,62 @@ export class AjouterCapteurImageComponent {
             nom: new FormControl(
                 '',
                 {
-                    validators: [Validators.required, Validators.maxLength(50)],
+                    validators: [
+                        Validators.required,
+                        Validators.maxLength(50)
+                    ],
                     updateOn: 'blur'
                 }
             ),
             url: new FormControl(
                 '',
                 {
-                    validators: [Validators.required, Validators.pattern(/^rtsp:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/)],
+                    validators: [
+                        Validators.required,
+                        Validators.maxLength(2000),
+                        Validators.pattern(/^rtsp:\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/)
+                    ],
                     updateOn: 'blur'
                 }
             ),
             port: new FormControl(
                 '',
                 {
-                    validators: [Validators.required],
+                    validators: [
+                        Validators.required,
+                        Validators.maxLength(5)
+                    ],
                     updateOn: "blur"
                 }
             ),
             nomDUtilisateur: new FormControl(
                 '',
                 {
-                    validators: [Validators.required],
+                    validators: [
+                        Validators.maxLength(200)
+                    ],
                     updateOn: "blur"
                 }
             ),
             motDePasse: new FormControl(
-
+                '',
+                {
+                    validators: [
+                        Validators.maxLength(200)
+                    ],
+                    updateOn: "blur"
+                }
             )
         })
     }
+    validateForm() {
+        const form = document.getElementById('ajouter-capteur-image');
+        this.ajouterImageCapteurForm.updateValueAndValidity();
+        form?.classList.add('was-validated');
+    }
     ajouter() {
         let capteurImage: PostCapteurImage;
+        this.validateForm();
         if(this.ajouterImageCapteurForm.valid) {
             capteurImage = {
                 nom: this.ajouterImageCapteurForm.controls['nom'].value,
@@ -69,9 +94,10 @@ export class AjouterCapteurImageComponent {
                 nomDUtilisateur: this.ajouterImageCapteurForm.controls['nomDUtilisateur'].value,
                 motDePasse: this.ajouterImageCapteurForm.controls['motDePasse'].value
             }
-            this._api.postImageCapteur(capteurImage).then(() => {
+            
+            this._api.postCapteurImage(this.idErabliere, capteurImage).then(() => {
                 this.masquer.emit();
-                this.rechargerCapteursImage.emit()
+                this.rechargerCapteursImage.emit();
             }).catch(error => {
                 if (error.status == 400) {
                     this.errorObj = error;
