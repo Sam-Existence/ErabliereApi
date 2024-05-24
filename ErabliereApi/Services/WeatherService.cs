@@ -115,4 +115,48 @@ $"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location}?apikey={
             return "";
         }
     }
+
+    public async ValueTask<object?> GetHoulyForecastAsync(string location, string lang)
+    {
+        var cacheKey = $"WeatherService.GetHoulyForecastAsync.{location}";
+        var cacheValue = await _cache.GetStringAsync(cacheKey);
+        if (!string.IsNullOrWhiteSpace(cacheValue))
+        {
+            var res = JsonSerializer.Deserialize(cacheValue, typeof(object));
+            return res;
+        }
+
+        try
+        {
+            string url = 
+$"http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/45942_PC?apikey={AccuWeatherApiKey}&language={lang}";
+
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            if (response.Headers.TryGetValues("RateLimit-Remaining", out var vals))
+            {
+                var httpContext = _httpContextAccessor.HttpContext;
+
+                _logger.LogInformation("RateLimit-Remaining: {0}", vals.FirstOrDefault());
+
+                httpContext?.Response.Headers.Append("X-ErabliereApi-AccuWeather-RateLimit-Remaining", vals.FirstOrDefault());
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            await _cache.SetStringAsync(cacheKey , responseBody, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+            });
+
+            var res = JsonSerializer.Deserialize(responseBody, typeof(object));
+            return res;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical($"Error retrieving hourly weather forecast: {ex.Message}");
+            return "";
+        }
+    }
 }

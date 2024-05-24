@@ -4,4 +4,5 @@ public interface IWeaterService
 {
     ValueTask<string> GetLocationCodeAsync(string postalCode);
     ValueTask<object?> GetWeatherForecastAsync(string location, string lang);
+    ValueTask<object?> GetHoulyForecastAsync(string location, string lang);
 }
