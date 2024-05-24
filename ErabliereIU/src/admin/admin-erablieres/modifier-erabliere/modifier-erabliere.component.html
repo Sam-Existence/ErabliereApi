@@ -1,0 +1,24 @@
+<div>
+    <span class="text-danger">
+        {{generalError}}
+    </span>
+    <form [formGroup]="erabliereForm" id="modifier-erabliere" (ngSubmit)="onModifier()">
+        <div [class]="'form-group mb-3' + (erabliereForm.controls['nom'].touched ? ' was-validated' : '')">
+            <label class="form-label" for="modifier-customer-nom">Nom: </label>
+            <input class="form-control" type="text" formControlName="nom" id="modifier-customer-nom" required>
+            <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
+        </div>
+        <div [class]="'form-group mb-3' + (erabliereForm.controls['codePostal'].touched ? ' was-validated' : '')">
+            <label class="form-label" for="modifier-customer-code-postal">Code Postal: </label>
+            <input class="form-control" type="text" formControlName="codePostal" id="modifier-customer-code-postal">
+            <input-error [errorObj]="errorObj" [controlName]="'codePostal'"></input-error>
+        </div>
+        <div class="form-group form-check form-switch mb-3">
+            <label class="form-check-label" for="modifier-customer-is-public">Est publique</label>
+            <input class="form-check-input" type="checkbox" formControlName="isPublic" id="modifier-customer-is-public">
+            <input-error [errorObj]="errorObj" [controlName]="'isPublic'"></input-error>
+        </div>
+        <button id="modifierErabliere" class="btn btn-primary me-2" type="submit">Modifier</button>
+        <button id="annulerModifierErabliere" class="btn btn-secondary" type="button" (click)="onAnnuler()">Annuler</button>
+    </form>
+</div>

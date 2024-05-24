@@ -12,8 +12,13 @@ import {Erabliere} from "../../../model/erabliere";
 export class ErabliereListComponent {
     @Input() erablieres: Erabliere[] = [];
     @Output() erabliereASupprimer: EventEmitter<Erabliere> = new EventEmitter();
+    @Output() erabliereAModifier: EventEmitter<Erabliere> = new EventEmitter();
 
     signalerSuppression(erabliere: Erabliere) {
         this.erabliereASupprimer.emit(erabliere);
+    }
+
+    signalerModification(erabliere: Erabliere) {
+        this.erabliereAModifier.emit(erabliere);
     }
 }
