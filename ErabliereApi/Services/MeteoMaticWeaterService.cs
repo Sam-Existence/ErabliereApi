@@ -1,4 +1,5 @@
 ﻿
+using ErabliereApi.Services.AccuWeatherModels;
 using ErabliereApi.Services.MeteoMaticModels;
 
 namespace ErabliereApi.Services;
@@ -26,13 +27,13 @@ public class MeteoMaticWeaterService : IWeaterService
     }
 
     /// <inheritdoc />
-    public ValueTask<object?> GetWeatherForecastAsync(string location, string lang)
+    public ValueTask<WeatherForecastResponse?> GetWeatherForecastAsync(string location, string lang)
     {
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public ValueTask<object?> GetHoulyForecastAsync(string location, string lang)
+    public ValueTask<HourlyWeatherForecastResponse[]?> GetHoulyForecastAsync(string location, string lang)
     {
         throw new NotImplementedException();
     }

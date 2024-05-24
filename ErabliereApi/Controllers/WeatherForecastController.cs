@@ -1,5 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Services;
+using ErabliereApi.Services.AccuWeatherModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -80,7 +81,7 @@ public class WeatherForecastController
     /// <response code="401">Non autorisé</response>
     /// <response code="404">Érablière non trouvée</response>
     [HttpGet("Hourly")]
-    [ProducesResponseType(200)]
+    [ProducesResponseType(200, Type = typeof(HourlyWeatherForecastResponse[]))]
     public async Task<IActionResult> GetHourlyWeatherForecast(Guid id, string lang = "fr-ca")
     {
         // Résoudre l'érablière
