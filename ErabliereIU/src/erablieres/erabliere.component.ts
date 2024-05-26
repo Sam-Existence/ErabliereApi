@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { DonneesComponent } from 'src/donnees/donnees.component';
 import { BarilsComponent } from 'src/barils/barils.component';
@@ -8,7 +8,7 @@ import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.c
 import { Subject } from 'rxjs';
 import { ImagePanelComponent } from 'src/donnees/sub-panel/image-pannel.component';
 import { RappelsComponent } from 'src/rappel/rappels.component';
-import { WeatherForecastComponent } from 'src/donnees/weatherforecast.component';
+import { WeatherForecastComponent } from 'src/donnees/weather-forecast.component';
 
 @Component({
     selector: 'erablieres',
@@ -28,16 +28,14 @@ export class ErabliereComponent implements OnInit {
   erabliere?: Erabliere;
   resetErabliere: Subject<Erabliere> = new Subject<Erabliere>();
 
-  intervalImages?: any;
   displayImages: boolean = false;
 
-  constructor(private _api: ErabliereApi, private route: ActivatedRoute) { 
+  constructor(private _api: ErabliereApi, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.idErabliereSelectionee = params.get('idErabliereSelectionee');
-      console.log('erabliere.component.paramMap ' + this.idErabliereSelectionee);
+
       if (this.idErabliereSelectionee) {
         this._api.getErabliere(this.idErabliereSelectionee).then((erabliere) => {
-          console.log(erabliere);
           this.erabliere = erabliere;
           this.resetErabliere.next(erabliere);
         });
@@ -48,10 +46,9 @@ export class ErabliereComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       this.idErabliereSelectionee = params.get('idErabliereSelectionee');
-      console.log('erabliere.component.ngOnInit.paramMap ' + this.idErabliereSelectionee);
       if (this.idErabliereSelectionee) {
         this._api.getImages(this.idErabliereSelectionee, 1).then((images) => {
           this.displayImages = images.length > 0;

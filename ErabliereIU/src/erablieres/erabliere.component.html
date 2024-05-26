@@ -2,7 +2,9 @@
     <div class="col-md-10 order-2 order-md-1">
         <div class="row">
             @if (erabliere?.codePostal?.trim()) {
-                <weather-forecast class="col-md-6">
+                <weather-forecast
+                    class="col-md-6"
+                    [erabliere]="erabliere">
                 </weather-forecast>
             }
             @if (displayImages) {
