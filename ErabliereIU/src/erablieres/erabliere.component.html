@@ -1,24 +1,26 @@
 <div class="row">
     <div class="col-md-10 order-2 order-md-1">
-        <div class="row">
+        @if (erabliere?.codePostal?.trim() || displayImages) {
+        <div class="row border-top">
             @if (erabliere?.codePostal?.trim()) {
-                <weather-forecast
-                    class="col-md-6"
-                    [erabliere]="erabliere">
-                </weather-forecast>
+            <weather-forecast
+                class="col-md-6"
+                [erabliere]="erabliere">
+            </weather-forecast>
             }
             @if (displayImages) {
-                <div class="col-md-6">
-                <image-panel [idErabliereSelectionnee]="idErabliereSelectionee"></image-panel>
-                </div>
+            <image-panel class="col-md-6" [idErabliereSelectionnee]="idErabliereSelectionee"></image-panel>
             }
         </div>
+        }
         @if (erabliere?.afficherTrioDonnees === true || erabliere?.afficherSectionDompeux === true) {
         <donnees-panel [initialErabliere]="erabliere"
                     [erabliereSubject]="resetErabliere">
         </donnees-panel>
         }
+        @if (displayCapteurs) {
         <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
+        }
         @if (erabliere?.afficherSectionBaril === true) {
         <barils-panel [erabliereId]="erabliere?.id"></barils-panel>
         }
