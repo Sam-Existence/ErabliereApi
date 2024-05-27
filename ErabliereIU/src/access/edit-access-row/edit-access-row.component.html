@@ -1,0 +1,50 @@
+<td>{{acces?.customer?.name}}</td>
+<td>{{acces?.customer?.email}}</td>
+<td class="text-center align-middle">
+    <div [formGroup]="formGroup" class="form-switch">
+        <input
+            formControlName="lecture"
+            type="checkbox"
+            class="form-check-input"
+        />
+    </div>
+</td>
+<td class="text-center align-middle">
+    <div [formGroup]="formGroup" class="form-switch">
+        <input
+            formControlName="creation"
+            type="checkbox"
+            class="form-check-input"
+        />
+    </div>
+</td>
+<td [formGroup]="formGroup" class="text-center align-middle">
+    <div class="form-switch">
+        <input
+            formControlName="modification"
+            type="checkbox"
+            class="form-check-input"
+        />
+    </div>
+</td>
+<td [formGroup]="formGroup" class="text-center align-middle">
+    <div class="form-switch">
+        <input
+            formControlName="suppression"
+            type="checkbox"
+            class="form-check-input"
+        />
+    </div>
+</td>
+<td>
+    <div class="btn-group-vertical">
+        <button class="btn btn-success"
+                (click)="signalerEnregistrement()">
+            Enregistrer
+        </button>
+        <button class="btn btn-danger"
+                (click)="signalerAnnulation()">
+            Annuler
+        </button>
+    </div>
+</td>
