@@ -24,7 +24,7 @@ export class AccessListComponent implements OnChanges {
     displayEdits: { [id: string]: boolean } = {};
 
     erreurChargementDroits: Boolean = false;
-    erreurAjoutAcces: Boolean = false;
+    erreur: string = '';
 
     displayNewLine: Boolean = false;
 
@@ -65,10 +65,18 @@ export class AccessListComponent implements OnChanges {
         }
     }
 
-    async terminerModifierAcces(acces: CustomerAccess) {
+    terminerModifierAcces(acces: CustomerAccess) {
         if (acces.idCustomer) {
-            await this._api.putCustomerAccess(acces);
-            this.displayEdits[acces.idCustomer] = false;
+            this._api.putCustomerAccess(acces).then(() => {
+                this.erreur = "";
+                this.displayEdits[acces.idCustomer] = false;
+            }).catch((error) => {
+                if (error.status === 403) {
+                    this.erreur = "Vous n'avez pas le droit de modification.";
+                } else {
+                    this.erreur = "Une erreur est survenue lors de la modification d'un accès.";
+                }
+            });
         }
     }
 
@@ -101,19 +109,30 @@ export class AccessListComponent implements OnChanges {
     supprimerAcces(access: CustomerAccess) {
         if (confirm("Voulez-vous vraiment supprimer l'accès de " + access.customer?.name + " ? ")) {
             this._api.deleteCustomerAccess(access.idErabliere, access.idCustomer).then(() => {
+                this.erreur = "";
                 this.refreshAccess(this.idErabliere);
+            }).catch(error => {
+                if (error.status === 403) {
+                    this.erreur = "Vous n'avez pas le droit de suppression.";
+                } else {
+                    this.erreur = "Une erreur est survenue lors de la suppression d'un accès.";
+                }
+                throw error;
             });
         }
     }
 
     creerAcces(access: CustomerAccess) {
-        this.erreurAjoutAcces = false;
-
         this._api.postCustomerAccess(access).then(() => {
+            this.erreur = "";
             this.refreshAccess(this.idErabliere);
             this.displayNewLine = false;
         }).catch(error => {
-            this.erreurAjoutAcces = true;
+            if (error.status === 403) {
+                this.erreur = "Vous n'avez pas le droit de création.";
+            } else {
+                this.erreur = "Une erreur est survenue lors de l'ajout d'un accès.";
+            }
             throw error;
         });
     }

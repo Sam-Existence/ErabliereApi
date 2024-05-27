@@ -42,9 +42,9 @@
             }
         </tbody>
     </table>
-    @if (erreurAjoutAcces) {
+    @if (erreur) {
     <div class="alert alert-danger" role="alert">
-        Une erreur est survenue lors de l'ajout d'un accès.
+        {{erreur}}
     </div>
     }
     <div class="text-center">
