@@ -4,7 +4,6 @@ import { CustomerAccess } from 'src/model/customerAccess';
 import { ViewAccessRowComponent } from './view-access-row/view-access-row.component';
 import { EditAccessRowComponent } from "./edit-access-row/edit-access-row.component";
 import { AddAccessRowComponent } from "./add-access-row/add-access-row.component";
-import {Customer} from "../model/customer";
 
 @Component({
     selector: 'access-list',
