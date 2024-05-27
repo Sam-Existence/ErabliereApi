@@ -322,9 +322,15 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, { headers: headers }).toPromise();
     }
 
-    async getCustomersAccess(idErabliere: any): Promise<CustomerAccess[]> {
+    async getCustomersAccess(idErabliere: string): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getAdminCustomersAccess(idErabliere: string): Promise<CustomerAccess[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Admin/Erablieres/' + idErabliere + "/Access", { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
@@ -332,6 +338,15 @@ export class ErabliereApi {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.post<CustomerAccess>(
             `${this._environmentService.apiUrl}/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
+        return rtn ?? new CustomerAccess();
+    }
+
+    async postAdminCustomerAccess(customerAccess: CustomerAccess): Promise<CustomerAccess> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.post<CustomerAccess>(
+            `${this._environmentService.apiUrl}/Admin/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
             { access: customerAccess.access },
             { headers: headers }).toPromise();
         return rtn ?? new CustomerAccess();
@@ -345,9 +360,22 @@ export class ErabliereApi {
             { headers: headers }).toPromise();
     }
 
+    async putAdminCustomerAccess(customerAccess: CustomerAccess): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<any>(
+            `${this._environmentService.apiUrl}/Admin/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
+    }
+
     async deleteCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
         const headers = await this.getHeaders();
         return await this._httpClient.delete(this._environmentService.apiUrl + `/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
+    }
+
+    async deleteAdminCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete(this._environmentService.apiUrl + `/Admin/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
     }
 
     async deleteErabliere(idErabliere: any, erabliere: Erabliere): Promise<any> {
