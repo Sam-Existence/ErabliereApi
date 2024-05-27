@@ -1,10 +1,10 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { EditAccessComponent } from 'src/access/edit-access.component';
+import { AccessListComponent } from 'src/access/access-list.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-const meta: Meta<EditAccessComponent> = {
-  title: 'EditAccessComponent',
-  component: EditAccessComponent,
+const meta: Meta<AccessListComponent> = {
+  title: 'AccessListComponent',
+  component: AccessListComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -15,7 +15,7 @@ const meta: Meta<EditAccessComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<EditAccessComponent>;
+type Story = StoryObj<AccessListComponent>;
 
 export const Primary: Story = {
 
