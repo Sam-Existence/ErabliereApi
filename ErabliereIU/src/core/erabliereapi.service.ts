@@ -328,10 +328,21 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
-    async putCustomerAccess(idErabliere: any, customerAccess: PutCustomerAccess): Promise<CustomerAccess> {
+    async postCustomerAccess(customerAccess: CustomerAccess): Promise<CustomerAccess> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.put<CustomerAccess>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomerErabliere", customerAccess, { headers: headers }).toPromise();
+        const rtn = await this._httpClient.post<CustomerAccess>(
+            `${this._environmentService.apiUrl}/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
         return rtn ?? new CustomerAccess();
+    }
+
+    async putCustomerAccess(customerAccess: CustomerAccess): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<any>(
+            `${this._environmentService.apiUrl}/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
     }
 
     async deleteCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
