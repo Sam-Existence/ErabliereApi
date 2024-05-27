@@ -18,12 +18,11 @@ export class AddAccessRowComponent implements OnInit {
     @Input() idErabliere?: string;
 
     @Output() accesAAnnuler = new EventEmitter<CustomerAccess>();
-    @Output() accesAAjout = new EventEmitter<CustomerAccess>();
+    @Output() accesAAjouter = new EventEmitter<CustomerAccess>();
 
     formGroup: UntypedFormGroup;
 
     acces: CustomerAccess = new CustomerAccess();
-    customerNom?: string;
 
     constructor(private formBuilder: FormBuilder) {
         this.formGroup = this.formBuilder.group({
@@ -41,11 +40,12 @@ export class AddAccessRowComponent implements OnInit {
 
     ngOnInit() {
         this.acces.idErabliere = this.idErabliere;
+        this.acces.customer = new Customer();
     }
 
     customerSelected(customer?: Customer) {
     this.acces.idCustomer = customer?.id;
-    this.customerNom = customer?.name;
+    this.acces.customer!.name = customer?.name;
     }
 
     signalerAjout() {
@@ -57,7 +57,7 @@ export class AddAccessRowComponent implements OnInit {
                 +   (this.formGroup.controls.modification.value ? 4 : 0)
                 +   (this.formGroup.controls.suppression.value ? 8 : 0);
 
-            this.accesAAjout.emit(this.acces);
+            this.accesAAjouter.emit(this.acces);
         }
     }
 

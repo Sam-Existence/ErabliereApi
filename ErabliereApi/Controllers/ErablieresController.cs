@@ -470,7 +470,7 @@ public class ErablieresController : ControllerBase
             return NotFound("L'érablière n'existe pas");
         }
 
-        var customer = await _context.Customers.FindAsync(new { id = idCustomer }, token);
+        var customer = await _context.Customers.FindAsync([idCustomer], token);
 
         if (customer == null)
         {
@@ -503,7 +503,7 @@ public class ErablieresController : ControllerBase
 
         await _context.SaveChangesAsync(token);
 
-        return Ok(entity);
+        return Ok();
     }
 
     /// <summary>

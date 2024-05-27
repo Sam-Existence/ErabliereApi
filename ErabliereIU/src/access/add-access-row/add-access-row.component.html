@@ -1,4 +1,4 @@
-<td class="align-middle">{{customerNom}}</td>
+<td class="align-middle">{{this.acces.customer?.name}}</td>
 <td class="align-middle">
     <select-customer [form]="formGroup" (customerSelected)="customerSelected($event)"></select-customer>
 </td>
