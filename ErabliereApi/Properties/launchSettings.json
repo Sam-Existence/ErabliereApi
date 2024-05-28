@@ -22,7 +22,7 @@
         //"SWAGGER_CONTACT_EMAIL": "erabliereapi@freddycoder.com",
 
         // Utiliser l'authentification
-        "USE_AUTHENTICATION": "false",
+        "USE_AUTHENTICATION": "true",
 
         // Configuration swagger active avec USE_AUTHENTICATION: true
         "USE_SWAGGER_AUTHORIZATIONCODE_WORKFLOW": "true",
