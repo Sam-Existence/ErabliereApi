@@ -1,5 +1,6 @@
 using System.Text.Json;
 using ErabliereApi.Services;
+using ErabliereApi.Services.AccuWeatherModels;
 using Microsoft.Extensions.Caching.Distributed;
 
 namespace ErabliereApi.Services;
@@ -73,13 +74,13 @@ public class WeatherService : IWeaterService
     /// <summary>
     /// Obtenir les prévisions météo à partir d'un code de localisation
     /// </summary>
-    public async ValueTask<object?> GetWeatherForecastAsync(string location, string lang)
+    public async ValueTask<WeatherForecastResponse?> GetWeatherForecastAsync(string location, string lang)
     {
         var cacheKey = $"WeatherService.GetWeatherForecast.{location}";
         var cacheValue = await _cache.GetStringAsync(cacheKey);
         if (!string.IsNullOrWhiteSpace(cacheValue))
         {
-            var res = JsonSerializer.Deserialize(cacheValue, typeof(object));
+            var res = JsonSerializer.Deserialize<WeatherForecastResponse>(cacheValue);
             return res;
         }
 
@@ -106,13 +107,57 @@ $"http://dataservice.accuweather.com/forecasts/v1/daily/5day/{location}?apikey={
                 AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(6)
             });
 
-            var res = JsonSerializer.Deserialize(responseBody, typeof(object));
+            var res = JsonSerializer.Deserialize<WeatherForecastResponse>(responseBody);
             return res;
         }
         catch (Exception ex)
         {
             _logger.LogCritical($"Error retrieving weather forecast: {ex.Message}");
-            return "";
+            return new WeatherForecastResponse();
+        }
+    }
+
+    public async ValueTask<HourlyWeatherForecastResponse[]?> GetHoulyForecastAsync(string location, string lang)
+    {
+        var cacheKey = $"WeatherService.GetHoulyForecastAsync.{location}";
+        var cacheValue = await _cache.GetStringAsync(cacheKey);
+        if (!string.IsNullOrWhiteSpace(cacheValue))
+        {
+            var res = JsonSerializer.Deserialize<HourlyWeatherForecastResponse[]>(cacheValue);
+            return res;
+        }
+
+        try
+        {
+            string url = 
+$"http://dataservice.accuweather.com/forecasts/v1/hourly/12hour/45942_PC?apikey={AccuWeatherApiKey}&language={lang}";
+
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            response.EnsureSuccessStatusCode();
+
+            if (response.Headers.TryGetValues("RateLimit-Remaining", out var vals))
+            {
+                var httpContext = _httpContextAccessor.HttpContext;
+
+                _logger.LogInformation("RateLimit-Remaining: {0}", vals.FirstOrDefault());
+
+                httpContext?.Response.Headers.Append("X-ErabliereApi-AccuWeather-RateLimit-Remaining", vals.FirstOrDefault());
+            }
+
+            var responseBody = await response.Content.ReadAsStringAsync();
+
+            await _cache.SetStringAsync(cacheKey , responseBody, new DistributedCacheEntryOptions
+            {
+                AbsoluteExpirationRelativeToNow = TimeSpan.FromHours(1)
+            });
+
+            var res = JsonSerializer.Deserialize<HourlyWeatherForecastResponse[]>(responseBody);
+            return res;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogCritical($"Error retrieving hourly weather forecast: {ex.Message}");
+            return [];
         }
     }
 }
