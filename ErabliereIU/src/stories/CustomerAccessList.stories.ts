@@ -1,10 +1,10 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { ErabliereAccessListComponent } from 'src/access/erabliere-access-list/erabliere-access-list.component';
+import { AdminCustomerAccessListComponent } from 'src/access/customer-access-list/admin-customer-access-list.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-const meta: Meta<ErabliereAccessListComponent> = {
-  title: 'AccessListComponent',
-  component: ErabliereAccessListComponent,
+const meta: Meta<AdminCustomerAccessListComponent> = {
+  title: 'CustomerAccessListComponent',
+  component: AdminCustomerAccessListComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -15,46 +15,42 @@ const meta: Meta<ErabliereAccessListComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<ErabliereAccessListComponent>;
+type Story = StoryObj<AdminCustomerAccessListComponent>;
 
 export const Primary: Story = {
     args: {
         customersAccess: [
             {
                 idErabliere: "366912bb-cdbf-44a3-93ec-642e02997685",
-                idCustomer: "0a215c38-233f-494e-81d4-997c5acb8abc",
-                customer: {
-                    name: "James Smith",
-                    email: "james@smith.com"
+                erabliere: {
+                    nom: "Saint-Michel",
                 },
-                access: 15
+                idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
+                access: 7
             },
             {
                 idErabliere: "366912bb-cdbf-44a3-93ec-622e02997685",
-                idCustomer: "0a215c38-233f-494e-81d4-927c5acb8abc",
-                customer: {
-                    name: "John Smith",
-                    email: "john@smith.com"
+                erabliere: {
+                    nom: "Québec",
                 },
-                access: 8
+                idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
+                access: 7
             },
             {
                 idErabliere: "366912bb-cdbf-44a3-93ec-642e03997685",
-                idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
-                customer: {
-                    name: "Jane Smith",
-                    email: "jane@smith.com"
+                erabliere: {
+                    nom: "Lil Ste-Foy",
                 },
+                idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
                 access: 7
             },
             {
                 idErabliere: "366912bb-cdbf-44a3-93ac-642e02997685",
-                idCustomer: "0a215c38-233f-494e-81da-997c5acb8abc",
-                customer: {
-                    name: "Joel Smith",
-                    email: "joel@smith.com"
+                erabliere: {
+                    nom: "Érablière de Jane",
                 },
-                access: 3
+                idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
+                access: 7
             }
         ]
     }

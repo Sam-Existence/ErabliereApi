@@ -3,7 +3,7 @@ import { ErabliereAccessListComponent } from 'src/access/erabliere-access-list/e
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<ErabliereAccessListComponent> = {
-  title: 'AccessListComponent',
+  title: 'ErabliereAccessListComponent',
   component: ErabliereAccessListComponent,
   tags: ['autodocs'],
   parameters: {
@@ -30,7 +30,7 @@ export const Primary: Story = {
                 access: 15
             },
             {
-                idErabliere: "366912bb-cdbf-44a3-93ec-622e02997685",
+                idErabliere: "366912bb-cdbf-44a3-93ec-642e02997685",
                 idCustomer: "0a215c38-233f-494e-81d4-927c5acb8abc",
                 customer: {
                     name: "John Smith",
@@ -39,7 +39,7 @@ export const Primary: Story = {
                 access: 8
             },
             {
-                idErabliere: "366912bb-cdbf-44a3-93ec-642e03997685",
+                idErabliere: "366912bb-cdbf-44a3-93ec-642e02997685",
                 idCustomer: "0a215c38-233f-494e-81d4-997c5a3b8abc",
                 customer: {
                     name: "Jane Smith",
@@ -48,7 +48,7 @@ export const Primary: Story = {
                 access: 7
             },
             {
-                idErabliere: "366912bb-cdbf-44a3-93ac-642e02997685",
+                idErabliere: "366912bb-cdbf-44a3-93ec-642e02997685",
                 idCustomer: "0a215c38-233f-494e-81da-997c5acb8abc",
                 customer: {
                     name: "Joel Smith",
