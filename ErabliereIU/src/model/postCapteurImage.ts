@@ -2,6 +2,6 @@ export interface PostCapteurImage {
     nom: string;
     url: string;
     port: string;
-    nomDUtilisateur: string;
-    motDePasse: string;
+    identifiant: string | null;
+    motDePasse: string | null;
 }

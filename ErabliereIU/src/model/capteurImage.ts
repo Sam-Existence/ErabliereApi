@@ -1,8 +1,9 @@
 export interface CapteurImage {
+    id: string;
     ordre: number;
     nom: string;
     url: string;
     port: string;
-    nomDUtilisateur: string;
+    identifiant: string;
     motDePasse: string;
 }
