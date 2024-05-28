@@ -1,10 +1,10 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { ViewAccessRowComponent } from 'src/access/view-access-row/view-access-row.component';
+import { ViewErabliereAccessRowComponent } from 'src/access/erabliere-access-list/view-erabliere-access-row/view-erabliere-access-row.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-const meta: Meta<ViewAccessRowComponent> = {
+const meta: Meta<ViewErabliereAccessRowComponent> = {
   title: 'ViewAccessRowComponent',
-  component: ViewAccessRowComponent,
+  component: ViewErabliereAccessRowComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -15,7 +15,7 @@ const meta: Meta<ViewAccessRowComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<ViewAccessRowComponent>;
+type Story = StoryObj<ViewErabliereAccessRowComponent>;
 
 export const Primary: Story = {
 

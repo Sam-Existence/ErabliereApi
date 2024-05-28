@@ -1,10 +1,10 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { AccessListComponent } from 'src/access/access-list.component';
+import { ErabliereAccessListComponent } from 'src/access/erabliere-access-list/erabliere-access-list.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
-const meta: Meta<AccessListComponent> = {
+const meta: Meta<ErabliereAccessListComponent> = {
   title: 'AccessListComponent',
-  component: AccessListComponent,
+  component: ErabliereAccessListComponent,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -15,7 +15,7 @@ const meta: Meta<AccessListComponent> = {
 };
 
 export default meta;
-type Story = StoryObj<AccessListComponent>;
+type Story = StoryObj<ErabliereAccessListComponent>;
 
 export const Primary: Story = {
 
