@@ -196,4 +196,16 @@ export class CapteurImageListComponent implements OnChanges {
     getMotDePasse(capteurId: string) {
         return this.getCapteur(capteurId).controls['motDePasse'] ?? null;
     }
+    copyId(event: MouseEvent, capteurId?: string) {
+        if (!capteurId) {
+            return;
+        }
+
+        const button = event.target as HTMLButtonElement;
+        button.innerText = "Copié!";
+        navigator.clipboard.writeText(capteurId);
+        setTimeout(() => {
+            button.innerHTML = "&#x2398;"
+        }, 750);
+    }
 }
