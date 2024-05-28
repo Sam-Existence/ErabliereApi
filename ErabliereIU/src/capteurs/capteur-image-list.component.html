@@ -1,0 +1,150 @@
+<!-- Une table qui liste les page-capteurs -->
+<form class="table-responsive" novalidate>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">Nom</th>
+            <th scope="col">Url</th>
+            <th scope="col">Port</th>
+            <th scope="col">Nom d'utilisateur</th>
+            <th scope="col">Mot de passe</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+            @for(capteur of capteurs; track capteur.id) {
+                <tr [formGroup]="getCapteur(capteur.id ?? '')">
+                    <td [class.was-validated]="getNom(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="nom"
+                                type="text"
+                                class="form-control"
+                                maxlength="50"
+                                required
+                            />
+                            @if(getNom(capteur.id ?? '')?.hasError('maxlength')) {
+                                <div class="invalid-feedback">
+                                    Le nom doit faire maximum 50 caractères
+                                </div>
+                            } @else if(getNom(capteur.id ?? '')?.hasError('required')) {
+                                <div class="invalid-feedback">
+                                    Le nom est requis
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.nom}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getUrl(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="url"
+                                type="text"
+                                class="form-control"
+                                maxlength="200"
+                            />
+                            @if(getUrl(capteur.id ?? '')?.hasError('maxlength')) {
+                                <div class="invalid-feedback">
+                                    L'url doit faire maximum 200 caractères
+                                </div>
+                            } @else if(getUrl(capteur.id ?? '')?.hasError('required')) {
+                                <div class="invalid-feedback">
+                                    L'url est requise
+                                </div>
+                            }
+                            @if(getUrl(capteur.id ?? '')?.hasError('pattern')) {
+                                <div class="invalid-feedback">
+                                    L'url doit être une url rtsp valide
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.url}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getPort(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="port"
+                                type="text"
+                                class="form-control"
+                                maxlength="5"
+                            />
+                            @if(getPort(capteur.id ?? '')?.hasError('maxlength')) {
+                                <div class="invalid-feedback">
+                                    Le port doit faire maximum 5 caractères
+                                </div>
+                            } @else if(getPort(capteur.id ?? '')?.hasError('required')) {
+                                <div class="invalid-feedback">
+                                    Le port est requis
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.port}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getNomDUtilisateur(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="nomDUtilisateur"
+                                type="text"
+                                class="form-control"
+                                maxlength="200"
+                            />
+                            @if(getNomDUtilisateur(capteur.id ?? '')?.hasError('maxlength')) {
+                                <div class="invalid-feedback">
+                                    Le nom d'utilisateur doit faire maximum 200 caractères
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.identifiant}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getMotDePasse(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="motDePasse"
+                                type="password"
+                                class="form-control"
+                                maxlength="200"
+                            />
+                            @if(getMotDePasse(capteur.id ?? '')?.hasError('maxlength')) {
+                                <div class="invalid-feedback">
+                                    Le mot de passe doit faire maximum 200 caractères
+                                </div>
+                            }
+                        } @else {
+                            <span>●●●●●●</span>
+                        }
+                    </td>
+                    <td class="text-lg-end">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm me-2"
+                                (click)="modifierCapteur(capteur)">Enregistrer</button>
+                        } @else {
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm me-2"
+                                (click)="showModifierCapteur(capteur)">Modifier</button>
+                        }
+                    </td>
+                    <td class="text-lg-start">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="hideModifierCapteur(capteur)">Annuler</button>
+                        } @else {
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="supprimerCapteur(capteur)">Supprimer</button>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</form>
