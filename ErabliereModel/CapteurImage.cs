@@ -41,7 +41,7 @@ namespace ErabliereApi.Donnees
         /// </example>
         [Required]
         [MaxLength(200)]
-        [RegularExpression("/^rtsp:\\/\\/[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/i")]
+        [RegularExpression("/^rtsp:\\/\\/[-a-zA-Z0-9@:%._+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_+.~#?&/=]*)$/i", ErrorMessage = "L'url doit être une url au protocol rtsp valide")]
         public string Url { get; set; }
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace ErabliereApi.Donnees
         /// <summary>
         /// La position d'affichage du capteur.
         /// </summary>
-        [Range(0, int.MaxValue)]
+        [Range(0, int.MaxValue, ErrorMessage = "La valeur doit être plus grande que 0")]
         public int Ordre { get; set; }
     }
 }
