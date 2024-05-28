@@ -12,6 +12,7 @@ namespace ErabliereApi.Donnees.Action.Get
     /// </summary>
     public class GetCapteurImage
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// Le nom donné au capteur
         /// </summary>
