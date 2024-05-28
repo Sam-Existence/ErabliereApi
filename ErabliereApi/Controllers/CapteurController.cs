@@ -171,7 +171,7 @@ public class CapteursController : ControllerBase
             capteurEntity.IndiceOrdre = capteur.IndiceOrdre;
         }
 
-        if (string.IsNullOrWhiteSpace(capteur.Dimension) == false)
+        if (!string.IsNullOrWhiteSpace(capteur.Dimension))
         {
             capteurEntity.Dimension = capteur.Dimension;
         }

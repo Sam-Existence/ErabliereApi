@@ -1,0 +1,17 @@
+<div class="row">
+    <div class="justify-content-end d-flex">
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+        <mat-button-toggle id="gros" (click)="changerDimension12()">gros</mat-button-toggle>
+        <mat-button-toggle id="normale" (click)="changerDimension6()">normale</mat-button-toggle>
+        <mat-button-toggle id="petit" (click)="changerDimension4()">petit</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    @for (capteur of capteurs; track $index){
+    <div class="'border-top col-'" [ngClass]="dimension">
+        <graph-pannel [titre]="capteur.nom"
+                      [symbole]="capteur.symbole"
+                      [idCapteur]="capteur.id"
+                      [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
+    </div>
+    }
+</div>
