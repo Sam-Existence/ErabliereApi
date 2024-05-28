@@ -6,19 +6,97 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
-import {AdminCustomersComponent} from "../admin/admin-customers.component";
+import {GestionCapteursComponent} from "../erablieres/gestion-capteurs.component";
+import {AdminCustomersComponent} from "../admin/admin-customers/admin-customers.component";
+import {Page404Component} from "./page404/page404.component";
+import {ClientViewComponent} from "./client-view/client-view.component";
+import {AdminViewComponent} from "./admin-view/admin-view.component";
+import {AdminErablieresComponent} from "../admin/admin-erablieres/admin-erablieres.component";
 
 export const routes: Routes = [
-    { path: '', redirectTo: 'e', pathMatch: 'full' },
-    { path: 'e', component: ErabliereComponent },
-    { path: 'e/:idErabliereSelectionee', redirectTo: 'e/:idErabliereSelectionee/graphiques', pathMatch: 'full' },
-    { path: 'e/:idErabliereSelectionee/graphiques', component: ErabliereComponent },
-    { path: 'e/:idErabliereSelectionee/alertes', component: AlerteComponent },
-    { path: 'e/:idErabliereSelectionee/documentations', component: DocumentationComponent },
-    { path: 'e/:idErabliereSelectionee/notes', component: NotesComponent },
-    { path: 'apropos', component: AproposComponent },
+    {
+        path: 'admin',
+        component: AdminViewComponent,
+        children: [
+            {
+                path: '',
+                redirectTo: 'customers',
+                pathMatch: 'full'
+            },
+            {
+                path: 'customers',
+                title: 'Érablière Admin - Clients',
+                component: AdminCustomersComponent,
+            },
+            {
+                path: 'erablieres',
+                title: 'Érablière Admin - Érablières',
+                component: AdminErablieresComponent,
+            },
+            {
+                path: '**',
+                title: 'Érablière Admin - 404 page non trouvée',
+                component: Page404Component
+            }
+        ]
+
+    },
+    {
+        path: '',
+        component: ClientViewComponent,
+        children: [
+            {
+                path: '',
+                redirectTo: 'e',
+                pathMatch: 'full'
+            },
+            {
+                path: 'e',
+                title: 'ÉrablièreIU - Dashboard',
+                component: ErabliereComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee',
+                redirectTo: 'e/:idErabliereSelectionee/graphiques',
+                pathMatch: 'full'
+            },
+            {
+                path: 'e/:idErabliereSelectionee/graphiques',
+                title: 'ÉrablièreIU - Dashboard',
+                component: ErabliereComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee/alertes',
+                title: 'ÉrablièreIU - Alertes',
+                component: AlerteComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee/documentation',
+                title: 'ÉrablièreIU - Documentation',
+                component: DocumentationComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee/notes',
+                title: 'ÉrablièreIU - Notes',
+                component: NotesComponent
+            },
+            {
+                path: 'e/:idErabliereSelectionee/capteurs',
+                title: 'ÉrablièreIU - Capteurs',
+                component: GestionCapteursComponent
+            },
+            {
+                path: 'apropos',
+                title: 'ÉrablièreIU - À propos',
+                component: AproposComponent
+            },
+            {
+                path: '**',
+                title: 'ÉrablièreIU - 404 page non trouvée',
+                component: Page404Component
+            }
+        ]
+    },
     { path: 'signin-callback', component: SigninRedirectCallbackComponent },
-    { path: 'signout-callback', component: SignoutRedirectCallbackComponent },
-    { path: 'admin', redirectTo: 'admin/customers', pathMatch: 'full'},
-    { path: 'admin/customers', component: AdminCustomersComponent}
+    { path: 'signout-callback', component: SignoutRedirectCallbackComponent }
 ]

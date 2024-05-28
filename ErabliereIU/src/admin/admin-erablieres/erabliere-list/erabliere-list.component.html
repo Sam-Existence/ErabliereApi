@@ -1,0 +1,42 @@
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Nom</th>
+            <th>Code Postal</th>
+            <th>Publique</th>
+            <th>Nombre d'utilisateurs</th>
+            <th class="min"></th>
+        </tr>
+        </thead>
+        <tbody>
+            @for (erabliere of erablieres; track erabliere.id) {
+                <tr>
+                    <td>{{erabliere.nom}}</td>
+                    <td>{{erabliere.codePostal}}</td>
+                    @if (erabliere.isPublic) {
+                    <td>&check;</td>
+                    } @else {
+                    <td>&cross;</td>
+                    }
+                    <td>{{ erabliere.customerErablieres?.length }}</td>
+                    <td class="min">
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary"
+                            (click)="signalerModification(erabliere)">
+                            Modifier
+                        </button>
+                        &nbsp;
+                        <button
+                            type="button"
+                            class="btn btn-outline-danger"
+                            (click)="signalerSuppression(erabliere)">
+                            Supprimer
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

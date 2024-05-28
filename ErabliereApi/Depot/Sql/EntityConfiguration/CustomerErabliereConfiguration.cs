@@ -12,6 +12,10 @@ public class CustomerErabliereConfiguration : IEntityTypeConfiguration<CustomerE
     /// <inheritdoc />
     public void Configure(EntityTypeBuilder<CustomerErabliere> builder)
     {
+        builder.HasIndex(c => c.IdCustomer);
+
+        builder.HasIndex(c => c.IdErabliere);
+
         builder.HasKey(c => new { c.IdCustomer, c.IdErabliere });
     }
 }

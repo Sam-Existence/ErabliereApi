@@ -4,6 +4,7 @@
             <tr>
                 <th>Nom</th>
                 <th>Email</th>
+                <th>Nombre d'érablières</th>
                 <th class="min"></th>
             </tr>
         </thead>
@@ -12,6 +13,7 @@
             <tr>
                 <td>{{customer.name}}</td>
                 <td>{{customer.email}}</td>
+                <td>{{customer.customerErablieres?.length}}</td>
                 <td class="min">
                     <button
                         type="button"
