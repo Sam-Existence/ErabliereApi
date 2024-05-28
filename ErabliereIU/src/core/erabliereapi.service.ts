@@ -24,6 +24,7 @@ import {PutCustomerAccess} from 'src/model/putCustomerAccess';
 import {WeatherForecase} from 'src/model/weatherforecast';
 import {PostCapteurImage} from "../model/postCapteurImage";
 import {CapteurImage} from "../model/capteurImage";
+import {PutCapteurImage} from "../model/putCapteurImage";
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -252,6 +253,21 @@ export class ErabliereApi {
     async postCapteurImage(idErabliereSelectionee: any, capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
         const headers = await this.getHeaders();
         return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', capteurImage, {headers: headers}).toPromise();
+    }
+
+    async putCapteurImage(idErabliereSelectionee: any, idCapteur: string, capteurImage: PutCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, capteurImage, {headers: headers}).toPromise();
+    }
+
+    async deleteCapteurImage(idErabliereSelectionee: any, idCapteur: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, {headers: headers}).toPromise();
+    }
+
+    async getCapteursImage(idErabliereSelectionee: any) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.get<CapteurImage[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', {headers: headers}).toPromise() ?? [];
     }
 
     async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {
