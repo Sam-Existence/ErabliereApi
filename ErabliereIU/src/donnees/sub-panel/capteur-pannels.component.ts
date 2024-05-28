@@ -14,32 +14,37 @@ import { ImagePanelComponent } from './image-pannel.component';
     selector: 'capteur-pannels',
     template: `
       <div class="row">
-          <div [ngClass]="Dimension" *ngFor="let capteur of capteurs">
-            <div class="justify-content-end d-flex">
-              <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
-                <mat-button-toggle id="gros" (click)="changerDimension12()">gros</mat-button-toggle>
-                <mat-button-toggle id="normale" (click)="changerDimension6()">normale</mat-button-toggle>
-                <mat-button-toggle id="petit" (click)="changerDimension4()">petit</mat-button-toggle>
-              </mat-button-toggle-group>
-            </div>
-              <graph-pannel [titre]="capteur.nom"
-                            [symbole]="capteur.symbole"
-                            [idCapteur]="capteur.id"
-                            [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
-          </div>
+        <div class="justify-content-end d-flex">
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle id="gros" (click)="changerDimension12()">gros</mat-button-toggle>
+            <mat-button-toggle id="normale" (click)="changerDimension6()">normale</mat-button-toggle>
+            <mat-button-toggle id="petit" (click)="changerDimension4()">petit</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <div [ngClass]="Dimension" *ngFor="let capteur of capteurs">
+            <graph-pannel [titre]="capteur.nom"
+                          [symbole]="capteur.symbole"
+                          [idCapteur]="capteur.id"
+                          [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
+        </div>
       </div>
     `,
     standalone: true,
     imports: [NgIf, NgFor, GraphPannelComponent, WeatherForecastComponent, ImagePanelComponent, NgClass, MatButtonToggleModule, MatIconModule]
 })
 export class CapteurPannelsComponent implements OnInit {
-  @Input() capteurs: Capteur[] = []
+  @Input() capteurs?: Capteur[] = []
   @Input() erabliere?: Erabliere
+  idErabliereSelectionee?: any;
 
-  public Dimension: string = "border-top col-md-6";
+  public Dimension: string | undefined = "border-top col-md-6";
 
 
-  constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
+  constructor(private api: ErabliereApi, private route: ActivatedRoute) { 
+    this.route.paramMap.subscribe(params => {
+      this.idErabliereSelectionee = params.get('idErabliereSelectionee');
+    });
+  }
 
   ngOnInit(): void {
     console.log('CapteurPannelsComponent.ngOnInit', this.erabliere?.id);
@@ -49,6 +54,8 @@ export class CapteurPannelsComponent implements OnInit {
         this.erabliere.id = params.get('idErabliereSelectionee');
       }
     });
+
+    this.getDimension();
   }
 
   changerDimension12() {
@@ -66,10 +73,19 @@ export class CapteurPannelsComponent implements OnInit {
     }
   }
   changerDimension4() {
-    this.Dimension = "border-top col-md-4";
+    this.Dimension = "border-top col-md-3";
     for (let capteur of this.capteurs!) {
       capteur.dimension = this.Dimension;
       this.api.putCapteur(this.erabliere!.id, capteur)
     }
+  }
+
+  getDimension() {
+    this.api.getCapteurs(this.idErabliereSelectionee).then((capteurs) => {
+      this.capteurs = capteurs;
+      for (let capteur of this.capteurs!) {
+        this.Dimension = capteur.dimension;
+      }
+    });
   }
 }
