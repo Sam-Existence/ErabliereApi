@@ -5,6 +5,8 @@ import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { NgIf } from "@angular/common";
 import { Subject } from "rxjs";
+import {Rappel} from "../model/Rappel";
+import {reminderValidator} from "./note.custom-validators";
 
 @Component({
     selector: 'modifier-note',
@@ -21,12 +23,19 @@ export class ModifierNoteComponent implements OnInit {
         this.noteSubject?.subscribe(note => {
             this.initializeForm();
             if (note) {
-                this.note = { ... note };
+              this.note = { ... note };
                 if (this.note) {
                     this.noteForm.controls['title'].setValue(this.note.title);
                     this.noteForm.controls['text'].setValue(this.note.text);
                     this.noteForm.controls['noteDate'].setValue(this.note.noteDate);
-                    this.noteForm.controls['reminderDate'].setValue(this.note.reminderDate ? new Date(this.note.reminderDate).toISOString().split('T')[0] : '');                }
+                  if (this.note.rappel) {
+                    this.noteForm.controls['isEditMode'].setValue(true);
+                    this.noteForm.controls['dateRappel'].setValue(this.note.rappel.dateRappel ? new Date(this.note.rappel.dateRappel).toISOString().split('T')[0] : '');
+                    this.noteForm.controls['dateRappelFin'].setValue(this.note.rappel.dateRappelFin ? new Date(this.note.rappel.dateRappelFin).toISOString().split('T')[0] : '');
+                    this.noteForm.controls['periodicite'].setValue(this.note.rappel.periodicite);
+                    this.noteForm.controls['isActive'].setValue(this.note.rappel.isActive);
+                  }
+                }
             }
         });
     }
@@ -63,13 +72,35 @@ export class ModifierNoteComponent implements OnInit {
             updateOn: 'blur'
           }
         ),
-        reminderDate: new FormControl(
+        reminderEnabled: new FormControl(
+          false
+        ),
+        dateRappel: new FormControl(
           '',
           {
             updateOn: 'blur'
           }
         ),
-      });
+        dateRappelFin: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        periodicite: new FormControl(
+          '',
+          {
+            updateOn: 'blur'
+          }
+        ),
+        isActive: new FormControl(
+          false,
+          {
+            updateOn: 'blur'
+          }
+        ),
+        isEditMode: new FormControl(false)
+      },{ validators: reminderValidator });
     }
 
     error: string | null = null;
@@ -90,12 +121,20 @@ export class ModifierNoteComponent implements OnInit {
 
     generalError?: string | null;
 
+  get displayReminder(): boolean {
+    return this.noteForm.controls['reminderEnabled'].value;
+  }
+
     today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
 
     validateForm() {
       const form = document.getElementById('modifier-note');
       this.noteForm.updateValueAndValidity();
       form?.classList.add('was-validated');
+    }
+
+    toggleActiveStatus() {
+      this.noteForm.controls['isActive'].setValue(!this.noteForm.controls['isActive'].value);
     }
 
     onButtonAnnuleClick() {
@@ -113,12 +152,19 @@ export class ModifierNoteComponent implements OnInit {
             else {
               this.note.noteDate = null;
             }
-            if (this.noteForm.controls['reminderDate'].value !== "") {
-              this.note.reminderDate = this.noteForm.controls['reminderDate'].value;
+            // Update the Rappel object and set its properties using the form values
+            if (!this.note.rappel) {
+              this.note.rappel = new Rappel();
             }
-            else {
-              this.note.reminderDate = null;
+            this.note.rappel.dateRappel = this.noteForm.controls['dateRappel'].value;
+            this.note.rappel.dateRappelFin = this.noteForm.controls['dateRappelFin'].value;
+            if (this.noteForm.controls['periodicite'].value === 'Aucune') {
+              this.note.rappel.periodicite = null;
+            } else {
+              this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
             }
+            this.note.rappel.isActive = !!this.noteForm.controls['isActive'].value;
+
             this._api.putNote(this.idErabliereSelectionee, this.note)
               .then(r => {
                 this.errorObj = null;

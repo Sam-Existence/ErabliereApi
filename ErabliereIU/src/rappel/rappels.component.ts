@@ -3,7 +3,6 @@ import { NgFor } from '@angular/common';
 import { Note } from 'src/model/note';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { RappelComponent } from './rappel.component';
-import { RappelService } from "../core/today-rappels.service";
 
 @Component({
   selector: 'app-rappels',
@@ -19,17 +18,19 @@ export class RappelsComponent {
     @Input() idErabliereSelectionnee: any;
     todayReminders: Note[] = [];
 
-    constructor(private rappelService: RappelService) { }
+    constructor(private erabliereapiService: ErabliereApi) { }
 
-    async ngOnChanges(changes: SimpleChanges) {
-        if (changes.idErabliereSelectionnee &&
-            changes.idErabliereSelectionnee.currentValue !== changes.idErabliereSelectionnee.previousValue &&
-            changes.idErabliereSelectionnee.currentValue) {
-            try {
-                this.todayReminders = await this.rappelService.getTodaysReminders(this.idErabliereSelectionnee);
-            } catch (error) {
-                console.error('Error getting today\'s reminders', error);
-            }
-        }
+  async ngOnChanges(changes: SimpleChanges) {
+    if (changes.idErabliereSelectionnee &&
+      changes.idErabliereSelectionnee.currentValue !== changes.idErabliereSelectionnee.previousValue &&
+      changes.idErabliereSelectionnee.currentValue) {
+      try {
+        this.todayReminders = await this.erabliereapiService.getActiveRappelNotes(this.idErabliereSelectionnee);
+
+        await this.erabliereapiService.putNotePeriodiciteDue(this.idErabliereSelectionnee);
+      } catch (error) {
+        console.error('Error getting today\'s reminders', error);
+      }
     }
+  }
 }
