@@ -20,7 +20,6 @@ import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
 import { GetImageInfo } from 'src/model/imageInfo';
 import { Note } from 'src/model/note';
 import { PutCapteur } from 'src/model/putCapteur';
-import { PutCustomerAccess } from 'src/model/putCustomerAccess';
 import { WeatherForecase } from 'src/model/weatherforecast';
 
 @Injectable({ providedIn: 'root' })
@@ -48,6 +47,12 @@ export class ErabliereApi {
     async getErablieres(my: boolean): Promise<Erabliere[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/erablieres?my=' + my, { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getErablieresAdmin(): Promise<Erabliere[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/admin/erablieres', { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
@@ -324,13 +329,19 @@ export class ErabliereApi {
 
     async getCustomersAccess(idErabliere: string): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Access", { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
-    async getAdminCustomersAccess(idErabliere: string): Promise<CustomerAccess[]> {
+    async getAdminErabliereAccess(idErabliere: string): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Admin/Erablieres/' + idErabliere + "/Access", { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getAdminCustomerAccess(idCustomer: string): Promise<CustomerAccess[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Admin/Customers/' + idCustomer + "/Access", { headers: headers }).toPromise();
         return rtn ?? [];
     }
 

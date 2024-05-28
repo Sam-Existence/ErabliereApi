@@ -356,7 +356,7 @@ public class ErablieresController : ControllerBase
     [ValiderIPRules]
     [ValiderOwnership("id")]
     [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
-    public async Task<IActionResult> CustomersAccess(Guid id, CancellationToken token)
+    public async Task<IActionResult> Access(Guid id, CancellationToken token)
     {
         var erabliere = await _context.Erabliere.FindAsync([id], cancellationToken: token);
 
@@ -483,7 +483,7 @@ public class ErablieresController : ControllerBase
     /// <param name="id">L'identifiant de l'érablière</param>
     /// <param name="idCustomer">L'id du client</param>
     /// <param name="token">Le token d'annulation</param>
-    [HttpDelete("{id}/Customer/{idCustomer}/Access/")]
+    [HttpDelete("{id}/Customer/{idCustomer}/Access")]
     [ValiderIPRules]
     [ValiderOwnership("id")]
     [ProducesResponseType(204)]
