@@ -76,7 +76,7 @@ namespace ErabliereApi.Controllers
             {
                 capteurImage.MotDePasse = null;
             }
-            if (string.IsNullOrEmpty(capteurImage.MotDePasse))
+            if (string.IsNullOrEmpty(capteurImage.Identifiant))
             {
                 capteurImage.Identifiant = null;
             }
