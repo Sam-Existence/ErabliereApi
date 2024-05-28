@@ -41,7 +41,6 @@ export class CapteurImageListComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if(changes['capteurs']) {
-            console.log(this.capteurs);
             this.capteurs.forEach((capteur, key) => {
                 this.formArrayIdToKey.set(capteur.id ?? '', key);
                 const capteurFormGroup = this.fb.group({
@@ -111,11 +110,8 @@ export class CapteurImageListComponent implements OnChanges {
 
     showModifierCapteur(capteur: CapteurImage) {
         if (capteur.id) {
-            console.log(capteur);
-
             this.displayEdits[capteur.id] = true;
             const formCapteur = this.getCapteur(capteur.id);
-            console.log(formCapteur);
             formCapteur.controls['nom'].setValue(capteur.nom);
             formCapteur.controls['url'].setValue(capteur.url);
             formCapteur.controls['port'].setValue(capteur.port);
@@ -145,7 +141,6 @@ export class CapteurImageListComponent implements OnChanges {
                 this.editedCapteurs[capteur.id].identifiant = formCapteur.controls['nomDUtilisateur'].value;
                 this.editedCapteurs[capteur.id].motDePasse = formCapteur.controls['motDePasse'].value;
                 const putCapteur = this.editedCapteurs[capteur.id];
-                console.log(putCapteur);
                 this.erabliereApi.putCapteurImage(this.idErabliere, capteur.id, putCapteur).then(() => {
                     this.shouldRefreshCapteurs.emit();
                     if (capteur.id) {
