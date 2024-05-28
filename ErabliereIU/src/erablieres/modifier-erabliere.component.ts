@@ -2,7 +2,7 @@
 import {Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges} from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
-import { AccessListComponent } from '../access/access-list.component';
+import { ErabliereAccessListComponent } from '../access/erabliere-access-list/erabliere-access-list.component';
 import { Erabliere } from "../model/erabliere";
 
 @Component({
@@ -11,7 +11,7 @@ import { Erabliere } from "../model/erabliere";
     standalone: true,
     imports: [
         ErabliereFormComponent,
-        AccessListComponent,
+        ErabliereAccessListComponent,
     ],
 })
 export class ModifierErabliereComponent implements OnInit, OnChanges {

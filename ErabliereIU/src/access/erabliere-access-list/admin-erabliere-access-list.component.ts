@@ -1,24 +1,26 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { CustomerAccess } from 'src/model/customerAccess';
-import { ViewAccessRowComponent } from './view-access-row/view-access-row.component';
-import { EditAccessRowComponent } from "./edit-access-row/edit-access-row.component";
-import { AddAccessRowComponent } from "./add-access-row/add-access-row.component";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {CustomerAccess} from "../../model/customerAccess";
+import {ErabliereApi} from "../../core/erabliereapi.service";
+import { ViewErabliereAccessRowComponent } from './view-erabliere-access-row/view-erabliere-access-row.component';
+import { EditErabliereAccessRowComponent } from "./edit-erabliere-access-row/edit-erabliere-access-row.component";
+import { AddErabliereAccessRowComponent } from "./add-erabliere-access-row/add-erabliere-access-row.component";
 
 @Component({
-    selector: 'access-list',
-    templateUrl: './access-list.component.html',
-    standalone: true,
-    imports: [
-        ViewAccessRowComponent,
-        EditAccessRowComponent,
-        AddAccessRowComponent,
-    ],
+  selector: 'admin-erabliere-access-list',
+  standalone: true,
+  imports: [
+      ViewErabliereAccessRowComponent,
+      EditErabliereAccessRowComponent,
+      AddErabliereAccessRowComponent
+  ],
+  templateUrl: 'erabliere-access-list.component.html',
 })
-
-export class AccessListComponent implements OnChanges {
+export class AdminErabliereAccessListComponent implements OnInit {
     @Input() idErabliere?: string;
-    @Input() customersAccess: CustomerAccess[] = [];
+
+    @Output() changementAcces: EventEmitter<CustomerAccess[]> = new EventEmitter();
+
+    customersAccess: CustomerAccess[] = [];
 
     displayEdits: { [id: string]: boolean } = {};
 
@@ -30,17 +32,15 @@ export class AccessListComponent implements OnChanges {
     constructor(private _api: ErabliereApi) {
     }
 
-    ngOnChanges(changes:SimpleChanges) {
-        if(changes['idErabliere']) {
-            this.refreshAccess(this.idErabliere);
-        }
+    ngOnInit() {
+        this.refreshAccess(this.idErabliere);
     }
 
     updateDisplayEdits() {
         this.customersAccess.forEach((customer) => {
-           if (!this.displayEdits[customer.idCustomer]) {
-               this.displayEdits[customer.idCustomer] = false;
-           }
+            if (!this.displayEdits[customer.idCustomer]) {
+                this.displayEdits[customer.idCustomer] = false;
+            }
         });
     }
 
@@ -66,7 +66,7 @@ export class AccessListComponent implements OnChanges {
 
     terminerModifierAcces(acces: CustomerAccess) {
         if (acces.idCustomer) {
-            this._api.putCustomerAccess(acces).then(() => {
+            this._api.putAdminCustomerAccess(acces).then(() => {
                 this.erreur = "";
                 this.displayEdits[acces.idCustomer] = false;
             }).catch((error) => {
@@ -85,16 +85,17 @@ export class AccessListComponent implements OnChanges {
         }
 
         this.erreurChargementDroits = false;
-        return this._api.getCustomersAccess(idErabliere).then(customersAccess => {
+        return this._api.getAdminErabliereAccess(idErabliere).then(customersAccess => {
             this.customersAccess = customersAccess;
+            this.changementAcces.emit(this.customersAccess);
             this.updateDisplayEdits();
         })
-        .catch(error => {
-            this.customersAccess = [];
-            this.displayEdits = {};
-            this.erreurChargementDroits = true;
-            throw error;
-        });
+            .catch(error => {
+                this.customersAccess = [];
+                this.displayEdits = {};
+                this.erreurChargementDroits = true;
+                throw error;
+            });
     }
 
     addUserAccess() {
@@ -107,7 +108,7 @@ export class AccessListComponent implements OnChanges {
 
     supprimerAcces(access: CustomerAccess) {
         if (confirm("Voulez-vous vraiment supprimer l'accès de " + access.customer?.name + " ? ")) {
-            this._api.deleteCustomerAccess(access.idErabliere, access.idCustomer).then(() => {
+            this._api.deleteAdminCustomerAccess(access.idErabliere, access.idCustomer).then(() => {
                 this.erreur = "";
                 this.refreshAccess(this.idErabliere);
             }).catch(error => {
@@ -122,7 +123,7 @@ export class AccessListComponent implements OnChanges {
     }
 
     creerAcces(access: CustomerAccess) {
-        this._api.postCustomerAccess(access).then(() => {
+        this._api.postAdminCustomerAccess(access).then(() => {
             this.erreur = "";
             this.refreshAccess(this.idErabliere);
             this.displayNewLine = false;

@@ -20,13 +20,13 @@
         <tbody>
             @for (acces of customersAccess; track [acces.idCustomer, acces.idErabliere]) {
             @if (!isDisplayEditForm(acces.idCustomer ?? '')) {
-            <tr view-access-row
+            <tr view-erabliere-access-row
                 [acces]="acces"
                 (accesAModifier)="showModifierAcces($event)"
                 (accesASupprimer)="supprimerAcces($event)">
             </tr>
             } @else {
-            <tr edit-access-row
+            <tr edit-erabliere-access-row
                 [acces]="acces"
                 (accesAEnregister)="terminerModifierAcces($event)"
                 (accesAAnnuler)="annulerModifierAcces($event)">
@@ -34,7 +34,7 @@
             }
             }
             @if (displayNewLine) {
-            <tr add-access-row
+            <tr add-erabliere-access-row
                 [idErabliere]="this.idErabliere"
                 (accesAAjouter)="creerAcces($event)"
                 (accesAAnnuler)="hideAddUserAccess()">

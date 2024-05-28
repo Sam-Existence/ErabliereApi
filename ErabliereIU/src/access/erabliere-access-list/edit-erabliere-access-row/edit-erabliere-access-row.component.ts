@@ -1,16 +1,16 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CustomerAccess} from "../../model/customerAccess";
+import {CustomerAccess} from "../../../model/customerAccess";
 import {FormBuilder, FormControl, ReactiveFormsModule, UntypedFormGroup, Validators} from "@angular/forms";
 
 @Component({
-  selector: 'tr[edit-access-row]',
+  selector: 'tr[edit-erabliere-access-row]',
   standalone: true,
     imports: [
         ReactiveFormsModule
     ],
-  templateUrl: './edit-access-row.component.html'
+  templateUrl: './edit-erabliere-access-row.component.html'
 })
-export class EditAccessRowComponent implements OnInit {
+export class EditErabliereAccessRowComponent implements OnInit {
     @Input() acces?: CustomerAccess;
 
     @Output() accesAAnnuler = new EventEmitter<CustomerAccess>();

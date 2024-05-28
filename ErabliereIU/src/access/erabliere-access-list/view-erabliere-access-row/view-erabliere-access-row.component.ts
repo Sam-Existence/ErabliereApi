@@ -2,11 +2,11 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { CustomerAccess } from 'src/model/customerAccess';
 
 @Component({
-    selector: 'tr[view-access-row]',
-    templateUrl: 'view-access-row.component.html',
+    selector: 'tr[view-erabliere-access-row]',
+    templateUrl: 'view-erabliere-access-row.component.html',
     standalone: true
 })
-export class ViewAccessRowComponent implements OnInit {
+export class ViewErabliereAccessRowComponent implements OnInit {
     @Input() acces?: CustomerAccess;
     lecture: boolean = false;
     creation: boolean = false;

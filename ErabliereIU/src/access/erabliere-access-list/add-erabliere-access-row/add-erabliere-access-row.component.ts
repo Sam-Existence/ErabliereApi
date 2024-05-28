@@ -1,20 +1,20 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormControl, FormsModule, ReactiveFormsModule, UntypedFormGroup, Validators} from "@angular/forms";
-import {SelectCustomerComponent} from "../../customer/select-customer.component";
-import {CustomerAccess} from "../../model/customerAccess";
-import {Customer} from "../../model/customer";
+import {SelectCustomerComponent} from "../../../customer/select-customer.component";
+import {CustomerAccess} from "../../../model/customerAccess";
+import {Customer} from "../../../model/customer";
 
 @Component({
-  selector: 'tr[add-access-row]',
+  selector: 'tr[add-erabliere-access-row]',
   standalone: true,
     imports: [
         FormsModule,
         SelectCustomerComponent,
         ReactiveFormsModule
     ],
-  templateUrl: './add-access-row.component.html'
+  templateUrl: './add-erabliere-access-row.component.html'
 })
-export class AddAccessRowComponent implements OnInit {
+export class AddErabliereAccessRowComponent implements OnInit {
     @Input() idErabliere?: string;
 
     @Output() accesAAnnuler = new EventEmitter<CustomerAccess>();
