@@ -3,17 +3,29 @@
     <table class="table table-striped">
         <thead>
         <tr>
+            <th scope="col" class="min">Id</th>
             <th scope="col">Nom</th>
             <th scope="col">Url</th>
             <th scope="col">Port</th>
             <th scope="col">Nom d'utilisateur</th>
             <th scope="col">Mot de passe</th>
-            <th scope="col"></th>
+            <th scope="col" class="min"></th>
+            <th scope="col" class="min"></th>
         </tr>
         </thead>
         <tbody>
             @for(capteur of capteurs; track capteur.id) {
                 <tr [formGroup]="getCapteur(capteur.id ?? '')">
+                    <td class="min">
+                        <!-- create a copy id button, and for the icon of the button use a copy icon -->
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            (click)="copyId($event, capteur.id)"
+                            title="Copier l'id du capteur">
+                            &#x2398;
+                        </button>
+                    </td>
                     <td [class.was-validated]="getNom(capteur.id ?? '')?.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input

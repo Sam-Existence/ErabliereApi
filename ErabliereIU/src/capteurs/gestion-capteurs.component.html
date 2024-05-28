@@ -1,42 +1,42 @@
 <h3>Capteurs</h3>
 <!-- Component CRUD pour les page-capteurs des érablière -->
 
+<div>
 @if(afficherSectionAjouterCapteur) {
-    <div>
-        <ajouter-capteur
-            [idErabliere]="idErabliereSelectionee"
-            (hideAjouterCapteur)="hideAjouterCapteur()"
-            (shouldReloadCapteurs)="getCapteurs()"></ajouter-capteur>
-    </div>
+    <ajouter-capteur
+        [idErabliere]="idErabliereSelectionee"
+        (hideAjouterCapteur)="hideAjouterCapteur()"
+        (shouldReloadCapteurs)="getCapteurs()"
+    />
 } @else {
-    <div>
-        <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            (click)="showAjouterCapteur()">Ajouter un capteur</button>
-    </div>
+    <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        (click)="showAjouterCapteur()">Ajouter un capteur</button>
 }
+</div>
+
 <capteur-list
             [idErabliere]="idErabliereSelectionee"
             [capteurs]="capteurs"
-            (shouldRefreshCapteurs)="getCapteurs()"></capteur-list>
+            (shouldRefreshCapteurs)="getCapteurs()"
+            class="mb-3"
+/>
 
+<div class="mt-3">
 @if(afficherSectionAjouterCapteurImage) {
-    <div>
-        <ajouter-capteur-image
-            (masquer)="afficherSectionAjouterCapteurImage = false"
-            (rechargerCapteursImage)="'temp'"
-            [idErabliere]="idErabliereSelectionee">
-        </ajouter-capteur-image>
-    </div>
+    <ajouter-capteur-image
+        (masquer)="afficherSectionAjouterCapteurImage = false"
+        (rechargerCapteursImage)="'temp'"
+        [idErabliere]="idErabliereSelectionee"
+    />
 } @else {
-    <div>
-        <button
-            type="button"
-            class="btn btn-outline-primary btn-sm"
-            (click)="afficherSectionAjouterCapteurImage = true">Ajouter un capteur d'image</button>
-    </div>
+    <button
+        type="button"
+        class="btn btn-outline-primary btn-sm"
+        (click)="afficherSectionAjouterCapteurImage = true">Ajouter un capteur d'image</button>
 }
+</div>
 
 <app-capteur-image-list
     [idErabliere]="idErabliereSelectionee"
