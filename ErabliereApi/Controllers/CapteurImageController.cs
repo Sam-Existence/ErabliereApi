@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
@@ -122,6 +122,30 @@ namespace ErabliereApi.Controllers
             await _depot.SaveChangesAsync(token);
 
             return Ok();
+        }
+
+        /// <summary>
+        /// Supprimer un capteur d'image
+        /// </summary>
+        /// <param name="id">Identifiant de l'érablière</param>
+        /// <param name="idCapteur">L'id du capteur d'image à supprimer</param>
+        /// <response code="202">Le capteur a été correctement supprimé.</response>
+        /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
+        [HttpDelete("{idCapteur}")]
+        [ValiderOwnership("id")]
+        public async Task<IActionResult> Supprimer(Guid id, Guid idCapteur, CancellationToken token)
+        {
+            var capteurEntity = await _depot.CapteurImage
+                .FirstOrDefaultAsync(x => x.Id == idCapteur && x.IdErabliere == id, token);
+
+            if (capteurEntity is not null)
+            {
+                _depot.Remove(capteurEntity);
+
+                await _depot.SaveChangesAsync(token);
+            }
+
+            return NoContent();
         }
     }
 }
