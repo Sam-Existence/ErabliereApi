@@ -4,6 +4,7 @@ using ErabliereApi.Depot.Sql;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    partial class ErabliereDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240426152517_AddRappel")]
+    partial class AddRappel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -236,48 +239,6 @@ namespace Depot.Sql.Migrations
                     b.ToTable("Capteurs");
                 });
 
-            modelBuilder.Entity("ErabliereApi.Donnees.CapteurImage", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("IdErabliere")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Identifiant")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("MotDePasse")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Nom")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("Ordre")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Port")
-                        .IsRequired()
-                        .HasMaxLength(5)
-                        .HasColumnType("nvarchar(5)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdErabliere");
-
-                    b.ToTable("CapteurImage");
-                });
-
             modelBuilder.Entity("ErabliereApi.Donnees.Customer", b =>
                 {
                     b.Property<Guid?>("Id")
@@ -326,20 +287,27 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("Access")
+                        .HasColumnType("tinyint");
+
+                    b.Property<Guid?>("ErabliereId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<Guid?>("IdCustomer")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<byte>("Access")
-                        .HasColumnType("tinyint");
+                    b.HasKey("Id");
 
-                    b.HasKey("IdCustomer", "IdErabliere");
+                    b.HasIndex("ErabliereId");
 
                     b.HasIndex("IdCustomer");
-
-                    b.HasIndex("IdErabliere");
 
                     b.ToTable("CustomerErablieres");
                 });
@@ -559,14 +527,11 @@ namespace Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DateRappel")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<DateTimeOffset?>("DateRappelFin")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<Guid?>("ErabliereId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<Guid?>("NoteId")
                         .HasColumnType("uniqueidentifier");
@@ -576,6 +541,8 @@ namespace Depot.Sql.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ErabliereId");
 
                     b.HasIndex("NoteId")
                         .IsUnique()
@@ -661,30 +628,15 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Erabliere");
                 });
 
-            modelBuilder.Entity("ErabliereApi.Donnees.CapteurImage", b =>
-                {
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany("CapteursImage")
-                        .HasForeignKey("IdErabliere")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Erabliere");
-                });
-
             modelBuilder.Entity("ErabliereApi.Donnees.CustomerErabliere", b =>
                 {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany()
+                        .HasForeignKey("ErabliereId");
+
                     b.HasOne("ErabliereApi.Donnees.Customer", "Customer")
                         .WithMany("CustomerErablieres")
-                        .HasForeignKey("IdCustomer")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
-                        .WithMany("CustomerErablieres")
-                        .HasForeignKey("IdErabliere")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("IdCustomer");
 
                     b.Navigation("Customer");
 
@@ -743,9 +695,15 @@ namespace Depot.Sql.Migrations
 
             modelBuilder.Entity("ErabliereApi.Donnees.Rappel", b =>
                 {
+                    b.HasOne("ErabliereApi.Donnees.Erabliere", "Erabliere")
+                        .WithMany()
+                        .HasForeignKey("ErabliereId");
+
                     b.HasOne("ErabliereApi.Donnees.Note", "Note")
                         .WithOne("Rappel")
                         .HasForeignKey("ErabliereApi.Donnees.Rappel", "NoteId");
+
+                    b.Navigation("Erabliere");
 
                     b.Navigation("Note");
                 });
@@ -785,10 +743,6 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Barils");
 
                     b.Navigation("Capteurs");
-
-                    b.Navigation("CapteursImage");
-
-                    b.Navigation("CustomerErablieres");
 
                     b.Navigation("Documentations");
 

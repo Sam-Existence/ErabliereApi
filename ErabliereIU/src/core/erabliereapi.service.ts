@@ -221,8 +221,18 @@ export class ErabliereApi {
         let odataOptions = "?$orderby=NoteDate desc";
             odataOptions += "&$skip=" + skip;
             odataOptions += top ? "&$top=" + top : "";
-            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter,reminderDate";
+            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter";
+            odataOptions += "&$expand=rappel";
         const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getActiveRappelNotes(idErabliereSelectionee: any): Promise<Note[]> {
+        let headers = await this.getHeaders();
+        headers = headers.set('Accept', 'application/json');
+        const rtn = await this._httpClient.get<Note[]>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/Notes' + "/ActiveRappelsNotes",
+            { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
@@ -316,6 +326,10 @@ export class ErabliereApi {
     async putNote(idErabliereSelectionnee: any, note: Note): Promise<any> {
         const headers = await this.getHeaders();
         return await this._httpClient.put<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/" + note.id, note, { headers: headers }).toPromise();
+    }
+    async putNotePeriodiciteDue(idErabliereSelectionnee: any): Promise<any> {
+    const headers = await this.getHeaders();
+    return await this._httpClient.put<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/" + "PeriodiciteNotes", { headers: headers }).toPromise();
     }
 
     async putDocumentation(idErabliereSelectionnee: any, documentation: Documentation): Promise<any> {
