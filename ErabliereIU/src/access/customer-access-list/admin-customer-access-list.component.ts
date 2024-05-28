@@ -13,7 +13,8 @@ import {AddCustomerAccessRowComponent} from "./add-customer-access-row/add-custo
         EditCustomerAccessRowComponent,
         AddCustomerAccessRowComponent
     ],
-  templateUrl: './customer-access-list.component.html'
+  templateUrl: './customer-access-list.component.html',
+  styleUrl: './customer-access-list.component.css',
 })
 export class AdminCustomerAccessListComponent {
     @Input() idCustomer?: string;

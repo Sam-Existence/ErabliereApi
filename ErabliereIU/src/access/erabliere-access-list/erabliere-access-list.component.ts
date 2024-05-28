@@ -8,6 +8,7 @@ import { AddErabliereAccessRowComponent } from "./add-erabliere-access-row/add-e
 @Component({
     selector: 'erabliere-access-list',
     templateUrl: './erabliere-access-list.component.html',
+    styleUrl: 'erabliere-access-list.component.css',
     standalone: true,
     imports: [
         ViewErabliereAccessRowComponent,

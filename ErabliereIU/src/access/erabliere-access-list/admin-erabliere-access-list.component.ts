@@ -14,6 +14,7 @@ import { AddErabliereAccessRowComponent } from "./add-erabliere-access-row/add-e
       AddErabliereAccessRowComponent
   ],
   templateUrl: 'erabliere-access-list.component.html',
+  styleUrl: 'erabliere-access-list.component.css'
 })
 export class AdminErabliereAccessListComponent implements OnInit {
     @Input() idErabliere?: string;
