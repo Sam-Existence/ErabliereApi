@@ -1,4 +1,4 @@
-using AutoMapper;
+﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ErabliereApi.Controllers
 {
@@ -49,7 +50,7 @@ namespace ErabliereApi.Controllers
         public async Task<IEnumerable<GetCapteurImage>> Lister(Guid id, string? filtreNom, CancellationToken token)
         {
             return await _depot.CapteurImage.AsNoTracking()
-                                .Where(b => b.IdErabliere == id && 
+                                .Where(b => b.IdErabliere == id &&
                                         (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
                                 .ProjectTo<GetCapteurImage>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync(token);
@@ -71,19 +72,19 @@ namespace ErabliereApi.Controllers
 
             capteurImage.Ordre = _depot.CapteurImage.Where(c => id == c.IdErabliere).Count();
             capteurImage.IdErabliere = id;
-            if(string.IsNullOrEmpty(capteurImage.MotDePasse))
+            if (string.IsNullOrEmpty(capteurImage.MotDePasse))
             {
                 capteurImage.MotDePasse = null;
             }
-            if(string.IsNullOrEmpty(capteurImage.MotDePasse))
+            if (string.IsNullOrEmpty(capteurImage.MotDePasse))
             {
                 capteurImage.Identifiant = null;
             }
 
             var entity = await _depot.CapteurImage.AddAsync(capteurImage, token);
 
-            
-            
+
+
 
             await _depot.SaveChangesAsync(token);
 
@@ -91,7 +92,7 @@ namespace ErabliereApi.Controllers
         }
 
         /// <summary>
-        /// Ajouter un capteur d'image
+        /// Modifier un capteur d'image
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
         /// <param name="idCapteur">L'identifiant du capteur à modifier</param>
@@ -104,10 +105,29 @@ namespace ErabliereApi.Controllers
         public async Task<IActionResult> Modifier(Guid id, Guid idCapteur, PutCapteurImage capteur, CancellationToken token)
         {
             var capteurImageEntity = await _depot.CapteurImage.FindAsync(idCapteur);
+            Dictionary<string, string> errors = new();
 
-            if(capteurImageEntity is null)
+            if (capteurImageEntity is null)
             {
                 return NotFound("Le capteur d'images à modifier n'existe pas");
+            }
+
+            if (capteur.Nom.IsNullOrEmpty())
+            {
+                errors.Add("nom", "Le nom est vide");
+            }
+            if (capteur.Url.IsNullOrEmpty())
+            {
+                errors.Add("url", "L'url est vide");
+            }
+            if (capteur.Port.IsNullOrEmpty())
+            {
+                errors.Add("port", "Le port est vide");
+            }
+
+            if (errors.Count > 0)
+            {
+                return BadRequest(errors);
             }
 
             capteurImageEntity.Nom = capteur.Nom;
@@ -115,7 +135,6 @@ namespace ErabliereApi.Controllers
             capteurImageEntity.Port = capteur.Port;
             capteurImageEntity.Identifiant = string.IsNullOrEmpty(capteur.Identifiant) ? null : capteur.Identifiant;
             capteurImageEntity.MotDePasse = string.IsNullOrEmpty(capteur.MotDePasse) ? null : capteur.MotDePasse;
-
 
             _depot.Update(capteurImageEntity);
 
