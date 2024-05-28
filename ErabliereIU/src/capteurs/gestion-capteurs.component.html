@@ -19,7 +19,7 @@
 <capteur-list
             [idErabliere]="idErabliereSelectionee"
             [capteurs]="capteurs"
-            (shouldRefreshCapteurs)="ngOnInit()"></capteur-list>
+            (shouldRefreshCapteurs)="getCapteurs()"></capteur-list>
 
 @if(afficherSectionAjouterCapteurImage) {
     <div>
@@ -37,5 +37,11 @@
             (click)="afficherSectionAjouterCapteurImage = true">Ajouter un capteur d'image</button>
     </div>
 }
+
+<app-capteur-image-list
+    [idErabliere]="idErabliereSelectionee"
+    [capteurs]="capteursImage"
+    (shouldRefreshCapteurs)="getCapteursImage()"
+/>
 
 
