@@ -14,7 +14,7 @@ export class CustomerListComponent {
 
     signalerSuppression(customer: Customer) {
       this.customerASupprimer.emit(customer);
-  }
+    }
 
     signalerModification(customer: Customer) {
       this.customerAModifier.emit(customer);

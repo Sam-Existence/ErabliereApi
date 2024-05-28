@@ -4,7 +4,6 @@ import { Capteur } from "src/model/capteur";
 import { CapteurListComponent } from "./capteur-list.component";
 import { AjouterCapteurComponent } from "./ajouter-capteur.component";
 import {AjouterCapteurImageComponent} from "./ajouter-capteur-image.component";
-import { NgIf } from "@angular/common";
 import {CapteurImage} from "../model/capteurImage";
 import {CapteurImageListComponent} from "./capteur-image-list.component";
 
@@ -12,7 +11,7 @@ import {CapteurImageListComponent} from "./capteur-image-list.component";
     selector: 'gestion-capteurs',
     templateUrl: 'gestion-capteurs.component.html',
     standalone: true,
-    imports: [NgIf, AjouterCapteurComponent, CapteurListComponent, AjouterCapteurImageComponent, CapteurImageListComponent]
+    imports: [AjouterCapteurComponent, CapteurListComponent, AjouterCapteurImageComponent, CapteurImageListComponent]
 })
 export class GestionCapteursComponent implements OnInit {
     @Input() idErabliereSelectionee?: any;

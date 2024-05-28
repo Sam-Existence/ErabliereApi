@@ -23,7 +23,7 @@ import { WeatherForecastComponent } from 'src/donnees/weatherforecast.component'
       WeatherForecastComponent
     ]
 })
-export class ErabliereComponent implements OnInit, OnDestroy {
+export class ErabliereComponent implements OnInit {
   idErabliereSelectionee?: any;
   erabliere?: Erabliere;
   resetErabliere: Subject<Erabliere> = new Subject<Erabliere>();
@@ -49,20 +49,14 @@ export class ErabliereComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {   
-    this.intervalImages = setInterval(() => {
-      console.log("DonneesComponent getImages", this.idErabliereSelectionee)
-      this._api.getImages(this.idErabliereSelectionee, 1).then(images => {
-        this.displayImages = images.length > 0;
-      });
-    }, 1000 * 60 * 10);
-
-    console.log("DonneesComponent getImages", this.idErabliereSelectionee)
-    this._api.getImages(this.idErabliereSelectionee, 1).then(images => {
-      this.displayImages = images.length > 0;
+    this.route.paramMap.subscribe(params => {
+      this.idErabliereSelectionee = params.get('idErabliereSelectionee');
+      console.log('erabliere.component.ngOnInit.paramMap ' + this.idErabliereSelectionee);
+      if (this.idErabliereSelectionee) {
+        this._api.getImages(this.idErabliereSelectionee, 1).then((images) => {
+          this.displayImages = images.length > 0;
+        });
+      }
     });
-  }
-
-  ngOnDestroy(): void {
-    clearInterval(this.intervalImages);
   }
 }

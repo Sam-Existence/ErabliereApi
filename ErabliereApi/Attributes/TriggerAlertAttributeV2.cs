@@ -1,7 +1,6 @@
 ﻿using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
 using ErabliereApi.Donnees.Action.Post;
-using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Mvc.Filters;
 using MimeKit;
 using System.Text;
@@ -18,9 +17,6 @@ namespace ErabliereApi.Controllers.Attributes;
 /// </summary>
 public class TriggerAlertV2Attribute : ActionFilterAttribute
 {
-    private Guid? _idCapteur;
-    private PostDonneeCapteur? _donnee;
-
     /// <summary>
     /// Contructeur par initialisation.
     /// </summary>
@@ -33,13 +29,22 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
     /// <inheritdoc />
     public override void OnActionExecuting(ActionExecutingContext context)
     {
+        GetIdAndPostInfo(context);
+    }
+
+    private static (Guid, PostDonneeCapteur?) GetIdAndPostInfo(ActionExecutingContext context)
+    {
         var id = context.ActionArguments["id"]?.ToString() ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlertV2'.");
 
-        _idCapteur = Guid.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlertV2'."));
+        var _idCapteur = Guid.Parse(id ?? throw new InvalidOperationException("Le paramètre Id est requis dans la route pour utiliser l'attribue 'TriggerAlertV2'."));
 
         try
         {
-            _donnee = context.ActionArguments.Values.Single(a => a?.GetType() == typeof(PostDonneeCapteur)) as PostDonneeCapteur;
+            var _donnee = context.ActionArguments.Values.Single(a => a?.GetType() == typeof(PostDonneeCapteur)) as PostDonneeCapteur;
+
+            context.HttpContext.Items.Add("TriggerAlertV2Attribute", (_idCapteur, _donnee));
+
+            return (_idCapteur, _donnee);
         }
         catch (InvalidOperationException e)
         {
@@ -61,24 +66,37 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
             try
             {
                 var logger = context.HttpContext.RequestServices.GetRequiredService<ILogger<TriggerAlertAttribute>>();
-
                 var depot = context.HttpContext.RequestServices.GetRequiredService<ErabliereDbContext>();
-
                 var emailConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<EmailConfig>>();
-
                 var emailService = context.HttpContext.RequestServices.GetRequiredService<IEmailService>();
-
                 var smsConfig = context.HttpContext.RequestServices.GetRequiredService<IOptions<SMSConfig>>();
+                var smsService = context.HttpContext.RequestServices.GetRequiredService<ISMSService>();                
 
-                var smsService = context.HttpContext.RequestServices.GetRequiredService<ISMSService>();
+                var contextTupple = context.HttpContext.Items["TriggerAlertV2Attribute"];
 
-                var alertes = await depot.AlerteCapteurs.AsNoTracking().Where(a => a.IdCapteur == _idCapteur && a.IsEnable).ToArrayAsync();
+                if (contextTupple == null)
+                {
+                    throw new InvalidOperationException("Les informations de l'attribue 'TriggerAlertV2' n'ont pas été trouvé dans le contexte.");
+                }
+
+                var (_idCapteur, _donnee) = ((Guid, PostDonneeCapteur?))contextTupple;
+
+                var alertes = await depot.AlerteCapteurs.AsNoTracking()
+                                                        .Where(a => a.IdCapteur == _idCapteur && a.IsEnable)
+                                                        .ToArrayAsync();
 
                 for (int i = 0; i < alertes.Length; i++)
                 {
                     var alerte = alertes[i];
 
-                    MaybeTriggerAlerte(alerte, logger, emailConfig.Value, emailService, smsConfig.Value, smsService);
+                    MaybeTriggerAlerte(
+                        alerte, 
+                        logger, 
+                        emailConfig.Value, 
+                        emailService, 
+                        smsConfig.Value, 
+                        smsService,
+                        _donnee);
                 }
             }
             catch (Exception e)
@@ -90,7 +108,14 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private void MaybeTriggerAlerte(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService, SMSConfig smsConfig, ISMSService smsService)
+    private void MaybeTriggerAlerte(
+        AlerteCapteur alerte, 
+        ILogger<TriggerAlertAttribute> logger, 
+        EmailConfig emailConfig, 
+        IEmailService emailService, 
+        SMSConfig smsConfig, 
+        ISMSService smsService,
+        PostDonneeCapteur? _donnee)
     {
         if (_donnee == null)
         {
@@ -122,8 +147,8 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
 
         if (conditionMet > 0)
         {
-            TriggerAlerteCourriel(alerte, logger, emailConfig, emailService);
-            TriggerAlerteSMS(alerte, logger, smsConfig, smsService);
+            TriggerAlerteCourriel(alerte, logger, emailConfig, emailService, _donnee);
+            TriggerAlerteSMS(alerte, logger, smsConfig, smsService, _donnee);
         }
         else
         {
@@ -133,7 +158,12 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private async void TriggerAlerteCourriel(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, EmailConfig emailConfig, IEmailService emailService)
+    private async void TriggerAlerteCourriel(
+        AlerteCapteur alerte, 
+        ILogger<TriggerAlertAttribute> logger, 
+        EmailConfig emailConfig, 
+        IEmailService emailService,
+        PostDonneeCapteur? _donnee)
     {
         if (!emailConfig.IsConfigured)
         {
@@ -167,7 +197,12 @@ public class TriggerAlertV2Attribute : ActionFilterAttribute
         }
     }
 
-    private async void TriggerAlerteSMS(AlerteCapteur alerte, ILogger<TriggerAlertAttribute> logger, SMSConfig smsConfig, ISMSService smsService)
+    private async void TriggerAlerteSMS(
+        AlerteCapteur alerte, 
+        ILogger<TriggerAlertAttribute> logger, 
+        SMSConfig smsConfig, 
+        ISMSService smsService,
+        PostDonneeCapteur? _donnee)
     {
         if (!smsConfig.IsConfigured)
         {

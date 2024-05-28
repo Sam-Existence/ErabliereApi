@@ -7,7 +7,7 @@
   </PropertyGroup>
   <PropertyGroup>
     <PackageId>ErabliereAPI.Proxy</PackageId>
-    <Version>3.1.1</Version>
+    <Version>3.2.2</Version>
     <Authors>Frédéric Jacques</Authors>
     <Company>ErabliereAPI</Company>
     <PackageTags>ErabliereAPI;Erabliere</PackageTags>
@@ -18,7 +18,7 @@
     </Description>
     <ReleaseNotes>
       - Security Patch .NET 8.0.1
-	    - Migrating to .NET 8.0
+	  - Migrating to .NET 8.0
       - Migrating to .NET 7.0
     </ReleaseNotes>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>

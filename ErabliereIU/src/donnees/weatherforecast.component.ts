@@ -10,7 +10,7 @@ import { ActivatedRoute } from '@angular/router';
   template: `
     <div id="graph-pannel-weather-forecast" class="border-top">
         <h3>Prévision 5 jours</h3>
-        <span data-bs-toggle="tooltip" title="{{ weatherData?.Headline?.Category }}" data-bs-placement="top">{{ text }}</span>
+        <span data-bs-toggle="tooltip" title="{{ weatherData?.headline?.category }}" data-bs-placement="top">{{ text }}</span>
         @if (notNullOrWhitespace(error)){
             <div class="alert alert-danger" role="alert">
                 {{error}}
@@ -81,12 +81,12 @@ export class WeatherForecastComponent implements OnInit {
       return;
     }
 
-    this.text = this.weatherData.Headline?.Text;
+    this.text = this.weatherData.headline?.text;
 
-    const dataF = this.weatherData.DailyForecasts;
-    const dates = dataF?.map(entry => entry.Date);
-    const minTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Minimum.Value));
-    const maxTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Maximum.Value));
+    const dataF = this.weatherData.dailyForecasts;
+    const dates = dataF?.map(entry => entry.date);
+    const minTemperatures = dataF?.map(entry => this.convertToCelsius(entry.temperature.minimum.value));
+    const maxTemperatures = dataF?.map(entry => this.convertToCelsius(entry.temperature.maximum.value));
 
     if (this.chart != null) {
       try {
@@ -147,8 +147,8 @@ export class WeatherForecastComponent implements OnInit {
               callbacks: {
                 title: (tti: TooltipItem<"line">[]) => {
                   const i = tti[0].dataIndex;
-                  let dt = this.weatherData?.DailyForecasts?.[i].Day.IconPhrase;
-                  let nt = this.weatherData?.DailyForecasts?.[i].Night.IconPhrase;
+                  let dt = this.weatherData?.dailyForecasts?.[i].day.iconPhrase;
+                  let nt = this.weatherData?.dailyForecasts?.[i].night.iconPhrase;
                   return `Jour: ${dt} - Nuit: ${nt}`;
                 },
                 label: function (context: any) {

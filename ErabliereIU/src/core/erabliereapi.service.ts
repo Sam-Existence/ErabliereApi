@@ -54,6 +54,12 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
+    async getErablieresAdminExpandAccess(): Promise<Erabliere[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/admin/erablieres?$expand=customerErablieres', { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
     async getErablieresExpandCapteurs(my: boolean): Promise<Erabliere[]> {
         let headers = await this.getHeaders();
         headers = headers.set('Accept', 'application/json');
@@ -65,6 +71,11 @@ export class ErabliereApi {
     async putErabliere(erabliere: Erabliere): Promise<void> {
         const headers = await this.getHeaders();
         return await this._httpClient.put<void>(this._environmentService.apiUrl + '/erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
+    }
+
+    async putErabliereAdmin(erabliere: Erabliere): Promise<void> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<void>(this._environmentService.apiUrl + '/Admin/Erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
     }
 
     async getAlertes(idErabliereSelectionnee: any): Promise<Alerte[]> {
@@ -318,9 +329,9 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
-    async getCustomersAdmin(): Promise<Customer[]> {
+    async getCustomersAdminExpandAccess(): Promise<Customer[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers', { headers: headers}).toPromise();
+        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers' + '?$expand=customerErablieres', { headers: headers}).toPromise();
         return rtn ?? [];
     }
 
@@ -348,12 +359,17 @@ export class ErabliereApi {
 
     async deleteCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
         const headers = await this.getHeaders();
-        return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess/" + idCustomer, { headers: headers }).toPromise();
+        return await this._httpClient.delete(this._environmentService.apiUrl + `/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
     }
 
     async deleteErabliere(idErabliere: any, erabliere: Erabliere): Promise<any> {
         const headers = await this.getHeaders();
         return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere, { headers: headers, body: erabliere }).toPromise();
+    }
+
+    async deleteErabliereAdmin(idErabliere: string): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/Admin/Erablieres/' + idErabliere, { headers: headers }).toPromise();
     }
 
     async getWeatherForecast(idErabliere: any): Promise<WeatherForecase> {

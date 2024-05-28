@@ -43,6 +43,7 @@ public static class RegisterExtension
             config.CreateMap<CapteurImage, GetCapteurImage>().ReverseMap();
             config.CreateMap<CapteurImage, PutCapteurImage>().ReverseMap();
             config.CreateMap<Customer, GetCustomer>().ReverseMap();
+            config.CreateMap<Erabliere, GetErabliere>().ReverseMap();
             config.CreateMap<CustomerErabliere, GetCustomerAccess>();
             config.CreateMap<Erabliere, GetCustomerAccessErabliere>().ReverseMap();
             config.CreateMap<Customer, GetCustomerAccessCustomer>().ReverseMap();
