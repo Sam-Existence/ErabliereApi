@@ -1,0 +1,18 @@
+<div class="m-3">
+    <h3>Érablières</h3>
+    <hr />
+    @if (erabliereAModifier) {
+        <modifier-erabliere-modal
+            [erabliere]="erabliereAModifier"
+            (needToUpdate)="terminerModifierErabliere($event)">
+        </modifier-erabliere-modal>
+    }
+
+    <div class="container">
+        <erabliere-list
+            [erablieres]="erablieres"
+            (erabliereASupprimer)="supprimerErabliere($event)"
+            (erabliereAModifier)="demarrerModifierErabliere($event)"
+        ></erabliere-list>
+    </div>
+</div>

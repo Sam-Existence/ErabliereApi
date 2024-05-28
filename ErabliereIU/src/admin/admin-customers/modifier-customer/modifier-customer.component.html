@@ -2,18 +2,18 @@
     <span class="text-danger">
         {{generalError}}
     </span>
-  <form [formGroup]="customerForm" (ngSubmit)="onModifier()">
-    <div class="form-group mb-2">
+  <form [formGroup]="customerForm" id="modifier-customer" (ngSubmit)="onModifier()">
+    <div [class]="'form-group mb-3' + (customerForm.controls['nom'].touched ? ' was-validated' : '')">
       <label class="form-label" for="modifier-customer-nom">Nom: </label>
       <input class="form-control" type="text" formControlName="nom" id="modifier-customer-nom" required>
       <input-error [errorObj]="errorObj" [controlName]="'nom'"></input-error>
     </div>
-    <div class="form-group mb-2">
+    <div class="form-group mb-3">
       <label class="form-label" for="modifier-customer-email">Email: </label>
       <input class="form-control" type="email" formControlName="email" id="modifier-customer-email">
       <input-error [errorObj]="errorObj" [controlName]="'email'"></input-error>
     </div>
     <button id="modifierCustomer" class="btn btn-primary me-2" type="submit">Modifier</button>
-    <button id="annulerModifiercCustomer" class="btn btn-secondary" type="button" (click)="onAnnuler()">Annuler</button>
+    <button id="annulerModifierCustomer" class="btn btn-secondary" type="button" (click)="onAnnuler()">Annuler</button>
   </form>
 </div>

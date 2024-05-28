@@ -10,7 +10,7 @@ namespace ErabliereApi.Donnees;
 /// <summary>
 /// Modèle représentant une érablière
 /// </summary>
-public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
+public class GetErabliere
 {
     /// <summary>
     /// L'id de l'érablière
@@ -95,11 +95,6 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// Liste des alertes de type trio de données relié à l'érablière
     /// </summary>
     public List<Alerte> Alertes { get; set; } = new();
-
-    /// <summary>
-    /// Liste de jonction entre l'utilisateurs et ses érablières
-    /// </summary>
-    public List<CustomerErabliere>? CustomerErablieres { get; set; }
 
     /// <inheritdoc />
     public int CompareTo([AllowNull] Erabliere other)
