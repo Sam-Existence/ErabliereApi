@@ -62,7 +62,7 @@
         <label for="motDePasse" class="form-label">Mot de passe</label>
         <input type="password" class="form-control" id="motDePasse" name="motDePasse" formControlName="motDePasse">
         <input-error [errorObj]="errorObj" controlName="motDePasse"></input-error>
-        @if(ajouterImageCapteurForm.controls['nomDUtilisateur'].hasError('maxlength')) {
+        @if(ajouterImageCapteurForm.controls['motDePasse'].hasError('maxlength')) {
             <div class="invalid-feedback">Le mot de passe est trop long.</div>
         }
     </div>

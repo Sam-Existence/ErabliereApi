@@ -4,6 +4,8 @@ import {FormControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, 
 import {OnlyDigitsDirective} from "../directives/only-digits.directive";
 import {PostCapteurImage} from "../model/postCapteurImage";
 import {ErabliereApi} from "../core/erabliereapi.service";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {PutCapteurImage} from "../model/putCapteurImage";
 
 @Component({
   selector: 'ajouter-capteur-image',
@@ -91,10 +93,10 @@ export class AjouterCapteurImageComponent {
                 nom: this.ajouterImageCapteurForm.controls['nom'].value,
                 url: this.ajouterImageCapteurForm.controls['url'].value,
                 port: this.ajouterImageCapteurForm.controls['port'].value,
-                nomDUtilisateur: this.ajouterImageCapteurForm.controls['nomDUtilisateur'].value,
+                identifiant: this.ajouterImageCapteurForm.controls['nomDUtilisateur'].value,
                 motDePasse: this.ajouterImageCapteurForm.controls['motDePasse'].value
             }
-            
+
             this._api.postCapteurImage(this.idErabliere, capteurImage).then(() => {
                 this.masquer.emit();
                 this.rechargerCapteursImage.emit();
