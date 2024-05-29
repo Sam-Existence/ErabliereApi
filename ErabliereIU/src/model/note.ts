@@ -1,3 +1,5 @@
+import {Rappel} from "./Rappel";
+
 export class Note {
   id: any
   idErabliere: any
@@ -7,7 +9,7 @@ export class Note {
   file?: string
   created?: string
   noteDate?: string | null
-  reminderDate?: string | null
+  rappel?: Rappel;
 
   // calculated field
   decodedTextFile?: string

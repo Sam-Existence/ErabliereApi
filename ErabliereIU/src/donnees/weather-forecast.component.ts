@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import {Chart, TooltipItem} from 'chart.js';
 import {ErabliereApi} from 'src/core/erabliereapi.service';
-import {WeatherForecase} from 'src/model/weatherforecast';
+import {WeatherForecast} from 'src/model/weatherforecast';
 import {Erabliere} from "../model/erabliere";
 
 @Component({
@@ -13,7 +13,7 @@ export class WeatherForecastComponent implements OnChanges, OnDestroy {
     @Input() erabliere?: Erabliere;
 
     chart: any;
-    weatherData?: WeatherForecase;
+    weatherData?: WeatherForecast;
     text?: string;
     error?: any;
     interval?: NodeJS.Timeout;
@@ -44,12 +44,12 @@ export class WeatherForecastComponent implements OnChanges, OnDestroy {
     }
 
     getWeatherData() {
-        this.api.getWeatherForecast(this.erabliere?.id).then((data: WeatherForecase) => {
+        this.api.getWeatherForecast(this.erabliere?.id).then((data: WeatherForecast) => {
             this.weatherData = data;
             this.error = null;
             this.createChart();
         }).catch((error: any) => {
-            console.log(error);
+            console.error(error);
             this.error = error;
             this.weatherData = undefined;
         });
@@ -64,21 +64,19 @@ export class WeatherForecastComponent implements OnChanges, OnDestroy {
             return;
         }
 
-        this.text = this.weatherData.Headline?.Text;
+        this.text = this.weatherData.headline?.text;
 
-        const dataF = this.weatherData.DailyForecasts;
-        const dates = dataF?.map(entry => entry.Date);
-        const minTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Minimum.Value));
-        const maxTemperatures = dataF?.map(entry => this.convertToCelsius(entry.Temperature.Maximum.Value));
+        const dataF = this.weatherData.dailyForecasts;
+        const dates = dataF?.map(entry => entry.date);
+        const minTemperatures = dataF?.map(entry => this.convertToCelsius(entry.temperature.minimum.value));
+        const maxTemperatures = dataF?.map(entry => this.convertToCelsius(entry.temperature.maximum.value));
 
         if (this.chart != null) {
             try {
-                console.log("Try destroy previous chart");
                 this.chart.destroy();
                 this.chart = null;
             } catch (error) {
-                console.log("Error destroy previous chart")
-                console.log(error);
+                console.error(error);
             }
         }
 
@@ -130,8 +128,8 @@ export class WeatherForecastComponent implements OnChanges, OnDestroy {
                             callbacks: {
                                 title: (tti: TooltipItem<"line">[]) => {
                                     const i = tti[0].dataIndex;
-                                    let dt = this.weatherData?.DailyForecasts?.[i].Day.IconPhrase;
-                                    let nt = this.weatherData?.DailyForecasts?.[i].Night.IconPhrase;
+                                    let dt = this.weatherData?.dailyForecasts?.[i].day.iconPhrase;
+                                    let nt = this.weatherData?.dailyForecasts?.[i].night.iconPhrase;
                                     return `Jour: ${dt} - Nuit: ${nt}`;
                                 },
                                 label: function (context: any) {

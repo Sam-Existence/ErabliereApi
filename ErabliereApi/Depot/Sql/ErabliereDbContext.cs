@@ -66,6 +66,11 @@ namespace ErabliereApi.Depot.Sql
         public DbSet<Note> Notes { get; private set; }
 
         /// <summary>
+        /// Table des rappels
+        /// </summary>
+        public DbSet<Rappel> Rappels { get; private set; }
+
+        /// <summary>
         /// Table de la docuemntation
         /// </summary>
         public DbSet<Documentation> Documentation { get; private set; }

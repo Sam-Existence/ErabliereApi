@@ -5,7 +5,8 @@
         {{ error.error }}
     </div>
     } @else {
-    <span data-bs-toggle="tooltip" title="{{ weatherData?.Headline?.Category }}"
+    <span data-bs-toggle="tooltip"
+          title="{{ weatherData?.headline?.category }}"
           data-bs-placement="top">{{ text }}</span>
     <div class="chart-wrapper">
         <canvas
