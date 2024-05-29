@@ -4,7 +4,7 @@ import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, Reactive
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
 import { Subject } from "rxjs";
-import {Rappel} from "../model/Rappel";
+import { Rappel } from "../model/Rappel";
 import {reminderValidator} from "./note.custom-validators";
 
 @Component({

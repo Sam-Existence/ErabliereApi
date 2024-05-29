@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnDestroy, SimpleChanges} from '@angular/core';
 import {Chart, TooltipItem} from 'chart.js';
 import {ErabliereApi} from 'src/core/erabliereapi.service';
-import {WeatherForecast} from 'src/model/weatherforecast';
+import {WeatherForecast} from 'src/model/weatherForecast';
 import {Erabliere} from "../model/erabliere";
 
 @Component({
