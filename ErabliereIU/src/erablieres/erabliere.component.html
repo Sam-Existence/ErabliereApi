@@ -11,13 +11,15 @@
                 </div>
             }
         </div>
-        @if (erabliere?.afficherTrioDonnees === true || erabliere?.afficherSectionDompeux === true) {
+        @if (erabliere?.afficherTrioDonnees || erabliere?.afficherSectionDompeux) {
         <donnees-panel [initialErabliere]="erabliere"
                     [erabliereSubject]="resetErabliere">
         </donnees-panel>
         }
+        @if (displayCapteurs) {
         <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
-        @if (erabliere?.afficherSectionBaril === true) {
+        }
+        @if (erabliere?.afficherSectionBaril) {
         <barils-panel [erabliereId]="erabliere?.id"></barils-panel>
         }
     </div>

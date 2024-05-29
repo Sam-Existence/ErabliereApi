@@ -97,7 +97,7 @@ public class CapteursController : ControllerBase
             return BadRequest("L'id de la route n'est pas le même que l'id de l'érablière dans les données du capteur à ajouter");
         }
 
-        if (capteur.Id != null && await _depot.Capteurs.AnyAsync(c => c.Id == capteur.Id))
+        if (capteur.Id != null && await _depot.Capteurs.AnyAsync(c => c.Id == capteur.Id, token))
         {
             return BadRequest($"Le capteur avec l'id '{capteur.Id}' exite déjà");
         }
@@ -134,7 +134,7 @@ public class CapteursController : ControllerBase
             return BadRequest("L'id de la route ne concorde pas avec l'id de l'érablière possédant le capteur à modifier.");
         }
 
-        var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id);
+        var capteurEntity = await _depot.Capteurs.FindAsync(capteur.Id, token);
 
         if (capteurEntity == null || capteurEntity.IdErabliere != capteur.IdErabliere)
         {

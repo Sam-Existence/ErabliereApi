@@ -7,17 +7,15 @@ import { GraphPannelComponent } from './sub-panel/graph-pannel.component';
 import { BarPannelComponent } from './sub-panel/bar-pannel.component';
 import { VacciumGraphPannelComponent } from './sub-panel/vaccium-graph-pannel.component';
 import { calculerMoyenne } from './util';
-import { ImagePanelComponent } from './sub-panel/image-pannel.component';
 
 @Component({
   selector: 'donnees-panel',
   templateUrl: './donnees.component.html',
   standalone: true,
   imports: [
-    GraphPannelComponent, 
-    VacciumGraphPannelComponent, 
-    BarPannelComponent, 
-    ImagePanelComponent
+    GraphPannelComponent,
+    VacciumGraphPannelComponent,
+    BarPannelComponent,
   ]
 })
 export class DonneesComponent implements OnInit {
@@ -64,13 +62,10 @@ export class DonneesComponent implements OnInit {
   titre_dompeux = "Dompeux"
   dompeux: ChartDataset[] = []
   dompeux_line_type: ChartType = "bar"
-  dompeux_chart_type: string = "bar"
 
   erabliereAfficherTrioDonnees: boolean | undefined;
   erabliereAfficherSectionDompeux: boolean | undefined;
   erabliereId: any;
-
-  displayImages: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi) { }
 
