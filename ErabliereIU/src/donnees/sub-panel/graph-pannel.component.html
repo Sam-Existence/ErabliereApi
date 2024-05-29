@@ -1,14 +1,14 @@
-<div id="graph-pannel-{{idCapteur}}" class="border-top">
+<div id="graph-pannel-{{idCapteur}}">
     <h3>{{ titre }} {{ valeurActuel }} {{ symbole }} {{ mean }}</h3>
 
     <div class="container">
         <div class="col-6 btn-group">
             <div class="dropdown me-2">
-                <button class="btn btn-secondary dropdown-toggle" 
-                   href="#" 
+                <button class="btn btn-secondary dropdown-toggle"
+                   href="#"
                    role="button"
-                   data-bs-toggle="dropdown" 
-                   aria-haspopup="true" 
+                   data-bs-toggle="dropdown"
+                   aria-haspopup="true"
                    aria-expanded="false">
                     Durée {{ duree }}
             </button>
@@ -29,9 +29,9 @@
         </div>
 
         <div class="col-12">
-            <ajouter-donnee-capteur 
-                *ngIf="ajouterDonneeDepuisInterface" 
-                [idCapteur]="idCapteur" 
+            <ajouter-donnee-capteur
+                *ngIf="ajouterDonneeDepuisInterface"
+                [idCapteur]="idCapteur"
                 (needToUpdate)="updateDonneesCapteur($event)"
                 [symbole]="symbole" />
             <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
@@ -41,10 +41,10 @@
     </div>
     <div class="chart-wrapper">
         <canvas baseChart class="chart"
-            [datasets]="datasets" 
-            [labels]="timeaxes" 
+            [datasets]="datasets"
+            [labels]="timeaxes"
             [options]="lineChartOptions"
-            [legend]="lineChartLegend" 
+            [legend]="lineChartLegend"
             [plugins]="lineChartPlugins"
             [type]="lineChartType">
         </canvas>

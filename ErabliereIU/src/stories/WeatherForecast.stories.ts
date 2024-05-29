@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-import { WeatherForecastComponent } from 'src/donnees/weatherforecast.component';
-import { Unit } from 'src/model/weatherforecast';
+import { WeatherForecastComponent } from 'src/donnees/weather-forecast.component';
+import { Unit } from 'src/model/weatherForecast';
 
 const meta: Meta<WeatherForecastComponent> = {
   title: 'WeatherForecast',
@@ -20,7 +20,7 @@ type Story = StoryObj<WeatherForecastComponent>;
 
 export const Vide: Story = {
   args: {
-    
+
   }
 };
 
@@ -34,182 +34,182 @@ export const Forecast5Days: Story = {
   args: {
     text: "Neige continuant jusqu’à demain après-midi; la tempête totalisera de 4 à 8 pouces",
     weatherData: {
-        "Headline": {
-            "EffectiveDate": "2023-11-27T01:00:00-05:00",
-            "EffectiveEpochDate": 1701064800,
-            "Severity": 2,
-            "Text": "Snow continuing through tomorrow afternoon with a storm total of 4-8 inches",
-            "Category": "snow",
-            "EndDate": "2023-11-28T19:00:00-05:00",
-            "EndEpochDate": 1701216000,
-            "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?lang=en-us",
-            "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?lang=en-us"
+        "headline": {
+            "effectiveDate": "2023-11-27T01:00:00-05:00",
+            "effectiveEpochDate": 1701064800,
+            "severity": 2,
+            "text": "Snow continuing through tomorrow afternoon with a storm total of 4-8 inches",
+            "category": "snow",
+            "endDate": "2023-11-28T19:00:00-05:00",
+            "endEpochDate": 1701216000,
+            "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?lang=en-us",
+            "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?lang=en-us"
         },
-        "DailyForecasts": [
+        "dailyForecasts": [
             {
-                "Date": "2023-11-27T07:00:00-05:00",
-                "EpochDate": 1701086400,
-                "Temperature": {
-                    "Minimum": {
-                        "Value": 22.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                "date": "2023-11-27T07:00:00-05:00",
+                "epochDate": 1701086400,
+                "temperature": {
+                    "minimum": {
+                        "value": 22.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     },
-                    "Maximum": {
-                        "Value": 39.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                    "maximum": {
+                        "value": 39.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     }
                 },
-                "Day": {
-                    "Icon": 22,
-                    "IconPhrase": "Snow",
-                    "HasPrecipitation": true,
-                    "PrecipitationType": "Mixed",
-                    "PrecipitationIntensity": "Moderate"
+                "day": {
+                    "icon": 22,
+                    "iconPhrase": "Snow",
+                    "hasPrecipitation": true,
+                    "precipitationType": "Mixed",
+                    "precipitationIntensity": "Moderate"
                 },
-                "Night": {
-                    "Icon": 19,
-                    "IconPhrase": "Flurries",
-                    "HasPrecipitation": true,
-                    "PrecipitationType": "Snow",
-                    "PrecipitationIntensity": "Light"
+                "night": {
+                    "icon": 19,
+                    "iconPhrase": "Flurries",
+                    "hasPrecipitation": true,
+                    "precipitationType": "Snow",
+                    "precipitationIntensity": "Light"
                 },
-                "Sources": [
+                "sources": [
                     "AccuWeather"
                 ],
-                "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=1&lang=en-us",
-                "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=1&lang=en-us"
+                "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=1&lang=en-us",
+                "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=1&lang=en-us"
             },
             {
-                "Date": "2023-11-28T07:00:00-05:00",
-                "EpochDate": 1701172800,
-                "Temperature": {
-                    "Minimum": {
-                        "Value": 15.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                "date": "2023-11-28T07:00:00-05:00",
+                "epochDate": 1701172800,
+                "temperature": {
+                    "minimum": {
+                        "value": 15.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     },
-                    "Maximum": {
-                        "Value": 27.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                    "maximum": {
+                        "value": 27.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     }
                 },
-                "Day": {
-                    "Icon": 19,
-                    "IconPhrase": "Flurries",
-                    "HasPrecipitation": true,
-                    "PrecipitationType": "Snow",
-                    "PrecipitationIntensity": "Light"
+                "day": {
+                    "icon": 19,
+                    "iconPhrase": "Flurries",
+                    "hasPrecipitation": true,
+                    "precipitationType": "Snow",
+                    "precipitationIntensity": "Light"
                 },
-                "Night": {
-                    "Icon": 43,
-                    "IconPhrase": "Mostly cloudy w/ flurries",
-                    "HasPrecipitation": true,
-                    "PrecipitationType": "Snow",
-                    "PrecipitationIntensity": "Light"
+                "night": {
+                    "icon": 43,
+                    "iconPhrase": "Mostly cloudy w/ flurries",
+                    "hasPrecipitation": true,
+                    "precipitationType": "Snow",
+                    "precipitationIntensity": "Light"
                 },
-                "Sources": [
+                "sources": [
                     "AccuWeather"
                 ],
-                "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=2&lang=en-us",
-                "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=2&lang=en-us"
+                "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=2&lang=en-us",
+                "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=2&lang=en-us"
             },
             {
-                "Date": "2023-11-29T07:00:00-05:00",
-                "EpochDate": 1701259200,
-                "Temperature": {
-                    "Minimum": {
-                        "Value": 16.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                "date": "2023-11-29T07:00:00-05:00",
+                "epochDate": 1701259200,
+                "temperature": {
+                    "minimum": {
+                        "value": 16.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     },
-                    "Maximum": {
-                        "Value": 21.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                    "maximum": {
+                        "value": 21.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     }
                 },
-                "Day": {
-                    "Icon": 4,
-                    "IconPhrase": "Intermittent clouds",
-                    "HasPrecipitation": false
+                "day": {
+                    "icon": 4,
+                    "iconPhrase": "Intermittent clouds",
+                    "hasPrecipitation": false
                 },
-                "Night": {
-                    "Icon": 38,
-                    "IconPhrase": "Mostly cloudy",
-                    "HasPrecipitation": false
+                "night": {
+                    "icon": 38,
+                    "iconPhrase": "Mostly cloudy",
+                    "hasPrecipitation": false
                 },
-                "Sources": [
+                "sources": [
                     "AccuWeather"
                 ],
-                "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=3&lang=en-us",
-                "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=3&lang=en-us"
+                "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=3&lang=en-us",
+                "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=3&lang=en-us"
             },
             {
-                "Date": "2023-11-30T07:00:00-05:00",
-                "EpochDate": 1701345600,
-                "Temperature": {
-                    "Minimum": {
-                        "Value": 30.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                "date": "2023-11-30T07:00:00-05:00",
+                "epochDate": 1701345600,
+                "temperature": {
+                    "minimum": {
+                        "value": 30.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     },
-                    "Maximum": {
-                        "Value": 34.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                    "maximum": {
+                        "value": 34.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     }
                 },
-                "Day": {
-                    "Icon": 6,
-                    "IconPhrase": "Mostly cloudy",
-                    "HasPrecipitation": false
+                "day": {
+                    "icon": 6,
+                    "iconPhrase": "Mostly cloudy",
+                    "hasPrecipitation": false
                 },
-                "Night": {
-                    "Icon": 26,
-                    "IconPhrase": "Freezing rain",
-                    "HasPrecipitation": true,
-                    "PrecipitationType": "Mixed",
-                    "PrecipitationIntensity": "Moderate"
+                "night": {
+                    "icon": 26,
+                    "iconPhrase": "Freezing rain",
+                    "hasPrecipitation": true,
+                    "precipitationType": "Mixed",
+                    "precipitationIntensity": "Moderate"
                 },
-                "Sources": [
+                "sources": [
                     "AccuWeather"
                 ],
-                "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=4&lang=en-us",
-                "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=4&lang=en-us"
+                "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=4&lang=en-us",
+                "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=4&lang=en-us"
             },
             {
-                "Date": "2023-12-01T07:00:00-05:00",
-                "EpochDate": 1701432000,
-                "Temperature": {
-                    "Minimum": {
-                        "Value": 21.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                "date": "2023-12-01T07:00:00-05:00",
+                "epochDate": 1701432000,
+                "temperature": {
+                    "minimum": {
+                        "value": 21.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     },
-                    "Maximum": {
-                        "Value": 39.0,
-                        "Unit": Unit.F,
-                        "UnitType": 18
+                    "maximum": {
+                        "value": 39.0,
+                        "unit": Unit.F,
+                        "unitType": 18
                     }
                 },
-                "Day": {
-                    "Icon": 7,
-                    "IconPhrase": "Cloudy",
-                    "HasPrecipitation": false
+                "day": {
+                    "icon": 7,
+                    "iconPhrase": "Cloudy",
+                    "hasPrecipitation": false
                 },
-                "Night": {
-                    "Icon": 36,
-                    "IconPhrase": "Intermittent clouds",
-                    "HasPrecipitation": false
+                "night": {
+                    "icon": 36,
+                    "iconPhrase": "Intermittent clouds",
+                    "hasPrecipitation": false
                 },
-                "Sources": [
+                "sources": [
                     "AccuWeather"
                 ],
-                "MobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=5&lang=en-us",
-                "Link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=5&lang=en-us"
+                "mobileLink": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=5&lang=en-us",
+                "link": "http://www.accuweather.com/en/ca/saint-victor/g0m/daily-weather-forecast/45942_pc?day=5&lang=en-us"
             }
         ]
     }

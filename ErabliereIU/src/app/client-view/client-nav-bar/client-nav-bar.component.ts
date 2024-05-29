@@ -36,7 +36,7 @@ export class ClientNavBarComponent implements OnInit {
     this._authService = authFactoryService.getAuthorisationService()
     this.useAuthentication = this._environmentService.authEnable ?? false;
     this.thereIsAtLeastOneErabliere = false
-    this.isLoggedIn = false
+    this.isLoggedIn = !this.useAuthentication
     this.urls = this._environmentService.additionnalUrls;
   }
 

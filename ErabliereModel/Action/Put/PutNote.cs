@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ErabliereApi.Donnees.Action.Post;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Put;
@@ -30,9 +31,9 @@ public class PutNote
     public DateTimeOffset? NoteDate { get; set; }
 
     /// <summary>
-    /// Date de rappel de la note
+    /// Rappel associé à la note
     /// </summary>
-    public DateTimeOffset? ReminderDate { get; set; }
+    public PutRappel? Rappel { get; set; }
 
     /// <summary>
     /// Filtre de notification. Permet à la note d'afficher comme une notification

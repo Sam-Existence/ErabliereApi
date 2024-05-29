@@ -1,7 +1,10 @@
-﻿namespace ErabliereApi.Services;
+﻿using ErabliereApi.Services.AccuWeatherModels;
+
+namespace ErabliereApi.Services;
 
 public interface IWeaterService
 {
     ValueTask<string> GetLocationCodeAsync(string postalCode);
-    ValueTask<object?> GetWeatherForecastAsync(string location, string lang);
+    ValueTask<WeatherForecastResponse?> GetWeatherForecastAsync(string location, string lang);
+    ValueTask<HourlyWeatherForecastResponse[]?> GetHoulyForecastAsync(string location, string lang);
 }

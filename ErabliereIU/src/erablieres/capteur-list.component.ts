@@ -37,7 +37,6 @@ export class CapteurListComponent implements OnChanges {
 
     ngOnChanges(changes: SimpleChanges) {
         if(changes['capteurs']) {
-            console.log(this.capteurs);
             this.capteurs.forEach((capteur, key) => {
                 this.formArrayIdToKey.set(capteur.id ?? '', key);
                 const capteurFormGroup = this.fb.group({
@@ -117,8 +116,7 @@ export class CapteurListComponent implements OnChanges {
         } else {
             if (this.getCapteur(capteur.id).valid) {
                 const formCapteur = this.getCapteur(capteur.id);
-                console.log(formCapteur)
-                console.log(this.editedCapteurs)
+
                 this.editedCapteurs[capteur.id] = {...capteur};
                 this.editedCapteurs[capteur.id].indiceOrdre = formCapteur.controls['indice'].value;
                 this.editedCapteurs[capteur.id].nom = formCapteur.controls['nom'].value;
@@ -127,7 +125,7 @@ export class CapteurListComponent implements OnChanges {
                 this.editedCapteurs[capteur.id].ajouterDonneeDepuisInterface = formCapteur.controls['estSaisieManuelle'].value;
                 this.editedCapteurs[capteur.id].dc = capteur.dc;
                 const putCapteur = this.editedCapteurs[capteur.id];
-                console.log(putCapteur);
+
                 this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
                     this.shouldRefreshCapteurs.emit();
                     if (capteur.id) {

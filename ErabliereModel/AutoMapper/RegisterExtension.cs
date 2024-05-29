@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using System;
@@ -41,7 +41,7 @@ public static class RegisterExtension
             config.CreateMap<Capteur, GetCapteurs>().ReverseMap();
             config.CreateMap<Customer, GetCustomer>().ReverseMap();
             config.CreateMap<Erabliere, GetErabliere>().ReverseMap();
-            config.CreateMap<CustomerErabliere, GetCustomerAccess>();
+            config.CreateMap<CustomerErabliere, GetCustomerAccess>().ReverseMap();
             config.CreateMap<Erabliere, GetCustomerAccessErabliere>().ReverseMap();
             config.CreateMap<Customer, GetCustomerAccessCustomer>().ReverseMap();
             config.CreateMap<Dompeux, GetDompeux>().ReverseMap();
@@ -68,6 +68,7 @@ public static class RegisterExtension
                   .ForMember(d => d.File, o => o.MapFrom(p => p.File != null ? Convert.ToBase64String(p.File) : null));
             config.CreateMap<Note, PostNoteMultipartResponse>()
                   .ReverseMap();
+            config.CreateMap<PostRappel, Rappel>();
 
             config.CreateMap<PutAlerteCapteur, AlerteCapteur>();
 

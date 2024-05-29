@@ -1,8 +1,8 @@
-<div class="modal fade" 
-     id="modifierErabliereFormModal" 
-     tabindex="-1" 
-     role="dialog" 
-     aria-labelledby="modifierErabliereFormModalLabel" 
+<div class="modal fade"
+     id="modifierErabliereFormModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="modifierErabliereFormModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
@@ -14,21 +14,36 @@
             </div>
             <div class="modal-body">
                 <erabliere-form></erabliere-form>
-                <div *ngIf="authEnabled">
-                    <hr />
-                    <modifier-acces-utilisateurs [idErabliere]="idErabliere"></modifier-acces-utilisateurs>
-                </div>
+                @if(authEnabled) {
                 <div class="container">
-                    <div *ngIf="!afficherSectionDeleteErabliere">
+                    <hr />
+                        @if(!afficherSectionAcces) {
+                        <button
+                            type="button"
+                            class="btn btn-outline-secondary"
+                            (click)="changerAffichageAcces()">
+                            Afficher les accès
+                        </button>
+                        } @else {
+                        <h5>Accès</h5>
+                    <erabliere-access-list [idErabliere]="erabliere?.id"></erabliere-access-list>
+                    }
+                </div>
+                }
+                <div class="container">
+                    @if(!afficherSectionDeleteErabliere) {
+                    <div>
                         <hr />
                         <button type="button" class="btn btn-outline-danger btn-sm" (click)="showDeleteErabliere()">Supprimer</button>
                     </div>
-                    <div *ngIf="afficherSectionDeleteErabliere">
+                    } @else {
+                    <div>
                         <hr />
                         <h5 class="text-danger">Supprimer l'érablière</h5>
-                        <p class="text-danger">Cette action entrainera la suppression de l'érablère et de tout les données relié à l'érablière. Les données ne pourront pas être récupéré.</p>
+                        <p class="text-danger">Cette action entrainera la suppression de l'érablère et de tout ses données liées. Les données ne pourront pas être récupérées.</p>
                         <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteErabliere()">Supprimer</button>
                     </div>
+                    }
                 </div>
             </div>
             <div class="modal-footer">

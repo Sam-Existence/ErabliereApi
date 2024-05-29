@@ -3,27 +3,27 @@
 #nullable disable
 public class WeatherForecastResponse
 {
-    public Headline Headline { get; set; }
+    public Headline? Headline { get; set; }
 
-    public Dailyforecast[] DailyForecasts { get; set; }
+    public Dailyforecast[]? DailyForecasts { get; set; }
 }
 
 public class Headline
 {
-    public DateTime EffectiveDate { get; set; }
+    public DateTimeOffset? EffectiveDate { get; set; }
     public int EffectiveEpochDate { get; set; }
     public int Severity { get; set; }
     public string Text { get; set; }
     public string Category { get; set; }
-    public DateTime EndDate { get; set; }
-    public int EndEpochDate { get; set; }
+    public DateTimeOffset? EndDate { get; set; }
+    public int? EndEpochDate { get; set; }
     public string MobileLink { get; set; }
     public string Link { get; set; }
 }
 
 public class Dailyforecast
 {
-    public DateTime Date { get; set; }
+    public DateTimeOffset? Date { get; set; }
     public int EpochDate { get; set; }
     public Temperature Temperature { get; set; }
     public Day Day { get; set; }

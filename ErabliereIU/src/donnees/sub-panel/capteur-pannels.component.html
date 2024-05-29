@@ -1,4 +1,4 @@
-<div class="row justify-content-end">
+<div class="row border-top pt-2">
     <div class="btn-group d-none d-md-block text-end" role="group">
         <input type="radio"
                class="btn-check"
@@ -28,7 +28,7 @@
         <label class="btn btn-secondary" for="petit">Petit</label>
     </div>
 </div>
-<div class="row">
+<div class="row pb-2">
     @for (capteur of capteurs; track $index){
     <div [ngClass]="this.dimension">
         <graph-pannel [titre]="capteur.nom"

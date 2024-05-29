@@ -1,0 +1,18 @@
+<div id="graph-pannel-weather-forecast">
+    <h3>Prévision 5 jours</h3>
+    @if (error) {
+    <div class="alert alert-danger" role="alert">
+        {{ error.error }}
+    </div>
+    } @else {
+    <span data-bs-toggle="tooltip"
+          title="{{ weatherData?.headline?.category }}"
+          data-bs-placement="top">{{ text }}</span>
+    <div class="chart-wrapper">
+        <canvas
+            id="weatherChart"
+            class="chart">
+        </canvas>
+    </div>
+    }
+</div>

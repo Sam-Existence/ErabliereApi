@@ -8,7 +8,7 @@ import { CapteurPannelsComponent } from 'src/donnees/sub-panel/capteur-pannels.c
 import { Subject } from 'rxjs';
 import { ImagePanelComponent } from 'src/donnees/sub-panel/image-pannel.component';
 import { RappelsComponent } from 'src/rappel/rappels.component';
-import { WeatherForecastComponent } from 'src/donnees/weatherforecast.component';
+import { WeatherForecastComponent } from 'src/donnees/weather-forecast.component';
 
 @Component({
     selector: 'erablieres',
