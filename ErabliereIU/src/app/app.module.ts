@@ -11,7 +11,6 @@ import { provideNgxMask } from 'ngx-mask';
 import { BrowserModule } from '@angular/platform-browser';
 import 'chartjs-adapter-date-fns';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 declare global {
   interface Window {
@@ -103,8 +102,7 @@ export function MSALInstanceFactory(appConfig: EnvironmentService): IPublicClien
         },
         MsalService,
         provideNgxMask(),
-        provideRouter(routes, withComponentInputBinding()),
-        provideAnimationsAsync()
+        provideRouter(routes, withComponentInputBinding())
     ],
     imports: [
         BrowserModule,
