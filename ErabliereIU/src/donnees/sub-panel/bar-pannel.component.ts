@@ -5,16 +5,16 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 @Component({
     selector: 'bar-pannel',
     template: `
-        <div class="border-top">
+        <div>
             <h3>{{ titre }} {{ valeurActuel }} {{ symbole }}</h3>
 
             <div class="btn-group">
                 <div class="dropdown show">
-                    <a class="btn btn-secondary dropdown-toggle" 
-                       href="#" role="button" 
-                       id="dropdownMenuLink" 
-                       data-toggle="dropdown" 
-                       aria-haspopup="true" 
+                    <a class="btn btn-secondary dropdown-toggle"
+                       href="#" role="button"
+                       id="dropdownMenuLink"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
                        aria-expanded="false">
                         Durée {{ duree }}
                     </a>
@@ -27,10 +27,10 @@ import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
             </div>
             <div class="chart-wrapper">
                 <canvas baseChart class="chart"
-                    [datasets]="datasets" 
-                    [labels]="timeaxes" 
+                    [datasets]="datasets"
+                    [labels]="timeaxes"
                     [options]="lineChartOptions"
-                    [legend]="lineChartLegend" 
+                    [legend]="lineChartLegend"
                     [plugins]="lineChartPlugins"
                     [type]="barChartType">
                 </canvas>
@@ -53,7 +53,7 @@ export class BarPannelComponent {
 
     lineChartLegend: boolean
     lineChartPlugins: never[]
-    
+
     @Input() titre:string
     duree:string
     @Input() valeurActuel:string

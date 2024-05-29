@@ -3,7 +3,6 @@ import { ErabliereApi } from "src/core/erabliereapi.service";
 import { UntypedFormGroup, UntypedFormBuilder, FormControl, Validators, ReactiveFormsModule } from "@angular/forms";
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
-import { NgIf } from "@angular/common";
 import { Subject } from "rxjs";
 import {Rappel} from "../model/Rappel";
 import {reminderValidator} from "./note.custom-validators";
@@ -12,7 +11,7 @@ import {reminderValidator} from "./note.custom-validators";
     selector: 'modifier-note',
     templateUrl: 'modifier-note.component.html',
     standalone: true,
-    imports: [NgIf, ReactiveFormsModule, InputErrorComponent]
+    imports: [ReactiveFormsModule, InputErrorComponent]
 })
 export class ModifierNoteComponent implements OnInit {
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {

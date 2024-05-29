@@ -1,9 +1,9 @@
 <form [formGroup]="ajoutCapteurForm" class="mb-3" novalidate>
     <!-- ajouter la section des erreurs général -->
     @if (generalError) {
-        <span class="text-danger">
+        <div class="alert alert-danger" role="alert">
             {{ generalError }}
-        </span>
+        </div>
     }
     <div [class]="'mb-3' + (ajoutCapteurForm.controls['nom'].touched ? ' was-validated' : '')">
         <label for="nom" class="form-label">Nom</label>

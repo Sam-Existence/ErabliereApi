@@ -14,9 +14,9 @@ import { ImagePanelComponent } from './sub-panel/image-pannel.component';
   templateUrl: './donnees.component.html',
   standalone: true,
   imports: [
-    GraphPannelComponent, 
-    VacciumGraphPannelComponent, 
-    BarPannelComponent, 
+    GraphPannelComponent,
+    VacciumGraphPannelComponent,
+    BarPannelComponent,
     ImagePanelComponent
   ]
 })
@@ -69,8 +69,6 @@ export class DonneesComponent implements OnInit {
   erabliereAfficherTrioDonnees: boolean | undefined;
   erabliereAfficherSectionDompeux: boolean | undefined;
   erabliereId: any;
-
-  displayImages: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi) { }
 

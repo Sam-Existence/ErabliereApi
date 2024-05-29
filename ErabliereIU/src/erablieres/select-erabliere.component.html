@@ -1,0 +1,13 @@
+<div [formGroup]="form" [class]="'form-group' + (form.controls.erabliere.touched ? ' was-validated' : '')">
+    <select
+        class="form-select"
+        formControlName="erabliere"
+        (change)="onSelectChange($event)">
+        <option selected disabled hidden [value]="null">Choisir une érablière</option>
+        @for (erabliere of erablieres; track erabliere.id) {
+        <option [value]="erabliere.id">
+            {{ erabliere.nom }}
+        </option>
+        }
+    </select>
+</div>

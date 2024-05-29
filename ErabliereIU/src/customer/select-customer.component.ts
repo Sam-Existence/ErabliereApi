@@ -1,24 +1,32 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { Customer } from 'src/model/customer';
-import { NgFor } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import {FormBuilder, FormControl, ReactiveFormsModule, UntypedFormGroup, Validators} from '@angular/forms';
 
 @Component({
     selector: 'select-customer',
     templateUrl: 'select-customer.component.html',
     standalone: true,
-    imports: [ReactiveFormsModule, NgFor]
+    imports: [ReactiveFormsModule]
 })
 
 export class SelectCustomerComponent implements OnInit {
-    @ViewChild('select') selectRef?: ElementRef;
-    customers: Customer[] = [];
+    @Input() form: UntypedFormGroup;
     @Output() customerSelected = new EventEmitter<Customer>();
 
-    constructor(private _api: ErabliereApi) { }
+    customers: Customer[] = [];
 
-    ngOnInit() { 
+    constructor(private _api: ErabliereApi, private formBuilder: FormBuilder) {
+        this.form = this.formBuilder.group({
+            customer: new FormControl(null,
+                {
+                    validators: [Validators.required],
+                    updateOn: 'blur'
+                })
+        });
+    }
+
+    ngOnInit() {
         this._api.getCustomers().then(customers => {
             this.customers = customers;
         })
@@ -29,6 +37,10 @@ export class SelectCustomerComponent implements OnInit {
     }
 
     onSelectChange(event: any) {
-        this.customerSelected.emit(this.customers.find(c => c.id == event.target.value));
+        let customer;
+        if (event.target.value) {
+            customer = this.customers.find(c => c.id === event.target.value);
+        }
+        this.customerSelected.emit(customer);
     }
 }
