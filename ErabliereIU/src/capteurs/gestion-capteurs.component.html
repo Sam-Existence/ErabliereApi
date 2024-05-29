@@ -27,7 +27,7 @@
 @if(afficherSectionAjouterCapteurImage) {
     <ajouter-capteur-image
         (masquer)="afficherSectionAjouterCapteurImage = false"
-        (rechargerCapteursImage)="'temp'"
+        (rechargerCapteursImage)="getCapteursImage()"
         [idErabliere]="idErabliereSelectionee"
     />
 } @else {
