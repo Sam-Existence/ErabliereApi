@@ -9,10 +9,10 @@
         <input [class]="'form-control'" type="text" formControlName="title" id="ajouter-note-title" />
         @if (noteForm.controls['title'].errors && noteForm.controls['title'].touched) {
           <div>
-            @if (noteForm.controls['title'].errors?.required) {
+            @if (noteForm.controls['title'].errors!.required) {
               <small class="text-danger">Titre obligatoire.</small>
             }
-            @if (noteForm.controls['title'].errors?.maxlength) {
+            @if (noteForm.controls['title'].errors!.maxlength) {
               <small class="text-danger">Taille maximal dépassée.</small>
             }
           </div>
@@ -24,7 +24,7 @@
         <input class="form-control" type="text" formControlName="text" id="ajouter-note-text" />
         @if (noteForm.controls['text'].errors && noteForm.controls['text'].touched) {
           <div>
-            @if (noteForm.controls['text'].errors?.maxlength) {
+            @if (noteForm.controls['text'].errors!.maxlength) {
               <small class="text-danger">Taille maximal dépassée.</small>
             }
           </div>
@@ -56,10 +56,10 @@
           <input type="date" id="dateRappel" class="form-control" formControlName="dateRappel">
           @if (noteForm.controls['dateRappel'].errors && noteForm.controls['dateRappel'].touched) {
             <div>
-              @if (noteForm.controls['dateRappel'].errors?.dateRappelRequired) {
+              @if (noteForm.controls['dateRappel'].errors!.dateRappelRequired) {
                 <small class="text-danger">Date de rappel obligatoire.</small>
               }
-              @if (noteForm.controls['dateRappel'].errors?.dateRappelPast) {
+              @if (noteForm.controls['dateRappel'].errors!.dateRappelPast) {
                 <small class="text-danger">Date de rappel doit être dans le futur.</small>
               }
             </div>
@@ -72,7 +72,7 @@
           <input type="date" id="dateRappelFin" class="form-control" formControlName="dateRappelFin">
           @if (noteForm.controls['dateRappelFin'].errors && noteForm.controls['dateRappelFin'].touched) {
             <div>
-              @if (noteForm.controls['dateRappelFin'].errors?.dateRappelFinBeforeDateRappel) {
+              @if (noteForm.controls['dateRappelFin'].errors!.dateRappelFinBeforeDateRappel) {
                 <small class="text-danger">Date de fin de rappel doit être après ou égale à la date de début de rappel.</small>
               }
             </div>
@@ -91,7 +91,7 @@
           </select>
           @if (noteForm.controls['periodicite'].errors && noteForm.controls['periodicite'].touched) {
             <div>
-              @if (noteForm.controls['periodicite'].errors?.datesRequiredForPeriodicite) {
+              @if (noteForm.controls['periodicite'].errors!.datesRequiredForPeriodicite) {
                 <small class="text-danger">Date de fin de rappel obligatoire pour une périodicité.</small>
               }
             </div>

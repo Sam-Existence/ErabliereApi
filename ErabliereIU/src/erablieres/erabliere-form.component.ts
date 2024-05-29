@@ -2,12 +2,9 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
 import { Erabliere } from 'src/model/erabliere';
-import { GestionCapteursComponent } from '../capteurs/gestion-capteurs.component';
-import { NgIf, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { InputErrorComponent } from '../formsComponents/input-error.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { Capteur } from 'src/model/capteur';
-import { ErabliereApi } from 'src/core/erabliereapi.service';
 
 @Component({
     selector: 'erabliere-form',
@@ -17,8 +14,6 @@ import { ErabliereApi } from 'src/core/erabliereapi.service';
         ReactiveFormsModule,
         FormsModule,
         InputErrorComponent,
-        NgIf,
-        GestionCapteursComponent,
         NgClass,
     ],
 })
@@ -38,27 +33,19 @@ export class ErabliereFormComponent implements OnInit {
     plusOptionsButtonText: string = "Plus d'options";
     @Input() errorObj?: any
     @Input() generalError?: string
-    capteurs: Capteur[] = [];
 
-    constructor(private readonly auth: AuthorisationFactoryService, private api: ErabliereApi) {
+    constructor(private readonly auth: AuthorisationFactoryService) {
 
     }
 
-    async ngOnInit() {
+    ngOnInit() {
         if (this.auth.getAuthorisationService().type == "AuthDisabled") {
             this.erabliere.isPublic = true;
         }
     }
 
-    async afficherPlusOptions() {
+    afficherPlusOptions() {
         this.plusdOptions = !this.plusdOptions;
-        if (this.plusdOptions) {
-            this.plusOptionsButtonText = "Moins d'options";
-            if (this.erabliere.id != null) {
-                this.capteurs = await this.api.getCapteurs(this.erabliere.id);
-            }
-        } else {
-            this.plusOptionsButtonText = "Plus d'options";
-        }
+        this.plusOptionsButtonText = this.plusdOptions ? "Moins d'options" : "Plus d'options";
     }
 }

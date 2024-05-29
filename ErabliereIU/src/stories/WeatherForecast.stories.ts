@@ -1,7 +1,7 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
-import { WeatherForecastComponent } from 'src/donnees/weatherforecast.component';
-import { Unit } from 'src/model/weatherforecast';
+import { WeatherForecastComponent } from 'src/donnees/weather-forecast.component';
+import { Unit } from 'src/model/weatherForecast';
 
 const meta: Meta<WeatherForecastComponent> = {
   title: 'WeatherForecast',
@@ -20,7 +20,7 @@ type Story = StoryObj<WeatherForecastComponent>;
 
 export const Vide: Story = {
   args: {
-    
+
   }
 };
 

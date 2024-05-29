@@ -116,6 +116,7 @@ export class CapteurListComponent implements OnChanges {
         } else {
             if (this.getCapteur(capteur.id).valid) {
                 const formCapteur = this.getCapteur(capteur.id);
+
                 this.editedCapteurs[capteur.id] = {...capteur};
                 this.editedCapteurs[capteur.id].indiceOrdre = formCapteur.controls['indice'].value;
                 this.editedCapteurs[capteur.id].nom = formCapteur.controls['nom'].value;
@@ -124,6 +125,7 @@ export class CapteurListComponent implements OnChanges {
                 this.editedCapteurs[capteur.id].ajouterDonneeDepuisInterface = formCapteur.controls['estSaisieManuelle'].value;
                 this.editedCapteurs[capteur.id].dc = capteur.dc;
                 const putCapteur = this.editedCapteurs[capteur.id];
+
                 this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
                     this.shouldRefreshCapteurs.emit();
                     if (capteur.id) {

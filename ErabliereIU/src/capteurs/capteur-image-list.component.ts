@@ -1,5 +1,4 @@
 import {Component, EventEmitter, Input, Output, OnChanges, SimpleChanges} from '@angular/core';
-import {Capteur} from "../model/capteur";
 import {
     AbstractControl,
     FormArray,

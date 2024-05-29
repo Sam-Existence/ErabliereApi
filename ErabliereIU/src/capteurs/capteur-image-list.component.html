@@ -15,7 +15,7 @@
         </thead>
         <tbody>
             @for(capteur of capteurs; track capteur.id) {
-                <tr [formGroup]="getCapteur(capteur.id ?? '')">
+                <tr [formGroup]="getCapteur(capteur.id)">
                     <td class="min">
                         <!-- create a copy id button, and for the icon of the button use a copy icon -->
                         <button
@@ -26,7 +26,7 @@
                             &#x2398;
                         </button>
                     </td>
-                    <td [class.was-validated]="getNom(capteur.id ?? '')?.touched">
+                    <td [class.was-validated]="getNom(capteur.id)!.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="nom"
@@ -35,11 +35,11 @@
                                 maxlength="50"
                                 required
                             />
-                            @if(getNom(capteur.id ?? '')?.hasError('maxlength')) {
+                            @if(getNom(capteur.id)!.hasError('maxlength')) {
                                 <div class="invalid-feedback">
                                     Le nom doit faire maximum 50 caractères
                                 </div>
-                            } @else if(getNom(capteur.id ?? '')?.hasError('required')) {
+                            } @else if(getNom(capteur.id)!.hasError('required')) {
                                 <div class="invalid-feedback">
                                     Le nom est requis
                                 </div>
@@ -48,7 +48,7 @@
                             <span>{{this.capteur.nom}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getUrl(capteur.id ?? '')?.touched">
+                    <td [class.was-validated]="getUrl(capteur.id)!.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="url"
@@ -56,16 +56,16 @@
                                 class="form-control"
                                 maxlength="200"
                             />
-                            @if(getUrl(capteur.id ?? '')?.hasError('maxlength')) {
+                            @if(getUrl(capteur.id)!.hasError('maxlength')) {
                                 <div class="invalid-feedback">
                                     L'url doit faire maximum 200 caractères
                                 </div>
-                            } @else if(getUrl(capteur.id ?? '')?.hasError('required')) {
+                            } @else if(getUrl(capteur.id)!.hasError('required')) {
                                 <div class="invalid-feedback">
                                     L'url est requise
                                 </div>
                             }
-                            @if(getUrl(capteur.id ?? '')?.hasError('pattern')) {
+                            @if(getUrl(capteur.id)!.hasError('pattern')) {
                                 <div class="invalid-feedback">
                                     L'url doit être une url rtsp valide
                                 </div>
@@ -74,7 +74,7 @@
                             <span>{{this.capteur.url}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getPort(capteur.id ?? '')?.touched">
+                    <td [class.was-validated]="getPort(capteur.id)!.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="port"
@@ -82,11 +82,11 @@
                                 class="form-control"
                                 maxlength="5"
                             />
-                            @if(getPort(capteur.id ?? '')?.hasError('maxlength')) {
+                            @if(getPort(capteur.id)!.hasError('maxlength')) {
                                 <div class="invalid-feedback">
                                     Le port doit faire maximum 5 caractères
                                 </div>
-                            } @else if(getPort(capteur.id ?? '')?.hasError('required')) {
+                            } @else if(getPort(capteur.id)!.hasError('required')) {
                                 <div class="invalid-feedback">
                                     Le port est requis
                                 </div>
@@ -95,7 +95,7 @@
                             <span>{{this.capteur.port}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getNomDUtilisateur(capteur.id ?? '')?.touched">
+                    <td [class.was-validated]="getNomDUtilisateur(capteur.id)!.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="nomDUtilisateur"
@@ -103,7 +103,7 @@
                                 class="form-control"
                                 maxlength="200"
                             />
-                            @if(getNomDUtilisateur(capteur.id ?? '')?.hasError('maxlength')) {
+                            @if(getNomDUtilisateur(capteur.id)!.hasError('maxlength')) {
                                 <div class="invalid-feedback">
                                     Le nom d'utilisateur doit faire maximum 200 caractères
                                 </div>
@@ -112,7 +112,7 @@
                             <span>{{this.capteur.identifiant}}</span>
                         }
                     </td>
-                    <td [class.was-validated]="getMotDePasse(capteur.id ?? '')?.touched">
+                    <td [class.was-validated]="getMotDePasse(capteur.id)!.touched">
                         @if(isDisplayEditForm(capteur.id)) {
                             <input
                                 formControlName="motDePasse"
@@ -120,13 +120,13 @@
                                 class="form-control"
                                 maxlength="200"
                             />
-                            @if(getMotDePasse(capteur.id ?? '')?.hasError('maxlength')) {
+                            @if(getMotDePasse(capteur.id)!.hasError('maxlength')) {
                                 <div class="invalid-feedback">
                                     Le mot de passe doit faire maximum 200 caractères
                                 </div>
                             }
-                        } @else {
-                            <span>●●●●●●</span>
+                        } @else if (capteur.motDePasse){
+                            ●●●●●●
                         }
                     </td>
                     <td class="text-lg-end">

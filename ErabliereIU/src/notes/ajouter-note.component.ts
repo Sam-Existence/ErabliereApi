@@ -9,7 +9,7 @@ import {
 } from "@angular/forms";
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
-import {Rappel} from "../model/Rappel";
+import { Rappel } from "../model/Rappel";
 import { reminderValidator } from "./note.custom-validators";
 
 @Component({
@@ -19,6 +19,21 @@ import { reminderValidator } from "./note.custom-validators";
     imports: [ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
+    @Input() notes?: Note[];
+    @Input() idErabliereSelectionee?: string
+
+    @Output() needToUpdate = new EventEmitter();
+
+    display: boolean = false;
+
+    note: Note = new Note();
+    noteForm: UntypedFormGroup;
+
+    error: string | null = null;
+    errorObj: any;
+    fileToLargeErrorMessage?: string | null;
+    generalError?: string | null;
+
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
@@ -82,27 +97,6 @@ export class AjouterNoteComponent implements OnInit {
             ),
         }, { validators: reminderValidator });
     }
-
-
-    display: boolean = false;
-
-    error: string | null = null;
-
-    note:Note = new Note();
-
-    @Input() notes?: Note[];
-
-    @Input() idErabliereSelectionee:any
-
-    @Output() needToUpdate = new EventEmitter();
-
-    noteForm: UntypedFormGroup;
-
-    errorObj: any;
-
-    fileToLargeErrorMessage?: string | null;
-
-    generalError?: string | null;
 
     get displayReminder(): boolean {
         return this.noteForm.controls['reminderEnabled'].value;

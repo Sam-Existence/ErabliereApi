@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Authorization;
@@ -121,46 +121,6 @@ public class ErablieresController : ControllerBase
         }
 
         return query;
-    }
-
-    /// <summary>
-    /// Point de terminaison pour l'administration des érablières
-    /// </summary>
-    /// <returns>Une liste d'érablières</returns>
-    /// <response code="200">Les érablières ont été correctement récupérées</response>
-    [HttpGet]
-    [EnableQuery]
-    [Route("/Admin/Erablieres")]
-    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    public IQueryable<Erabliere> GetErablieresAdmin()
-    {
-        return _context.Erabliere;
-    }
-
-    /// <summary>
-    /// Obtenir les accès des utilisateurs à une érablière
-    /// </summary>
-    /// <response code="200">Les droits d'accès de l'érablère demandé</response>
-    /// <response code="400">L'érablière demandé n'existe pas</response>
-    [HttpGet("{id}/[action]")]
-    [ValiderIPRules]
-    [ValiderOwnership("id")]
-    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
-    public async Task<IActionResult> CustomersAccess(Guid id, CancellationToken token)
-    {
-        var erabliere = await _context.Erabliere.FindAsync([id], cancellationToken: token);
-
-        if (erabliere == null)
-        {
-            return NotFound();
-        }
-
-        var customers = await _context.CustomerErablieres.AsNoTracking()
-            .Where(c => c.IdErabliere == id)
-            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
-            .ToArrayAsync(token);
-
-        return Ok(customers);
     }
 
     /// <summary>
@@ -358,6 +318,222 @@ public class ErablieresController : ControllerBase
     }
 
     /// <summary>
+    /// Supprimer une érablière
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="erabliere">L'érablière a supprimer</param>
+    [HttpDelete("{id}")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult> Supprimer(Guid id, DeleteErabliere<Guid> erabliere)
+    {
+        if (id != erabliere.Id)
+        {
+            return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
+        }
+
+        var entity = await _context.Erabliere.FindAsync(erabliere.Id);
+
+        if (entity != null)
+        {
+            _context.Remove(entity);
+
+            await _context.SaveChangesAsync();
+
+            await _cache.RemoveAsync($"Erabliere_{id}");
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Obtenir les accès des utilisateurs à une érablière
+    /// </summary>
+    /// <response code="200">Les droits d'accès de l'érablère demandé</response>
+    /// <response code="404">L'érablière demandée n'existe pas</response>
+    [HttpGet("{id}/[action]")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
+    public async Task<IActionResult> Access(Guid id, CancellationToken token)
+    {
+        var erabliere = await _context.Erabliere.FindAsync([id], cancellationToken: token);
+
+        if (erabliere == null)
+        {
+            return NotFound();
+        }
+
+        var customers = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdErabliere == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(customers);
+    }
+
+    /// <summary>
+    /// Action permettant de creer les droits d'accès d'un utilisateur 
+    /// à une érablière.
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="idCustomer">L'id du client</param>
+    /// <param name="access">Les informations sur les droits d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
+    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="404">L'érablière ou le client n'existe pas.</response>
+    [HttpPost("{id}/Customer/{idCustomer}/Access")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> AjouterAccess(Guid id, Guid idCustomer, PostAccess access, CancellationToken token)
+    {
+        var erabliere = await _context.Erabliere.FindAsync([id], token);
+
+        if (erabliere == null)
+        {
+            return NotFound("L'érablière n'existe pas");
+        }
+
+        var customer = await _context.Customers.FindAsync([idCustomer], token);
+
+        if (customer == null)
+        {
+            return NotFound("Le client n'existe pas");
+        }
+
+        if (!access.Access.HasValue)
+        {
+            return BadRequest("L'accès du client ne peut pas être vide");
+        }
+
+        if (access.Access.Value < 0 || access.Access.Value > 15)
+        {
+            return BadRequest("L'accès du client doit être compris entre 0 et 15");
+        }
+
+
+        if (await _context.CustomerErablieres.AnyAsync(
+            c => c.IdCustomer == idCustomer && c.IdErabliere == id, token))
+        {
+            return BadRequest($"L'utilisateur avec l'id {idCustomer} a déjà un droit d'accès à l'érablière avec l'id {id}.");
+        }
+
+        var entity = await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+        {
+            Access = access.Access.Value,
+            IdCustomer = idCustomer,
+            IdErabliere = id
+        }, token);
+
+        await _context.SaveChangesAsync(token);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Action permettant de creer les droits d'accès d'un utilisateur 
+    /// à une érablière.
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="idCustomer">L'id du client</param>
+    /// <param name="access">Les informations sur les droits d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
+    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="404">L'accès n'existe pas.</response>
+    [HttpPut("{id}/Customer/{idCustomer}/Access")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> ModifierAccess(Guid id, Guid idCustomer, PutAccess access, CancellationToken token)
+    {
+        if (!access.Access.HasValue)
+        {
+            return BadRequest("L'accès du client ne peut pas être vide");
+        }
+
+        if (access.Access.Value < 0 || access.Access.Value > 15)
+        {
+            return BadRequest("L'accès du client doit être compris entre 0 et 15");
+        }
+
+
+        var entity = await _context.CustomerErablieres.FindAsync([idCustomer, id], token) ; 
+        if (entity == null)
+        {
+            return NotFound();
+        }
+        
+        entity.Access = access.Access.Value;
+        _context.CustomerErablieres.Update(entity);
+
+        await _context.SaveChangesAsync(token);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Supprimer les droits d'accès d'un utilisateur à une érablière
+    /// </summary>
+    /// <param name="id">L'identifiant de l'érablière</param>
+    /// <param name="idCustomer">L'id du client</param>
+    /// <param name="token">Le token d'annulation</param>
+    [HttpDelete("{id}/Customer/{idCustomer}/Access")]
+    [ValiderIPRules]
+    [ValiderOwnership("id")]
+    [ProducesResponseType(204)]
+    public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomer, CancellationToken token)
+    {
+        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomer, id }, token);
+
+        if (entity != null && entity.IdErabliere == id)
+        {
+            // Valider que l'utilisateur n'est pas en train de supprimer son propre droit d'accès
+            var authInfo = await IsAuthenticatedAsync(token);
+
+            if (entity.IdCustomer != authInfo.Item3?.Id)
+            {
+                // Get the unique name of the user to delete
+                var userToDelete = await _context.Customers.FindAsync(new object?[] { entity.IdCustomer }, token);
+
+                if (userToDelete != null) 
+                {
+                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+                }
+
+                _context.Remove(entity);
+
+                await _context.SaveChangesAsync(token);
+            }
+            else 
+            {
+                return BadRequest("Vous ne pouvez pas supprimer votre propre droit d'accès.");
+            }
+        }
+
+        return NoContent();
+    }
+
+    /// <summary>
+    /// Point de terminaison pour l'administration des érablières
+    /// </summary>
+    /// <returns>Une liste d'érablières</returns>
+    /// <response code="200">Les érablières ont été correctement récupérées</response>
+    [HttpGet]
+    [EnableQuery]
+    [Route("/Admin/Erablieres")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    public IQueryable<Erabliere> GetErablieresAdmin()
+    {
+        return _context.Erabliere;
+    }
+
+    /// <summary>
     /// Modifier une érablière en tant qu'administrateur
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
@@ -446,113 +622,6 @@ public class ErablieresController : ControllerBase
     }
 
     /// <summary>
-    /// Action permettant de creer/modifier les droits d'accès d'un utilisateur 
-    /// à une érablière.
-    /// </summary>
-    /// <param name="id">L'id de l'érablière</param>
-    /// <param name="customerErabliere">Les informations sur les droits d'accès</param>
-    /// <param name="token">Le token d'annulation</param>
-    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
-    /// <response code="400">Une des validations des paramètres à échoué.</response>
-    /// <response code="404">L'érablière n'existe pas.</response>
-    [HttpPut("{id}/CustomerErabliere")]
-    [ValiderIPRules]
-    [ValiderOwnership("id")]
-    [ProducesResponseType(200)]
-    public async Task<IActionResult> Modifier(Guid id, PutCustomerErabliere customerErabliere, CancellationToken token)
-    {
-        if (id != customerErabliere.IdErabliere)
-        {
-            return BadRequest("L'id de la route ne concorde pas avec l'id dans le corps du message");
-        }
-
-        var erabliere = await _context.Erabliere.FindAsync(new object[] { id }, token);
-
-        if (erabliere == null)
-        {
-            return NotFound();
-        }
-
-        if (customerErabliere.CustomerErablieres != null)
-        {
-            for (int i = 0; i < customerErabliere.CustomerErablieres.Count; i++)
-            {
-                var action = customerErabliere.CustomerErablieres[i];
-
-                switch (action.Action)
-                {
-                    case PutSingleCustomerErabliereAction.Create:
-                        if (await _context.CustomerErablieres.AnyAsync(
-                            c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token))
-                        {
-                            return BadRequest($"L'utilisateur avec l'id {action.IdCustomer} a déjà un droit d'accès à l'érablière avec l'id {id}.");
-                        }
-
-                        await _context.CustomerErablieres.AddAsync(new CustomerErabliere
-                        {
-                            Access = action.Access,
-                            IdCustomer = action.IdCustomer,
-                            IdErabliere = id
-                        }, token);
-                        break;
-                    case PutSingleCustomerErabliereAction.Edit:
-                        var customerErabliereToEdit = await _context.CustomerErablieres.SingleAsync(c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token);
-                        customerErabliereToEdit.Access = action.Access;
-                        break;
-                    case PutSingleCustomerErabliereAction.Delete:
-                        var customerErabliereToDelete = await _context.CustomerErablieres.SingleAsync(c => c.IdCustomer == action.IdCustomer && c.IdErabliere == id, token);
-                        _context.CustomerErablieres.Remove(customerErabliereToDelete);
-                        break;
-                    default:
-                        throw new InvalidOperationException($"L'action {action.Action} n'est pas supporté.");
-                }
-
-                await _context.SaveChangesAsync(token);
-
-                // Get the unique name of the user to delete
-                var userToDelete = await _context.Customers.FindAsync(new object?[] { action.IdCustomer }, token);
-
-                if (userToDelete != null) 
-                {
-                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
-                }
-            }
-        }
-
-        return Ok();
-    }
-
-    /// <summary>
-    /// Supprimer une érablière
-    /// </summary>
-    /// <param name="id">L'identifiant de l'érablière</param>
-    /// <param name="erabliere">L'érablière a supprimer</param>
-    [HttpDelete("{id}")]
-    [ValiderIPRules]
-    [ValiderOwnership("id")]
-    [ProducesResponseType(204)]
-    public async Task<IActionResult> Supprimer(Guid id, DeleteErabliere<Guid> erabliere)
-    {
-        if (id != erabliere.Id)
-        {
-            return BadRequest("L'id de la route ne concorde pas avec l'id de la donnée");
-        }
-
-        var entity = await _context.Erabliere.FindAsync(erabliere.Id);
-
-        if (entity != null)
-        {
-            _context.Remove(entity);
-
-            await _context.SaveChangesAsync();
-
-            await _cache.RemoveAsync($"Erabliere_{id}");
-        }
-
-        return NoContent();
-    }
-
-    /// <summary>
     /// Supprimer une érablière en tant qu'administrateur
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
@@ -583,43 +652,165 @@ public class ErablieresController : ControllerBase
     }
 
     /// <summary>
-    /// Supprimer les droits d'accès d'un utilisateur à une érablière
+    /// Obtenir les accès des utilisateurs à une érablière en tant qu'administrateur
+    /// </summary>
+    /// <response code="200">Les droits d'accès de l'érablère demandé</response>
+    /// <response code="404">L'érablière demandée n'existe pas</response>
+    [HttpGet("/Admin/Erablieres/{id}/Access")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess[]))]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> GetAdminAccess(Guid id, CancellationToken token)
+    {
+        var erabliere = await _context.Erabliere.FindAsync([id], cancellationToken: token);
+
+        if (erabliere == null)
+        {
+            return NotFound();
+        }
+
+        var customers = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdErabliere == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(customers);
+    }
+
+    /// <summary>
+    /// Action permettant de creer les droits d'accès d'un utilisateur en tant qu'administrateur
+    /// à une érablière.
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="idCustomer">L'id du client</param>
+    /// <param name="access">Les informations sur les droits d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
+    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="404">L'érablière ou le client n'existe pas.</response>
+    [HttpPost("/Admin/Erablieres/{id}/Customer/{idCustomer}/Access")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> AjouterAdminAccess(Guid id, Guid idCustomer, PostAccess access, CancellationToken token)
+    {
+        var erabliere = await _context.Erabliere.FindAsync([id], token);
+
+        if (erabliere == null)
+        {
+            return NotFound("L'érablière n'existe pas");
+        }
+
+        var customer = await _context.Customers.FindAsync([idCustomer], token);
+
+        if (customer == null)
+        {
+            return NotFound("Le client n'existe pas");
+        }
+
+        if (!access.Access.HasValue)
+        {
+            return BadRequest("L'accès du client ne peut pas être vide");
+        }
+
+        if (access.Access.Value < 0 || access.Access.Value > 15)
+        {
+            return BadRequest("L'accès du client doit être compris entre 0 et 15");
+        }
+
+
+        if (await _context.CustomerErablieres.AnyAsync(
+            c => c.IdCustomer == idCustomer && c.IdErabliere == id, token))
+        {
+            return BadRequest($"L'utilisateur avec l'id {idCustomer} a déjà un droit d'accès à l'érablière avec l'id {id}.");
+        }
+
+        var entity = await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+        {
+            Access = access.Access.Value,
+            IdCustomer = idCustomer,
+            IdErabliere = id
+        }, token);
+
+        await _context.SaveChangesAsync(token);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Action permettant de creer les droits d'accès d'un utilisateur en tant qu'administrateur
+    /// à une érablière.
+    /// </summary>
+    /// <param name="id">L'id de l'érablière</param>
+    /// <param name="idCustomer">L'id du client</param>
+    /// <param name="access">Les informations sur les droits d'accès</param>
+    /// <param name="token">Le token d'annulation</param>
+    /// <response code="200">Les droits d'accès ont été correctement modifié.</response>
+    /// <response code="400">Une des validations des paramètres à échoué.</response>
+    /// <response code="404">L'accès n'existe pas.</response>
+    [HttpPut("/Admin/Erablieres/{id}/Customer/{idCustomer}/Access")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200)]
+    [ProducesResponseType(400)]
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> ModifierAdminAccess(Guid id, Guid idCustomer, PutAccess access, CancellationToken token)
+    {
+        if (!access.Access.HasValue)
+        {
+            return BadRequest("L'accès du client ne peut pas être vide");
+        }
+
+        if (access.Access.Value < 0 || access.Access.Value > 15)
+        {
+            return BadRequest("L'accès du client doit être compris entre 0 et 15");
+        }
+
+
+        var entity = await _context.CustomerErablieres.FindAsync([idCustomer, id], token);
+        if (entity == null)
+        {
+            return NotFound();
+        }
+
+        entity.Access = access.Access.Value;
+        _context.CustomerErablieres.Update(entity);
+
+        await _context.SaveChangesAsync(token);
+
+        return Ok();
+    }
+
+    /// <summary>
+    /// Supprimer les droits d'accès d'un utilisateur à une érablière en tant qu'administrateur
     /// </summary>
     /// <param name="id">L'identifiant de l'érablière</param>
     /// <param name="idCustomer">L'id du client</param>
     /// <param name="token">Le token d'annulation</param>
-    [HttpDelete("{id}/Customer/{idCustomer}/Access/")]
-    [ValiderIPRules]
-    [ValiderOwnership("id")]
+    [HttpDelete("/Admin/Erablieres/{id}/Customer/{idCustomer}/Access")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     [ProducesResponseType(204)]
-    public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomer, CancellationToken token)
+    [ProducesResponseType(404)]
+    public async Task<IActionResult> SupprimerAdminAccess(Guid id, Guid idCustomer, CancellationToken token)
     {
-        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomer, id }, token);
+        var entity = await _context.CustomerErablieres.FindAsync([idCustomer, id], token);
 
-        if (entity != null && entity.IdErabliere == id)
+        if (entity == null)
         {
-            // Valider que l'utilisateur n'est pas en train de supprimer son propre droit d'accès
-            var authInfo = await IsAuthenticatedAsync(token);
-
-            if (entity.IdCustomer != authInfo.Item3?.Id)
-            {
-                // Get the unique name of the user to delete
-                var userToDelete = await _context.Customers.FindAsync(new object?[] { entity.IdCustomer }, token);
-
-                if (userToDelete != null) 
-                {
-                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
-                }
-
-                _context.Remove(entity);
-
-                await _context.SaveChangesAsync(token);
-            }
-            else 
-            {
-                return BadRequest("Vous ne pouvez pas supprimer votre propre droit d'accès.");
-            }
+            return NotFound();
         }
+
+        // Get the unique name of the user to delete
+        var userToDelete = await _context.Customers.FindAsync([idCustomer], token);
+
+        if (userToDelete != null)
+        {
+            await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+        }
+
+        _context.Remove(entity);
+
+        await _context.SaveChangesAsync(token);
 
         return NoContent();
     }

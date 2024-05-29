@@ -25,15 +25,14 @@ export class ErabliereSideBarComponent implements OnInit {
   @Output() idSelectionneChange = new EventEmitter<string>();
 
   authDisabled: boolean = false;
-  erablieres?: Array<Erabliere> | null;
+  erablieres: Array<Erabliere> = [];
   etat: string = "";
-  erabliereSelectionnee?: Erabliere | null;
+  erabliereSelectionnee?: Erabliere;
   loggedIn: boolean = false;
 
   constructor(private _erabliereApi: ErabliereApi,
       authFactory: AuthorisationFactoryService,
       private _router: Router) {
-    this.erabliereSelectionnee = null;
     this._authService = authFactory.getAuthorisationService();
     if (this._authService.type == "AuthDisabled") {
       this.authDisabled = true;
@@ -44,8 +43,7 @@ export class ErabliereSideBarComponent implements OnInit {
         this.loadErablieresPage();
       }
       else {
-        this.erablieres = null;
-        this.erabliereSelectionnee = null;
+        this.erablieres = [];
         this.etat = "Vous n'êtes pas connecté";
       }
     });
@@ -130,8 +128,6 @@ export class ErabliereSideBarComponent implements OnInit {
     if (this.modifierErabliereComponent != undefined) {
       if (this.modifierErabliereComponent.erabliereForm != undefined) {
         this.modifierErabliereComponent.erabliereForm.erabliere = { ...erabliere };
-        this.modifierErabliereComponent.modifierAccesUtilisateurs?.refreashAccess(erabliere.id);
-        this.modifierErabliereComponent.erabliereForm.capteurs = await this._erabliereApi.getCapteurs(erabliere.id);
       }
       else {
         console.log("erabliereForm is undefined");

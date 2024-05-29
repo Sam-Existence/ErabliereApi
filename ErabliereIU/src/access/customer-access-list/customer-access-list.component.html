@@ -1,0 +1,58 @@
+<!-- Si une erreur a eu lieu de du chargement des droits, afficher un message d'erreur -->
+@if (erreurChargementDroits) {
+    <div class="alert alert-danger" role="alert">
+        Une erreur est survenue lors du chargement des droits.
+    </div>
+} @else {
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Nom</th>
+                <th>Lecture</th>
+                <th>Création</th>
+                <th>Modification</th>
+                <th>Suppression</th>
+                <th class="min"></th>
+            </tr>
+            </thead>
+            <tbody>
+                @for (acces of customersAccess; track [acces.idCustomer, acces.idErabliere]) {
+                    @if (!isDisplayEditForm(acces.idErabliere ?? '')) {
+                        <tr view-customer-access-row
+                            [acces]="acces"
+                            (accesAModifier)="showModifierAcces($event)"
+                            (accesASupprimer)="supprimerAcces($event)">
+                        </tr>
+                    } @else {
+                        <tr edit-customer-access-row
+                            [acces]="acces"
+                            (accesAEnregister)="terminerModifierAcces($event)"
+                            (accesAAnnuler)="annulerModifierAcces($event)">
+                        </tr>
+                    }
+                }
+                @if (displayNewLine) {
+                    <tr add-customer-access-row
+                        [idCustomer]="this.idCustomer"
+                        (accesAAjouter)="creerAcces($event)"
+                        (accesAAnnuler)="hideAddUserAccess()">
+                    </tr>
+                }
+            </tbody>
+        </table>
+        @if (erreur) {
+            <div class="alert alert-danger" role="alert">
+                {{erreur}}
+            </div>
+        }
+        <div class="text-center">
+            @if (!erreurChargementDroits && !displayNewLine) {
+                <button class="btn btn-outline-success"
+                        (click)="addUserAccess()">
+                    &#43;
+                </button>
+            }
+        </div>
+    </div>
+}
