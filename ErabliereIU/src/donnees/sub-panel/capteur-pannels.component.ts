@@ -38,7 +38,7 @@ export class CapteurPannelsComponent implements OnChanges {
                 capteur.taille = taille
             }
 
-            this._api.putCapteurListe(this.erabliere?.id, this.capteurs);
+            this._api.putCapteurs(this.erabliere?.id, this.capteurs);
         }
     }
 }
