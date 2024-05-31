@@ -126,7 +126,7 @@ export class CapteurListComponent implements OnChanges {
                 this.editedCapteurs[capteur.id].dc = capteur.dc;
                 const putCapteur = this.editedCapteurs[capteur.id];
 
-                this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
+                this.erabliereApi.putCapteurSingle(putCapteur).then(() => {
                     this.shouldRefreshCapteurs.emit();
                     if (capteur.id) {
                         this.displayEdits[capteur.id] = false;

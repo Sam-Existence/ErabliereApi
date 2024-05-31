@@ -12,25 +12,33 @@ import { GraphPannelComponent } from './graph-pannel.component';
     imports: [GraphPannelComponent, NgClass]
 })
 export class CapteurPannelsComponent implements OnChanges {
-  @Input() capteurs?: Capteur[] = []
-  @Input() erabliere?: Erabliere
+    @Input() capteurs?: Capteur[] = []
+    @Input() erabliere?: Erabliere
 
-  public dimension?: string = "col-md-6";
+    public tailleString?: string = "col-md-6";
 
-  constructor(private api: ErabliereApi) {
-  }
+    constructor(private _api: ErabliereApi) {
+    }
 
-  ngOnChanges(changes: SimpleChanges): void {
-      if (changes.capteurs) {
-          this.dimension = this.capteurs?.find(capteur => capteur.dimension)?.dimension ?? "col-md-6";
-      }
-  }
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.capteurs) {
+            let taille = this.capteurs?.find(capteur => capteur.taille)?.taille;
+            if (taille) {
+                this.tailleString = `col-md-${taille}`;
+            } else {
+                this.tailleString = `col-md-6`;
+            }
+        }
+    }
 
-  changerDimension(dimension: number) {
-      this.dimension = `col-md-${dimension}`;
-      for (let capteur of this.capteurs!) {
-          capteur.dimension = this.dimension;
-          this.api.putCapteur(this.erabliere!.id, capteur)
-      }
-  }
+    changerDimension(taille: number) {
+        this.tailleString = `col-md-${taille}`;
+        if (this.capteurs) {
+            for (let capteur of this.capteurs!) {
+                capteur.taille = taille
+            }
+
+            this._api.putCapteurListe(this.erabliere?.id, this.capteurs);
+        }
+    }
 }
