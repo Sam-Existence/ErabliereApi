@@ -214,9 +214,6 @@ namespace Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DC")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Dimension")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
@@ -231,6 +228,9 @@ namespace Depot.Sql.Migrations
                     b.Property<string>("Symbole")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
+
+                    b.Property<byte?>("Taille")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 

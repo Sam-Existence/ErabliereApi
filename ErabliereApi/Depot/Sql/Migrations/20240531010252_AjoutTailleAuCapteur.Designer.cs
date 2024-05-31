@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Depot.Sql.Migrations
 {
     [DbContext(typeof(ErabliereDbContext))]
-    [Migration("20240524164641_AjouterColonneDimensionACapteur")]
-    partial class AjouterColonneDimensionACapteur
+    [Migration("20240531010252_AjoutTailleAuCapteur")]
+    partial class AjoutTailleAuCapteur
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -217,9 +217,6 @@ namespace Depot.Sql.Migrations
                     b.Property<DateTimeOffset?>("DC")
                         .HasColumnType("datetimeoffset");
 
-                    b.Property<string>("Dimension")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<Guid?>("IdErabliere")
                         .HasColumnType("uniqueidentifier");
 
@@ -234,6 +231,9 @@ namespace Depot.Sql.Migrations
                     b.Property<string>("Symbole")
                         .HasMaxLength(5)
                         .HasColumnType("nvarchar(5)");
+
+                    b.Property<byte?>("Taille")
+                        .HasColumnType("tinyint");
 
                     b.HasKey("Id");
 
@@ -499,9 +499,6 @@ namespace Depot.Sql.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTimeOffset?>("ReminderDate")
-                        .HasColumnType("datetimeoffset");
-
                     b.Property<string>("Text")
                         .HasMaxLength(2000)
                         .HasColumnType("nvarchar(2000)");
@@ -515,6 +512,40 @@ namespace Depot.Sql.Migrations
                     b.HasIndex("IdErabliere");
 
                     b.ToTable("Notes");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.Rappel", b =>
+                {
+                    b.Property<Guid?>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset?>("DateRappel")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<DateTimeOffset?>("DateRappelFin")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<Guid?>("IdErabliere")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("NoteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Periodicite")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NoteId")
+                        .IsUnique()
+                        .HasFilter("[NoteId] IS NOT NULL");
+
+                    b.ToTable("Rappels");
                 });
 
             modelBuilder.Entity("Message", b =>
@@ -663,6 +694,15 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Erabliere");
                 });
 
+            modelBuilder.Entity("ErabliereApi.Donnees.Rappel", b =>
+                {
+                    b.HasOne("ErabliereApi.Donnees.Note", "Note")
+                        .WithOne("Rappel")
+                        .HasForeignKey("ErabliereApi.Donnees.Rappel", "NoteId");
+
+                    b.Navigation("Note");
+                });
+
             modelBuilder.Entity("Message", b =>
                 {
                     b.HasOne("Conversation", "Conversation")
@@ -708,6 +748,11 @@ namespace Depot.Sql.Migrations
                     b.Navigation("Donnees");
 
                     b.Navigation("Notes");
+                });
+
+            modelBuilder.Entity("ErabliereApi.Donnees.Note", b =>
+                {
+                    b.Navigation("Rappel");
                 });
 #pragma warning restore 612, 618
         }

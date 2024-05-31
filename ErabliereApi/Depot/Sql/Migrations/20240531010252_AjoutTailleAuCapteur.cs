@@ -5,15 +5,15 @@
 namespace Depot.Sql.Migrations
 {
     /// <inheritdoc />
-    public partial class AjouterColonneDimensionACapteur : Migration
+    public partial class AjoutTailleAuCapteur : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "Dimension",
+            migrationBuilder.AddColumn<byte>(
+                name: "Taille",
                 table: "Capteurs",
-                type: "nvarchar(max)",
+                type: "tinyint",
                 nullable: true);
         }
 
@@ -21,7 +21,7 @@ namespace Depot.Sql.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "Dimension",
+                name: "Taille",
                 table: "Capteurs");
         }
     }
