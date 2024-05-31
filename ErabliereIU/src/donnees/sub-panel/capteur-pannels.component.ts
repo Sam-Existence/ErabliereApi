@@ -15,7 +15,7 @@ export class CapteurPannelsComponent implements OnChanges {
     @Input() capteurs?: Capteur[] = []
     @Input() erabliere?: Erabliere
 
-    public tailleString?: string = "col-md-6";
+    public tailleGraphiques?: number = 6;
 
     constructor(private _api: ErabliereApi) {
     }
@@ -24,15 +24,15 @@ export class CapteurPannelsComponent implements OnChanges {
         if (changes.capteurs) {
             let taille = this.capteurs?.find(capteur => capteur.taille)?.taille;
             if (taille) {
-                this.tailleString = `col-md-${taille}`;
+                this.tailleGraphiques = taille;
             } else {
-                this.tailleString = `col-md-6`;
+                this.tailleGraphiques = 6;
             }
         }
     }
 
     changerDimension(taille: number) {
-        this.tailleString = `col-md-${taille}`;
+        this.tailleGraphiques = taille;
         if (this.capteurs) {
             for (let capteur of this.capteurs!) {
                 capteur.taille = taille

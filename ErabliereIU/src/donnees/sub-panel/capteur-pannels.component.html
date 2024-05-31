@@ -5,7 +5,7 @@
                name="dimension"
                id="gros"
                autocomplete="off"
-               [checked]="tailleString === 'col-md-12'"
+               [checked]="tailleGraphiques === 12"
                (click)="changerDimension(12)">
         <label class="btn btn-secondary" for="gros">Gros</label>
 
@@ -14,7 +14,7 @@
                name="dimension"
                id="normal"
                autocomplete="off"
-               [checked]="tailleString === 'col-md-6'"
+               [checked]="tailleGraphiques === 6"
                (click)="changerDimension(6)">
         <label class="btn btn-secondary" for="normal">Normal</label>
 
@@ -23,14 +23,14 @@
                name="dimension"
                id="petit"
                autocomplete="off"
-               [checked]="tailleString === 'col-md-3'"
+               [checked]="tailleGraphiques === 3"
                (click)="changerDimension(3)">
         <label class="btn btn-secondary" for="petit">Petit</label>
     </div>
 </div>
 <div class="row pb-2">
-    @for (capteur of capteurs; track $index){
-    <div [ngClass]="capteur.taille ? ('col-md-' + capteur.taille) : tailleString">
+    @for (capteur of capteurs; track capteur.id){
+    <div [ngClass]="'col-md-' + (capteur.taille ? capteur.taille : tailleGraphiques)">
         <graph-pannel [titre]="capteur.nom"
                       [symbole]="capteur.symbole"
                       [idCapteur]="capteur.id"

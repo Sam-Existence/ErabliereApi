@@ -51,6 +51,6 @@ public class PutCapteur
     /// <summary>
     /// Byte qui représente la taille du graphique
     /// </summary>
-    [Range(1, 12, ErrorMessage = "La taille du graphique doit être compris entre 1 et 12")]
+    [Range(1, 12, ErrorMessage = "La taille du graphique doit être comprise entre 1 et 12")]
     public byte? Taille { get; set; }
 }

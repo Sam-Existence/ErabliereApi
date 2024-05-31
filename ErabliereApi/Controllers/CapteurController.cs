@@ -123,7 +123,7 @@ public class CapteursController : ControllerBase
     /// <param name="id">L'identifiant de l'érablière</param>
     /// <param name="capteurs">La liste de capteurs à modifier</param>
     /// <param name="token">Le jeton d'annulation</param>
-    /// <response code="204">Les capteur a été correctement supprimé.</response>
+    /// <response code="204">Les capteurs ont été correctement modifiés.</response>
     /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à modifier.</response>
     [HttpPut]
     [ValiderOwnership("id")]
@@ -175,6 +175,10 @@ public class CapteursController : ControllerBase
 
             if (capteur.Taille.HasValue)
             {
+                if (capteur.Taille.Value <= 0 || capteur.Taille.Value > 12)
+                {
+                    BadRequest("La taille du graphique doit être comprise entre 1 et 12");
+                }
                 capteurEntity.Taille = capteur.Taille.Value;
             }
 
@@ -183,7 +187,7 @@ public class CapteursController : ControllerBase
 
         await _depot.SaveChangesAsync(token);
 
-        return Ok();
+        return NoContent();
     }
 
     /// <summary>
@@ -249,6 +253,10 @@ public class CapteursController : ControllerBase
 
         if (capteur.Taille.HasValue)
         {
+            if (capteur.Taille.Value <= 0 || capteur.Taille.Value > 12)
+            {
+                BadRequest("La taille du graphique doit être comprise entre 1 et 12");
+            }
             capteurEntity.Taille = capteur.Taille.Value;
         }
 
