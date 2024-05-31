@@ -1,25 +1,29 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
-import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { EnvironmentService } from 'src/environments/environment.service';
-import { Alerte } from 'src/model/alerte';
-import { AlerteCapteur } from 'src/model/alerteCapteur';
-import { Baril } from 'src/model/baril';
-import { Capteur } from 'src/model/capteur';
-import { Conversation, Message } from 'src/model/conversation';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
-import { DeleteCapteur } from 'src/model/deleteCapteur';
-import { Documentation } from 'src/model/documentation';
-import { Dompeux } from 'src/model/dompeux';
-import { Donnee } from 'src/model/donnee';
-import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
-import { Erabliere } from 'src/model/erabliere';
-import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
-import { GetImageInfo } from 'src/model/imageInfo';
-import { Note } from 'src/model/note';
-import { PutCapteur } from 'src/model/putCapteur';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {AuthorisationFactoryService} from 'src/authorisation/authorisation-factory-service';
+import {IAuthorisationSerivce} from 'src/authorisation/iauthorisation-service';
+import {EnvironmentService} from 'src/environments/environment.service';
+import {Alerte} from 'src/model/alerte';
+import {AlerteCapteur} from 'src/model/alerteCapteur';
+import {Baril} from 'src/model/baril';
+import {Capteur} from 'src/model/capteur';
+import {Conversation, Message} from 'src/model/conversation';
+import {Customer} from 'src/model/customer';
+import {CustomerAccess} from 'src/model/customerAccess';
+import {DeleteCapteur} from 'src/model/deleteCapteur';
+import {Documentation} from 'src/model/documentation';
+import {Dompeux} from 'src/model/dompeux';
+import {Donnee} from 'src/model/donnee';
+import {DonneeCapteur, PostDonneeCapteur} from 'src/model/donneeCapteur';
+import {Erabliere} from 'src/model/erabliere';
+import {ErabliereApiDocument} from 'src/model/erabliereApiDocument';
+import {GetImageInfo} from 'src/model/imageInfo';
+import {Note} from 'src/model/note';
+import {PutCapteur} from 'src/model/putCapteur';
+import {PutCustomerAccess} from 'src/model/putCustomerAccess';
+import {PostCapteurImage} from "../model/postCapteurImage";
+import {CapteurImage} from "../model/capteurImage";
+import {PutCapteurImage} from "../model/putCapteurImage";
 import { WeatherForecast } from 'src/model/weatherForecast';
 
 @Injectable({ providedIn: 'root' })
@@ -274,6 +278,26 @@ export class ErabliereApi {
         const headers = await this.getHeaders();
         const rtn = await this._httpClient.post<DonneeCapteur>(this._environmentService.apiUrl + '/Capteurs/' + idCapteur + "/DonneesCapteur", donneeCapteur, { headers: headers }).toPromise();
         return rtn ?? new DonneeCapteur();
+    }
+
+    async postCapteurImage(idErabliereSelectionee: any, capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', capteurImage, {headers: headers}).toPromise();
+    }
+
+    async putCapteurImage(idErabliereSelectionee: any, idCapteur: string, capteurImage: PutCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, capteurImage, {headers: headers}).toPromise();
+    }
+
+    async deleteCapteurImage(idErabliereSelectionee: any, idCapteur: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, {headers: headers}).toPromise();
+    }
+
+    async getCapteursImage(idErabliereSelectionee: any) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.get<CapteurImage[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', {headers: headers}).toPromise() ?? [];
     }
 
     async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {

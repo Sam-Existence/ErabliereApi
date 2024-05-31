@@ -6,12 +6,12 @@ import { SignoutRedirectCallbackComponent } from 'src/authorisation/signout-redi
 import { DocumentationComponent } from 'src/documentation/documentation.component';
 import { ErabliereComponent } from 'src/erablieres/erabliere.component';
 import { NotesComponent } from 'src/notes/notes.component';
-import {GestionCapteursComponent} from "../erablieres/gestion-capteurs.component";
 import {AdminCustomersComponent} from "../admin/admin-customers/admin-customers.component";
 import {Page404Component} from "./page404/page404.component";
-import {ClientViewComponent} from "./client-view/client-view.component";
 import {AdminViewComponent} from "./admin-view/admin-view.component";
 import {AdminErablieresComponent} from "../admin/admin-erablieres/admin-erablieres.component";
+import {ClientViewComponent} from "./client-view/client-view.component";
+import {GestionCapteursComponent} from "../capteurs/gestion-capteurs.component";
 
 export const routes: Routes = [
     {
