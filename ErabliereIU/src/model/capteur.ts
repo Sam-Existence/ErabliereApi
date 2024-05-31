@@ -2,6 +2,7 @@ import { DonneeCapteur } from "./donneeCapteur";
 
 export class Capteur {
     id?: string;
+    idErabliere?: string;
     nom?: string;
     symbole?: string;
     afficherCapteurDashboard?: boolean;
@@ -9,5 +10,5 @@ export class Capteur {
     dc?: string;
     donnees?: DonneeCapteur[];
     indiceOrdre?: number;
-    dimension?: string;
+    taille?: number;
 }

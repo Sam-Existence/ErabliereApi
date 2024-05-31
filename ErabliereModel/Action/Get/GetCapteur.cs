@@ -5,12 +5,17 @@ namespace ErabliereApi.Donnees.Action.Get
     /// <summary>
     /// Modèle de retour de l'action d'obtention d'un capteur
     /// </summary>
-    public class GetCapteurs
+    public class GetCapteur
     {
         /// <summary>
         /// L'id du catpeur
         /// </summary>
         public Guid? Id { get; set; }
+
+        /// <summary>
+        /// L'id de l'érablière
+        /// </summary>
+        public Guid? IdErabliere { get; set; }
 
         /// <summary>
         /// Le nom du capteur
@@ -45,6 +50,6 @@ namespace ErabliereApi.Donnees.Action.Get
         /// <summary>
         /// la string bootstrap pour chnager les dimensions du graphique
         /// </summary>
-        public string? Dimension { get; set; }
+        public string? Taille { get; set; }
     }
 }

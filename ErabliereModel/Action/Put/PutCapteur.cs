@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Put;
 
@@ -48,7 +49,8 @@ public class PutCapteur
     public int? IndiceOrdre { get; set; }
 
     /// <summary>
-    /// la string bootstrap pour chnager les dimensions du graphique
+    /// Byte qui représente la taille du graphique
     /// </summary>
-    public string? Dimension { get; set; }
+    [Range(1, 12, ErrorMessage = "La taille du graphique doit être compris entre 1 et 12")]
+    public byte? Taille { get; set; }
 }
