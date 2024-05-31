@@ -67,6 +67,11 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     public List<Capteur> Capteurs { get; set; } = new();
 
     /// <summary>
+    /// Les capteurs d'images de l'érablière
+    /// </summary>
+    public List<CapteurImage> CapteursImage { get; set; } = new();
+
+    /// <summary>
     /// Les données relier à l'érablière
     /// </summary>
     public List<Donnee> Donnees { get; set; } = new();
