@@ -28,22 +28,17 @@ export class ErabliereComponent implements OnInit {
   erabliere?: Erabliere;
   resetErabliere: Subject<Erabliere> = new Subject<Erabliere>();
 
-  displayImages: boolean = false;
   displayCapteurs: boolean = false;
+  displayImages: boolean = false;
 
   constructor(private _api: ErabliereApi, private route: ActivatedRoute) {
     this.route.paramMap.subscribe(params => {
       this.idErabliereSelectionee = params.get('idErabliereSelectionee');
-
       if (this.idErabliereSelectionee) {
         this._api.getErabliere(this.idErabliereSelectionee).then((erabliere) => {
           this.erabliere = erabliere;
-          if (erabliere.capteurs?.length) {
-              this.displayCapteurs = erabliere.capteurs?.length > 0;
-          } else {
-              this.displayCapteurs = false;
-          }
           this.resetErabliere.next(erabliere);
+          this.displayCapteurs = !!(this.erabliere.capteurs?.find(capteur => capteur.afficherCapteurDashboard));
         });
       }
     });

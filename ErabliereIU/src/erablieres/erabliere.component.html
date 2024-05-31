@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-10 order-2 order-md-1">
         @if (erabliere?.codePostal?.trim() || displayImages) {
-        <div class="row border-top">
+        <div class="row border-top py-2">
             @if (erabliere?.codePostal?.trim()) {
             <weather-forecast
                 class="col-md-6"
@@ -13,7 +13,7 @@
             }
         </div>
         }
-        @if (erabliere?.afficherTrioDonnees === true || erabliere?.afficherSectionDompeux === true) {
+        @if (erabliere?.afficherTrioDonnees || erabliere?.afficherSectionDompeux) {
         <donnees-panel [initialErabliere]="erabliere"
                     [erabliereSubject]="resetErabliere">
         </donnees-panel>
@@ -21,11 +21,11 @@
         @if (displayCapteurs) {
         <capteur-pannels [capteurs]="erabliere?.capteurs" [erabliere]="erabliere"></capteur-pannels>
         }
-        @if (erabliere?.afficherSectionBaril === true) {
+        @if (erabliere?.afficherSectionBaril) {
         <barils-panel [erabliereId]="erabliere?.id"></barils-panel>
         }
     </div>
-    <div class="col-md-2 order-1 order-md-2">
+    <div class="col-md-2 order-1 order-md-2 py-2">
         <app-rappels [idErabliereSelectionnee]="erabliere?.id"></app-rappels>
     </div>
 </div>

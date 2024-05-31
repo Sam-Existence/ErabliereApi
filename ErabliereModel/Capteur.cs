@@ -31,7 +31,7 @@ public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
     public bool AjouterDonneeDepuisInterface { get; set; }
 
     /// <summary>
-    /// Id de dl'érablière relier a cette donnée
+    /// Id de l'érablière relier a cette donnée
     /// </summary>
     public Guid? IdErabliere { get; set; }
 
@@ -70,6 +70,12 @@ public class Capteur : IIdentifiable<Guid?, Capteur>, IErabliereOwnable
     /// </example>
     [MaxLength(5)]
     public string? Symbole { get; set; }
+
+    /// <summary>
+    /// Byte qui représente la taille du graphique
+    /// </summary>
+    [Range(1, 12, ErrorMessage = "La taille du graphique doit être comprise entre 1 et 12")]
+    public byte? Taille { get; set; }
 
     /// <inheritdoc />
     public int CompareTo(Capteur? other)

@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ErabliereApi.Donnees.Action.Put;
 
@@ -46,4 +47,10 @@ public class PutCapteur
     /// Indice du tri
     /// </summary>
     public int? IndiceOrdre { get; set; }
+
+    /// <summary>
+    /// Byte qui représente la taille du graphique
+    /// </summary>
+    [Range(1, 12, ErrorMessage = "La taille du graphique doit être comprise entre 1 et 12")]
+    public byte? Taille { get; set; }
 }

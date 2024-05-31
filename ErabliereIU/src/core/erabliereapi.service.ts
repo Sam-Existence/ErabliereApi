@@ -10,7 +10,6 @@ import {Capteur} from 'src/model/capteur';
 import {Conversation, Message} from 'src/model/conversation';
 import {Customer} from 'src/model/customer';
 import {CustomerAccess} from 'src/model/customerAccess';
-import {DeleteCapteur} from 'src/model/deleteCapteur';
 import {Documentation} from 'src/model/documentation';
 import {Dompeux} from 'src/model/dompeux';
 import {Donnee} from 'src/model/donnee';
@@ -20,7 +19,6 @@ import {ErabliereApiDocument} from 'src/model/erabliereApiDocument';
 import {GetImageInfo} from 'src/model/imageInfo';
 import {Note} from 'src/model/note';
 import {PutCapteur} from 'src/model/putCapteur';
-import {PutCustomerAccess} from 'src/model/putCustomerAccess';
 import {PostCapteurImage} from "../model/postCapteurImage";
 import {CapteurImage} from "../model/capteurImage";
 import {PutCapteurImage} from "../model/putCapteurImage";
@@ -109,23 +107,25 @@ export class ErabliereApi {
         return await this._httpClient.post<Capteur>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", capteur, { headers: headers }).toPromise();
     }
 
-    async putCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
+    async putCapteur(capteur: Capteur) {
         const headers = await this.getHeaders();
         return await this._httpClient.put<Capteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
-            {
-                ...capteur,
-                idErabliere: idErabliereSelectionnee
-            },
+            this._environmentService.apiUrl + `/erablieres/${capteur.idErabliere}/capteurs/${capteur.id}`, capteur,
             { headers: headers }).toPromise();
     }
 
-    async deleteCapteur(idErabliereSelectionnee: any, capteur: DeleteCapteur) {
+    async putCapteurs(idErabliereSelectionnee: string, capteurs: Capteur[]) {
         const headers = await this.getHeaders();
-        return await this._httpClient.delete<DeleteCapteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
+        return await this._httpClient.put<Capteur>(
+            this._environmentService.apiUrl + `/erablieres/${idErabliereSelectionnee}/capteurs/`, capteurs,
+            { headers: headers }).toPromise();
+    }
+
+    async deleteCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete<any>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs/" + capteur.id,
             {
-                body: capteur,
                 headers: headers
             }).toPromise();
     }

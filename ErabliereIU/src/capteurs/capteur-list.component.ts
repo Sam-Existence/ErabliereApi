@@ -126,7 +126,7 @@ export class CapteurListComponent implements OnChanges {
                 this.editedCapteurs[capteur.id].dc = capteur.dc;
                 const putCapteur = this.editedCapteurs[capteur.id];
 
-                this.erabliereApi.putCapteur(this.idErabliere, putCapteur).then(() => {
+                this.erabliereApi.putCapteur(putCapteur).then(() => {
                     this.shouldRefreshCapteurs.emit();
                     if (capteur.id) {
                         this.displayEdits[capteur.id] = false;
@@ -141,7 +141,7 @@ export class CapteurListComponent implements OnChanges {
     async supprimerCapteur(capteur: Capteur) {
         if (confirm('Cette action est irréversible, vous perderez tout les données associé au capteur. Voulez-vous vraiment supprimer ce capteur?')) {
             try {
-                await this.erabliereApi.deleteCapteur(this.idErabliere, { id: capteur.id, idErabliere: this.idErabliere })
+                await this.erabliereApi.deleteCapteur(this.idErabliere, capteur)
                 this.shouldRefreshCapteurs.emit();
             }
             catch (e) {
