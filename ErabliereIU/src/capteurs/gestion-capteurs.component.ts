@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from "@angular/core";
+import {Component, Input, OnChanges, OnInit, SimpleChanges} from "@angular/core";
 import { ErabliereApi } from "src/core/erabliereapi.service";
 import { Capteur } from "src/model/capteur";
 import { CapteurListComponent } from "./capteur-list.component";
@@ -13,7 +13,7 @@ import {CapteurImageListComponent} from "./capteur-image-list.component";
     standalone: true,
     imports: [AjouterCapteurComponent, CapteurListComponent, AjouterCapteurImageComponent, CapteurImageListComponent]
 })
-export class GestionCapteursComponent implements OnInit {
+export class GestionCapteursComponent implements OnChanges {
     @Input() idErabliereSelectionee?: any;
     capteurs: Capteur[] = [];
     capteursImage: CapteurImage[] = [];
@@ -23,9 +23,12 @@ export class GestionCapteursComponent implements OnInit {
     constructor (
         private _api: ErabliereApi) {
     }
-    async ngOnInit()  {
-        await this.getCapteurs();
-        await this.getCapteursImage();
+
+    async ngOnChanges(changes: SimpleChanges): Promise<void> {
+        if (changes.idErabliereSelectionee) {
+            await this.getCapteurs();
+            await this.getCapteursImage();
+        }
     }
 
     showAjouterCapteur() {
