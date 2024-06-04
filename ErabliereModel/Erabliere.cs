@@ -64,42 +64,42 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// <summary>
     /// Les capteurs de l'érablière
     /// </summary>
-    public List<Capteur> Capteurs { get; set; } = new();
+    public List<Capteur>? Capteurs { get; set; }
 
     /// <summary>
     /// Les capteurs d'images de l'érablière
     /// </summary>
-    public List<CapteurImage> CapteursImage { get; set; } = new();
+    public List<CapteurImage>? CapteursImage { get; set; }
 
     /// <summary>
     /// Les données relier à l'érablière
     /// </summary>
-    public List<Donnee> Donnees { get; set; } = new();
+    public List<Donnee>? Donnees { get; set; }
 
     /// <summary>
     /// La liste des barils de l'érablière
     /// </summary>
-    public List<Baril> Barils { get; set; } = new();
+    public List<Baril>? Barils { get; set; }
 
     /// <summary>
     /// La liste des dompeux de l'érablière
     /// </summary>
-    public List<Dompeux> Dompeux { get; set; } = new();
+    public List<Dompeux>? Dompeux { get; set; }
 
     /// <summary>
     /// La liste des notes
     /// </summary>
-    public List<Note> Notes { get; set; } = new();
+    public List<Note>? Notes { get; set; }
 
     /// <summary>
     /// La liste des documentations
     /// </summary>
-    public List<Documentation> Documentations { get; set; } = new();
+    public List<Documentation>? Documentations { get; set; }
 
     /// <summary>
     /// Liste des alertes de type trio de données relié à l'érablière
     /// </summary>
-    public List<Alerte> Alertes { get; set; } = new();
+    public List<Alerte>? Alertes { get; set; }
 
     /// <summary>
     /// Liste de jonction entre l'utilisateurs et ses érablières

@@ -64,7 +64,7 @@ export class ErabliereSideBarComponent implements OnInit {
 
     this.etat = titreChargement;
 
-    const erablieres = await (this._erabliereApi.getErablieresExpandCapteurs(true).catch(err => {
+    const erablieres = await (this._erabliereApi.getErablieres(true).catch(err => {
       console.error(err);
       this.etat = "Erreur lors du chargement des érablieres";
     }));

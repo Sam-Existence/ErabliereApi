@@ -29,6 +29,11 @@ public class SecureExpandValidator : SelectExpandQueryValidator
             throw new Microsoft.OData.ODataException($"La requête sur {nameof(Erabliere.Notes)} n'est pas permise");
         }
 
+        if (expand.Contains(nameof(Erabliere.CustomerErablieres), StringComparison.OrdinalIgnoreCase))
+        {
+            throw new Microsoft.OData.ODataException($"La requête sur {nameof(Erabliere.CustomerErablieres)} n'est pas permise");
+        }
+
         base.Validate(selectExpandQueryOption, validationSettings);
     }
 }
