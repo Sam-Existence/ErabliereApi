@@ -261,19 +261,19 @@ public class ErablieresController : ControllerBase
             return NotFound($"L'érablière que vous tentez de modifier n'existe pas.");
         }
 
-        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom))
+        if (!string.IsNullOrWhiteSpace(erabliere.Nom) && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom))
         {
             return BadRequest($"L'érablière avec le nom {erabliere.Nom}");
         }
 
         // fin des validations
 
-        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false)
+        if (!string.IsNullOrWhiteSpace(erabliere.Nom))
         {
             entity.Nom = erabliere.Nom;
         }
 
-        if (string.IsNullOrWhiteSpace(erabliere.IpRule) == false)
+        if (!string.IsNullOrWhiteSpace(erabliere.IpRule))
         {
             entity.IpRule = erabliere.IpRule;
         }
@@ -422,7 +422,7 @@ public class ErablieresController : ControllerBase
             return BadRequest($"L'utilisateur avec l'id {idCustomer} a déjà un droit d'accès à l'érablière avec l'id {id}.");
         }
 
-        var entity = await _context.CustomerErablieres.AddAsync(new CustomerErabliere
+        await _context.CustomerErablieres.AddAsync(new CustomerErabliere
         {
             Access = access.Access.Value,
             IdCustomer = idCustomer,
@@ -489,7 +489,7 @@ public class ErablieresController : ControllerBase
     [ProducesResponseType(204)]
     public async Task<IActionResult> SupprimerCustomerErabliere(Guid id, Guid idCustomer, CancellationToken token)
     {
-        var entity = await _context.CustomerErablieres.FindAsync(new object?[] { idCustomer, id }, token);
+        var entity = await _context.CustomerErablieres.FindAsync([idCustomer, id], token);
 
         if (entity != null && entity.IdErabliere == id)
         {
@@ -499,11 +499,11 @@ public class ErablieresController : ControllerBase
             if (entity.IdCustomer != authInfo.Item3?.Id)
             {
                 // Get the unique name of the user to delete
-                var userToDelete = await _context.Customers.FindAsync(new object?[] { entity.IdCustomer }, token);
+                var userToDelete = await _context.Customers.FindAsync([entity.IdCustomer], token);
 
                 if (userToDelete != null) 
                 {
-                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+                    await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}", token);
                 }
 
                 _context.Remove(entity);
@@ -565,19 +565,19 @@ public class ErablieresController : ControllerBase
             return NotFound($"L'érablière que vous tentez de modifier n'existe pas.");
         }
 
-        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom, token) )
+        if (!string.IsNullOrWhiteSpace(erabliere.Nom) && await _context.Erabliere.AnyAsync(e => e.Id != id && e.Nom == erabliere.Nom, token) )
         {
             return BadRequest($"L'érablière avec le nom {erabliere.Nom}");
         }
 
         // fin des validations
 
-        if (string.IsNullOrWhiteSpace(erabliere.Nom) == false)
+        if (!string.IsNullOrWhiteSpace(erabliere.Nom))
         {
             entity.Nom = erabliere.Nom;
         }
 
-        if (string.IsNullOrWhiteSpace(erabliere.IpRule) == false)
+        if (!string.IsNullOrWhiteSpace(erabliere.IpRule))
         {
             entity.IpRule = erabliere.IpRule;
         }
@@ -805,7 +805,7 @@ public class ErablieresController : ControllerBase
 
         if (userToDelete != null)
         {
-            await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}");
+            await _cache.RemoveAsync($"CustomerWithAccess_{userToDelete.UniqueName}_{id}", token);
         }
 
         _context.Remove(entity);

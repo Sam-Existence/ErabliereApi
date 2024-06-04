@@ -1,10 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import { EntraRedirectComponent } from './entra-redirect.component';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
-import { ClientNavBarComponent } from 'src/app/client-view/client-nav-bar/client-nav-bar.component';
-import { YouAreNotConnectedComponent } from 'src/app/client-view/you-are-not-connected/you-are-not-connected.component';
-import { ErabliereSideBarComponent } from 'src/app/client-view/erablieres-side-bar/erablieres-side-bar.component';
-import { NgIf} from '@angular/common';
+import { RouterOutlet } from '@angular/router';
 import { ErabliereAIComponent } from 'src/erabliereai/erabliereai-chat.component';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { MsalService } from '@azure/msal-angular';
@@ -18,8 +14,7 @@ import { AuthorisationFactoryService } from 'src/authorisation/authorisation-fac
   imports: [
     RouterOutlet,
     EntraRedirectComponent,
-    ErabliereAIComponent,
-    NgIf
+    ErabliereAIComponent
   ]
 })
 export class AppComponent implements OnInit {

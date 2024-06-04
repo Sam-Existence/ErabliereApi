@@ -9,6 +9,8 @@
         </div>
       </div>
     </div>
-    <app-chat-widget *ngIf="erabliereAIEnable && erabliereAIUserRole"></app-chat-widget>
+    @if (erabliereAIEnable && erabliereAIUserRole) {
+    <app-chat-widget></app-chat-widget>
+    }
   </footer>
 </div>

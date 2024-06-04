@@ -23,10 +23,10 @@ export class ErabliereAccessListComponent implements OnChanges {
 
     displayEdits: { [id: string]: boolean } = {};
 
-    erreurChargementDroits: Boolean = false;
+    erreurChargementDroits: boolean = false;
     erreur: string = '';
 
-    displayNewLine: Boolean = false;
+    displayNewLine: boolean = false;
 
     constructor(private _api: ErabliereApi) {
     }

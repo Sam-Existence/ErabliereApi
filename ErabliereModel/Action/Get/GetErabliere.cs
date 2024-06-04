@@ -99,11 +99,11 @@ public class GetErabliere
     /// <inheritdoc />
     public int CompareTo([AllowNull] Erabliere other)
     {
-        if (IndiceOrdre.HasValue && other?.IndiceOrdre == null)
+        if (IndiceOrdre.HasValue && other?.IndiceOrdre.HasValue == false)
         {
             return -1;
         }
-        else if (other?.IndiceOrdre.HasValue == true && IndiceOrdre.HasValue == false)
+        else if (!IndiceOrdre.HasValue && other?.IndiceOrdre.HasValue == true)
         {
             return 1;
         }

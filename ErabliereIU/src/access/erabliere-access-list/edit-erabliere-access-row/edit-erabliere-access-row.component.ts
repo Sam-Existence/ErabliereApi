@@ -1,6 +1,6 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {CustomerAccess} from "../../../model/customerAccess";
-import {FormBuilder, FormControl, ReactiveFormsModule, UntypedFormGroup, Validators} from "@angular/forms";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CustomerAccess } from "../../../model/customerAccess";
+import { FormBuilder, FormControl, ReactiveFormsModule, UntypedFormGroup } from "@angular/forms";
 
 @Component({
   selector: 'tr[edit-erabliere-access-row]',

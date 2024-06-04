@@ -34,7 +34,7 @@ export class CapteurPannelsComponent implements OnChanges {
     changerDimension(taille: number) {
         this.tailleGraphiques = taille;
         if (this.capteurs) {
-            for (let capteur of this.capteurs!) {
+            for (let capteur of this.capteurs) {
                 capteur.taille = taille
             }
 

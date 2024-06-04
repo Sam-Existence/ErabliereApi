@@ -133,7 +133,7 @@ export class WeatherForecastComponent implements OnChanges, OnDestroy {
                                     return `Jour: ${dt} - Nuit: ${nt}`;
                                 },
                                 label: function (context: any) {
-                                    var label = context.dataset.label || '';
+                                    let label = context.dataset.label || '';
                                     if (label) {
                                         label += ': ';
                                     }

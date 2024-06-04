@@ -3,7 +3,6 @@ using AutoMapper.QueryableExtensions;
 using ErabliereApi.Attributes;
 using ErabliereApi.Depot.Sql;
 using ErabliereApi.Donnees;
-using ErabliereApi.Donnees.Action.Delete;
 using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
@@ -97,12 +96,12 @@ public class CapteursController : ControllerBase
             return BadRequest("L'id de la route n'est pas le même que l'id de l'érablière dans les données du capteur à ajouter");
         }
 
-        if (capteur.Id != null && await _depot.Capteurs.AnyAsync(c => c.Id == capteur.Id, token))
+        if (capteur.Id.HasValue && await _depot.Capteurs.AnyAsync(c => c.Id == capteur.Id, token))
         {
             return BadRequest($"Le capteur avec l'id '{capteur.Id}' exite déjà");
         }
 
-        if (capteur.DC == null)
+        if (!capteur.DC.HasValue)
         {
             capteur.DC = DateTimeOffset.Now;
         }
@@ -110,7 +109,7 @@ public class CapteursController : ControllerBase
 
         var entity = await _depot.Capteurs.AddAsync(_mapper.Map<Capteur>(capteur), token);
 
-        entity.Entity.IndiceOrdre = _depot.Capteurs.Where(c => capteur.IdErabliere == c.IdErabliere).Count();
+        entity.Entity.IndiceOrdre = await _depot.Capteurs.Where(c => capteur.IdErabliere == c.IdErabliere).CountAsync(token);
 
         await _depot.SaveChangesAsync(token);
 
@@ -145,7 +144,7 @@ public class CapteursController : ControllerBase
 
             if (capteur.AfficherCapteurDashboard.HasValue)
             {
-                capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard ?? false;
+                capteurEntity.AfficherCapteurDashboard = capteur.AfficherCapteurDashboard.Value;
             }
 
             if (capteur.AjouterDonneeDepuisInterface.HasValue)
@@ -163,7 +162,7 @@ public class CapteursController : ControllerBase
                 capteurEntity.Nom = capteur.Nom;
             }
 
-            if (capteur.IndiceOrdre != null)
+            if (capteur.IndiceOrdre.HasValue)
             {
                 capteurEntity.IndiceOrdre = capteur.IndiceOrdre;
             }
@@ -231,12 +230,12 @@ public class CapteursController : ControllerBase
             capteurEntity.DC = capteur.DC;
         }
 
-        if (string.IsNullOrWhiteSpace(capteur.Nom) == false)
+        if (!string.IsNullOrWhiteSpace(capteur.Nom))
         {
             capteurEntity.Nom = capteur.Nom;
         }
 
-        if (string.IsNullOrWhiteSpace(capteur.Symbole) == false)
+        if (!string.IsNullOrWhiteSpace(capteur.Symbole))
         {
             capteurEntity.Symbole = capteur.Symbole;
         }
@@ -266,7 +265,7 @@ public class CapteursController : ControllerBase
     /// Supprimer un capteur
     /// </summary>
     /// <param name="id">Identifiant de l'érablière</param>
-    /// <param name="capteur">Le capteur a supprimer</param>
+    /// <param name="idCapteur">L'id du capteur à supprimer</param>
     /// <param name="token">Le jeton d'annulation</param>
     /// <response code="202">Le capteur a été correctement supprimé.</response>
     /// <response code="404">Le capteur n'existe pas.</response>

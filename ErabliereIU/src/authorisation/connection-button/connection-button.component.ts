@@ -6,7 +6,6 @@ import {
 } from '@angular/core';
 import {IAuthorisationSerivce} from "../iauthorisation-service";
 import {AuthorisationFactoryService} from "../authorisation-factory-service";
-import {MsalService} from "@azure/msal-angular";
 
 @Component({
   selector: 'connection-button',

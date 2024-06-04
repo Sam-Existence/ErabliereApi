@@ -129,10 +129,9 @@ export class CapteurImageListComponent implements OnChanges {
     modifierCapteur(capteur: CapteurImage) {
         if (!capteur.id) {
             console.error("capteur.id is undefined in modifierCapteur()");
-            return;
         } else {
-            if (this.getCapteur(capteur.id).valid) {
-                const formCapteur = this.getCapteur(capteur.id);
+            const formCapteur = this.getCapteur(capteur.id);
+            if (formCapteur.valid) {
                 this.editedCapteurs[capteur.id] = {...capteur};
                 this.editedCapteurs[capteur.id].nom = formCapteur.controls['nom'].value;
                 this.editedCapteurs[capteur.id].url = formCapteur.controls['url'].value;

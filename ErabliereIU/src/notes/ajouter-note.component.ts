@@ -142,9 +142,7 @@ export class AjouterNoteComponent implements OnInit {
                       this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
                   }
               }
-              else {
 
-              }
               this._api.postNote(this.idErabliereSelectionee, this.note)
                 .then(r => {
                   this.errorObj = null;

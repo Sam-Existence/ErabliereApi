@@ -4,8 +4,6 @@ import {FormControl, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup, 
 import {OnlyDigitsDirective} from "../directives/only-digits.directive";
 import {PostCapteurImage} from "../model/postCapteurImage";
 import {ErabliereApi} from "../core/erabliereapi.service";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
-import {PutCapteurImage} from "../model/putCapteurImage";
 
 @Component({
   selector: 'ajouter-capteur-image',

@@ -63,5 +63,5 @@ export class OnlyDigitsDirective implements ControlValueAccessor {
 }
 
 function filterValue(value: any): string {
-    return value.replace(/[^0-9]*/g, '');
+    return value.replace(/\D*/g, '');
 }

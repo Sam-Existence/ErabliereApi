@@ -7,7 +7,6 @@ using ErabliereApi.Donnees.Action.Get;
 using ErabliereApi.Donnees.Action.Post;
 using ErabliereApi.Donnees.Action.Put;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.EntityFrameworkCore;
@@ -31,7 +30,7 @@ namespace ErabliereApi.Controllers
         /// Constructeur par initialisation
         /// </summary>
         /// <param name="depot">Le dépôt des capteurs d'image</param>
-        /// <parsam name="mapper">Interface de mapping entre les données</param>
+        /// <param name="mapper">Interface de mapping entre les données</param>
         public CapteurImageController(ErabliereDbContext depot, IMapper mapper)
         {
             _depot = depot;
@@ -42,6 +41,7 @@ namespace ErabliereApi.Controllers
         /// Lister les capteurs d'image
         /// </summary>
         /// <param name="id">L'identifiant de l'érablière</param>
+        /// <param name="filtreNom">Le filre appliqué sur le nom du capteur</param>
         /// <param name="token">Le jeton d'annulation de la requête</param>
         /// <response code="200">Les capteurs d'image ont correctement été récupérés.</response>
         [HttpGet]
@@ -51,7 +51,7 @@ namespace ErabliereApi.Controllers
         {
             return await _depot.CapteurImage.AsNoTracking()
                                 .Where(b => b.IdErabliere == id &&
-                                        (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom) == true)))
+                                        (filtreNom == null || (b.Nom != null && b.Nom.Contains(filtreNom))))
                                 .ProjectTo<GetCapteurImage>(_mapper.ConfigurationProvider)
                                 .ToArrayAsync(token);
         }
@@ -70,7 +70,7 @@ namespace ErabliereApi.Controllers
         {
             var capteurImage = _mapper.Map<CapteurImage>(capteur);
 
-            capteurImage.Ordre = _depot.CapteurImage.Where(c => id == c.IdErabliere).Count();
+            capteurImage.Ordre = await _depot.CapteurImage.Where(c => id == c.IdErabliere).CountAsync(token);
             capteurImage.IdErabliere = id;
             if (string.IsNullOrEmpty(capteurImage.MotDePasse))
             {
@@ -104,8 +104,8 @@ namespace ErabliereApi.Controllers
         [ValiderOwnership("id")]
         public async Task<IActionResult> Modifier(Guid id, Guid idCapteur, PutCapteurImage capteur, CancellationToken token)
         {
-            var capteurImageEntity = await _depot.CapteurImage.FindAsync(idCapteur);
-            Dictionary<string, string> errors = new();
+            var capteurImageEntity = await _depot.CapteurImage.FindAsync([idCapteur], cancellationToken: token);
+            Dictionary<string, string> errors = [];
 
             if (capteurImageEntity is null)
             {
@@ -148,6 +148,7 @@ namespace ErabliereApi.Controllers
         /// </summary>
         /// <param name="id">Identifiant de l'érablière</param>
         /// <param name="idCapteur">L'id du capteur d'image à supprimer</param>
+        /// <param name="token">Le jeton d'annulation de la requête</param>
         /// <response code="202">Le capteur a été correctement supprimé.</response>
         /// <response code="400">L'id de la route ne concorde pas avec l'id du capteur à supprimer.</response>
         [HttpDelete("{idCapteur}")]
