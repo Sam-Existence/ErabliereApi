@@ -16,7 +16,7 @@
         </thead>
         <tbody>
             @for(capteur of capteurs; track capteur.id) {
-                <tr [formGroup]="getCapteur(capteur.id ?? '')">
+                <tr [formGroup]="getCapteur(capteur.id ?? '')" [id]="'capteur-' + capteur.id">
                     <td class="min">
                         <!-- create a copy id button, and for the icon of the button use a copy icon -->
                         <button

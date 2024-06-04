@@ -114,9 +114,9 @@ export class CapteurListComponent implements OnChanges {
             console.error("capteur.id is undefined in modifierCapteur()");
             return;
         } else {
-            if (this.getCapteur(capteur.id).valid) {
-                const formCapteur = this.getCapteur(capteur.id);
-
+            const formCapteur = this.getCapteur(capteur.id);
+            this.validateForm(capteur.id);
+            if (formCapteur.valid) {
                 this.editedCapteurs[capteur.id] = {...capteur};
                 this.editedCapteurs[capteur.id].indiceOrdre = formCapteur.controls['indice'].value;
                 this.editedCapteurs[capteur.id].nom = formCapteur.controls['nom'].value;
@@ -195,5 +195,11 @@ export class CapteurListComponent implements OnChanges {
         setTimeout(() => {
             button.innerHTML = "&#x2398;"
         }, 750);
+    }
+
+    validateForm(capteurId: string) {
+        const form = document.getElementById('capteur-' + capteurId);
+        this.getCapteur(capteurId).updateValueAndValidity();
+        form?.classList.add('was-validated');
     }
 }

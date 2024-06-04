@@ -158,14 +158,9 @@ public class CapteursController : ControllerBase
                 capteurEntity.DC = capteur.DC;
             }
 
-            if (string.IsNullOrWhiteSpace(capteur.Nom) == false)
+            if (!string.IsNullOrWhiteSpace(capteur.Nom))
             {
                 capteurEntity.Nom = capteur.Nom;
-            }
-
-            if (string.IsNullOrWhiteSpace(capteur.Symbole) == false)
-            {
-                capteurEntity.Symbole = capteur.Symbole;
             }
 
             if (capteur.IndiceOrdre != null)

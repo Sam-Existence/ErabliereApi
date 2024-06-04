@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, SimpleChanges } from '@angular/core';
+import {Component, OnInit, Input, SimpleChanges, OnChanges} from '@angular/core';
 import { NgFor } from '@angular/common';
 import { Note } from 'src/model/note';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
@@ -14,7 +14,7 @@ import { RappelComponent } from './rappel.component';
   styleUrls: ['./rappels.component.css'] ,
   templateUrl: './rappels.component.html'
 })
-export class RappelsComponent {
+export class RappelsComponent implements OnChanges {
     @Input() idErabliereSelectionnee: any;
     todayReminders: Note[] = [];
 
