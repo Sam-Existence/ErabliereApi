@@ -6,7 +6,7 @@ import { NgFor, NgIf } from '@angular/common';
 @Component({
     selector: 'barils-panel',
     template: `
-        <div class="border-top m-3">
+        <div class="m-3 border-top py-2">
             <h3>Barils</h3>
             <h6>Id érablière {{ erabliereId }}</h6>
             <span *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</span>

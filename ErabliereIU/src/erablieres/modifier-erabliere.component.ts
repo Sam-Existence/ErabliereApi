@@ -1,34 +1,49 @@
 // This a component that allows to add a new erabliere
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter, ViewChild, OnChanges, SimpleChanges} from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
-import { ModifierAccesUtilisateursComponent } from './modifier-acces-utilisateurs.component';
-import { NgIf } from '@angular/common';
-import { ErabliereFormComponent as ErabliereFormComponent_1 } from './erabliere-form.component';
+import { ErabliereAccessListComponent } from '../access/erabliere-access-list/erabliere-access-list.component';
+import { Erabliere } from "../model/erabliere";
 
 @Component({
     selector: 'modifier-erabliere',
     templateUrl: './modifier-erabliere.component.html',
     standalone: true,
     imports: [
-        ErabliereFormComponent_1,
-        NgIf,
-        ModifierAccesUtilisateursComponent,
+        ErabliereFormComponent,
+        ErabliereAccessListComponent,
     ],
 })
-export class ModifierErabliereComponent implements OnInit {
+export class ModifierErabliereComponent implements OnInit, OnChanges {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent;
-    @ViewChild(ModifierAccesUtilisateursComponent) modifierAccesUtilisateurs?: ModifierAccesUtilisateursComponent;
-    modalTitle: string = "Modifier une érablière";
+
     @Output() shouldReloadErablieres = new EventEmitter();
+
     @Input() authEnabled: Boolean = false;
-    @Input() idErabliere?: any;
+    @Input() erabliere?: Erabliere;
+
+    modalTitle: string = "Modifier une érablière";
     afficherSectionDeleteErabliere: boolean = false;
+    afficherSectionAcces: boolean = false;
 
     constructor(private _api: ErabliereApi) { }
 
     ngOnInit() {
+        if (this.erabliereForm) {
+            this.erabliereForm.erabliere = {...this.erabliere};
+        }
         this.afficherSectionDeleteErabliere = false;
+        this.afficherSectionAcces = false;
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['erabliere']?.currentValue) {
+            if (this.erabliereForm) {
+                this.erabliereForm.erabliere = {...this.erabliere};
+            }
+            this.afficherSectionDeleteErabliere = false;
+            this.afficherSectionAcces = false;
+        }
     }
 
     modifierErabliere() {
@@ -47,7 +62,7 @@ export class ModifierErabliereComponent implements OnInit {
                         if (error.status == 400) {
                             this.erabliereForm.errorObj = error;
                             this.erabliereForm.generalError = undefined;
-                        } 
+                        }
                         else {
                             this.erabliereForm.generalError = "Une erreur est survenue lors de la modification de l'érablière. Veuillez réessayer plus tard."
                         }
@@ -62,12 +77,12 @@ export class ModifierErabliereComponent implements OnInit {
     }
 
     deleteErabliere() {
-        const e = `Voulez-vous vraiment supprimer l'érablière avec l'identifiant ${this.idErabliere} ? Cette action est irréversible.`;
+        const e = `Voulez-vous vraiment supprimer ${this.erabliere?.nom} ? Cette action est irréversible.`;
 
         if (confirm(e)) {
             var erabliere = this.erabliereForm?.erabliere;
             if (erabliere != undefined) {
-                this._api.deleteErabliere(this.idErabliere, erabliere).then(() => {
+                this._api.deleteErabliere(this.erabliere?.id, erabliere).then(() => {
                     this.afficherSectionDeleteErabliere = true;
                     this.shouldReloadErablieres.emit({event: 'delete'});
 
@@ -91,7 +106,12 @@ export class ModifierErabliereComponent implements OnInit {
         }
     }
 
+    changerAffichageAcces() {
+        this.afficherSectionAcces = !this.afficherSectionAcces;
+    }
+
     onHideModal() {
+        this.afficherSectionAcces = false;
         this.afficherSectionDeleteErabliere = false;
     }
 }

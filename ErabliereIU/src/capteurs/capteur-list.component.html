@@ -1,0 +1,153 @@
+<!-- Une table qui liste les page-capteurs -->
+<form class="table-responsive" novalidate>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col" class="min">Id</th>
+                <th scope="col" class="col-sm-1">Indice</th>
+                <th scope="col">Nom</th>
+                <th scope="col">Symbole</th>
+                <th scope="col">Graphique&nbsp;affiché</th>
+                <th scope="col">Saisie&nbsp;manuelle</th>
+                <th scope="col">Date&nbsp;création</th>
+                <th scope="col" class="min"></th>
+                <th scope="col" class="min"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for(capteur of capteurs; track capteur.id) {
+                <tr [formGroup]="getCapteur(capteur.id ?? '')" [id]="'capteur-' + capteur.id">
+                    <td class="min">
+                        <!-- create a copy id button, and for the icon of the button use a copy icon -->
+                        <button
+                            type="button"
+                            class="btn btn-outline-primary btn-sm"
+                            (click)="copyId($event, capteur.id)"
+                            title="Copier l'id du capteur">
+                            &#x2398;
+                        </button>
+                    </td>
+                    <td [class.was-validated]="getIndice(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="indice"
+                                type="number"
+                                class="form-control"
+                                min="0"
+                                required
+                            />
+                            @if(getIndice(capteur.id ?? '')?.errors?.['required']) {
+                                <div class="invalid-feedback">
+                                    L'indice est requis
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.indiceOrdre}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getNom(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="nom"
+                                type="text"
+                                class="form-control"
+                                maxlength="200"
+                                required
+                            />
+                            @if(getNom(capteur.id ?? '')?.errors?.['maxlength']) {
+                                <div class="invalid-feedback">
+                                    Le nom doit être maximum 200 caractères de long
+                                </div>
+                            } @else if(getNom(capteur.id ?? '')?.errors?.['required']) {
+                                <div class="invalid-feedback">
+                                    Le nom est requis
+                                </div>
+                            }
+                        } @else {
+                            <span>{{this.capteur.nom}}</span>
+                        }
+                    </td>
+                    <td [class.was-validated]="getSymbole(capteur.id ?? '')?.touched">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <input
+                                formControlName="symbole"
+                                type="text"
+                                class="form-control"
+                                maxlength="5"
+                            />
+                            <div class="invalid-feedback">
+                                Le symbole peut avoir maximum 5 caractères
+                            </div>
+                        } @else {
+                            <span>{{this.capteur.symbole}}</span>
+                        }
+                    </td>
+                    <td class="text-center align-middle">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <div class="form-switch">
+                                <input
+                                    formControlName="estGraphiqueAffiche"
+                                    type="checkbox"
+                                    class="form-check-input"
+                                />
+                            </div>
+                        } @else if(capteur.afficherCapteurDashboard) {
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                                </svg>
+                            </span>
+                        }
+                    </td>
+                    <td class="text-center align-middle">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <div class="form-switch">
+                                <input
+                                    formControlName="estSaisieManuelle"
+                                    type="checkbox"
+                                    class="form-check-input"
+                                />
+                            </div>
+                        } @else if(capteur.ajouterDonneeDepuisInterface) {
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check" viewBox="0 0 16 16">
+                                    <path d="M10.97 4.97a.75.75 0 0 1 1.07 1.05l-3.99 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425z"/>
+                                </svg>
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        {{formatDateJour(capteur.dc)}}
+                    </td>
+                    <td class="text-lg-end">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm me-2"
+                                (click)="modifierCapteur(capteur)">Enregistrer</button>
+                        } @else {
+                            <button
+                                type="button"
+                                class="btn btn-outline-primary btn-sm me-2"
+                                (click)="showModifierCapteur(capteur)">Modifier</button>
+                        }
+                    </td>
+                    <td class="text-lg-start min">
+                        @if(isDisplayEditForm(capteur.id)) {
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="hideModifierCapteur(capteur)">Annuler</button>
+                        } @else {
+                            <button
+                                type="button"
+                                class="btn btn-outline-danger btn-sm"
+                                (click)="supprimerCapteur(capteur)">Supprimer</button>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</form>

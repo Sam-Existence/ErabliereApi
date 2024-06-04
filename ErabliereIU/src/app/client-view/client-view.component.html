@@ -1,0 +1,21 @@
+<header class="container-fluid py-2 mb-2 border-bottom">
+    <client-nav-bar
+        [idErabliereSelectionee]="idErabliereSelectionee"
+        [thereIsAtLeastOneErabliere]="thereIsAtLeastOneErabliere"
+    />
+    <you-are-not-connected />
+</header>
+<div class="container-fluid">
+    <div class="row">
+    @if (showMenu) {
+        <aside class="col-lg-2">
+            <erablieres-side-bar
+                [(idSelectionne)]="idErabliereSelectionee"
+                [(thereIsAtLeastOneErabliere)]="thereIsAtLeastOneErabliere" />
+        </aside>
+        }
+        <main [class]="showMenu ? 'col-lg-10 col-md-12' : 'col-12'">
+            <router-outlet></router-outlet>
+        </main>
+    </div>
+</div>

@@ -3,7 +3,6 @@ import { ChartDataset, ChartOptions, ChartType, Color, LinearScale, TickOptions,
 import { BaseChartDirective, NgChartsModule } from 'ng2-charts';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { AjouterDonneeCapteurComponent } from '../../donneeCapteurs/ajouter-donnee-capteur.component';
-import { NgIf } from '@angular/common';
 import { DateTimeSelectorComponent } from './userinput/date-time-selector.component';
 import { calculerMoyenne } from '../util';
 
@@ -13,7 +12,6 @@ import { calculerMoyenne } from '../util';
     standalone: true,
     imports: [
         DateTimeSelectorComponent,
-        NgIf,
         AjouterDonneeCapteurComponent,
         NgChartsModule,
     ],
@@ -56,7 +54,7 @@ export class GraphPannelComponent implements OnInit {
     @Input() textActuel?: string | undefined | null;
     @Input() ajouterDonneeDepuisInterface: boolean = false;
 
-    constructor(private _api: ErabliereApi) { 
+    constructor(private _api: ErabliereApi) {
         this.chart = undefined;
     }
 
@@ -120,7 +118,7 @@ export class GraphPannelComponent implements OnInit {
             let ids = json.map(ee => ee.id);
 
             let donnees: Array<ChartDataset> = [
-                { 
+                {
                     data: json.map(donneeCapteur => donneeCapteur.valeur != null ? donneeCapteur.valeur / 10 : null), label: this.titre,
                     fill: true,
                     pointBackgroundColor: 'rgba(255,255,0,0.8)',

@@ -11,7 +11,7 @@ import { NgIf } from "@angular/common";
     selector: 'ajouter-donnee-capteur',
     template: `
         <button *ngIf="!display" class="btn btn-primary" (click)="afficherForm()">Ajouter</button>
-        <div *ngIf="display" class="border-top ms-3">
+        <div *ngIf="display" class="ms-3">
             <h3>Ajouter une donnée</h3>
             <form [formGroup]="donneeCapteurForm">
                 <div class="form-group">
@@ -90,7 +90,7 @@ export class AjouterDonneeCapteurComponent implements OnInit {
             })
             validationError = true;
         }
-        
+
         if (validationError == false) {
             donneeCapteur.idCapteur = this.idCapteur;
 

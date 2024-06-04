@@ -7,11 +7,28 @@
       <div [class]="'form-group mb-3' + (noteForm.controls['title'].touched ? ' was-validated' : '')">
         <label class="form-label" for="ajouter-note-title">Titre&nbsp;: </label>
         <input [class]="'form-control'" type="text" formControlName="title" id="ajouter-note-title" />
+        @if (noteForm.controls['title'].errors && noteForm.controls['title'].touched) {
+          <div>
+            @if (noteForm.controls['title'].errors!.required) {
+              <small class="text-danger">Titre obligatoire.</small>
+            }
+            @if (noteForm.controls['title'].errors!.maxlength) {
+              <small class="text-danger">Taille maximal dépassée.</small>
+            }
+          </div>
+        }
         <input-error [errorObj]="errorObj" [controlName]="'title'"></input-error>
       </div>
       <div [class]="'form-group mb-3' + (noteForm.controls['text'].touched ? ' was-validated' : '')">
         <label class="form-label" for="ajouter-note-text">Texte : </label>
         <input class="form-control" type="text" formControlName="text" id="ajouter-note-text" />
+        @if (noteForm.controls['text'].errors && noteForm.controls['text'].touched) {
+          <div>
+            @if (noteForm.controls['text'].errors!.maxlength) {
+              <small class="text-danger">Taille maximal dépassée.</small>
+            }
+          </div>
+        }
         <input-error [errorObj]="errorObj" [controlName]="'text'"></input-error>
       </div>
       <div [class]="'form-group mb-3' + (noteForm.controls['file'].touched ? ' was-validated' : '')">
@@ -34,10 +51,52 @@
         <label class="form-check-label" for="ajouter-note-reminderEnabled">Ajouter un rappel</label>
       </div>
       @if(displayReminder) {
-        <div [class]="'form-group mb-3' + (noteForm.controls['reminderDate'].touched ? ' was-validated' : '')">
-          <label class="form-label" for="ajouter-note-reminderDate">Date du rappel: </label>
-          <input class="form-control" type="date" formControlName="reminderDate" [min]="today" id="ajouter-note-reminderDate" />
-          <input-error [errorObj]="errorObj" [controlName]="'reminderDate'"></input-error>
+        <div [class]="'form-group mb-3' + (noteForm.controls['dateRappel'].touched ? ' was-validated' : '')">
+          <label for="dateRappel">Date Rappel</label>
+          <input type="date" id="dateRappel" class="form-control" formControlName="dateRappel">
+          @if (noteForm.controls['dateRappel'].errors && noteForm.controls['dateRappel'].touched) {
+            <div>
+              @if (noteForm.controls['dateRappel'].errors!.dateRappelRequired) {
+                <small class="text-danger">Date de rappel obligatoire.</small>
+              }
+              @if (noteForm.controls['dateRappel'].errors!.dateRappelPast) {
+                <small class="text-danger">Date de rappel doit être dans le futur.</small>
+              }
+            </div>
+          }
+          <input-error [errorObj]="errorObj" [controlName]="'dateRappel'"></input-error>
+        </div>
+
+        <div [class]="'form-group mb-3' + (noteForm.controls['dateRappelFin'].touched ? ' was-validated' : '')">
+          <label for="dateRappelFin">Date Rappel Fin</label>
+          <input type="date" id="dateRappelFin" class="form-control" formControlName="dateRappelFin">
+          @if (noteForm.controls['dateRappelFin'].errors && noteForm.controls['dateRappelFin'].touched) {
+            <div>
+              @if (noteForm.controls['dateRappelFin'].errors!.dateRappelFinBeforeDateRappel) {
+                <small class="text-danger">Date de fin de rappel doit être après ou égale à la date de début de rappel.</small>
+              }
+            </div>
+          }
+          <input-error [errorObj]="errorObj" [controlName]="'dateRappelFin'"></input-error>
+        </div>
+
+        <div [class]="'form-group mb-3' + (noteForm.controls['periodicite'].touched ? ' was-validated' : '')">
+          <label for="periodicite">Periodicité</label>
+          <select id="periodicite" class="form-control" formControlName="periodicite">
+            <option value="Aucune">Aucune</option>
+            <option value="annuel">Annuel</option>
+            <option value="mensuel">Mensuel</option>
+            <option value="hebdo">Hebdomadaire</option>
+            <option value="quotidien">Quotidien</option>
+          </select>
+          @if (noteForm.controls['periodicite'].errors && noteForm.controls['periodicite'].touched) {
+            <div>
+              @if (noteForm.controls['periodicite'].errors!.datesRequiredForPeriodicite) {
+                <small class="text-danger">Date de fin de rappel obligatoire pour une périodicité.</small>
+              }
+            </div>
+          }
+          <input-error [errorObj]="errorObj" [controlName]="'periodicite'"></input-error>
         </div>
       }
       <button id="creerNote" class="btn btn-primary me-2" (click)="onButtonCreerClick()">Créer</button>

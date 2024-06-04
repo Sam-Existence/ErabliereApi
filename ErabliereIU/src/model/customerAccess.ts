@@ -1,9 +1,10 @@
 import { Customer } from "./customer"
+import { Erabliere } from "./erabliere";
 
 export class CustomerAccess {
-    id:any
     idErabliere:any
     idCustomer:any
+    erabliere?: Erabliere
     customer?: Customer
     access?:number
 }

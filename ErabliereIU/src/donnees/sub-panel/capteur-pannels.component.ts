@@ -1,42 +1,44 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Capteur } from 'src/model/capteur';
-import { GraphPannelComponent } from './graph-pannel.component';
-import { NgFor, NgIf } from '@angular/common';
-import { WeatherForecastComponent } from '../weatherforecast.component';
-import { Erabliere } from 'src/model/erabliere';
+import { NgClass } from '@angular/common';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
-import { ImagePanelComponent } from './image-pannel.component';
-import { ActivatedRoute } from '@angular/router';
+import { Capteur } from 'src/model/capteur';
+import { Erabliere } from 'src/model/erabliere';
+import { GraphPannelComponent } from './graph-pannel.component';
 
 @Component({
     selector: 'capteur-pannels',
-    template: `
-      <div class="row">
-          <div class="border-top col-md-6" *ngFor="let capteur of capteurs">
-              <graph-pannel [titre]="capteur.nom" 
-                            [symbole]="capteur.symbole"
-                            [idCapteur]="capteur.id"
-                            [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
-          </div>
-      </div>
-    `,
+    templateUrl: './capteur-pannels.component.html',
     standalone: true,
-    imports: [NgIf, NgFor, GraphPannelComponent, WeatherForecastComponent, ImagePanelComponent]
+    imports: [GraphPannelComponent, NgClass]
 })
-export class CapteurPannelsComponent implements OnInit {
-  @Input() capteurs?: Capteur[]
-  @Input() erabliere?: Erabliere
+export class CapteurPannelsComponent implements OnChanges {
+    @Input() capteurs?: Capteur[] = []
+    @Input() erabliere?: Erabliere
 
-  constructor(private api: ErabliereApi, private route: ActivatedRoute) { }
+    public tailleGraphiques?: number = 6;
 
-  ngOnInit(): void { 
-    console.log('CapteurPannelsComponent.ngOnInit', this.erabliere?.id);
-    
-    this.route.paramMap.subscribe(params => {
-      if (this.erabliere != null) {
-        this.erabliere.id = params.get('idErabliereSelectionee');
-      }
-    });
-  }
+    constructor(private _api: ErabliereApi) {
+    }
 
+    ngOnChanges(changes: SimpleChanges): void {
+        if (changes.capteurs) {
+            let taille = this.capteurs?.find(capteur => capteur.taille)?.taille;
+            if (taille) {
+                this.tailleGraphiques = taille;
+            } else {
+                this.tailleGraphiques = 6;
+            }
+        }
+    }
+
+    changerDimension(taille: number) {
+        this.tailleGraphiques = taille;
+        if (this.capteurs) {
+            for (let capteur of this.capteurs) {
+                capteur.taille = taille
+            }
+
+            this._api.putCapteurs(this.erabliere?.id, this.capteurs);
+        }
+    }
 }

@@ -1,50 +1,51 @@
-<div id="graph-pannel-{{idCapteur}}" class="border-top">
+<div id="graph-pannel-{{idCapteur}}">
     <h3>{{ titre }} {{ valeurActuel }} {{ symbole }} {{ mean }}</h3>
 
     <div class="container">
-        <div class="col-6 btn-group">
-            <div class="dropdown me-2">
-                <button class="btn btn-secondary dropdown-toggle" 
-                   href="#" 
-                   role="button"
-                   data-bs-toggle="dropdown" 
-                   aria-haspopup="true" 
-                   aria-expanded="false">
-                    Durée {{ duree }}
-            </button>
+        <div class="row">
+            <div class="col-auto px-0">
+                <div class="dropdown me-2">
+                    <button class="btn btn-secondary dropdown-toggle"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        Durée {{ duree }}
+                    </button>
 
-            <div class="dropdown-menu">
-                <a class="dropdown-item" (click)="updateGraph(0, 12)">12h</a>
-                <a class="dropdown-item" (click)="updateGraph(0, 24)">24h</a>
-                <a class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</a>
-                <a class="dropdown-item">
-                    Choisir interval
-                    <div>
-                        <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
-                        <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" (click)="updateGraph(0, 12)">12h</a>
+                        <a class="dropdown-item" (click)="updateGraph(0, 24)">24h</a>
+                        <a class="dropdown-item" (click)="updateGraph(7, 0)">7 jours</a>
+                        <a class="dropdown-item">
+                            Choisir interval
+                            <div>
+                                <date-time-selector [titre]="'Début: '" (onChange)="captureDateDebut($event)"></date-time-selector>
+                                <date-time-selector [titre]="'Fin: '" (onChange)="captureDateFin($event)"></date-time-selector>
+                            </div>
+                            <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
+                        </a>
                     </div>
-                    <button class="btn btn-secondary m-2" (click)="updateGraphUsingFixRange()">Appliquer</button>
-                </a>
+                </div>
             </div>
-        </div>
-
-        <div class="col-12">
-            <ajouter-donnee-capteur 
-                *ngIf="ajouterDonneeDepuisInterface" 
-                [idCapteur]="idCapteur" 
-                (needToUpdate)="updateDonneesCapteur($event)"
-                [symbole]="symbole" />
-            <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
+            @if (ajouterDonneeDepuisInterface) {
+                <ajouter-donnee-capteur
+                    class="col-md-auto px-0"
+                    [idCapteur]="idCapteur"
+                    (needToUpdate)="updateDonneesCapteur($event)"
+                    [symbole]="symbole" />
+                <h6 class="ms-2 mt-2">{{ textActuel }}</h6>
+            }
         </div>
     </div>
 
-    </div>
     <div class="chart-wrapper">
         <canvas baseChart class="chart"
-            [datasets]="datasets" 
-            [labels]="timeaxes" 
+            [datasets]="datasets"
+            [labels]="timeaxes"
             [options]="lineChartOptions"
-            [legend]="lineChartLegend" 
+            [legend]="lineChartLegend"
             [plugins]="lineChartPlugins"
             [type]="lineChartType">
         </canvas>

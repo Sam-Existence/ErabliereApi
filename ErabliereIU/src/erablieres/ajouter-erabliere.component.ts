@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ErabliereApi } from 'src/core/erabliereapi.service';
 import { ErabliereFormComponent } from 'src/erablieres/erabliere-form.component'
 import { ErabliereFormComponent as ErabliereFormComponent_1 } from './erabliere-form.component';
@@ -9,15 +9,12 @@ import { ErabliereFormComponent as ErabliereFormComponent_1 } from './erabliere-
     standalone: true,
     imports: [ErabliereFormComponent_1],
 })
-export class AjouterErabliereComponent implements OnInit {
+export class AjouterErabliereComponent {
     @ViewChild(ErabliereFormComponent) erabliereForm?: ErabliereFormComponent
     modalTitle: string = "Ajouter une érablière"
     @Output() shouldReloadErablieres = new EventEmitter()
 
     constructor(private _api: ErabliereApi) { }
-
-    ngOnInit() {
-    }
 
     ajouterErabliere() {
         if (this.erabliereForm != undefined && this.erabliereForm.erabliere != undefined) {
@@ -35,7 +32,7 @@ export class AjouterErabliereComponent implements OnInit {
                     if (error.status == 400) {
                         this.erabliereForm.errorObj = error
                         this.erabliereForm.generalError = undefined
-                    } 
+                    }
                     else {
                         this.erabliereForm.generalError = "Une erreur est survenue lors de l'ajout de l'érablière. Veuillez réessayer plus tard."
                     }

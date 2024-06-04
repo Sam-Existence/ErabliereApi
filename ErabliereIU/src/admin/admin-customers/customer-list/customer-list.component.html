@@ -1,0 +1,59 @@
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="min"></th>
+                <th>Nom</th>
+                <th>Email</th>
+                <th>Nombre d'érablières</th>
+                <th class="min"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (customer of customers; track customer.id) {
+            <tr>
+                <td class="min">
+                    <button class="btn btn-secondary" (click)="toggleAccess(customer.id)">
+                        @if (showAccess[customer.id]) {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-up" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M7.646 4.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 5.707l-5.646 5.647a.5.5 0 0 1-.708-.708z"/>
+                            </svg>
+                        } @else {
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                            </svg>
+                        }
+                    </button>
+                </td>
+                <td>{{customer.name}}</td>
+                <td>{{customer.email}}</td>
+                <td>{{customer.customerErablieres?.length}}</td>
+                <td class="min">
+                    <button
+                        type="button"
+                        class="btn btn-outline-primary"
+                        (click)="signalerModification(customer)">
+                        Modifier
+                    </button>
+                    &nbsp;
+                    <button
+                        type="button"
+                        class="btn btn-outline-danger"
+                        (click)="signalerSuppression(customer)">
+                        Supprimer
+                    </button>
+                </td>
+            </tr>
+            @if (showAccess[customer.id]) {
+            <tr class="border">
+                <td colspan="6">
+                    <admin-customer-access-list
+                        [idCustomer]="customer.id"
+                        (changementAcces)="MAJAcces($event, customer)"/>
+                </td>
+            </tr>
+            }
+            }
+        </tbody>
+    </table>
+</div>

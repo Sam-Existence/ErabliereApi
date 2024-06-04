@@ -92,7 +92,7 @@ public class CustomersController : ControllerBase
     /// <returns></returns>
     [HttpGet]
     [EnableQuery]
-    [Route("/admin/customers")]
+    [Route("/Admin/Customers")]
     [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
     public IQueryable<Customer> GetCustomersAdmin()
     {
@@ -104,7 +104,7 @@ public class CustomersController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPut]
-    [Route("/admin/customers/{id}")]
+    [Route("/Admin/Customers/{id}")]
     [ProducesResponseType(200, Type = typeof(GetCustomer))]
     [ProducesResponseType(400)]
     [ProducesResponseType(404)]
@@ -137,72 +137,6 @@ public class CustomersController : ControllerBase
     }
 
     /// <summary>
-    /// Point de terminaison d'administration pour 
-    /// récupérer les accès d'un utilisateur
-    /// </summary>
-    /// <param name="id">Id de l'utilisateur</param>
-    /// <param name="token"></param>
-    /// <returns></returns>
-    [HttpGet]
-    [Route("/admin/customers/{id}/customeraccess")]
-    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
-    public async Task<IActionResult> GetAdminCustomerAccess(Guid id, CancellationToken token)
-    {
-        var customer = await _context.Customers.FindAsync([id], cancellationToken: token);
-
-        if (customer == null)
-        {
-            return NotFound();
-        }
-
-        var erablieres = await _context.CustomerErablieres.AsNoTracking()
-            .Where(c => c.IdCustomer == id)
-            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
-            .ToArrayAsync(token);
-
-        return Ok(erablieres);
-    }
-
-    /// <summary>
-    /// Point de terminaison d'administration pour 
-    /// modifier les accès d'un utilisateur
-    /// </summary>
-    /// <param name="id">Id de l'utilisateur</param>
-    /// <param name="putAdminCustomerAccess">Les accès à modifier</param>
-    /// <param name="token"></param>
-    /// <returns></returns>
-    [HttpPut]
-    [Route("/admin/customers/{id}/customeraccess")]
-    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
-    public async Task<IActionResult> PutAdminCustomerAccess(Guid id, PutAdminCustomerAccess putAdminCustomerAccess, CancellationToken token)
-    {
-        var access = await _context.CustomerErablieres
-            .FirstOrDefaultAsync(ce => ce.IdCustomer == id && ce.IdErabliere == putAdminCustomerAccess.IdErabliere, token);
-
-        if (access == null)
-        {
-            // create a new access
-            access = new CustomerErabliere
-            {
-                IdCustomer = id,
-                IdErabliere = putAdminCustomerAccess.IdErabliere,
-                Access = putAdminCustomerAccess.CustomerAccessLevel
-            };
-
-            await _context.AddAsync(access, token);
-        }
-        else 
-        {
-            access.Access = putAdminCustomerAccess.CustomerAccessLevel;
-        }
-
-        await _context.SaveChangesAsync(token);
-
-        return NoContent();
-    }
-
-    /// <summary>
     /// Point de terminaison pour la suppression d'un utilisateur
     /// </summary>
     /// <param name="id">Id de l'utilisateur</param>
@@ -228,4 +162,33 @@ public class CustomersController : ControllerBase
 
         return NoContent();
     }
+
+    /// <summary>
+    /// Point de terminaison d'administration pour 
+    /// récupérer les accès d'un utilisateur
+    /// </summary>
+    /// <param name="id">Id de l'utilisateur</param>
+    /// <param name="token"></param>
+    /// <returns></returns>
+    [HttpGet]
+    [Route("/Admin/Customers/{id}/Access")]
+    [Authorize(Roles = "administrateur", Policy = "TenantIdPrincipal")]
+    [ProducesResponseType(200, Type = typeof(GetCustomerAccess))]
+    public async Task<IActionResult> GetAdminCustomerAccess(Guid id, CancellationToken token)
+    {
+        var customer = await _context.Customers.FindAsync([id], cancellationToken: token);
+
+        if (customer == null)
+        {
+            return NotFound();
+        }
+
+        var erablieres = await _context.CustomerErablieres.AsNoTracking()
+            .Where(c => c.IdCustomer == id)
+            .ProjectTo<GetCustomerAccess>(_mapper.ConfigurationProvider)
+            .ToArrayAsync(token);
+
+        return Ok(erablieres);
+    }
+
 }

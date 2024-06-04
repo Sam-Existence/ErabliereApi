@@ -9,6 +9,8 @@ import {
 } from "@angular/forms";
 import { Note } from "src/model/note";
 import { InputErrorComponent } from "../formsComponents/input-error.component";
+import { Rappel } from "../model/Rappel";
+import { reminderValidator } from "./note.custom-validators";
 
 @Component({
     selector: 'ajouter-note',
@@ -17,6 +19,21 @@ import { InputErrorComponent } from "../formsComponents/input-error.component";
     imports: [ReactiveFormsModule, InputErrorComponent]
 })
 export class AjouterNoteComponent implements OnInit {
+    @Input() notes?: Note[];
+    @Input() idErabliereSelectionee?: string
+
+    @Output() needToUpdate = new EventEmitter();
+
+    display: boolean = false;
+
+    note: Note = new Note();
+    noteForm: UntypedFormGroup;
+
+    error: string | null = null;
+    errorObj: any;
+    fileToLargeErrorMessage?: string | null;
+    generalError?: string | null;
+
     constructor(private _api: ErabliereApi, private fb: UntypedFormBuilder) {
         this.noteForm = this.fb.group({});
     }
@@ -60,36 +77,26 @@ export class AjouterNoteComponent implements OnInit {
             reminderEnabled: new FormControl(
               false
             ),
-            reminderDate: new FormControl(
-              '',
-              {
-                updateOn: 'blur'
-              }
+            dateRappel: new FormControl(
+                '',
+                {
+                    updateOn: 'blur',
+                }
             ),
-        });
+            dateRappelFin: new FormControl(
+                '',
+                {
+                    updateOn: 'blur'
+                }
+            ),
+            periodicite: new FormControl(
+                'Aucune',
+                {
+                    updateOn: 'blur'
+                }
+            ),
+        }, { validators: reminderValidator });
     }
-
-    display: boolean = false;
-
-    today = new Intl.DateTimeFormat('fr-ca', { year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
-
-    error: string | null = null;
-
-    note:Note = new Note();
-
-    @Input() notes?: Note[];
-
-    @Input() idErabliereSelectionee:any
-
-    @Output() needToUpdate = new EventEmitter();
-
-    noteForm: UntypedFormGroup;
-
-    errorObj: any;
-
-    fileToLargeErrorMessage?: string | null;
-
-    generalError?: string | null;
 
     get displayReminder(): boolean {
         return this.noteForm.controls['reminderEnabled'].value;
@@ -116,13 +123,26 @@ export class AjouterNoteComponent implements OnInit {
               else {
                 this.note.noteDate = null;
               }
-              if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['reminderDate'].value) {
-                let date = new Date(this.noteForm.controls['reminderDate'].value);
-                this.note.reminderDate = date.toISOString();
+              if (this.noteForm.controls['reminderEnabled'].value && this.noteForm.controls['dateRappel'].value) {
+                  this.note.rappel = new Rappel();
+                  let date = new Date(this.noteForm.controls['dateRappel'].value);
+                  this.note.rappel.dateRappel = date.toISOString();
+
+                  if (this.noteForm.controls['dateRappelFin'].value) {
+                    let dateFin = new Date(this.noteForm.controls['dateRappelFin'].value);
+                    this.note.rappel.dateRappelFin = dateFin.toISOString();
+                  }
+                  else {
+                    this.note.rappel.dateRappelFin = null;
+                  }
+
+                  if (this.noteForm.controls['periodicite'].value === 'Aucune') {
+                      this.note.rappel.periodicite = null;
+                  } else {
+                      this.note.rappel.periodicite = this.noteForm.controls['periodicite'].value;
+                  }
               }
-              else {
-                this.note.reminderDate = null;
-              }
+
               this._api.postNote(this.idErabliereSelectionee, this.note)
                 .then(r => {
                   this.errorObj = null;
@@ -150,6 +170,7 @@ export class AjouterNoteComponent implements OnInit {
                 });
             } else {
               this.validateForm();
+                console.log(this.noteForm.errors);
             }
         }
         else {
@@ -168,6 +189,7 @@ export class AjouterNoteComponent implements OnInit {
 
     validateForm() {
       const form = document.getElementById('ajouter-note');
+      this.noteForm.markAllAsTouched();
       this.noteForm.updateValueAndValidity();
       form?.classList.add('was-validated');
     }

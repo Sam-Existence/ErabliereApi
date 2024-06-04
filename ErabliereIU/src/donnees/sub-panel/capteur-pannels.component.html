@@ -1,0 +1,40 @@
+<div class="row border-top pt-2">
+    <div class="btn-group d-none d-md-block text-end" role="group">
+        <input type="radio"
+               class="btn-check"
+               name="dimension"
+               id="gros"
+               autocomplete="off"
+               [checked]="tailleGraphiques === 12"
+               (click)="changerDimension(12)">
+        <label class="btn btn-secondary" for="gros">Gros</label>
+
+        <input type="radio"
+               class="btn-check"
+               name="dimension"
+               id="normal"
+               autocomplete="off"
+               [checked]="tailleGraphiques === 6"
+               (click)="changerDimension(6)">
+        <label class="btn btn-secondary" for="normal">Normal</label>
+
+        <input type="radio"
+               class="btn-check"
+               name="dimension"
+               id="petit"
+               autocomplete="off"
+               [checked]="tailleGraphiques === 3"
+               (click)="changerDimension(3)">
+        <label class="btn btn-secondary" for="petit">Petit</label>
+    </div>
+</div>
+<div class="row pb-2">
+    @for (capteur of capteurs; track capteur.id){
+    <div [ngClass]="'col-md-' + (capteur.taille ? capteur.taille : tailleGraphiques)">
+        <graph-pannel [titre]="capteur.nom"
+                      [symbole]="capteur.symbole"
+                      [idCapteur]="capteur.id"
+                      [ajouterDonneeDepuisInterface]="capteur.ajouterDonneeDepuisInterface"></graph-pannel>
+    </div>
+    }
+</div>

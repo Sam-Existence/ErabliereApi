@@ -67,6 +67,11 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     public List<Capteur> Capteurs { get; set; } = new();
 
     /// <summary>
+    /// Les capteurs d'images de l'érablière
+    /// </summary>
+    public List<CapteurImage> CapteursImage { get; set; } = new();
+
+    /// <summary>
     /// Les données relier à l'érablière
     /// </summary>
     public List<Donnee> Donnees { get; set; } = new();
@@ -99,7 +104,6 @@ public class Erabliere : IIdentifiable<Guid?, Erabliere>, IUserOwnable
     /// <summary>
     /// Liste de jonction entre l'utilisateurs et ses érablières
     /// </summary>
-    [JsonIgnore]
     public List<CustomerErabliere>? CustomerErablieres { get; set; }
 
     /// <inheritdoc />

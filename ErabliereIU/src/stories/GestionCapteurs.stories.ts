@@ -1,5 +1,5 @@
 import { type Meta, type StoryObj } from '@storybook/angular';
-import { GestionCapteursComponent } from 'src/erablieres/gestion-capteurs.component';
+import { GestionCapteursComponent } from 'src/capteurs/gestion-capteurs.component';
 import { ModuleStoryHelper } from './moduleMetadata/moduleStoryHelper';
 
 const meta: Meta<GestionCapteursComponent> = {

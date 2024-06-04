@@ -1,6 +1,13 @@
-<select class="form-select" (change)="onSelectChange($event)">
-    <option selected>Choisir un utilisateur</option>
-    <option *ngFor="let customer of customers" [value]="customer.id">
-        {{ customer.uniqueName }}
-    </option>
-</select>
+<div [formGroup]="form" [class]="'form-group' + (form.controls.customer.touched ? ' was-validated' : '')">
+    <select
+        class="form-select"
+        formControlName="customer"
+        (change)="onSelectChange($event)">
+        <option selected disabled hidden [value]="null">Choisir un utilisateur</option>
+        @for (customer of customers; track customer.id) {
+        <option [value]="customer.id">
+            {{ customer.uniqueName }}
+        </option>
+        }
+    </select>
+</div>

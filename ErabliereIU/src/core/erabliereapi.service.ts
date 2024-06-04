@@ -1,27 +1,28 @@
-import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { AuthorisationFactoryService } from 'src/authorisation/authorisation-factory-service';
-import { IAuthorisationSerivce } from 'src/authorisation/iauthorisation-service';
-import { EnvironmentService } from 'src/environments/environment.service';
-import { Alerte } from 'src/model/alerte';
-import { AlerteCapteur } from 'src/model/alerteCapteur';
-import { Baril } from 'src/model/baril';
-import { Capteur } from 'src/model/capteur';
-import { Conversation, Message } from 'src/model/conversation';
-import { Customer } from 'src/model/customer';
-import { CustomerAccess } from 'src/model/customerAccess';
-import { DeleteCapteur } from 'src/model/deleteCapteur';
-import { Documentation } from 'src/model/documentation';
-import { Dompeux } from 'src/model/dompeux';
-import { Donnee } from 'src/model/donnee';
-import { DonneeCapteur, PostDonneeCapteur } from 'src/model/donneeCapteur';
-import { Erabliere } from 'src/model/erabliere';
-import { ErabliereApiDocument } from 'src/model/erabliereApiDocument';
-import { GetImageInfo } from 'src/model/imageInfo';
-import { Note } from 'src/model/note';
-import { PutCapteur } from 'src/model/putCapteur';
-import { PutCustomerAccess } from 'src/model/putCustomerAccess';
-import { WeatherForecase } from 'src/model/weatherforecast';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {AuthorisationFactoryService} from 'src/authorisation/authorisation-factory-service';
+import {IAuthorisationSerivce} from 'src/authorisation/iauthorisation-service';
+import {EnvironmentService} from 'src/environments/environment.service';
+import {Alerte} from 'src/model/alerte';
+import {AlerteCapteur} from 'src/model/alerteCapteur';
+import {Baril} from 'src/model/baril';
+import {Capteur} from 'src/model/capteur';
+import {Conversation, Message} from 'src/model/conversation';
+import {Customer} from 'src/model/customer';
+import {CustomerAccess} from 'src/model/customerAccess';
+import {Documentation} from 'src/model/documentation';
+import {Dompeux} from 'src/model/dompeux';
+import {Donnee} from 'src/model/donnee';
+import {DonneeCapteur, PostDonneeCapteur} from 'src/model/donneeCapteur';
+import {Erabliere} from 'src/model/erabliere';
+import {ErabliereApiDocument} from 'src/model/erabliereApiDocument';
+import {GetImageInfo} from 'src/model/imageInfo';
+import {Note} from 'src/model/note';
+import {PutCapteur} from 'src/model/putCapteur';
+import {PostCapteurImage} from "../model/postCapteurImage";
+import {CapteurImage} from "../model/capteurImage";
+import {PutCapteurImage} from "../model/putCapteurImage";
+import { WeatherForecast } from 'src/model/weatherForecast';
 
 @Injectable({ providedIn: 'root' })
 export class ErabliereApi {
@@ -51,6 +52,18 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
+    async getErablieresAdmin(): Promise<Erabliere[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/admin/erablieres', { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getErablieresAdminExpandAccess(): Promise<Erabliere[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<Erabliere[]>(this._environmentService.apiUrl + '/admin/erablieres?$expand=customerErablieres', { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
     async getErablieresExpandCapteurs(my: boolean): Promise<Erabliere[]> {
         let headers = await this.getHeaders();
         headers = headers.set('Accept', 'application/json');
@@ -62,6 +75,11 @@ export class ErabliereApi {
     async putErabliere(erabliere: Erabliere): Promise<void> {
         const headers = await this.getHeaders();
         return await this._httpClient.put<void>(this._environmentService.apiUrl + '/erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
+    }
+
+    async putErabliereAdmin(erabliere: Erabliere): Promise<void> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<void>(this._environmentService.apiUrl + '/Admin/Erablieres/' + erabliere.id, erabliere, { headers: headers }).toPromise();
     }
 
     async getAlertes(idErabliereSelectionnee: any): Promise<Alerte[]> {
@@ -89,23 +107,25 @@ export class ErabliereApi {
         return await this._httpClient.post<Capteur>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs", capteur, { headers: headers }).toPromise();
     }
 
-    async putCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
+    async putCapteur(capteur: Capteur) {
         const headers = await this.getHeaders();
         return await this._httpClient.put<Capteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
-            {
-                ...capteur,
-                idErabliere: idErabliereSelectionnee
-            },
+            this._environmentService.apiUrl + `/erablieres/${capteur.idErabliere}/capteurs/${capteur.id}`, capteur,
             { headers: headers }).toPromise();
     }
 
-    async deleteCapteur(idErabliereSelectionnee: any, capteur: DeleteCapteur) {
+    async putCapteurs(idErabliereSelectionnee: string, capteurs: Capteur[]) {
         const headers = await this.getHeaders();
-        return await this._httpClient.delete<DeleteCapteur>(
-            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs",
+        return await this._httpClient.put<Capteur>(
+            this._environmentService.apiUrl + `/erablieres/${idErabliereSelectionnee}/capteurs/`, capteurs,
+            { headers: headers }).toPromise();
+    }
+
+    async deleteCapteur(idErabliereSelectionnee: any, capteur: Capteur) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete<any>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/capteurs/" + capteur.id,
             {
-                body: capteur,
                 headers: headers
             }).toPromise();
     }
@@ -207,8 +227,18 @@ export class ErabliereApi {
         let odataOptions = "?$orderby=NoteDate desc";
             odataOptions += "&$skip=" + skip;
             odataOptions += top ? "&$top=" + top : "";
-            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter,reminderDate";
+            odataOptions += "&$select=id,idErabliere,noteDate,created,text,title,fileExtension,notificationFilter";
+            odataOptions += "&$expand=rappel";
         const rtn = await this._httpClient.get<Note[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes" + odataOptions, { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getActiveRappelNotes(idErabliereSelectionee: any): Promise<Note[]> {
+        let headers = await this.getHeaders();
+        headers = headers.set('Accept', 'application/json');
+        const rtn = await this._httpClient.get<Note[]>(
+            this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/Notes' + "/ActiveRappelsNotes",
+            { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
@@ -247,6 +277,26 @@ export class ErabliereApi {
         return rtn ?? new DonneeCapteur();
     }
 
+    async postCapteurImage(idErabliereSelectionee: any, capteurImage: PostCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.post<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', capteurImage, {headers: headers}).toPromise();
+    }
+
+    async putCapteurImage(idErabliereSelectionee: any, idCapteur: string, capteurImage: PutCapteurImage): Promise<CapteurImage | undefined> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, capteurImage, {headers: headers}).toPromise();
+    }
+
+    async deleteCapteurImage(idErabliereSelectionee: any, idCapteur: string) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete<CapteurImage>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage/' + idCapteur, {headers: headers}).toPromise();
+    }
+
+    async getCapteursImage(idErabliereSelectionee: any) {
+        const headers = await this.getHeaders();
+        return await this._httpClient.get<CapteurImage[]>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionee + '/CapteurImage', {headers: headers}).toPromise() ?? [];
+    }
+
     async postDocument(idErabliereSelectionee: any, document: ErabliereApiDocument): Promise<any> {
         let headers = await this.getHeaders();
         headers = headers.set('Accept', 'application/json');
@@ -283,6 +333,10 @@ export class ErabliereApi {
         const headers = await this.getHeaders();
         return await this._httpClient.put<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/" + note.id, note, { headers: headers }).toPromise();
     }
+    async putNotePeriodiciteDue(idErabliereSelectionnee: any): Promise<any> {
+    const headers = await this.getHeaders();
+    return await this._httpClient.put<Note>(this._environmentService.apiUrl + '/erablieres/' + idErabliereSelectionnee + "/notes/" + "PeriodiciteNotes", {},{ headers: headers }).toPromise();
+    }
 
     async putDocumentation(idErabliereSelectionnee: any, documentation: Documentation): Promise<any> {
         const headers = await this.getHeaders();
@@ -295,9 +349,9 @@ export class ErabliereApi {
         return rtn ?? [];
     }
 
-    async getCustomersAdmin(): Promise<Customer[]> {
+    async getCustomersAdminExpandAccess(): Promise<Customer[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers', { headers: headers}).toPromise();
+        const rtn = await this._httpClient.get<Customer[]>(this._environmentService.apiUrl + '/admin/customers' + '?$expand=customerErablieres', { headers: headers}).toPromise();
         return rtn ?? [];
     }
 
@@ -311,21 +365,66 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/admin/customers/' + idCustomer, { headers: headers }).toPromise();
     }
 
-    async getCustomersAccess(idErabliere: any): Promise<CustomerAccess[]> {
+    async getCustomersAccess(idErabliere: string): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess", { headers: headers }).toPromise();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/Access", { headers: headers }).toPromise();
         return rtn ?? [];
     }
 
-    async putCustomerAccess(idErabliere: any, customerAccess: PutCustomerAccess): Promise<CustomerAccess> {
+    async getAdminErabliereAccess(idErabliere: string): Promise<CustomerAccess[]> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.put<CustomerAccess>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomerErabliere", customerAccess, { headers: headers }).toPromise();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Admin/Erablieres/' + idErabliere + "/Access", { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async getAdminCustomerAccess(idCustomer: string): Promise<CustomerAccess[]> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<CustomerAccess[]>(this._environmentService.apiUrl + '/Admin/Customers/' + idCustomer + "/Access", { headers: headers }).toPromise();
+        return rtn ?? [];
+    }
+
+    async postCustomerAccess(customerAccess: CustomerAccess): Promise<CustomerAccess> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.post<CustomerAccess>(
+            `${this._environmentService.apiUrl}/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
         return rtn ?? new CustomerAccess();
+    }
+
+    async postAdminCustomerAccess(customerAccess: CustomerAccess): Promise<CustomerAccess> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.post<CustomerAccess>(
+            `${this._environmentService.apiUrl}/Admin/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
+        return rtn ?? new CustomerAccess();
+    }
+
+    async putCustomerAccess(customerAccess: CustomerAccess): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<any>(
+            `${this._environmentService.apiUrl}/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
+    }
+
+    async putAdminCustomerAccess(customerAccess: CustomerAccess): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.put<any>(
+            `${this._environmentService.apiUrl}/Admin/Erablieres/${customerAccess.idErabliere}/Customer/${customerAccess.idCustomer}/Access`,
+            { access: customerAccess.access },
+            { headers: headers }).toPromise();
     }
 
     async deleteCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
         const headers = await this.getHeaders();
-        return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/CustomersAccess/" + idCustomer, { headers: headers }).toPromise();
+        return await this._httpClient.delete(this._environmentService.apiUrl + `/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
+    }
+
+    async deleteAdminCustomerAccess(idErabliere: any, idCustomer: any): Promise<any> {
+        const headers = await this.getHeaders();
+        return await this._httpClient.delete(this._environmentService.apiUrl + `/Admin/Erablieres/${idErabliere}/Customer/${idCustomer}/Access`, { headers: headers }).toPromise();
     }
 
     async deleteErabliere(idErabliere: any, erabliere: Erabliere): Promise<any> {
@@ -333,10 +432,15 @@ export class ErabliereApi {
         return await this._httpClient.delete(this._environmentService.apiUrl + '/Erablieres/' + idErabliere, { headers: headers, body: erabliere }).toPromise();
     }
 
-    async getWeatherForecast(idErabliere: any): Promise<WeatherForecase> {
+    async deleteErabliereAdmin(idErabliere: string): Promise<any> {
         const headers = await this.getHeaders();
-        const rtn = await this._httpClient.get<WeatherForecase>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/WeatherForecast", { headers: headers }).toPromise();
-        return rtn ?? new WeatherForecase();
+        return await this._httpClient.delete(this._environmentService.apiUrl + '/Admin/Erablieres/' + idErabliere, { headers: headers }).toPromise();
+    }
+
+    async getWeatherForecast(idErabliere: any): Promise<WeatherForecast> {
+        const headers = await this.getHeaders();
+        const rtn = await this._httpClient.get<WeatherForecast>(this._environmentService.apiUrl + '/Erablieres/' + idErabliere + "/WeatherForecast", { headers: headers }).toPromise();
+        return rtn ?? new WeatherForecast();
     }
 
     async startCheckoutSession(): Promise<any> {

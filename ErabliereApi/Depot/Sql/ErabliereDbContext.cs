@@ -56,6 +56,11 @@ namespace ErabliereApi.Depot.Sql
         public DbSet<Capteur> Capteurs { get; private set; }
 
         /// <summary>
+        /// Table des capteurs d'images
+        /// </summary>
+        public DbSet<CapteurImage> CapteurImage { get; private set; }
+
+        /// <summary>
         /// Table des données des capteurs
         /// </summary>
         public DbSet<DonneeCapteur> DonneesCapteur { get; private set; }
@@ -64,6 +69,11 @@ namespace ErabliereApi.Depot.Sql
         /// Table des notes
         /// </summary>
         public DbSet<Note> Notes { get; private set; }
+
+        /// <summary>
+        /// Table des rappels
+        /// </summary>
+        public DbSet<Rappel> Rappels { get; private set; }
 
         /// <summary>
         /// Table de la docuemntation
